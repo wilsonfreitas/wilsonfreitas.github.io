@@ -1,0 +1,610 @@
+array(1:10,c(5,5))
+typeof(array(1:10))
+mode(array(1:10))
+dimnames(array(1:10,c(5,5)))
+array(1:10,c(5,5), dimnames=c('a', 'b'))
+dimnames(array(1:10,c(5,5), dimnames=c('a', 'b')))
+factors('SP', 'MG', 'RJ')
+factor('SP', 'MG', 'RJ')
+factor(c('SP', 'MG', 'RJ'))
+f <- factor(c('SP', 'MG', 'RJ'))
+f
+f == 'SP''
+;
+'
+f == 'SP'
+f + 1
+help('ordered')
+ordered(c('SP', 'MG', 'RJ'))
+class(ordered(c('SP', 'MG', 'RJ')))
+as.integer(ordered(c('SP', 'MG', 'RJ')))
+1L
+typeof(1L)
+typeof(1)
+typeof(1.L)
+l <- list(a=1)
+l
+'$'(l,'a')
+':'(1,10)
+ls()
+l
+f
+f[1]
+f[[1]]
+Sys.getlocale()
+library(termstrc)
+setwd("/Users/wilson/dev/R-fixedincome")
+test(filter='spotrate.R')
+document()
+document()
+test(filter='spotrate.R')
+test()
+test(filter='spotrate')
+test(filter='spotrate')
+test(filter='spotrate')
+test(filter='spotrate')
+test(filter='spotrate')
+test(filter='spotrate')
+document()
+test(filter='spotrate')
+?attributes
+spr <- spotrate(0.06, 'annual', 'simple', 'actual/365')
+spr
+str(spr)
+attributes(spr)
+attributes(spr) <- NULL
+attributes(spr)
+spr
+class(spr)
+spr <- spotrate(0.06, 'annual', 'simple', 'actual/365')
+load()
+load_all()
+spr <- spotrate(0.06, 'annual', 'simple', 'actual/365')
+rate(spr)
+test(filter='spotrate')
+document
+document()
+test(filter='spotrate')
+document()
+test(filter='spotrate')
+document()
+test(filter='spotrate')
+document()
+test(filter='spotrate')
+test(filter='spotrate')
+test(filter='spotrate')
+spr <- spotrate(0.06, 'annual', 'simple', 'actual/365')
+spr
+spr <- spotrate(0.06, 'annual', 'simple', 'actual/365')
+spr
+load_all()
+spr
+spr <- spotrate(0.06, 'annual', 'simple', 'actual/365')
+spr
+load_all()
+spr <- spotrate(0.06, 'annual', 'simple', 'actual/365')
+spr
+load_all()
+spotrate(0.06, 'annual', 'simple', 'actual/365')
+load_all()
+spotrate(0.06, 'annual', 'simple', 'actual/365')
+load_all()
+spotrate(0.06, 'annual', 'simple', 'actual/365')
+load_all()
+spotrate(0.06, 'annual', 'simple', 'actual/365')
+as.character(spr)
+difftime
+?difftime
+as.difftime(1)
+as.difftime(1, units='day')
+as.difftime(1, units='days')
+dd <- as.difftime(1, units='days')
+dd
+class(dd)
+methods(dd)
+methods('difftime')
+methods(class='difftime')
+dd[1]
+dd[2]
+format(dd, units='hours')
+format(dd)
+class(format(dd))
+as.numeric(dd, units='hours')
+as.numeric(dd, units='secs')
+curve(function(x) x^(1/2)
+)
+curve(function(x) x^(1/2), 0, 1)
+curve(function(x) x^(1/2), 0, 1, 101)
+curve(function(x) x^0.5, 0, 1, 101)
+2^2
+seq(0,1,100)
+seq(0,1,0.01)
+seq(0,1,0.01)^2
+seq(0,1,0.01)^0.5
+seq(0,1,0.01)^0.5
+plot(seq(0,1,0.01)^0.5)
+plot(seq(0,1,0.01)^0.5)
+points(seq(0,1,0.01)^0.6, col='blue')
+points(seq(0,1,0.01)^0.7, col='green')
+points(seq(0,1,0.01)^0.4, col='red')
+points(seq(0,1,0.01)^0.1, col='magenta')
+devtools::install_github('R-bizdays', 'wilsonfreitas')
+library(bizdays)
+args(Calendar)
+truncate <- function(x, n=0) {#
+    k <- 10^n#
+    trunc(x*k)/k#
+}
+setwd("/Users/wilson/dev/aw/blog/content/brazilian govt bonds")
+session_date <- as.Date('2014-03-21')
+tit_pub <- read.table('ms140321.txt', skip=2, sep='@', header=TRUE)
+ltn_quotes <- subset(tit_pub, Titulo == 'LTN')
+ltn_quotes <- ltn_quotes[, c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU')]
+names(ltn_quotes) <- c('RefDate', 'Maturity', 'Spread', 'SpotPrice')
+ltn_quotes <- within(ltn_quotes, {#
+	Spread <- as.numeric(sub(',', '.', Spread))#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice)),#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+})
+ltn_quotes <- within(ltn_quotes, {#
+	Spread <- as.numeric(sub(',', '.', Spread))#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+})
+ltn_quotes
+library(bizdays)
+cal <- Calendar(holidaysANBIMA, weekdays=c('saturday', 'sunday'), dib=252, name='ANBIMA')
+ltn_quotes <- transform(ltn_quotes, {#
+	MaturityAdj <- adjust.next(cal, Maturity)#
+	BusinessDays <- bizdays(session_date, MaturityAdj, cal)#
+	TheoPrice <- truncate(1000/(1+Spread/100)^(BusinessDays/252), 6)#
+	Diff <- SpotPrice - TheoPrice#
+})
+ltn_quotes <- transform(ltn_quotes, {#
+	MaturityAdj <- adjust.next(Maturity, cal)#
+	BusinessDays <- bizdays(session_date, MaturityAdj, cal)#
+	TheoPrice <- truncate(1000/(1+Spread/100)^(BusinessDays/252), 6)#
+	Diff <- SpotPrice - TheoPrice#
+})
+ltn_quotes
+ltn_quotes <- within(ltn_quotes, {#
+	MaturityAdj <- adjust.next(Maturity, cal)#
+	BusinessDays <- bizdays(session_date, MaturityAdj, cal)#
+	TheoPrice <- truncate(1000/(1+Spread/100)^(BusinessDays/252), 6)#
+	Diff <- SpotPrice - TheoPrice#
+})
+ltn_quotes
+all(ltn_quotes$Diff == 0)
+str(ltn_quotes)
+?diffdate
+?difftime
+ymd
+library(lubridate)
+ymd("2014-01-31") -> d
+d
+d
+d %m+% months(1)
+d %m+% months(6)
+d %m+% months(12)
+tit_pub
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes
+library(reshape2)
+rename
+library(reshape)
+reshape::rename
+?rename
+rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))
+ntnf_quotes
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))
+ntnf_quotes
+ntnf_quotes$cf <- NA
+ntnf_quotes$cf[1] <- 1:10
+ntnf_quotes$cf[1] <- list(1,2,3)
+ntnf_quotes$cf[1] <- list(1,2,ls)
+ntnf_quotes$cf[1] <- ls
+ntnf_quotes$cf <- ls
+ntnf_quotes
+ntnf_quotes[43,]
+ntnf_quotes[`43`,]
+ntnf_quotes['43',]
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))
+split(ntnf_quotes, ntnf_quotes$Maturity)
+lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+ntnf_quotes <- within(ntnf_quotes, {#
+	Spread <- as.numeric(sub(',', '.', Spread))#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+})
+lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+ntnf_instr
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))
+ntnf_quotes <- within(ntnf_quotes, {#
+	Spread <- as.numeric(sub(',', '.', Spread))#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+})
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+c()
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(mat, cf)#
+		mat %m+% months(6) -> mat#
+	}#
+	cf#
+})
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(mat, cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	cf#
+})
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	cf#
+})
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr$CashFlow <- cf#
+	instr#
+})
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))#
+ntnf_quotes <- within(ntnf_quotes, {#
+	Spread <- as.numeric(sub(',', '.', Spread))#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+	Coupon <- 0.1 # 10%#
+})#
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr$CashFlowDates <- cf#
+	instr$CashFlowBusinessDays <- bizdays(session_date, cf)#
+	instr$CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+	instr$CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+	instr#
+})
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))#
+ntnf_quotes <- within(ntnf_quotes, {#
+	Spread <- as.numeric(sub(',', '.', Spread))#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+	CouponRate <- (1 + 0.1)^0.5 - 1#
+	VNA <- 1000#
+})#
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr$CashFlowDates <- cf#
+	instr$CashFlowBusinessDays <- bizdays(session_date, cf)#
+	instr$CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+	instr$CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+	instr#
+})
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))#
+ntnf_quotes <- within(ntnf_quotes, {#
+	Spread <- as.numeric(sub(',', '.', Spread))#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+	CouponRate <- (1 + 0.1)^0.5 - 1#
+	VNA <- 1000#
+})#
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+ntnf_instr
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr$CashFlowDates <- cf#
+	instr$CashFlowBusinessDays <- bizdays(session_date, cf)#
+	instr$CashFlowPayments <- instr$VNA*rep(instr$CouponRate, length(cf))#
+	instr$CashFlowPayments[length(cf)] <- instr$VNA*(1 + instr$CouponRate)#
+	instr#
+})
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr$CashFlowDates <- cf#
+	instr$CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+	instr$CashFlowPayments <- instr$VNA*rep(instr$CouponRate, length(cf))#
+	instr$CashFlowPayments[length(cf)] <- instr$VNA*(1 + instr$CouponRate)#
+	instr#
+})
+within(list(a=1,b=2), {c <- a+b})
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+	})#
+	instr#
+})
+ntnf_quotes
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))#
+ntnf_quotes <- within(ntnf_quotes, {#
+	Yield <- as.numeric(sub(',', '.', Spread))#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+	CouponRate <- (1 + 0.1)^0.5 - 1#
+	VNA <- 1000#
+})#
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+		TheoValue <- sum(round(CashFlowPayments/(1+Yield)^CashFlowTimeToMaturity, 9))#
+	})#
+	instr#
+})
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))#
+ntnf_quotes <- within(ntnf_quotes, {#
+	Yield <- as.numeric(sub(',', '.', Spread))/100#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+	CouponRate <- (1 + 0.1)^0.5 - 1#
+	VNA <- 1000#
+})#
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+		TheoValue <- sum(round(CashFlowPayments/(1+Yield)^CashFlowTimeToMaturity, 9))#
+	})#
+	instr#
+})
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+		TheoValue <- sum(round(CashFlowPayments/(1+Yield)^CashFlowTimeToMaturity, 9))#
+		Diff <- TheoValue - SpotPrice#
+	})#
+	instr#
+})
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+		TheoValue <- round(CashFlowPayments/(1+Yield)^CashFlowTimeToMaturity, 9)#
+		TheoValue <- truncate(sum(TheoValue), 6)#
+		Diff <- TheoValue - SpotPrice#
+	})#
+	instr#
+})
+lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+		TheoValue <- round(CashFlowPayments/(1+Yield)^CashFlowTimeToMaturity, 9)#
+		TheoValue <- truncate(sum(TheoValue), 6)#
+		Diff <- TheoValue - SpotPrice#
+	})#
+	instr[c('TheoValue', 'SpotPrice', 'Diff')]#
+})
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))#
+ntnf_quotes <- within(ntnf_quotes, {#
+	Yield <- as.numeric(sub(',', '.', Spread))/100#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+	CouponRate <- (1 + 0.1)^0.5 - 1#
+	VNA <- 1000#
+})#
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)#
+#
+ntnf_diff <- lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+		TheoValue <- round(CashFlowPayments/(1+Yield)^CashFlowTimeToMaturity, 9)#
+		TheoValue <- truncate(sum(TheoValue), 6)#
+		Diff <- TheoValue - SpotPrice#
+	})#
+	instr[c('TheoValue', 'SpotPrice', 'Diff')]#
+})
+do.call(rbind, ntnf_instr)
+do.call(rbind, ntnf_diff)
+lm
+library(reshape)
+library(lubridate)#
+#
+truncate <- function(x, n=0) {#
+    k <- 10^n#
+    trunc(x*k)/k#
+}
+options(digits=8)
+session_date <- as.Date('2014-03-21')#
+tit_pub <- read.table('ms140321.txt', skip=2, sep='@', header=TRUE)
+ntnb_quotes <- subset(tit_pub, Titulo == 'NTN-B', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnb_quotes <- rename(ntnb_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))#
+ntnb_quotes <- within(ntnb_quotes, {#
+	Yield <- as.numeric(sub(',', '.', Spread))/100#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+	CouponRate <- (1 + 0.06)^0.5 - 1#
+	VNA <- 1000#
+})#
+ntnb_instr <- lapply(split(ntnb_quotes, ntnb_quotes$Maturity), as.list)
+ntnb_diff <- lapply(ntnb_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+		TheoValue <- round(CashFlowPayments/(1+Yield)^CashFlowTimeToMaturity, 9)#
+		TheoValue <- truncate(sum(TheoValue), 6)#
+		Diff <- TheoValue - SpotPrice#
+	})#
+	instr[c('TheoValue', 'SpotPrice', 'Diff')]#
+})
+do.call(rbind, ntnb_diff)
+NTN-F#
+#
+library(reshape)#
+library(lubridate)#
+#
+truncate <- function(x, n=0) {#
+    k <- 10^n#
+    trunc(x*k)/k#
+}#
+#
+options(digits=8)#
+#
+session_date <- as.Date('2014-03-21')#
+tit_pub <- read.table('ms140321.txt', skip=2, sep='@', header=TRUE)#
+#
+ntnf_quotes <- subset(tit_pub, Titulo == 'NTN-F', select=c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU'))#
+ntnf_quotes <- rename(ntnf_quotes, c(Data.Referencia='RefDate', Data.Vencimento='Maturity', Tx..Indicativas='Spread', PU='SpotPrice'))#
+ntnf_quotes <- within(ntnf_quotes, {#
+	Yield <- as.numeric(sub(',', '.', Spread))/100#
+	SpotPrice <- as.numeric(sub(',', '.', SpotPrice))#
+	Maturity <- as.Date(as.character(Maturity), format='%Y%m%d')#
+	CouponRate <- (1 + 0.1)^0.5 - 1#
+	VNA <- 1000#
+})#
+ntnf_instr <- lapply(split(ntnf_quotes, ntnf_quotes$Maturity), as.list)#
+#
+ntnf_diff <- lapply(ntnf_instr, function(instr) {#
+	instr$Maturity -> mat#
+	cf <- NULL#
+	while (mat > session_date) {#
+		cf <- c(adjust.next(mat, cal), cf)#
+		mat %m+% months(-6) -> mat#
+	}#
+	instr <- within(instr, {#
+		CashFlowDates <- cf#
+		CashFlowTimeToMaturity <- truncate(bizyears(session_date, cf, cal), 14)#
+		CashFlowPayments <- VNA*rep(CouponRate, length(cf))#
+		CashFlowPayments[length(cf)] <- VNA*(1 + CouponRate)#
+		TheoValue <- round(CashFlowPayments/(1+Yield)^CashFlowTimeToMaturity, 9)#
+		TheoValue <- truncate(sum(TheoValue), 6)#
+		Diff <- TheoValue - SpotPrice#
+	})#
+	instr[c('TheoValue', 'SpotPrice', 'Diff')]#
+})#
+#
+do.call(rbind, ntnf_diff)
+?bizdayse
+?bizdayse
+library(XML
+)
+htmlTreeParse('http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp?Data=13/06/2014&Data1=20140613&slcTaxa=DIC')
+htmlTreeParse('http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp?Data=13/06/2014&Data1=20140613&slcTaxa=DIC')

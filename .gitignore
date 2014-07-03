@@ -1,0 +1,9 @@
+bin/*
+lib/*
+share/*
+man/*
+include/*
+output/*
+*.swp
+.Python
+cache/*

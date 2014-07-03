@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block head %}
+<!-- <div class="content">
+  <div class="row">
+  <div class="span8 offset2">
+    <div class="page-header">
+      <h1>{{SITENAME}}</h1>
+      <i class="fa fa-quote-left fa-lg pull-left"></i>
+      {{MAINQUOTE}}
+    </div>
+  </div>
+  </div>
+</div> -->
+{% endblock %}
+{% block content_title %}{% endblock %}
+{% block content %}        
+{% if articles %}
+{% for article in articles_page.object_list %}        
+    <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+        <a href="{{ SITEURL }}/{{ article.url }}">
+          <h2 itemprop="name headline">{{ article.title }}</h2></a>
+          <span itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            <span itemprop="name">{{article.author or "Wilson Freitas"}}</span></span>
+          &nbsp;&nbsp;
+          <span class="post-metadata">
+            <time datetime="{{ article.date.isoformat() }}" itemprop="datePublished">{{ article.locale_date }}</time>
+        </span>
+        <div class="summary">{{ article.summary }} <!-- <a class="btn btn-large" href="{{ SITEURL }}/{{ article.url }}">continue</a> --></div>
+      <div class="footer">
+      {% if article.category %}
+      Category:
+      <span itemprop="articleSection">
+        <a href="{{ SITEURL }}/{{ article.category.url }}" rel="category">{{ article.category }}</a>
+      </span>
+      {% endif %}
+      Tagged:
+      {% if article.tags %} 
+          {% for tag in article.tags %}
+      <span itemprop="keywords">
+        <a href="{{ SITEURL }}/{{ tag.url }}" rel="tag">{{ tag }}</a>
+      </span>
+          {% endfor %}
+      {% endif %}
+      </div>
+
+    </div>
+    <hr>
+    {% if loop.last and (articles_page.has_previous() or not articles_page.has_previous() and loop.length > 1) %}
+        {% include 'pagination.html' %}
+    {% endif %}
+
+{# {% endif %}  First item if #}
+
+{% endfor %} {# For article #}
+{% endif %} {# If articles #}
+
+{% endblock content %}
+

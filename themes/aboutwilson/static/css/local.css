@@ -1,0 +1,70 @@
+
+body { font-family: "PT Serif"; }
+
+p {
+	font-size: 100%;
+	line-height: 1.6em;
+	margin-top: 0.8em;
+	margin-bottom: 0.8em;
+}
+
+.article {
+	padding-bottom:0px;
+}
+.article a:hover { text-decoration: none; }
+.article p {
+	font-size: 18px;
+	text-align: justify;
+}
+.article li {
+	font-size: 18px;
+	line-height: 1.6em;
+}
+.article pre, .article pre code {
+	font-family: Monaco;
+	font-size: 10pt;
+}
+.article p img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.content-title { margin-bottom: 30px; }
+.content-title h1 {	font-size: 35px; }
+.content-title h4 {	font-size: 19px; font-weight: normal; }
+
+.summary { margin-bottom: 2em; }
+.summary pre { display: none; }
+
+.post-metadata {
+	font-size: 75%;
+	padding-top: 5px;
+	color: #bdbdbd;
+}
+
+.footer {
+	font-size: 75%;
+	padding-top: 5px;
+/*	color: #bdbdbd;*/
+}
+
+.blog-header {
+	margin-top: 30px;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+}
+.blog-title {
+	font-size: 60px;
+	text-align: center;
+	padding-bottom: 15px;
+}
+.blog-metadata { text-align: none; }
+.blog-metadata a:hover {
+	text-decoration: none;
+}
+.blog-metadata a {
+	padding-right: 2em;
+	color: inherit;
+}
+

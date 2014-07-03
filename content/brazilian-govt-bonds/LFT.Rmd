@@ -1,0 +1,195 @@
+Title: Pricing Brazilian Government Bonds: LFT
+Category: finance
+Author: Wilson Freitas
+Tags: R, brazilian bonds, LFT
+Date: 2014-04-03
+Lang: en
+
+```{r, echo=FALSE}
+options(digits=10)
+
+truncate <- function(x, n=0) {
+    k <- 10^n
+    trunc(x*k)/k
+}
+
+```
+
+For many years I've been working for and with software vendors in the brazilian financial industry.
+The great majority of pricing and risk management aplications running on here were not developed here in Brazil.
+I think that is the main reason I saw many projects struggling to deliver a glimpse of what had been promissed during the software selection meetings.
+One thing that is usually said is that brazilian market has its [jabuticabas](http://en.wikipedia.org/wiki/Jabuticaba), yeah jabuticaba.
+It is a sweet fruit which grows in Brazil, vastly.
+And like the fruit jabuticaba, the brazilian financial market has a bunch of financial instruments with annoying characteristics such as:
+
+- business days rules
+- truncation rules, mainly for interest rates
+- stupid inflation rules
+- the PTAX currency which yields the dirty coupon for the foreign interest rate
+- and many others
+
+In this post I want to start a series where will show the steps to validate the pricing rules for a few brazilian financial instruments.
+I am going to start with the brazilian government floating rate bond called LFT or Letras Financeiras do Tesouro (Treasury Financial Letters).
+Despite being a Floating Rate Bond, LFT is traded above its face value and a spread, usually quite small and negative, is used to discount it.
+These calculations seem to be pretty simple but it hides some pitfalls and because of that we are going to go on step by step, paying attention to details.
+
+## The instrument
+
+As mentioned before, LFT is a Floating Rate Bond so it accumulates daily interest rate from its issue date up to maturity.
+The LFT's issue value is R$ 1000,00 then the fair value of a LFT is
+
+$$
+LFT_t = 1000 \prod_{n=t_i}^{t-1}(1 + r_{n})^\frac{1}{252}
+$$
+
+where $t$ refers to the mark-to-market date, $t_i$ the issue date and $t-1$ the business day before mark-to-market date.
+However, it is usually traded in values higher than the fair value as if a negative spread was applied discounting the fair value, leading to:
+
+$$
+LFT_t = \frac{1000 \prod_{n=t_i}^{t-1}(1 + r_{n})^\frac{1}{252}}{(1 + s_t)^{D_T/252}}
+$$
+
+where $s_t$ is the spread and $D_T$ the number of business days up to maturity.
+
+## Notional Value — VNA
+
+The rule to compute the notional value (VNA—Valor Nominal Acumulado) is fairly simple, accumulate the daily interest rate from LFT's issue date up to reference date (mark-to-market date).
+
+What do we need?
+
+- issue date
+- reference date
+- daily brazilian government interest rate
+
+The LFT's issue date is 2000-07-01 and our reference date is 2014-03-21.
+Let's start setting the reference date:
+
+```{r}
+ref_date <- as.Date('2014-03-21')
+```
+
+[quandl]: http://www.quandl.com "Quandl"
+
+The historical interest rates are downloaded from [Quandl][quandl] and data in properly transformed to suitable formats:
+
+```{r, message=FALSE, warning=FALSE, cache=TRUE}
+library(Quandl)
+selic <- read.csv('http://www.quandl.com/api/v1/datasets/BCB/1178.csv?trim_start=2000-07-01&trim_end=2014-03-21&sort_order=asc')
+selic <- transform(selic, Date=as.Date(Date))
+str(selic)
+```
+
+### Computing VNA
+
+The formula to compute VNA is
+
+$$
+VNA_n = 1000\prod_{n=1}^{T}(1 + r_{n-i})^\frac{1}{252}
+$$
+
+where `T` refers to issue date.
+As I said before, the formula is pretty simple but hides inconvenient secrets.
+This formula is computed in 3 steps, enumerated below:
+
+1. Compute the interest rate factor $(1 + r_i)^\frac{1}{252}$ and round it in 8 digits
+1. Compute the accumulated factor, using `cumprod`
+1. Compute the VNA multiplying the accumulated factor by 1000 and truncate it in 6 digits
+
+The final value is shifted one day because the accumulated amount refers to the day after the interest rate is released.
+The function `compute_vna` below execute these steps.
+
+```{r, message=FALSE, warning=FALSE}
+compute_vna <- function(ds) {
+    ds <- transform(ds, Factor=round((1 + Value/100)^(1/252), 8))
+    ds <- transform(ds, CumFactor=cumprod(Factor))
+    ds <- transform(ds, VNA=truncate(1000*CumFactor, 6))
+    ds$VNA <- with(ds, c(NA, VNA[1:(length(VNA)-1)]))
+    ds
+}
+
+selic <- compute_vna(selic)
+
+head(selic)
+tail(selic)
+```
+
+Observe the VNA for the reference date, we will use this value to compute the theoretical value.
+
+## Computing the theoretical value
+
+[anbima-sec-market]: http://www.anbima.com.br/merc_sec/merc-sec.asp "Government Bonds Quotations"
+
+To compute the LFT's theoretical value we need the terms and conditions of the contracts.
+That information can be obtained at [ANBIMA's web site][anbima-sec-market], there is a link to a text file which contains relevant information to price all brazilian government bonds.
+Unfortunately, only the last 5 business days are kept available to download.
+The file used to validate the prices can be found [here](/datasets/ms140321.txt).
+
+The code below loads and prepares data for pricing.
+
+```{r}
+tit_pub <- read.table('ms140321.txt', skip=2, sep='@', header=TRUE)
+lft_quot <- subset(tit_pub, Titulo == 'LFT')
+lft_quot <- lft_quot[, c('Data.Referencia', 'Data.Vencimento', 'Tx..Indicativas', 'PU')]
+names(lft_quot) <- c('RefDate', 'Maturity', 'Spread', 'SpotPrice')
+
+lft_quot <- transform(lft_quot,
+    Spread=as.numeric(sub(',', '.', Spread)),
+    SpotPrice=as.numeric(sub(',', '.', SpotPrice)),
+    RefDate=as.Date(as.character(RefDate), format='%Y%m%d'),
+    Maturity=as.Date(as.character(Maturity), format='%Y%m%d'))
+
+lft_quot
+```
+
+[bizdays]: https://github.com/wilsonfreitas/R-bizdays "bizdays package"
+
+We observe 11 instruments and we have selected all necessary fields to price them properly, now we have a few adjustments.
+Firstly, we have to move the maturity to the next business day if it is not a business day and after that we have to find out the number of business days between the reference and maturity dates.
+These tasks can be easily done with the [bizdays] package, developed by me.
+
+[bizdays] works with calendars as a list of dates representing non-working days.
+Different from other packages which work with algorithmic calendar implementations, **bizdays** can have any calendar set simply using a list of dates.
+It relies on your needs.
+I've used the dataset `holidaysANBIMA` which is part of **bizdays**.
+This calendar has all financial holidays practiced in Brazil.
+The function `adjust.next` move the given date to the following if it is not a business day and 
+the function `bizdays` returns the amount of business days between 2 dates.
+Look that both functions work vectorized.
+
+```{r}
+library(bizdays)
+cal <- Calendar(holidays=holidaysANBIMA, name='ANBIMA', weekdays=c('saturday', 'sunday'))
+
+lft_quot <- transform(lft_quot, MaturityAdj=adjust.next(Maturity, cal))
+lft_quot <- transform(lft_quot, BusinessDays=bizdays(ref_date, MaturityAdj, cal))
+
+lft_quot
+```
+
+We see that several dates have been correctly adjusted to their following dates and using these new dates the number of business days have been computed.
+
+The code below computes the theoretical price.
+Note that the `Quotation` is truncated in 4 digits and the theoretical price in 6.
+
+```{r}
+lft_quot <- transform(lft_quot, Quotation=truncate(100/(1 + Spread/100)^(BusinessDays/252), 4))
+VNA <- with(selic, VNA[Date == ref_date])
+lft_quot <- transform(lft_quot, TheoPrice=truncate(VNA*Quotation/100, 6))
+```
+
+After all those steps we are able to compare theoretical and spot price.
+
+```{r}
+all(with(lft_quot, SpotPrice-TheoPrice) == 0)
+```
+
+Since the output is `TRUE` we all have to agree that these values match.
+As I said this is pretty much easy once you know all truncations and roundings that appears along the way.
+Another tricky point is that we can't invert that formula analytically, to find out the spread having the spot price of the bond.
+Because of the truncations we have to use that algorithm and implement a kind of goal seek mechanism to obtain the spread.
+
+
+
+
+
+

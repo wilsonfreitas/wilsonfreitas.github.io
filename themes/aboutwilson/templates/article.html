@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block description %}Title: {{ article.title }}; Date: {{ article.date|strftime('%Y-%m-%d') }}; Author: {{ article.author }}{% endblock %}
+{% block title %}{{ article.title }} — {{ SITENAME }}{% endblock %}
+{% block content %}
+<div class='article' itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="content-title text-center">
+    <h1 itemprop="name headline">{{ article.title }}</h1>
+    {% include "metadata.html" %}
+  </div>
+  <div class="footer">
+    {% if article.category %}
+    Category:
+    <span itemprop="articleSection">
+      <a href="{{ SITEURL }}/{{ article.category.url }}" rel="category">{{ article.category }}</a>
+    </span>
+    {% endif %}
+    Tagged:
+    {% if article.tags %} 
+        {% for tag in article.tags %}
+    <span itemprop="keywords">
+      <a href="{{ SITEURL }}/{{ tag.url }}" rel="tag">{{ tag }}</a>
+    </span>
+        {% endfor %}
+    {% endif %}
+  </div>
+  <div itemprop="articleBody">{{ article.content }}</div>
+  <hr>
+  <h2>Comments</h2>
+  {% include "twitter.html" %}
+  {% include 'disqus.html' %}
+</div>
+{% endblock %}

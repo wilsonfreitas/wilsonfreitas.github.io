@@ -1,0 +1,184 @@
+Title: bizdays—dias úteis no R
+Category: finance
+Author: Wilson Freitas
+Tags: R-pt, bizdays, dias úteis
+Date: 2014-05-15
+Lang: pt
+
+[bizdays]: https://github.com/wilsonfreitas/R-bizdays "bizdays package"
+[anbima]: http://www.anbima.com.br "ANBIMA"
+
+Quem trabalha no mercado financeiro brasileiro lida constantemente com uma praga que é a contagem de dias úteis.
+Não que seja difícil utilizar a contagem de dias úteis para fazer o apreçamento de instrumentos financeiros.
+A dificuldade é ter a contagem de dias úteis a mão e de maneira flexível, onde possamos, eventualmente, inserir ou remover feriados.
+Essa disponibilidade é a razão pela qual o Excel é tão utilizado.
+Basta carregar uma lista de feriados, que hoje são disponibilizados no site da [ANBIMA][anbima] e são suficientes para a maioria dos instrumentos negociados no mercado brasileiro, e chamar a função `NETWORKDAYS` para calcular a quantidade de dias úteis entre duas datas de acordo com a lista de feriados.
+Há ainda a função `WORKDAYS` que retorna uma data somando ou subtraindo uma quantidade de dias úteis a outra data, só que considerando uma lista de feriados.
+
+Para levar essa disponibilidade ao R eu desenvolvi o pacote [`bizdays`][bizdays].
+`bizdays` é uma pacote ridículo de simples mas que torna a minha vida muito, mas muito menos miserável, quando eu tenho que lidar com contagem de dias.
+Tenho utilizado este pacote quase que diariamente no meu trabalho.
+Nas próximas seções vou explicar como utilizar as funções e as idéias por trás do pacote.
+
+## Instalação
+
+O `bizdays` pode ser instalado das 3 formas a seguir.
+
+#### CRAN
+
+```{r, eval=F}
+install.packages('bizdays')
+```
+
+#### Github + devtools
+
+```{r, eval=F}
+devtools::install_github('R-bizdays', 'wilsonfreitas')
+```
+
+#### Task view finance
+
+Instalando a *task view Finance* o `bizdays` vem junto no pacote.
+
+```{r, eval=F}
+library("ctv")
+install.views("Finance")
+```
+
+## Usando bizdays
+
+### Criação do calendário
+
+Toda a idéia do `bizdays` está ao redor da criação do calendário e um calendário é basicamente uma lista de feriados.
+Eu disponibilizo junto com `bizdays` o *dataset* `holidaysANBIMA` que já vem com a lista de feriados disponibilizada pela [ANBIMA][anbima].
+
+```{r}
+data(holidaysANBIMA)
+range(holidaysANBIMA)
+length(holidaysANBIMA)
+```
+
+Dada a lista de feriados basta executar a função `Calendar` passando a lista como argumento, mas antes vamos dar uma olhada na função `Calendar`.
+A função `Calendar` tem os seguintes argumentos:
+
+```{r}
+args(Calendar)
+```
+
+O argumento `weekdays` define os dias não úteis da semana, em um calendário de dias úteis temos `weekdays=c("saturday", "sunday")` representando os fins de semana.
+Os argumentos `start.date` e `end.date` definem os limites do calendário, no entanto, estes argumentos são utilizados apenas quando a lista de `holidays` não é fornecida, pois, quando a lista é fornecida os limites são baseados nela.
+O argumento `dib` define a quantidade de dias por ano no calendário, essa configuração visa extender a utilização do calendário para a utilização de [convenções de contagem de dias](http://en.wikipedia.org/wiki/Day_count_convention).
+Vou comentar mais sobre a utilização do argumento `dib` mais adiante.
+Os argumentos `adjust.from` e `adjust.to` recebem funções para ajustar as datas `from` e `to` utilizadas na função `bizdays`.
+A configuração padrão visa reproduzir a função `NETWORKDAYS` do Excel.
+O argumento `name` é apenas descritivo, mas eu gosto de utilizar pois é útil quando temos diferentes calendários.
+
+Vamos agora criar um calendário referente aos feriados brasileiros.
+
+```{r}
+(cal <- Calendar(holidaysANBIMA, weekdays=c('saturday', 'sunday'), dib=252, name='ANBIMA'))
+```
+
+Note que os limites do calendário foram criados com base nos limites existentes na lista de feriados.
+
+### Contando dias úteis entre datas
+
+Para calcular a quantidade de dias entre duas datas utilizamos a função `bizdays` passando o calendário e as datas iniciais e finais.
+
+```{r}
+args(bizdays)
+bizdays('2013-01-01', '2013-12-31', cal)
+```
+
+Essa função aceita datas em strings no formato ISO (`yyyy-mm-dd`) ou objetos `Date`, `POSIXct` e `POSIXlt`.
+Os argumentos de datas finais e iniciais também aceitam vetores.
+Os vetores podem ter tamanhos diferentes, desde que respeitem a *recicle rule* do R.
+
+```{r}
+bizdays(c('2010-01-01', '2011-01-01'), c('2011-12-31', '2012-12-31', '2013-12-31', '2014-12-31'), cal)
+bizdays(c('2008-01-01', '2009-01-01', '2010-01-01', '2011-01-01'), c('2011-12-31', '2012-12-31'), cal)
+```
+
+### Verificando se datas são dias úteis
+
+A função `is.bizday` verifica se as datas passadas no argumento são úteis.
+
+```{r}
+dates <- as.Date('2014-04-14') + 0:6
+is.bizday(dates, cal)
+```
+
+### Adicionando dias úteis as datas
+
+Para somar dias úteis a uma data utilizamos a função `add.bizdays` que soma dias úteis, positivos ou negativos, as datas fornecidas.
+
+```{r}
+date <- '2014-04-14' # segunda-feira
+add.bizdays(date, -1, cal)   # sexta-feira
+```
+
+### Gerando sequência de dias úteis
+
+Muitas vezes é necessário iterar sobre sequências de dias úteis e para isso temos a função `bizseq`.
+
+```{r}
+bizseq('2013-07-09', '2013-07-21', cal)
+```
+
+Todos as datas dessa sequência são dias úteis.
+
+### Ajustando datas
+
+Uma coisa muito comum para quem trabalha com dias úteis é o ajuste de data quando cai em dia não útil.
+Por exemplo, para apreçar títulos, quando vencimento do título cai em um dia não útil é necessário mover o fluxo para o próximo dia útil.
+Para lidar com isso de forma higiênica temos as funções `adjust.next` e `adjust.previous`.
+Estas funções recebem uma data, se for dia útil retorna a própria data, caso contrário retorna o dia útil seguinte ou anterior, dependendo da função que foi chamada.
+
+```{r}
+adjust.next(c("2014-01-01", "2014-02-01", "2014-03-01", "2014-04-01"), cal)
+```
+
+Logo, estas funções apenas ajustam as datas fornecidas quando é necessário.
+
+### Configurando o calendário padrão
+
+Como eu falei eu uso `bizdays` em base diária e todos os dias o mesmo calendário, o calendário divulgado pela ANBIMA.
+Uma coisa insuportável é criar o mesmo calendário toda vez que eu vou utilizar as funções.
+Como o objetivo é reduzir a quantidade de miséria na minha vida eu criei o calendário padrão.
+
+```{r}
+bizdays.options$set(default.calendar=cal)
+```
+
+Uma vez definido um calendário padrão não é mais necessário passar o calendário como argumento das funções vistas anteriormente.
+Dessa maneira, as funções podem ser chamadas como:
+
+```{r}
+bizdays('2013-01-01', '2013-12-31')
+dates <- as.Date('2014-04-14') + 0:6
+is.bizday(dates)
+adjust.next(c("2014-01-01", "2014-02-01", "2014-03-01", "2014-04-01"))
+```
+Sem a necessidade de passar o calendário como parâmetro.
+Para tornar as coisa realmente simples eu coloco essa definição no `.Rprofile`.
+
+```{r, eval=F}
+.First <- function() {
+	library(bizdays)
+	cal <- Calendar(holidays=holidaysANBIMA, name='ANBIMA')
+	bizdays.options$set(default.calendar=cal)
+}
+```
+
+Assim, toda vez que eu inicializo o R já tenho as funções do `bizdays` prontas pra utilizar.
+
+### Demais funções
+
+- `bizyears`: retorno o prazo em anos referente a quantidade de dias úteis. Essa função é útil para o apreçamento de instrumentos financeiros onde usualmente as taxas são expressas com periodicidade anual. Dessa maneira, uma vez definido o calendário para a taxa é possível obter o prazo em anos para os cálculos. Por isso é útil a definição do argumento `dib`.
+- `bizdayse` e `bizyearse`: `bizdayse` retorna a quantidade de dias úteis equivalente a uma quantidade de dias corridos. É equivalente a somar dias úteis a uma data e calcular os dias úteis entre as duas data utilizando `bizdays`. A função `bizyearse` é a sua versão anualizada.
+
+
+## Conclusão
+
+O pacote `bizdays` visa a contagem de dias para o apreçamento de instrumentos financeiros de forma simples e intuitíva de utilizar, trazendo para o R a mesma simplicidade encontrada no Excel.
+É útil tanto para calendários de dias úteis quanto dias corridos, permitindo a realização destes cálculos através de uma mesma interface.

@@ -1,0 +1,14 @@
+Title: Pricing Brazilian Government Bonds: LTN
+Category: finance
+Author: Wilson Freitas
+Tags: R, brazilian bonds, LFT
+Date: 2014-04-03
+Lang: en
+Status: draft
+
+
+[lft]: {filename}/brazilian-govt-bonds/LFT.Rmd "LFT"
+
+That's the second round of a series of posts I am  writing about pricing Brazilian financial instruments.
+Firstly I wrote about the pricing of the Brazilian Government floating rate note — [LFT][lft].
+
