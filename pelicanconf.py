@@ -27,10 +27,11 @@ ARTICLE_URL = 'posts/{date:%Y}-{date:%m}/{slug}/'
 ARTICLE_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}/index.html'
 ARTICLE_LANG_URL = 'posts/{date:%Y}-{date:%m}/{slug}/'
 ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}/index.html'
+DEFAULT_PAGINATION = 5
 
-MENUITEMS = [('archive', 	'archives.html'),
-			 ('user', 		'pages/about.html'),
-			 ('tags', 		'tags.html')]
+MENUITEMS = [('archive',     'archives.html'),
+             ('user',         'pages/about.html'),
+             ('tags',         'tags.html')]
 
 FEED_DOMAIN = SITEURL
 FEED_ALL_RSS = 'feeds/rss.xml'
@@ -47,11 +48,11 @@ MARKUP = ('md', 'Rmd', 'rmd')
 
 DEFAULT_PAGINATION = 10
 
-PLUGIN_PATH = 'lib/pelican-plugins'
+PLUGIN_PATHS = ('lib/pelican-plugins', )
 
 PLUGINS = ['sitemap', 'summary', 'liquid_tags.img', 'liquid_tags.video',
            'liquid_tags.include_code', 'liquid_tags.notebook',
-           'liquid_tags.literal', 'rmd_reader']
+           'liquid_tags.literal', 'rmd_reader', 'render_math']
 
 # sitemap
 SITEMAP = {

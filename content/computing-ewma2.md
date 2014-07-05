@@ -5,7 +5,9 @@ Author: Wilson Freitas
 Category: finance
 Lang: en
 
-Months ago I released a post entitled [Computing EWMA]({filename}/computing-ewma.md) exploring the functional approach to implement EWMA calculations in R and also compared that with what I called *loop-oriented* implementation.
+[1]: {filename}/computing-ewma.md "Computing EWMA"
+
+Months ago I released a post entitled [Computing EWMA][1] exploring the functional approach to implement EWMA calculations in R and also compared that with what I called *loop-oriented* implementation.
 That was quite ammazing to see that the functional approach was almost 2 times faster.
 
 After a while I found the function `filter` of the package `stats`.
@@ -56,7 +58,7 @@ ewma.filter <- function(rets, lambda) {
 ```
 
 
-See that this implementation is even simpler than the [others]({filename}/computing-ewma.md).
+See that this implementation is even simpler than the others, although it is not so easy to comprehend.
 Running the same test done before we see that this is not only simpler but also faster.
 It runs almost 2 times faster than the functional approach.
 
