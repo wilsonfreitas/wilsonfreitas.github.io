@@ -10,12 +10,13 @@
 	<!--[if lt IE 9]>
 		<script src="{{ SITEURL }}/theme/html5.js"></script>
 		<![endif]-->
-		<link href="{{ SITEURL }}/theme/css/ipython.css" rel="stylesheet">
-		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-		<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
-		<link href="{{ SITEURL }}/theme/css/local.css" rel="stylesheet">
-		<link href="{{ SITEURL }}/theme/css/pygments.css" rel="stylesheet">
+	<link href="{{ SITEURL }}/theme/css/ipython.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
+	<link href="{{ SITEURL }}/theme/css/local.css" rel="stylesheet">
+	<link href="{{ SITEURL }}/theme/css/pygments.css" rel="stylesheet">
+	{% block head %}{% endblock %}
 </head>
 <body>
 <div class="container">
@@ -23,7 +24,6 @@
 		<h1><a href="{{SITEURL}}">{{ SITENAME }}</a>
 			<br><small>what we observe is not the nature itself but the nature exposed to our method of questioning</small></h1>
 	</div>
-	{% block head %}{% endblock %}
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			{% block content %}{% endblock %}

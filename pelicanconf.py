@@ -73,3 +73,6 @@ SITEMAP = {
 NOTEBOOK_DIR = ''
 NOTEBOOK_HEADER_SAVED = True
 EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
+
+TAG_CLOUD_STEPS = 4
+TAG_CLOUD_MAX_ITEMS = 100
