@@ -10,106 +10,100 @@
 	<!--[if lt IE 9]>
 		<script src="{{ SITEURL }}/theme/html5.js"></script>
 		<![endif]-->
-		<!-- <link href="{{ SITEURL }}/theme/css/ipython.css" rel="stylesheet"> -->
-		{% if EXTRA_HEADER %}
-		{{ EXTRA_HEADER }}
-		{% endif %}
-		<link href="{{ SITEURL }}/theme/css/bootstrap.min.css" rel="stylesheet">
-		<link href="{{ SITEURL }}/theme/css/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="{{ SITEURL }}/theme/css/ipython.css" rel="stylesheet">
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css" rel="stylesheet">
 		<link href="{{ SITEURL }}/theme/css/local.css" rel="stylesheet">
 		<link href="{{ SITEURL }}/theme/css/pygments.css" rel="stylesheet">
-		<link href="{{ SITEURL }}/theme/css/font-awesome.min.css" rel="stylesheet">
 </head>
-
 <body>
-
-<div class="navbar navbar-fixed-top navbar-inverse">
-  <div class="navbar-inner">
-		<div class="container"> 
-			<!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</a>
-			<!-- Be sure to leave the brand out there if you want it shown -->
-			<a href="{{SITEURL}}" class="brand"><strong>AboutWilson.net</strong></a>
-			<!-- Everything you want hidden at 940px or less, place within here -->
-			<div class="nav-collapse collapse">
-				<!-- .nav, .navbar-search, .navbar-form, etc -->
-				<ul class="nav">
-					{% for title, link in MENUITEMS %}
-					<li><a href="{{ SITEURL }}/{{ link }}"><i class="fa fa-{{ title }} "></i></a></li>
-					{% endfor %}
-					{% if DISPLAY_PAGES_ON_MENU %}
-					{% for page in PAGES %}
-					<li><a href="{{ SITEURL }}/{{ page.url }}"><i class="fa fa-{{ page.title }} "></i></a></li>
-					{% endfor %}
-					{% endif %}
-				</ul>
-				<ul class="nav pull-right">
-					<li><a href="http://github.com/wilsonfreitas"><i class="fa fa-github "></i></a></li>
-					<li><a href="https://twitter.com/aboutwilson"><i class="fa fa-twitter "></i></a></li>
-					<li><a href="https://plus.google.com/114469936125336696794?rel=author"><i class="fa fa-google-plus "></i></a></li>
-					<li><a href="https://www.facebook.com/wnfreitas"><i class="fa fa-facebook "></i></a></li>
-					<li><a href="http://www.linkedin.com/pub/wilson-freitas/a/572/609"><i class="fa fa-linkedin "></i></a></li>
-					<li><a href="{{ SITEURL }}/feeds/rss.xml"><i class="fa fa-rss "></i></a></li>
-				</ul>
+<div class="container">
+	<div class="page-header">
+		<h1><a href="{{SITEURL}}">{{ SITENAME }}</a>
+			<br><small>what we observe is not the nature itself but the nature exposed to our method of questioning</small></h1>
+	</div>
+	{% block head %}{% endblock %}
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			{% block content %}{% endblock %}
+		</div>
+	</div> {# End row #}
+	<!-- <hr> -->
+</div> <!-- /container -->
+<footer class="aw-footer bg-danger">
+	<div class="container"> <!-- footer -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row">
+					<div class="col-md-3">
+						<h4>Pages</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="{{SITEURL}}">{{ SITENAME }}</a></li>
+							{% for title, link in MENUITEMS %}
+							<li><a href="{{ SITEURL }}/{{ link }}"><i class="fa fa-{{ title }} "></i> {{title}}</a></li>
+							{% endfor %}
+							{% if DISPLAY_PAGES_ON_MENU %}
+							{% for page in PAGES %}
+							<li><a href="{{ SITEURL }}/{{ page.url }}"><i class="fa fa-{{ page.title }} "></i> {{page.title}}</a></li>
+							{% endfor %}
+							{% endif %}
+							<li><a href="{{ SITEURL }}/feeds/rss.xml"><i class="fa fa-rss "></i> rss</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Author</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="http://github.com/wilsonfreitas">Github</a></li>
+							<li><a href="https://twitter.com/aboutwilson">Twitter</a></li>
+							<li><a href="https://plus.google.com/114469936125336696794?rel=author">Google+</a></li>
+							<li><a href="https://www.facebook.com/wnfreitas">Facebook</a></li>
+							<li><a href="http://www.linkedin.com/pub/wilson-freitas/a/572/609">Linked-in</a></li>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Categories</h4>
+						<ul class="list-unstyled my-list-style">
+							{% for cat, art in categories %}
+							<li><a href="{{SITEURL}}/category/{{cat | replace(" ", "-") }}.html">{{cat}} ({{art | count}})</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4>Links</h4>
+						<ul class="list-unstyled my-list-style">
+							<li><a href="http://www.r-bloggers.com/">R-bloggers</a></li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
-    <!-- <form class="navbar-search pull-right" action="https://www.google.com.br/search" method="get">
-      <input type="text" class="search-query" placeholder="Search" name="q">
-    </form> -->
-  </div>
-</div>
-<br>
-<br>
-<br>
+	</div>
+</footer>
 <div class="container">
-  {% block head %}{% endblock %}
-  <div class="content">
-    <div class="row">
-        <div class="span8 offset2">
-        {% block content %}{% endblock %}
-        </div>
-    </div> {# End row #}
-  </div> {# End content #}
-  <!-- <footer>
-  <br>
-  <p><a href="{{ SITEURL }}">{{ SITENAME }}</a> &copy; {{ AUTHOR }} 2014</p>
-  </footer> -->
-	<hr>
-	<footer id="footer">
-		<!-- <p class="pull-right"><a href="#top">Back to top</a></p> -->
-		<div class="links">
-			<a href="{{ SITEURL }}/feeds/rss.xml">RSS</a>&nbsp;&nbsp;
-			<a href="http://github.com/wilsonfreitas">Github</a>&nbsp;&nbsp;
-			<a href="https://twitter.com/aboutwilson">Twitter</a>&nbsp;&nbsp;
-			<a href="https://plus.google.com/114469936125336696794?rel=author">Google+</a>&nbsp;&nbsp;
-			<a href="https://www.facebook.com/wnfreitas">Facebook</a>&nbsp;&nbsp;
-			<a href="http://www.linkedin.com/pub/wilson-freitas/a/572/609">Linked-in</a>&nbsp;&nbsp;
-			<a href="http://www.r-bloggers.com/">R-bloggers</a>
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; {{ AUTHOR }} 2014</p>
+			<p>Powered by Pelican</p>
 		</div>
-		<p>&copy; {{ AUTHOR }} 2014</p>
-	</footer>
-</div> <!-- /container -->
-<!-- <script src="{{ SITEURL }}/theme/js/jquery-1.11.0.min.js"></script> -->
-<script src="{{ SITEURL }}/theme/js/bootstrap.min.js"></script>
-<!-- <script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script> -->
-<!-- <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    extensions: ["tex2jax.js"],
-    jax: ["input/TeX", "output/HTML-CSS"],
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-      processEscapes: true
-    },
-    "HTML-CSS": { availableFonts: ["TeX"] }
-  });
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
 </script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script> -->
 {% include "analytics.html" %}
 {% include "github.html" %} 
 </body>

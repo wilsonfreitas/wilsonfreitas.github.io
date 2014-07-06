@@ -50,9 +50,9 @@ DEFAULT_PAGINATION = 10
 
 PLUGIN_PATHS = ('lib/pelican-plugins', )
 
-PLUGINS = ['sitemap', 'summary', 'liquid_tags.img', 'liquid_tags.video',
-           'liquid_tags.include_code', 'liquid_tags.notebook',
-           'liquid_tags.literal', 'rmd_reader', 'render_math']
+PLUGINS = ['sitemap', 'summary', 'liquid_tags.img',
+    'liquid_tags.video', 'liquid_tags.include_code', 'liquid_tags.notebook',
+    'liquid_tags.literal', 'rmd_reader', 'render_math']
 
 # sitemap
 SITEMAP = {
