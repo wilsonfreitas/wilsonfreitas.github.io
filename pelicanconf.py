@@ -40,7 +40,7 @@ TAG_FEED_RSS = 'feeds/%s.rss.xml'
 DISQUS_SITENAME = 'aboutwilson'
 # GITHUB_URL = 'https://github.com/wilsonfreitas'
 
-STATIC_PATHS = ['figure', 'img', 'datasets']
+STATIC_PATHS = ['figure', 'datasets']
 
 THEME = 'aboutwilson'
 
