@@ -8,3 +8,4 @@ output/*
 .Python
 cache/*
 *.pyc
+.ipynb_*
