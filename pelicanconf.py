@@ -29,9 +29,9 @@ ARTICLE_LANG_URL = 'posts/{date:%Y}-{date:%m}/{slug}/'
 ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}/index.html'
 DEFAULT_PAGINATION = 5
 
-MENUITEMS = [('archive',     'archives.html'),
-             ('user',         'pages/about.html'),
-             ('tags',         'tags.html')]
+MENUITEMS = [('archive', 'archives.html'),
+             ('user',    'pages/about.html'),
+             ('tags',    'tags.html')]
 
 FEED_DOMAIN = SITEURL
 FEED_ALL_RSS = 'feeds/rss.xml'
@@ -50,29 +50,34 @@ DEFAULT_PAGINATION = 10
 
 PLUGIN_PATHS = ('lib/pelican-plugins', )
 
-PLUGINS = ['sitemap', 'summary', 'liquid_tags.img',
-    'liquid_tags.video', 'liquid_tags.include_code', 'liquid_tags.notebook',
-    'liquid_tags.literal', 'rmd_reader', 'render_math']
+PLUGINS = ['sitemap',
+           'summary',
+           'liquid_tags.img',
+           'liquid_tags.video',
+           'liquid_tags.include_code',
+           'liquid_tags.notebook',
+           'liquid_tags.literal',
+           'rmd_reader',
+           'render_math']
 
 # sitemap
 SITEMAP = {
-        'format': 'xml',
-        'priorities': {
-            'articles': 1.0,
-            'indexes': 0.7,
-            'pages': 0.5
-        },
-        'changefreqs': {
-            'articles': 'monthly',
-            'indexes': 'monthly',
-            'pages': 'monthly'
-        }
+    'format': 'xml',
+    'priorities': {
+        'articles': 1.0,
+        'indexes': 0.7,
+        'pages': 0.5
+    },
+    'changefreqs': {
+        'articles': 'monthly',
+        'indexes': 'monthly',
+        'pages': 'monthly'
     }
+}
 
-# notebook
+# liquid_tags.notebook settings
 NOTEBOOK_DIR = ''
-NOTEBOOK_HEADER_SAVED = True
-EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
 
+# tag cloud
 TAG_CLOUD_STEPS = 4
 TAG_CLOUD_MAX_ITEMS = 100
