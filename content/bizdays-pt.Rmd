@@ -1,7 +1,7 @@
 Title: bizdays—dias úteis no R
 Category: finance
 Author: Wilson Freitas
-Tags: R-pt, bizdays, dias úteis
+Tags: R, bizdays, dias úteis, calendário
 Date: 2014-05-15
 Lang: pt
 

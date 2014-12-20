@@ -1,7 +1,7 @@
 Title: Estimando EWMA na prática
 Category: finance
 Author: Wilson Freitas
-Tags: R-pt, volatility, risk management
+Tags: R, volatility, risk management
 Date: 2014-04-13
 Lang: pt
 
