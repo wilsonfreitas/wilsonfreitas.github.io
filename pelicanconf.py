@@ -38,6 +38,7 @@ FEED_ALL_RSS = 'feeds/rss.xml'
 TAG_FEED_RSS = 'feeds/%s.rss.xml'
 
 DISQUS_SITENAME = 'aboutwilson'
+TWITTER_USERNAME = 'aboutwilson'
 # GITHUB_URL = 'https://github.com/wilsonfreitas'
 
 STATIC_PATHS = ['figure', 'datasets']
