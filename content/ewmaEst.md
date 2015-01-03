@@ -8,9 +8,6 @@ Lang: pt
 
 
 
-[1]: {filename}/computing-ewma.md "Computing EWMA"
-[2]: {filename}/computing-ewma-2.md "Computing EWMA 2"
-[3]: {filename}/ewma-convergence-divergence.md "EWMA Convergence and Divergence"
 [morettin-st]: http://www.ime.usp.br/~pam/ST.html "Séries Temporais"
 [hull]: http://www-2.rotman.utoronto.ca/~hull/ofod/index.html "John Hull"
 
@@ -42,7 +39,7 @@ bvsp.r <- diff(log(bvsp.ts))
 plot(bvsp.ts, main='', major.ticks='year', minor.ticks=FALSE, major.format='%Y', cex.axis = .7, log="y")
 ``` -->
 
-![BVSP Returns 1997-2014]({filename}figure/bvsp-returns-1997-2014.png) 
+![BVSP Returns 1997-2014](/figure/bvsp-returns-1997-2014.png) 
 
 
 É interessante observar os *clusters* de volatilidade, os de 1998 e 2008 são os mais relevantes (e curiosamente ocorreram em 10 anos).
@@ -118,7 +115,7 @@ x.ewma <- sqrt(compute_ewma(0.94))
 ```
 
 
-![BVSP EWMA 0.94]({filename}figure/bvsp-returns-ewma-094-volatility.png) 
+![BVSP EWMA 0.94](/figure/bvsp-returns-ewma-094-volatility.png) 
 
 
 Note que considero $\sigma^2_1=r^2_1$.
@@ -206,7 +203,7 @@ plot(s, t, type='l', xlim=c(0.5, 1))
 abline(h=o$objective, col='red')
 ```
 
-![Objective Function Squared Returns]({filename}figure/objective-function-squared-returns.png) 
+![Objective Function Squared Returns](/figure/objective-function-squared-returns.png) 
 
 
 Olhando o gráfico observamos que há apenas 1 ponto de mínimo na função e que este está bem próximo a $\lambda = 0.91$.
@@ -219,7 +216,7 @@ x.ewma <- compute_ewma(0.91)
 ```
 
 
-![BVSP EWMA Squared Returns]({filename}figure/bvsp-returns-ewma-volatility-squared-returns.png) 
+![BVSP EWMA Squared Returns](/figure/bvsp-returns-ewma-volatility-squared-returns.png) 
 
 
 ### Utilizando o desvio padrão futuro
@@ -275,14 +272,14 @@ plot(s, t, type='l', xlim=c(0.5, 1))
 abline(h=o$objective, col='red')
 ```
 
-![Objective Function Squared Returns]({filename}figure/objective-function-volatility-forecast.png) 
+![Objective Function Squared Returns](/figure/objective-function-volatility-forecast.png) 
 
 
 A função objetivo para esta abordagem também apresenta apenas 1 ponto de mínimo, garantindo a coerência do resultado encontrado.
 
 Vamos novamente ver o gráfico dos retornos envolvidos pela volatilidade para ter uma idéia de como se comporta a volatilidade com relação aos retornos observados utilizando-se um $\lambda$ tão alto.
 
-![BVSP EWMA Squared Returns]({filename}figure/bvsp-returns-ewma-volatility-forecast.png) 
+![BVSP EWMA Squared Returns](/figure/bvsp-returns-ewma-volatility-forecast.png) 
 
 
 ## Conclusão
