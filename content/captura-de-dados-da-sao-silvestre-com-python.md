@@ -1,9 +1,8 @@
-Title: Captura de dados da Corrida de São Silvestre com Python
-Category: programming
+Title: Captura de dados da Corrida de São Silvestre com Python—Parte 1
+Category: data science
 Author: Wilson Freitas
-Tags: python, scraps
-Date: 2014-12-27
-Status: draft
+Tags: python, scraps, textparser, tinydf
+Date: 2015-01-15
 Lang: pt
 
 [textparser]: https://gist.github.com/wilsonfreitas/7f6450343b3958a67f4e
@@ -110,8 +109,7 @@ Aqui eu tenho um ponto importante, eu poderia ter feiro todo o *parse* já no *s
 Essa foi uma decisão subjetiva, gosto de separar o problema em partes pequenas.
 
 O que eu espero após `SaoSilvestreScrap` ser aplicado a uma página de campeão?
-Eu espero que `names` contenha uma lista todos os nomes dos campeões contidos na página, `races` contenha outra lista todos os títulos com os números das provas e seus respectivos anos, `info1` contenha uma lista de listas pois, originalmente eu teria uma lista com os conteúdos dos parágrafos e após o `split` ser aplicado a cada elemento eu fico com uma lista de listas.
-Encerrando, em `info2` também espero uma lista de listas, pelo mesmo motivo descrito em `info1`.
+Eu espero que `names` contenha uma lista todos os nomes dos campeões contidos na página, `races` contenha outra lista com todos os títulos com os números das provas e seus respectivos anos, `info1` contenha uma lista de listas pois, originalmente eu teria uma lista com os conteúdos dos parágrafos e após o `split` ser aplicado a cada elemento eu fico com uma lista de listas, e em `info2` também espero uma lista de listas, pelo mesmo motivo de `info1`.
 
 ### Extraindo informação do texto
 
@@ -182,21 +180,27 @@ No entanto, temos listas e listas de listas e `parse` deve ser aplicado para cad
 Por isso eu criei uma composição de funções que aplica `parse` a cada elemento atômico e remove os valores nulos, que não deram *match*.
 
 ```{python}
+def compose(*functions):
+    f = list(functions)
+    f.reverse()
+    return reduce(lambda f, g: lambda x: f(g(x)), f)
+
 parser = SaoSilvestreParser()
-parse_and_filter_false = scraps.compose(partial(map, parser.parse), partial(filter, lambda x: x is not None), list)
+parse_and_filter_false = compose(partial(map, parser.parse), partial(filter, lambda x: x is not None), list)
+
 infos1 = [parse_and_filter_false(x) for x in scrap.info1]
 infos2 = [parse_and_filter_false(x) for x in scrap.info2]
 races = parse_and_filter_false(scrap.races)
 ```
 
-A função `parse_and_filter_false` recebe uma lista e aplica `parse` para cada elemento, em seguida filtra os não nulos e no fim retorna uma lista, dado que Python3 retorna geradores (para as funções `map` e `filter`).
+A função `parse_and_filter_false` recebe uma lista e aplica `parse` para cada elemento, em seguida remove os nulos e no fim gera uma lista, dado que Python3 retorna geradores (para as funções `map` e `filter`).
 
 Após o *parsing* eu tenho diversas tuplas com os campos definidos.
-Agora veremos como eu juntos estes campos em uma estrutura tabular.
+Agora veremos como juntar estes campos em uma estrutura tabular.
 
 ### Formatando dados em CSV
 
-Para juntar tudo em uma estrutura tabular antes eu preciso que todos os campos sigam o mesmo modelo, ou seja, preciso de tuplas com nome e valor de cada campo.
+Para juntar tudo em uma estrutura tabular antes eu preciso que todos os campos sigam o mesmo modelo, ou seja, preciso de tuplas com pares (nome, valor) de cada campo.
 Como vimos anteriormente, `races`, `info1` e `info2` foram gerados neste modelo, mas `names` não.
 Para resolver isso eu criei a função `keyfy`
 
@@ -227,99 +231,31 @@ Os dicionários são adicionados ao *DataFrame* para que no fim o CSV seja impre
 O resultado final é um arquivo CSV com todos os campeões e todos os campos listados anteriormente.
 Este arquivo for gerado e pode ser baixado direto do [link](https://raw.githubusercontent.com/wilsonfreitas/saosilvestre/master/saosilvestre.csv).
 
+Este arquivo contem diversos erros: campos com valores faltantes (*missing values*), informações trocadas, entre outros.
+Estes erros são consequência da má qualidade dos dados e do fato de não haver uma forma estrutrada de armazená-los.
+Vou analizar os dados capturados em outro post e neste momento vou detalhar melhor o tratamento dos dados.
+Vou também analizar a evolução dos tempos de corrida e relacionar com a temperatura, com o objetivo de identificar se a temperatura afeta o desempenho dos campeões.
+
+Por hora eu gerei um gráfico com a contagem de campeões por paises.
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.style.use('ggplot')
+
+ss = pd.read_csv("https://raw.githubusercontent.com/wilsonfreitas/saosilvestre/master/saosilvestre.csv")
+ss_pais = ss.groupby('pais')
+ss_pais.corrida.count().sort(inplace=False).plot(kind='bar', figsize=(14,7))
+```
+
+![Campeões da Corrida de São Silvestre por país](/figure/ss-pais-campeoes.png)
+
 ## Código final
 
 Segue o código final como é executado.
 
-```{python}
-from functools import partial
-import scraps
-import textparser
-import tinydf
-
-class SaoSilvestreParser(textparser.TextParser):
-    def parseNaturalidade(self, text, match):
-        r'^Naturalidade:\s(.+)\s?$'
-        return ('pais', match.group(1))
-    
-    def parseHorarioLargada(self, text, match):
-        r'^Horário da Largada:\s(\d?\d)h(\d\d)\s?$'
-        return ('horario', '{0}:{1}:00'.format(match.group(1), match.group(2)))
-    
-    def parseHorarioLargada2(self, text, match):
-        r'^Horário da Largada:\s(\d+) horas'
-        return ('horario', '{0}:00:00'.format(match.group(1)))
-    
-    def parseTempo(self, text, match):
-        r'^Tempo\s?:\s?(\d\d)m(in)?(\d\d)s?'
-        return ('tempo', '00:{0}:{1}.000'.format(match.group(1), match.group(3)))
-    
-    def parsePercurso(self, text, match):
-        r'^Percurso:.*\s(\d+(\.\d+)?)\s?([Kk]?)m\s?$'
-        return ('percurso', eval(match.group(1).replace('.', '')) * (1000 if match.group(3).lower() == 'k' else 1))
-    
-    def parseParticipantes(self, text, match):
-        r'^Participantes:\s(\d+\.\d+)\satletas\.\s?$'
-        return ('participantes', eval(match.group(1).replace('.', '')))
-    
-    def parseLargada(self, text, match):
-        r'Largada:\s(.+)\.?\s?$'
-        return ('largada', match.group(1))
-    
-    def parseChegada(self, text, match):
-        r'Chegada:\s(.+)\.?\s?$'
-        return ('chegada', match.group(1))
-    
-    def parseRace(self, text, match):
-        r'^(\d+). Corrida de São Silvestre – (\d\d\d\d)a?$'
-        return [('corrida', eval(match.group(1))), ('ano', eval(match.group(2)))]
-    
-    def parseText(self, text):
-        return None
-
-
-keyfy = lambda seq, key: list(map(lambda x: [(key, x)], seq))
-
-
-split = lambda sep=None, maxsplit=-1: lambda s: str.split(s, sep=sep, maxsplit=maxsplit)
-
-
-foreach = lambda func: lambda seq: [func(x) for x in seq]
-
-
-class SaoSilvestreScrap(scraps.Scrap):
-    names = scraps.Attribute(xpath='//*[@id="content"]/div/div/div/div/div/h2')
-    races = scraps.Attribute(xpath='//*[@id="content"]/div/div/div/div/div/h4')
-    info1 = scraps.Attribute(xpath='//*[@id="content"]/div/div/div/div/div/p[1]', apply=[
-        split(sep='\n'), foreach(str.strip)
-    ])
-    info2 = scraps.Attribute(xpath='//*[@id="content"]/div/div/div/div/div/p[2]', apply=[
-        split(sep='\n'), foreach(str.strip)
-    ])
-
-
-if __name__ == '__main__':
-    ds = tinydf.DataFrame()
-    ds.headers = ['nome', 'pais', 'corrida', 'ano', 'horario', 'tempo', 'percurso', 'largada', 'chegada']
-    parser = SaoSilvestreParser()
-    parse_and_filter_false = scraps.compose(partial(map, parser.parse), partial(filter, lambda x: x is not None), list)
-    decades = [(2010, 2013), (2000, 2009), (1990, 1999), (1980, 1989), (1970, 1979), (1960, 1969), (1950, 1959),
-               (1940, 1949), (1930, 1939), (1925, 1929)]
-    scrap = SaoSilvestreScrap()
-    for dec in decades:
-        try:
-            scrap.fetch('http://www.saosilvestre.com.br/campeoes/campeoes-{0}-{1}/', *dec)
-        except:
-            scrap.fetch('http://www.saosilvestre.com.br/campeoes/{0}-{1}/', *dec)
-        infos1 = [parse_and_filter_false(x) for x in scrap.info1]
-        infos2 = [parse_and_filter_false(x) for x in scrap.info2]
-        races = parse_and_filter_false(scrap.races)
-        names = keyfy(scrap.names, 'nome')
-        rows = [dict(info1 + info2 + race + name) for info1, info2, race, name in zip(infos1, infos2, races, names)]
-        for row in rows:
-            ds.add(**row)
-    print(ds.csv)
-```
+<script src="http://gist-it.appspot.com/https://github.com/wilsonfreitas/saosilvestre/blob/master/saosilvestre.py">
+</script>
 
 Ao longo do texto eu acabei simplificando algumas chamadas com a intenção de tornar o texto mais didático.
 Esse foi um trabalho interessante em que após tê-lo concluído eu achei que ficou simples, mas tendo que colocar em texto eu vi que ficou um pouco grande, maior do que eu esperava.
