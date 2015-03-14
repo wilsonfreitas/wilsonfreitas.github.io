@@ -9,3 +9,5 @@ output/*
 cache/*
 *.pyc
 .ipynb_*
+
+*.pid
