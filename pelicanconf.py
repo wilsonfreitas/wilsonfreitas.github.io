@@ -29,9 +29,8 @@ ARTICLE_LANG_URL = 'posts/{date:%Y}-{date:%m}/{slug}/'
 ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}/index.html'
 DEFAULT_PAGINATION = 5
 
-MENUITEMS = [('archive', 'archives.html'),
-             ('user',    'pages/about.html'),
-             ('tags',    'tags.html')]
+MENUITEMS = [('Arquivo', 'archive', 'archives.html'),
+             ('Autor', 'user', 'pages/about.html')]
 
 FEED_DOMAIN = SITEURL
 FEED_ALL_RSS = 'feeds/rss.xml'
@@ -47,7 +46,7 @@ THEME = 'aboutwilson'
 
 MARKUP = ('md', 'Rmd', 'rmd')
 
-DEFAULT_PAGINATION = 10
+DEFAULT_PAGINATION = 5
 
 PLUGIN_PATHS = ('lib/pelican-plugins', )
 
