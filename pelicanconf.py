@@ -46,7 +46,7 @@ THEME = 'aboutwilson'
 
 MARKUP = ('md', 'Rmd', 'rmd')
 
-DEFAULT_PAGINATION = 5
+DEFAULT_PAGINATION = 6
 
 PLUGIN_PATHS = ('lib/pelican-plugins', )
 
