@@ -6,7 +6,7 @@ AUTHOR = u'Wilson Freitas'
 # MAINQUOTE = u'And in the end, the love you take is equal to the love you make.'
 MAINQUOTE = u'Data analysis is a mix of belief and evidence'
 SITENAME = u'AboutWilson.net'
-SITEURL = 'http://localhost:8000'
+SITEURL = '/.'
 # SITEURL = 'http://blog.aboutwilson.net'
 
 GOOGLE_ANALYTICS = True
