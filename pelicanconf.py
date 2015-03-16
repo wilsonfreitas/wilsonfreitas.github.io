@@ -32,6 +32,14 @@ DEFAULT_PAGINATION = 5
 MENUITEMS = [('Arquivo', 'archive', 'archives.html'),
              ('Autor', 'user', 'pages/about.html')]
 
+MEDIAITEMS = [
+    ('http://aboutwilson.net', None, 'Homepage'),
+    ('http://github.com/wilsonfreitas', 'github', 'wilsonfreitas'),
+    ('https://twitter.com/aboutwilson', 'twitter', 'aboutwilson'),
+    ('https://www.facebook.com/wnfreitas', 'facebook', 'wnfreitas'),
+    ('http://br.linkedin.com/pub/wilson-freitas/a/572/609/en', 'linkedin', 'Wilson Freitas')
+]
+
 FEED_DOMAIN = SITEURL
 FEED_ALL_RSS = 'feeds/rss.xml'
 TAG_FEED_RSS = 'feeds/%s.rss.xml'
