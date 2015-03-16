@@ -40,7 +40,7 @@ MEDIAITEMS = [
     ('http://br.linkedin.com/pub/wilson-freitas/a/572/609/en', 'linkedin', 'Wilson Freitas')
 ]
 
-FEED_DOMAIN = SITEURL
+FEED_DOMAIN = 'http://blog.aboutwilson.net'
 FEED_ALL_RSS = 'feeds/rss.xml'
 TAG_FEED_RSS = 'feeds/%s.rss.xml'
 
