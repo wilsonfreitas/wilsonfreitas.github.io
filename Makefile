@@ -4,7 +4,7 @@ PELICANOPTS=
 
 BASEDIR=$(CURDIR)
 INPUTDIR=$(BASEDIR)/content
-OUTPUTDIR=$(BASEDIR)/../wilsonfreitas.github.io
+OUTPUTDIR=$(BASEDIR)/output
 CONFFILE=$(BASEDIR)/pelicanconf.py
 PUBLISHCONF=$(BASEDIR)/publishconf.py
 
@@ -16,6 +16,9 @@ SSH_HOST=localhost
 SSH_PORT=22
 SSH_USER=root
 SSH_TARGET_DIR=/var/www
+
+GITHUB_LOCAL=$(BASEDIR)/../wilsonfreitas.github.io
+
 
 S3_BUCKET=my_s3_bucket
 
@@ -102,7 +105,8 @@ cf_upload: publish
 	cd $(OUTPUTDIR) && swift -v -A https://auth.api.rackspacecloud.com/v1.0 -U $(CLOUDFILES_USERNAME) -K $(CLOUDFILES_API_KEY) upload -c $(CLOUDFILES_CONTAINER) .
 
 git:
-	cd $(OUTPUTDIR)
+	rm -rf $(GITHUB_LOCAL)/*
+	cp -r $(OUTPUTDIR) $(GITHUB_LOCAL)
 	git add --all
 	git commit -m "Updated site"
 	git push -u origin master

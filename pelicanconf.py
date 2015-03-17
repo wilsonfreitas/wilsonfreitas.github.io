@@ -6,7 +6,7 @@ AUTHOR = u'Wilson Freitas'
 # MAINQUOTE = u'And in the end, the love you take is equal to the love you make.'
 MAINQUOTE = u'Data analysis is a mix of belief and evidence'
 SITENAME = u'AboutWilson.net'
-SITEURL = '.'
+SITEURL = '/.'
 # SITEURL = 'http://blog.aboutwilson.net'
 
 GOOGLE_ANALYTICS = True
@@ -23,10 +23,10 @@ DATE_FORMATS = {
 
 # ARTICLE_URL = 'posts/{date:%Y}-{date:%m}-{date:%d}/{slug}/'
 # ARTICLE_SAVE_AS = 'posts/{date:%Y}-{date:%m}-{date:%d}/{slug}/index.html'
-ARTICLE_URL = 'posts/{date:%Y}-{date:%m}/{slug}/'
-ARTICLE_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}/index.html'
-ARTICLE_LANG_URL = 'posts/{date:%Y}-{date:%m}/{slug}/'
-ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}/index.html'
+ARTICLE_URL = 'posts/{date:%Y}-{date:%m}/{slug}.html'
+ARTICLE_LANG_URL = 'posts/{date:%Y}-{date:%m}/{slug}.html'
+ARTICLE_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}.html'
+ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}.html'
 DEFAULT_PAGINATION = 5
 
 MENUITEMS = [('Arquivo', 'archive', 'archives.html'),
