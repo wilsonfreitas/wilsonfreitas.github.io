@@ -106,7 +106,7 @@ cf_upload: publish
 
 git:
 	rm -rf $(GITHUB_LOCAL)/*
-	cp -r $(OUTPUTDIR) $(GITHUB_LOCAL)
+	cp -r $(OUTPUTDIR)/* $(GITHUB_LOCAL)
 	git add --all
 	git commit -m "Updated site"
 	git push -u origin master
