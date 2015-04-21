@@ -104,11 +104,10 @@ s3_upload: publish
 cf_upload: publish
 	cd $(OUTPUTDIR) && swift -v -A https://auth.api.rackspacecloud.com/v1.0 -U $(CLOUDFILES_USERNAME) -K $(CLOUDFILES_API_KEY) upload -c $(CLOUDFILES_CONTAINER) .
 
-git:
-	rm -rf $(GITHUB_LOCAL)/*
-	cp -r $(OUTPUTDIR)/* $(GITHUB_LOCAL)
-	git add --all
-	git commit -m "Updated site"
-	git push -u origin master
+# $(TRAVIS_REPO_SLUG)
+# ${GH_TOKEN}
+github: publish
+	ghp-import -n $(OUTPUTDIR)
+	@git push -fq https://e04677ba46c707e41b54000d169dd13b5f4f5944@github.com/wilsonfreitas/blog.aboutwilson.git gh-pages > /dev/null
 
 .PHONY: html help clean regenerate serve devserver publish ssh_upload rsync_upload dropbox_upload ftp_upload s3_upload cf_upload github

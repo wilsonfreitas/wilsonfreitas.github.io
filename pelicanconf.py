@@ -9,6 +9,7 @@ SITENAME = u'AboutWilson.net'
 SITEURL = '/.'
 # SITEURL = 'http://blog.aboutwilson.net'
 
+
 GOOGLE_ANALYTICS = True
 DISPLAY_PAGES_ON_MENU = False
 DISPLAY_CATEGORIES_ON_MENU = False
@@ -48,7 +49,10 @@ DISQUS_SITENAME = 'aboutwilson'
 TWITTER_USERNAME = 'aboutwilson'
 # GITHUB_URL = 'https://github.com/wilsonfreitas'
 
-STATIC_PATHS = ['figure', 'datasets']
+STATIC_PATHS = ['figure', 'datasets', 'extra/CNAME']
+EXTRA_PATH_METADATA = {
+    'extra/CNAME': {'path': 'CNAME'},
+}
 
 THEME = 'aboutwilson'
 

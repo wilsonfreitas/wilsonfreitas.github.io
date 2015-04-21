@@ -11,3 +11,5 @@ cache/*
 .ipynb_*
 
 *.pid
+
+.DS_Store
