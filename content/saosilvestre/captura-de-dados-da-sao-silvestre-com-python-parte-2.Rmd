@@ -2,7 +2,7 @@ Title: Captura de dados da Corrida de São Silvestre com Python—Parte 2
 Category: data science
 Author: Wilson Freitas
 Tags: R, dplyr
-Date: 2015-02-15
+Date: 2015-04-27
 Lang: pt
 
 ```{r, echo=FALSE}
