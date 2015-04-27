@@ -97,7 +97,7 @@ irusd(seq(30, 360, by=30))
 
 You could compare in the same chart curves of different dates
 
-```{r, fig.width=15, fig.cap="Brazilian Term Structure", warning=FALSE}
+```{r irbrl-term-structure-plot, fig.width=15, fig.cap="Brazilian Term Structure", warning=FALSE}
 irbrl_20130613 <- get_curve('2013-06-13', 'PRE')
 irbrl_20130611 <- get_curve('2013-06-11', 'PRE')
 seq(21, 252, by=21) -> terms
@@ -123,7 +123,7 @@ With far none effort you have at hand an interpolator for interest rate term str
 
 Other point I'd like to mention is the huge effort, in my opinion, to build a attractive chart using the plot function, bellow I present an example using the [ggplot2](http://ggplot2.org) package for the same data.
 
-```{r, fig.width=15, fig.cap="Brazilian Term Structure with ggplot2", warning=FALSE, message=FALSE}
+```{r irbrl-term-structure-ggplot, fig.width=15, fig.cap="Brazilian Term Structure with ggplot2", warning=FALSE, message=FALSE}
 library(ggplot2)
 ir_df <- stack(list(`2014-06-11`=d11, `2014-06-13`=d13))
 ir_df$date <- terms
