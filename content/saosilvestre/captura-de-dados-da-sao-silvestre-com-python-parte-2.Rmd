@@ -23,7 +23,7 @@ opts_chunk$set(pelican.publish=TRUE)
 No post [Captura de dados da Corrida de São Silvestre com Python—Parte 1][parte-1] eu levanto uma questão: Como o clima influencia o desempenho dos corredores de rua?
 Nesse post eu apresento como os dados dos campeões da corrida de São Silvestre foram capturados do site da corrida utilizando Python e em seguida transformados em um arquivos CSV.
 
-Agora vou mostrar como o arquivo CSV foi utilizado, como os dados foram limpos e como foi feita a análise quantitativa para tentar responder a pergunta.
+Agora vou mostrar como o arquivo CSV foi utilizado, como os dados foram limpos e como foram formatados para que eu tenha os tipos corretos para a análise dos dados.
 Neste post eu uso R ao invés de Python, sem nenhuma razão específica.
 
 ## Montando o ambiente
@@ -262,6 +262,9 @@ Outra coisa, estes gráficos me fazem desconfiar de que a diferença do desempen
 
 Bem, acredito aqui que o trabalho de limpeza e formatação está concluído.
 Pude passar por diversos problemas oriundos de uma manutenção pobre dos dados.
-O conteúdo das páginas não é confiável e vê-se que é manual e sem verificações.
-No entanto, este é o trabalho de quem tem que garimpar dados na Internet, é necessário criar formas de verificação das hipóteses.
+O conteúdo das páginas não é confiável e vê-se que a atualização é manual e sem verificações.
+No entanto, este é o trabalho de quem tem que garimpar dados na Internet, é necessário criar formas de verificação e validação das hipóteses assumidas.
+Ainda falta fazer a análise dos dados para tentar responder a pergunta de como o clima pode influenciar o desempenho dos corredores de rua, mas isso fica pra outro post.
+Por ora vou salvar estes dados em um arquivo csv para usar na continuação deste trabalho.
+
 
