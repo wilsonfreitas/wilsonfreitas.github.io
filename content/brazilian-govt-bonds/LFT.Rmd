@@ -1,7 +1,7 @@
 Title: Pricing Brazilian Government Bonds: LFT
 Category: finance
 Author: Wilson Freitas
-Tags: R, brazilian bonds, LFT
+Tags: R, brazilian bonds, LFT, bizdays
 Date: 2014-04-03
 Lang: en
 
@@ -74,7 +74,7 @@ The historical interest rates are downloaded from [Quandl][quandl] and data in p
 
 ```{r, message=FALSE, warning=FALSE, cache=TRUE}
 library(Quandl)
-selic <- read.csv('http://www.quandl.com/api/v1/datasets/BCB/1178.csv?trim_start=2000-07-01&trim_end=2014-03-21&sort_order=asc')
+selic <- Quandl('BCB/1178', start_date='2000-07-01', end_date='2014-03-21', sort='asc')
 selic <- transform(selic, Date=as.Date(Date))
 str(selic)
 ```

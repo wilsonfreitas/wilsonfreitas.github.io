@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = u'Wilson Freitas'
 # MAINQUOTE = u'And in the end, the love you take is equal to the love you make.'
 MAINQUOTE = u'Data analysis is a mix of belief and evidence'
-SITENAME = u'AboutWilson.net'
+SITENAME = u'WilsonFreitas'
 SITEURL = '/.'
 # SITEURL = 'http://blog.aboutwilson.net'
 
@@ -28,7 +28,7 @@ ARTICLE_URL = 'posts/{date:%Y}-{date:%m}/{slug}.html'
 ARTICLE_LANG_URL = 'posts/{date:%Y}-{date:%m}/{slug}.html'
 ARTICLE_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}.html'
 ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}.html'
-DEFAULT_PAGINATION = 5
+DEFAULT_PAGINATION = False
 
 MENUITEMS = [('Arquivo', 'archive', 'archives.html'),
              ('Autor', 'user', 'pages/about.html')]
@@ -49,16 +49,18 @@ DISQUS_SITENAME = 'aboutwilson'
 TWITTER_USERNAME = 'aboutwilson'
 # GITHUB_URL = 'https://github.com/wilsonfreitas'
 
-STATIC_PATHS = ['figure', 'datasets', 'extra/CNAME']
+STATIC_PATHS = ['figure', 'datasets', 'talks',
+    # 'extra/CNAME',
+    'extra/google5b4e57fed68382ab.txt']
+STATIC_EXCLUDE_SOURCES = False
 EXTRA_PATH_METADATA = {
-    'extra/CNAME': {'path': 'CNAME'},
+    # 'extra/CNAME': {'path': 'CNAME'},
+    'extra/google5b4e57fed68382ab.txt': {'path': 'google5b4e57fed68382ab.html'}
 }
 
-THEME = 'aboutwilson'
+THEME = 'lib/pelican-themes/aboutwilson'
 
-MARKUP = ('md', 'Rmd', 'rmd')
-
-DEFAULT_PAGINATION = 6
+# MARKUP = ('md', 'Rmd', 'rmd')
 
 PLUGIN_PATHS = ('lib/pelican-plugins', )
 
@@ -69,8 +71,9 @@ PLUGINS = ['sitemap',
            'liquid_tags.include_code',
            'liquid_tags.notebook',
            'liquid_tags.literal',
+           'render_math',
            'rmd_reader',
-           'render_math']
+           'pymd_reader']
 
 # sitemap
 SITEMAP = {
@@ -93,3 +96,5 @@ NOTEBOOK_DIR = ''
 # tag cloud
 TAG_CLOUD_STEPS = 4
 TAG_CLOUD_MAX_ITEMS = 100
+
+LOAD_CONTENT_CACHE = True
