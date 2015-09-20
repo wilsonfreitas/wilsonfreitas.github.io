@@ -9,7 +9,7 @@ output/*
 cache/*
 *.pyc
 .ipynb_*
-
+__pycache__
 *.pid
 
 .DS_Store
