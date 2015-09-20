@@ -58,11 +58,11 @@ EXTRA_PATH_METADATA = {
     'extra/google5b4e57fed68382ab.txt': {'path': 'google5b4e57fed68382ab.html'}
 }
 
-THEME = 'lib/pelican-themes/aboutwilson'
+THEME = '../lib/pelican-themes/aboutwilson'
 
 # MARKUP = ('md', 'Rmd', 'rmd')
 
-PLUGIN_PATHS = ('lib/pelican-plugins', )
+PLUGIN_PATHS = ('../lib/pelican-plugins', )
 
 PLUGINS = ['sitemap',
            'summary',
@@ -71,9 +71,10 @@ PLUGINS = ['sitemap',
            'liquid_tags.include_code',
            'liquid_tags.notebook',
            'liquid_tags.literal',
-           'render_math',
            'rmd_reader',
-           'pymd_reader']
+           'pymd_reader',
+           'render_math',
+       ]
 
 # sitemap
 SITEMAP = {
