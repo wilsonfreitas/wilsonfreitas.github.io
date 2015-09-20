@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>String interpolation in R — WilsonFreitas</title>
+	<meta name="description" content="Title: String interpolation in R; Date: 2014-04-09; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">WilsonFreitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">String interpolation in R</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2014-04-09T00:00:00-03:00" itemprop="datePublished">2014-04-09</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/programming.html" rel="category">programming</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/string-handling.html" rel="tag">string handling</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
+url = "{media}logo.gif".supplant(param); -->
+
+<p>String handling in R is hard, there are a few packages that help making that task not so hard, but it is still hard.
+In my opinion string handling in R will never be as good as languages like Python or Perl, it looks like the language hasn't been designed to face that problem.
+But sincerely speaking, I don't think R realy need that, I can pass without it, I can go fairly well with the packages available, and the most popular is <a href="http://cran.r-project.org/web/packages/stringr/index.html" title="Hadley Wickham's stringr"><code>stringr</code></a> developed by Hadley Wickham.
+It has several good functions for string handling, but it lacks string interpolation like we do in Python.
+That's the reason why I developed <code>str_supplant</code>:</p>
+<div class="highlight"><pre>str_supplant <span class="o">&lt;-</span> <span class="kr">function</span> <span class="p">(</span>string<span class="p">,</span> repl<span class="p">)</span> <span class="p">{</span>
+    result <span class="o">&lt;-</span> str_match_all<span class="p">(</span>string<span class="p">,</span> <span class="s">&quot;\\{([^{}]*)\\}&quot;</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="p">(</span><span class="kp">length</span><span class="p">(</span>result<span class="p">[[</span><span class="m">1</span><span class="p">]])</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span>
+        <span class="kr">return</span><span class="p">(</span>string<span class="p">)</span>
+    result <span class="o">&lt;-</span> result<span class="p">[[</span><span class="m">1</span><span class="p">]]</span>
+    <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_len</span><span class="p">(</span><span class="kp">dim</span><span class="p">(</span>result<span class="p">)[</span><span class="m">1</span><span class="p">]))</span> <span class="p">{</span>
+        x <span class="o">&lt;-</span> result<span class="p">[</span>i<span class="p">,]</span>
+        pattern <span class="o">&lt;-</span> x<span class="p">[</span><span class="m">1</span><span class="p">]</span>
+        key <span class="o">&lt;-</span> x<span class="p">[</span><span class="m">2</span><span class="p">]</span>
+        <span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="kp">is.null</span><span class="p">(</span>repl<span class="p">[[</span>key<span class="p">]]))</span>
+            string <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span>pattern<span class="p">,</span> repl<span class="p">[[</span>key<span class="p">]],</span> string<span class="p">,</span> perl<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+    <span class="p">}</span>
+    string
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Here it follows an example:</p>
+<div class="highlight"><pre>parms <span class="o">&lt;-</span> <span class="kt">list</span><span class="p">(</span>media<span class="o">=</span><span class="s">&#39;http://aboutwilson.net&#39;</span><span class="p">,</span> face<span class="o">=</span><span class="s">&#39;wilson&#39;</span><span class="p">)</span>
+str_supplant<span class="p">(</span><span class="s">&quot;{media}/logo.gif, {media}/img/ {face}&quot;</span><span class="p">,</span> parms<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>## [1] &quot;http://aboutwilson.net/logo.gif, http://aboutwilson.net/img/ wilson&quot;
+</pre></div>
+
+
+<p>The first argument is the string to be interpolated and the second a <code>list</code> with the keys to be used.
+If a key doesn't match it isn't interpolated.</p>
+<div class="highlight"><pre>parms <span class="o">&lt;-</span> <span class="kt">list</span><span class="p">()</span>
+str_supplant<span class="p">(</span><span class="s">&quot;My name is {name}&quot;</span><span class="p">,</span> parms<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>## [1] &quot;My name is {name}&quot;
+</pre></div>
+
+
+<p>That implementation was deeply inspired by <a href="http://javascript.crockford.com/remedial.html" title="Douglas Crockford">Douglas Crockford</a>'s <code>supplant</code> implementation.
+Unfortunately that implementation hasn't been vectorized yet, but I think it is quite useful anyway.
+I hope it help others like it's been helping me.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'String interpolation in R';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-4510606-3', 'aboutwilson.net');
+ga('require', 'displayfeatures');
+ga('require', 'linkid', 'linkid.js');
+ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WilsonFreitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/brazilian-bonds.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 03 Apr 2014 00:00:00 -0300</lastBuildDate><item><title>Pricing Brazilian Government Bonds: LFT</title><link>http://wilsonfreitas.github.io/posts/2014-04/pricing-brazilian-government-bonds-lft.html</link><description>&lt;p&gt;For many years I've been working for and with software vendors in the brazilian financial industry.
+The great majority of pricing and risk management aplications running on here were not developed here in Brazil.
+I think that is the main reason I saw many projects struggling to deliver a glimpse of what had been promissed during the software selection meetings.
+One thing that is usually said is that brazilian market has its &lt;a href="http://en.wikipedia.org/wiki/Jabuticaba"&gt;jabuticabas&lt;/a&gt;, yeah jabuticaba.
+It is a sweet fruit which grows in Brazil, vastly.
+And like the fruit jabuticaba, the brazilian financial market has a bunch of financial instruments with annoying characteristics such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;business days rules&lt;/li&gt;
+&lt;li&gt;truncation rules, mainly for interest rates&lt;/li&gt;
+&lt;li&gt;stupid inflation rules&lt;/li&gt;
+&lt;li&gt;the PTAX currency which yields the dirty coupon for the foreign interest rate&lt;/li&gt;
+&lt;li&gt;and many others&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this post I want to start a series where will show the steps to validate the pricing rules for a few brazilian financial instruments.
+I am going to start with the brazilian government floating rate bond called LFT or Letras Financeiras do Tesouro (Treasury Financial Letters).
+Despite being a Floating Rate Bond, LFT is traded above its face value and a spread, usually quite small and negative, is used to discount it.
+These calculations seem to be pretty simple but it hides some pitfalls and because of that we are going to go on step by step, paying attention to details.&lt;/p&gt;
+&lt;h2&gt;The instrument&lt;/h2&gt;
+&lt;p&gt;As mentioned before, LFT is a Floating Rate Bond so it accumulates daily interest rate from its issue date up to maturity.
+The LFT's issue value is R$ 1000,00 then the fair value of a LFT is&lt;/p&gt;
+&lt;div class="math"&gt;$$
+LFT_t = 1000 \prod_{n=t_i}^{t-1}(1 + r_{n})^\frac{1}{252}
+$$&lt;/div&gt;
+&lt;p&gt;where &lt;span class="math"&gt;\(t\)&lt;/span&gt; refers to the mark-to-market date, &lt;span class="math"&gt;\(t_i\)&lt;/span&gt; the issue date and &lt;span class="math"&gt;\(t-1\)&lt;/span&gt; the business day before mark-to-market date.
+However, it is usually traded in values higher than the fair value as if a negative spread was applied discounting the fair value, leading to:&lt;/p&gt;
+&lt;div class="math"&gt;$$
+LFT_t = \frac{1000 \prod_{n=t_i}^{t-1}(1 + r_{n})^\frac{1}{252}}{(1 + s_t)^{D_T/252}}
+$$&lt;/div&gt;
+&lt;p&gt;where &lt;span class="math"&gt;\(s_t\)&lt;/span&gt; is the spread and &lt;span class="math"&gt;\(D_T\)&lt;/span&gt; the number of business days up to maturity.&lt;/p&gt;
+&lt;h2&gt;Notional Value — VNA&lt;/h2&gt;
+&lt;p&gt;The rule to compute the notional value (VNA—Valor Nominal Acumulado) is fairly simple, accumulate the daily interest rate from LFT's issue date up to reference date (mark-to-market date).&lt;/p&gt;
+&lt;p&gt;What do we need?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;issue date&lt;/li&gt;
+&lt;li&gt;reference date&lt;/li&gt;
+&lt;li&gt;daily brazilian government interest rate&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The LFT's issue date is 2000-07-01 and our reference date is 2014-03-21.
+Let's start setting the reference date:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ref_date &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2014-03-21&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The historical interest rates are downloaded from &lt;a href="http://www.quandl.com" title="Quandl"&gt;Quandl&lt;/a&gt; and data in properly transformed to suitable formats:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Quandl&lt;span class="p"&gt;)&lt;/span&gt;
+selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; Quandl&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;BCB/1178&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; start_date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2000-07-01&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; end_date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2014-03-21&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; sort&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;asc&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error: &lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+## &lt;span class="nt"&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
+## &lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Server Error (Sorry)&lt;span class="nt"&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;style&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/css&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+##         body {
+##             background-color: #283c43;
+##             color: #d1d2d4;
+##             text-align: center;
+##             font-family: helvetica, arial, sans-serif;
+##             height:100%;
+##             margin:0px 0px; padding:0px;
+##             text-align:center; /* Hack for IE5/Win */
+##             font-size: 100%;
+##         }
+##         .wrapper {
+##             width: 800px;
+##             margin: 150px auto;
+##         }
+##         h1 {
+##             font-size: 100px;
+##             color: #e15829;
+##             line-height: 0.5;
+##             margin-bottom: 10px;
+##         }
+##         h2 {
+##             font-size:24px;
+##             color: #e15829;
+##         }
+##         p {
+##             margin-bottom: 20px;
+##         }
+##         a {
+##             color: #00adef;
+##         }
+##     &lt;span class="nt"&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+## &lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+## 
+## &lt;span class="nt"&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+## &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;wrapper&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;500&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;Server Error&lt;span class="nt"&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Sorry, your request has failed completely. The one thing you can try immediately is to reload this page.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Perhaps this was simply a temporary glitch.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;This will be fixed&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;We work very hard to ensure Quandl is 100% per cent functional at all times.  Please know that the problem you encountered here was logged and will be fixed promptly.
+##         We apologize for this inconvenience. &lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;- &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;Jason Byck, CTO, Quandl&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;For further updates on the status of the website please visit our &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://status.quandl.com/&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;status&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; page.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+## &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+## &lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+## &lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;,&lt;/span&gt; Date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Date&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error in transform(selic, Date = as.Date(Date)): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;str&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error in str(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Computing VNA&lt;/h3&gt;
+&lt;p&gt;The formula to compute VNA is&lt;/p&gt;
+&lt;div class="math"&gt;$$
+VNA_n = 1000\prod_{n=1}^{T}(1 + r_{n-i})^\frac{1}{252}
+$$&lt;/div&gt;
+&lt;p&gt;where &lt;code&gt;T&lt;/code&gt; refers to issue date.
+As I said before, the formula is pretty simple but hides inconvenient secrets.
+This formula is computed in 3 steps, enumerated below:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Compute the interest rate factor &lt;span class="math"&gt;\((1 + r_i)^\frac{1}{252}\)&lt;/span&gt; and round it in 8 digits&lt;/li&gt;
+&lt;li&gt;Compute the accumulated factor, using &lt;code&gt;cumprod&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Compute the VNA multiplying the accumulated factor by 1000 and truncate it in 6 digits&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The final value is shifted one day because the accumulated amount refers to the day after the interest rate is released.
+The function &lt;code&gt;compute_vna&lt;/code&gt; below execute these steps.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;compute_vna &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ds&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    ds &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ds&lt;span class="p"&gt;,&lt;/span&gt; Factor&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;round&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; Value&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;252&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    ds &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ds&lt;span class="p"&gt;,&lt;/span&gt; CumFactor&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;cumprod&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Factor&lt;span class="p"&gt;))&lt;/span&gt;
+    ds &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ds&lt;span class="p"&gt;,&lt;/span&gt; VNA&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1000&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;CumFactor&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    ds&lt;span class="o"&gt;$&lt;/span&gt;VNA &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ds&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;NA&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; VNA&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;VNA&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="m"&gt;-1&lt;/span&gt;&lt;span class="p"&gt;)]))&lt;/span&gt;
+    ds
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_vna&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error in transform(ds, Factor = round((1 + Value/100)^(1/252), 8)): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error in head(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;tail&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error in tail(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Observe the VNA for the reference date, we will use this value to compute the theoretical value.&lt;/p&gt;
+&lt;h2&gt;Computing the theoretical value&lt;/h2&gt;
+&lt;p&gt;To compute the LFT's theoretical value we need the terms and conditions of the contracts.
+That information can be obtained at &lt;a href="http://www.anbima.com.br/merc_sec/merc-sec.asp" title="Government Bonds Quotations"&gt;ANBIMA's web site&lt;/a&gt;, there is a link to a text file which contains relevant information to price all brazilian government bonds.
+Unfortunately, only the last 5 business days are kept available to download.
+The file used to validate the prices can be found &lt;a href="/datasets/ms140321.txt"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The code below loads and prepares data for pricing.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;tit_pub &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read.table&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;ms140321.txt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; skip&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; sep&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;@&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; header&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;subset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;tit_pub&lt;span class="p"&gt;,&lt;/span&gt; Titulo &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;LFT&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; lft_quot&lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Data.Referencia&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Data.Vencimento&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Tx..Indicativas&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;PU&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;RefDate&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Maturity&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Spread&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;SpotPrice&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt;
+    Spread&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; Spread&lt;span class="p"&gt;)),&lt;/span&gt;
+    SpotPrice&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; SpotPrice&lt;span class="p"&gt;)),&lt;/span&gt;
+    RefDate&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.character&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;RefDate&lt;span class="p"&gt;),&lt;/span&gt; format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;%Y%m%d&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    Maturity&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.character&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Maturity&lt;span class="p"&gt;),&lt;/span&gt; format&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;%Y%m%d&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+lft_quot
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;##       RefDate   Maturity  Spread   SpotPrice
+## 16 2014-03-21 2014-09-07 -0,0146 6023,552820
+## 17 2014-03-21 2015-03-07 -0,0157 6024,058764
+## 18 2014-03-21 2015-09-07 -0,0169 6024,636986
+## 19 2014-03-21 2016-03-01 -0,0179 6025,233278
+## 20 2014-03-21 2016-09-07 -0,0183 6025,865709
+## 21 2014-03-21 2017-03-07 -0,0196 6026,630649
+## 22 2014-03-21 2017-09-07 -0,0205 6027,419681
+## 23 2014-03-21 2018-03-01 -0,0209 6028,088251
+## 24 2014-03-21 2018-09-01 -0,0209 6028,732728
+## 25 2014-03-21 2019-03-01 -0,0217 6029,588015
+## 26 2014-03-21 2020-03-01 -0,0228 6031,280520
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We observe 11 instruments and we have selected all necessary fields to price them properly, now we have a few adjustments.
+Firstly, we have to move the maturity to the next business day if it is not a business day and after that we have to find out the number of business days between the reference and maturity dates.
+These tasks can be easily done with the &lt;a href="https://github.com/wilsonfreitas/R-bizdays" title="bizdays package"&gt;bizdays&lt;/a&gt; package, developed by me.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/wilsonfreitas/R-bizdays" title="bizdays package"&gt;bizdays&lt;/a&gt; works with calendars as a list of dates representing non-working days.
+Different from other packages which work with algorithmic calendar implementations, &lt;strong&gt;bizdays&lt;/strong&gt; can have any calendar set simply using a list of dates.
+It relies on your needs.
+I've used the dataset &lt;code&gt;holidaysANBIMA&lt;/code&gt; which is part of &lt;strong&gt;bizdays&lt;/strong&gt;.
+This calendar has all financial holidays practiced in Brazil.
+The function &lt;code&gt;adjust.next&lt;/code&gt; move the given date to the following if it is not a business day and 
+the function &lt;code&gt;bizdays&lt;/code&gt; returns the amount of business days between 2 dates.
+Look that both functions work vectorized.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;bizdays&lt;span class="p"&gt;)&lt;/span&gt;
+cal &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; Calendar&lt;span class="p"&gt;(&lt;/span&gt;holidays&lt;span class="o"&gt;=&lt;/span&gt;holidaysANBIMA&lt;span class="p"&gt;,&lt;/span&gt; name&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;ANBIMA&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; weekdays&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;saturday&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;sunday&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; MaturityAdj&lt;span class="o"&gt;=&lt;/span&gt;adjust.next&lt;span class="p"&gt;(&lt;/span&gt;Maturity&lt;span class="p"&gt;,&lt;/span&gt; cal&lt;span class="p"&gt;))&lt;/span&gt;
+lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; BusinessDays&lt;span class="o"&gt;=&lt;/span&gt;bizdays&lt;span class="p"&gt;(&lt;/span&gt;ref_date&lt;span class="p"&gt;,&lt;/span&gt; MaturityAdj&lt;span class="p"&gt;,&lt;/span&gt; cal&lt;span class="p"&gt;))&lt;/span&gt;
+
+lft_quot
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;##       RefDate   Maturity  Spread   SpotPrice MaturityAdj BusinessDays
+## 16 2014-03-21 2014-09-07 -0,0146 6023,552820  2014-09-08          117
+## 17 2014-03-21 2015-03-07 -0,0157 6024,058764  2015-03-09          243
+## 18 2014-03-21 2015-09-07 -0,0169 6024,636986  2015-09-08          369
+## 19 2014-03-21 2016-03-01 -0,0179 6025,233278  2016-03-01          488
+## 20 2014-03-21 2016-09-07 -0,0183 6025,865709  2016-09-08          621
+## 21 2014-03-21 2017-03-07 -0,0196 6026,630649  2017-03-07          744
+## 22 2014-03-21 2017-09-07 -0,0205 6027,419681  2017-09-08          872
+## 23 2014-03-21 2018-03-01 -0,0209 6028,088251  2018-03-01          989
+## 24 2014-03-21 2018-09-01 -0,0209 6028,732728  2018-09-03         1118
+## 25 2014-03-21 2019-03-01 -0,0217 6029,588015  2019-03-01         1241
+## 26 2014-03-21 2020-03-01 -0,0228 6031,280520  2020-03-02         1492
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We see that several dates have been correctly adjusted to their following dates and using these new dates the number of business days have been computed.&lt;/p&gt;
+&lt;p&gt;The code below computes the theoretical price.
+Note that the &lt;code&gt;Quotation&lt;/code&gt; is truncated in 4 digits and the theoretical price in 6.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; Quotation&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; Spread&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;BusinessDays&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;252&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+VNA &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;,&lt;/span&gt; VNA&lt;span class="p"&gt;[&lt;/span&gt;Date &lt;span class="o"&gt;==&lt;/span&gt; ref_date&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error in with(selic, VNA[Date == ref_date]): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; TheoPrice&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;VNA&lt;span class="o"&gt;*&lt;/span&gt;Quotation&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error in truncate(VNA * Quotation/100, 6): objeto &amp;#39;VNA&amp;#39; não encontrado
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;After all those steps we are able to compare theoretical and spot price.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;all&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; SpotPrice&lt;span class="o"&gt;-&lt;/span&gt;TheoPrice&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;## Error in eval(expr, envir, enclos): objeto &amp;#39;TheoPrice&amp;#39; não encontrado
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Since the output is &lt;code&gt;TRUE&lt;/code&gt; we all have to agree that these values match.
+As I said this is pretty much easy once you know all truncations and roundings that appears along the way.
+Another tricky point is that we can't invert that formula analytically, to find out the spread having the spot price of the bond.
+Because of the truncations we have to use that algorithm and implement a kind of goal seek mechanism to obtain the spread.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+    
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 03 Apr 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-04-03:posts/2014-04/pricing-brazilian-government-bonds-lft.html</guid><category>R</category><category>brazilian bonds</category><category>LFT</category><category>bizdays</category></item></channel></rss>

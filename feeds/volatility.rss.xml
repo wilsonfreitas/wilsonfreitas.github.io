@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WilsonFreitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/volatility.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 13 Apr 2014 00:00:00 -0300</lastBuildDate><item><title>Estimando EWMA na prática</title><link>http://wilsonfreitas.github.io/posts/2014-04/estimando-ewma-na-pratica.html</link><description>&lt;p&gt;Este post é para quem, assim como eu, sempre quis saber de onde vem o coeficiente &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt; proposto pelo JP Morgan para estimar a volatilidade via EWMA (Exponential Weighted Moving Average).&lt;/p&gt;
+&lt;p&gt;Vou mostrar aqui como estimar o &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; utilizando:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;minimização da soma do erro quadrático &lt;span class="math"&gt;\(S\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;máxima verosimilhança&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Ambas abordagens apresentam resultados semelhantes e vamos observar isso claramente nas funções objetivo utilizadas nos processos de otimização.
+Conhecendo estas técnicas você poderá estimar o coeficiente para qualquer série e assim ter autonomia sobre os resultados produzidos por você.&lt;/p&gt;
+&lt;h2&gt;Dados utilizados&lt;/h2&gt;
+&lt;p&gt;Vou utilizar a série de retornos BOVESPA de março/1997 até março/2014 (retornos contínuos).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;bvsp &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://www.quandl.com/api/v1/datasets/YAHOO/INDEX_BVSP.csv?&amp;amp;trim_start=1997-03-12&amp;amp;trim_end=2014-03-31&amp;amp;sort_order=desc&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; colClasses&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Date&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Date&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+bvsp.ts &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;bvsp&lt;span class="p"&gt;,&lt;/span&gt; as.xts&lt;span class="p"&gt;(&lt;/span&gt;Close&lt;span class="p"&gt;,&lt;/span&gt; order.by&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Date&lt;span class="p"&gt;)))&lt;/span&gt;
+bvsp.r &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;bvsp.ts&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;!-- ```{r, echo=FALSE, fig.width=15, fig.cap="BVSP 1997-2014", warning=FALSE}
+plot(bvsp.ts, main='', major.ticks='year', minor.ticks=FALSE, major.format='%Y', cex.axis = .7, log="y")
+``` --&gt;
+
+&lt;p&gt;&lt;img alt="BVSP Returns 1997-2014" src="http://wilsonfreitas.github.io/figure/bvsp-returns-1997-2014.png" /&gt; &lt;/p&gt;
+&lt;p&gt;É interessante observar os &lt;em&gt;clusters&lt;/em&gt; de volatilidade, os de 1998 e 2008 são os mais relevantes (e curiosamente ocorreram em 10 anos).
+&lt;em&gt;Clusters&lt;/em&gt; menores podem ser observados em 1997 e 2011.&lt;/p&gt;
+&lt;h2&gt;Introduzindo o EWMA&lt;/h2&gt;
+&lt;p&gt;Uma excelente fonte sobre Alisamento Exponencial é Capítulo 4 do &lt;a href="http://www.ime.usp.br/~pam/ST.html" title="Séries Temporais"&gt;livro do Morettin&lt;/a&gt; sobre séries temporais.
+Também sugiro fortemente a leitura do capítulo sobre volatilidade e correlação do &lt;a href="http://www-2.rotman.utoronto.ca/~hull/ofod/index.html" title="John Hull"&gt;livro do Hull&lt;/a&gt;.
+Aqui eu apenas apresentarei a equação que vou utilizar nas próximas seções para estimar o &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;O EWMA é definido como:&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\sigma^2_n = \lambda\sigma^2_{n-1} + (1-\lambda)r^2_{n-1}
+$$&lt;/div&gt;
+&lt;p&gt;onde &lt;span class="math"&gt;\(\sigma^2_n\)&lt;/span&gt; é a variância estimada e &lt;span class="math"&gt;\(r^2_n\)&lt;/span&gt; é o retorno, ambos referentes ao instante &lt;span class="math"&gt;\(n\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Abaixo segue uma implemetação do EWMA utilizando &lt;em&gt;closures&lt;/em&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ewma_builder &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; init&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;zero&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;first&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;var&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+
+  &lt;span class="m"&gt;.&lt;/span&gt;check_init &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;value&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;init &lt;span class="o"&gt;==&lt;/span&gt; value&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;rets &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; na.trim&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;n &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;rets&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;check_init&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;zero&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="m"&gt;.i&lt;/span&gt;nit &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="kr"&gt;else&lt;/span&gt; &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;check_init&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;first&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="m"&gt;.i&lt;/span&gt;nit &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;rets&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="kr"&gt;else&lt;/span&gt; &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;check_init&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;var&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="m"&gt;.i&lt;/span&gt;nit &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;var&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;rets&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="kr"&gt;else&lt;/span&gt; &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;is.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;init&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="m"&gt;.i&lt;/span&gt;nit &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;init&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="kr"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kp"&gt;stop&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;unknown init: &amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; init&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="m"&gt;.&lt;/span&gt;r2 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;rets&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lambda&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    r2 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; lambda&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;r2
+    s &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; filter&lt;span class="p"&gt;(&lt;/span&gt;r2&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;recursive&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; init&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;.i&lt;/span&gt;nit&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;-.&lt;/span&gt;n&lt;span class="p"&gt;]&lt;/span&gt;
+    x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; as.xts&lt;span class="p"&gt;(&lt;/span&gt;s&lt;span class="p"&gt;,&lt;/span&gt; order.by&lt;span class="o"&gt;=&lt;/span&gt;index&lt;span class="p"&gt;(&lt;/span&gt;r2&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;-1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;EWMA&amp;#39;&lt;/span&gt;
+    x
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;A função &lt;code&gt;ewma_builder&lt;/code&gt; retorna uma &lt;em&gt;closure&lt;/em&gt; que calcula o EWMA para a série de retornos fornecida em &lt;code&gt;rets&lt;/code&gt; e considerando &lt;span class="math"&gt;\(\sigma^2_1\)&lt;/span&gt; de acordo com &lt;code&gt;init&lt;/code&gt;.
+&lt;code&gt;init&lt;/code&gt; pode assumir 4 valores:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;zero&lt;/code&gt; onde &lt;span class="math"&gt;\(\sigma^2_1 = 0\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;first&lt;/code&gt; onde &lt;span class="math"&gt;\(\sigma^2_1 = r^2_1\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;var&lt;/code&gt; onde &lt;span class="math"&gt;\(\sigma^2_1\)&lt;/span&gt; é a variância amostral&lt;/li&gt;
+&lt;li&gt;um número para ser utilizado diretamente como &lt;span class="math"&gt;\(\sigma_1^2\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Pontos importantes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A função retornada calcula a variância na frequência da série de retornos fornecida, portanto, uma série diária retornará variância diária e para obter a volatilidade anualizada é necessário &lt;span class="math"&gt;\(\sqrt{252 \cdot}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(\sigma^2_1\)&lt;/span&gt; não é retornado pela função que calcula a variância. Entendo que &lt;span class="math"&gt;\(\sigma^2_1\)&lt;/span&gt; é uma suposição que contribui para a convergência das estimativas de volatilidade, portanto, não incluo esse &lt;em&gt;chute&lt;/em&gt; na série retornada.&lt;/li&gt;
+&lt;li&gt;A função &lt;code&gt;ewma_builder&lt;/code&gt; foi desenvolvida para receber séries &lt;code&gt;xts&lt;/code&gt; ou &lt;code&gt;zoo&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Abaixo segue o cálculo da volatilidade utilizando &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;compute_ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ewma_builder&lt;span class="p"&gt;(&lt;/span&gt;bvsp.r&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;first&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+x.ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;compute_ewma&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0.94&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="BVSP EWMA 0.94" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-094-volatility.png" /&gt; &lt;/p&gt;
+&lt;p&gt;Note que considero &lt;span class="math"&gt;\(\sigma^2_1=r^2_1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;h2&gt;Estimando via minimização de &lt;span class="math"&gt;\(S\)&lt;/span&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(S\)&lt;/span&gt; é a soma do erro quadrático, ou seja:&lt;/p&gt;
+&lt;div class="math"&gt;$$
+S = \sum^N_{n=1}(s^2_n - \sigma^2_n)^2
+$$&lt;/div&gt;
+&lt;p&gt;é a soma quadrado da diferença entre a variância estimada &lt;span class="math"&gt;\(\sigma^2_n\)&lt;/span&gt; e a variância observada &lt;span class="math"&gt;\(s^2_n\)&lt;/span&gt;, para uma amostra de tamanho &lt;span class="math"&gt;\(N\)&lt;/span&gt;.
+O &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; que nos interessa é aquele que minimiza essa soma.&lt;/p&gt;
+&lt;p&gt;Aqui temos o primeiro obstáculo:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;quem é &lt;span class="math"&gt;\(s^2\)&lt;/span&gt;?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Antes de definir a variância observada (o que chega a ser um contrasenso dado que não observamos a variância de fato) vou listar duas alternativas:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;retorno quadrático &lt;span class="math"&gt;\(r^2_n\)&lt;/span&gt;: é uma alternativa honesta pois assim estariamos utilizando EWMA para estimar o retorno quadrático 1 passo a frente.&lt;/li&gt;
+&lt;li&gt;desvio padrão amostral dos próximos &lt;span class="math"&gt;\(T\)&lt;/span&gt; pontos: uma alternativa mais ambiciosa tentando prever uma janela maior no futuro. Segundo &lt;a href="http://www-2.rotman.utoronto.ca/~hull/ofod/index.html" title="John Hull"&gt;Hull&lt;/a&gt; essa foi a abordagem adotada pelo JPMorgan para chegar ao &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt;, eles utilizaram &lt;span class="math"&gt;\(T=25\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nas próximas sessões vou encontrar &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; em ambas as abordagens.&lt;/p&gt;
+&lt;h3&gt;Utilizando o retorno quadrático&lt;/h3&gt;
+&lt;p&gt;Para encontrar &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; minimizando &lt;span class="math"&gt;\(S\)&lt;/span&gt; e considerando o retorno quadrático como variância observada&lt;/p&gt;
+&lt;div class="math"&gt;$$
+S = \sum^N_{n=1} (r^2_n - \sigma^2_n)
+$$&lt;/div&gt;
+&lt;p&gt;precisamos construir a função objetivo que retorne &lt;span class="math"&gt;\(S\)&lt;/span&gt; para uma dado &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt;.
+A função abaixo retorna uma &lt;em&gt;closure&lt;/em&gt; que faz isso.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;f_obj_builder &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; init&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;first&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;mean &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; na.rm&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;rets &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; rets &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="kp"&gt;mean&lt;/span&gt;
+  compute_ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ewma_builder&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; init&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="m"&gt;.&lt;/span&gt;r2 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;rets&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lambda&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="m"&gt;.&lt;/span&gt;ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_ewma&lt;span class="p"&gt;(&lt;/span&gt;lambda&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;na.omit&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;r2 &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;ewma&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note que tiro diretamente a diferença entre o retorno quadrático e &lt;code&gt;.ewma&lt;/code&gt;, pois dado que ambos são séries temporais &lt;code&gt;xts&lt;/code&gt;, tenho a garantida de que as operações serão realizadas entre elementos da mesma data.&lt;/p&gt;
+&lt;p&gt;Para encontrar &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; basta minimizar a função objetivo.
+Vou utilizar a função &lt;code&gt;optimize&lt;/code&gt;.
+Essa função procura o menor valor em um intervalo dado para uma função com apenas 1 parâmetro.
+Como a nossa função objetivo recebe apenas &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; e sabemos que &lt;span class="math"&gt;\(0 &amp;lt; \lambda &amp;lt; 1\)&lt;/span&gt;, &lt;code&gt;optimize&lt;/code&gt; resolve o nosso problema.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;f_obj &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; f_obj_builder&lt;span class="p"&gt;(&lt;/span&gt;bvsp.r&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;first&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;o &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; optimize&lt;span class="p"&gt;(&lt;/span&gt;f_obj&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; $minimum&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; [1] 0.9091&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; &lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; $objective&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; [1] 0.01267&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;O valor encontrado foi &lt;span class="math"&gt;\(\lambda = 0.91\)&lt;/span&gt; e não fica muito longe do &lt;span class="math"&gt;\(0.94\)&lt;/span&gt; proposto pelo RiskMetrics.&lt;/p&gt;
+&lt;p&gt;Uma coisa interessante é olhar o comportamento da função objetivo.
+Dado que temos a função objetivo e ela tem apenas 1 argumento, fica fácil vê-la em um gráfico:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;s &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; length.out&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+t &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;s&lt;span class="p"&gt;,&lt;/span&gt; f_obj&lt;span class="p"&gt;)&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;s&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;l&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; xlim&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+abline&lt;span class="p"&gt;(&lt;/span&gt;h&lt;span class="o"&gt;=&lt;/span&gt;o&lt;span class="o"&gt;$&lt;/span&gt;objective&lt;span class="p"&gt;,&lt;/span&gt; col&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;red&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="Objective Function Squared Returns" src="http://wilsonfreitas.github.io/figure/objective-function-squared-returns.png" /&gt; &lt;/p&gt;
+&lt;p&gt;Olhando o gráfico observamos que há apenas 1 ponto de mínimo na função e que este está bem próximo a &lt;span class="math"&gt;\(\lambda = 0.91\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Podemos agora calcular a variância da série e visualizar o resultado.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;x.ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_ewma&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0.91&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="BVSP EWMA Squared Returns" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-squared-returns.png" /&gt; &lt;/p&gt;
+&lt;h3&gt;Utilizando o desvio padrão futuro&lt;/h3&gt;
+&lt;p&gt;Agora para encontrar &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; minimizando &lt;span class="math"&gt;\(S\)&lt;/span&gt; e considerando que o desvio padrão dos próximos &lt;span class="math"&gt;\(T\)&lt;/span&gt; pontos, &lt;span class="math"&gt;\(v_n\)&lt;/span&gt;, é a variância observada.&lt;/p&gt;
+&lt;div class="math"&gt;$$
+S = \sum^N_{n=1} (v_n - \sigma^2_n)
+$$&lt;/div&gt;
+&lt;p&gt;precisamos construir a seguinte função objetivo.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;f_obj_builder &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; width&lt;span class="p"&gt;,&lt;/span&gt; init&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;first&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;mean &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; na.rm&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;rets &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; rets &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="kp"&gt;mean&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;var &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; rollapply&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; var&lt;span class="p"&gt;,&lt;/span&gt; width&lt;span class="o"&gt;=&lt;/span&gt;width&lt;span class="p"&gt;,&lt;/span&gt; align&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;left&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  compute_ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ewma_builder&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; init&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lambda&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="m"&gt;.&lt;/span&gt;ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_ewma&lt;span class="p"&gt;(&lt;/span&gt;lambda&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kp"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;na.omit&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;var &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;ewma&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Note que essa função recebe, no parâmetro &lt;code&gt;width&lt;/code&gt;, a quantidade de pontos que será utilizada no cálculo da variância amostral.
+Vou utilizar 25, seguindo a sugestão descrita no Hull.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;f_obj &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; f_obj_builder&lt;span class="p"&gt;(&lt;/span&gt;bvsp.r&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;25&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;first&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;o &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; optimize&lt;span class="p"&gt;(&lt;/span&gt;f_obj&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; $minimum&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; [1] 0.9813&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; &lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; $objective&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;##&lt;/span&gt;&lt;span class="c"&gt; [1] 0.001958&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Desta vez o valor encontrado foi &lt;span class="math"&gt;\(\lambda = 0.98\)&lt;/span&gt;, significativamente diferente de &lt;span class="math"&gt;\(0.91\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;s &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; length.out&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+t &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;s&lt;span class="p"&gt;,&lt;/span&gt; f_obj&lt;span class="p"&gt;)&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;s&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;t&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;l&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; xlim&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+abline&lt;span class="p"&gt;(&lt;/span&gt;h&lt;span class="o"&gt;=&lt;/span&gt;o&lt;span class="o"&gt;$&lt;/span&gt;objective&lt;span class="p"&gt;,&lt;/span&gt; col&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;red&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="Objective Function Squared Returns" src="http://wilsonfreitas.github.io/figure/objective-function-volatility-forecast.png" /&gt; &lt;/p&gt;
+&lt;p&gt;A função objetivo para esta abordagem também apresenta apenas 1 ponto de mínimo, garantindo a coerência do resultado encontrado.&lt;/p&gt;
+&lt;p&gt;Vamos novamente ver o gráfico dos retornos envolvidos pela volatilidade para ter uma idéia de como se comporta a volatilidade com relação aos retornos observados utilizando-se um &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; tão alto.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="BVSP EWMA Squared Returns" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-forecast.png" /&gt; &lt;/p&gt;
+&lt;h2&gt;Conclusão&lt;/h2&gt;
+&lt;p&gt;Dada a diferença entre os valores de &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; é necessária uma reflexão mais profunda sobre o tema.
+Obviamente a diferença reflete a escolha de &lt;span class="math"&gt;\(s^2\)&lt;/span&gt; e essa deve refletir o objetivo do modelo.
+Na minha opinião, a primeira abordadem tem como objetivo o &lt;em&gt;forecast&lt;/em&gt; da variância de retornos diários, e portanto é mais adequada para o cálculo de VAR diário, por exemplo.
+Observando a série de retornos identificamos os &lt;em&gt;clusters&lt;/em&gt; de volatilidade, que indicam uma mudança de regime da série, o que me leva a supor que o parâmetro &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; varia ao longo do tempo.
+Um teste fora da amostra pode ser utilizado para avaliar o período de aderência do modelo encontrado, pois, uma vez que ocorra mudança de regime na série é importante reestimar o parâmetro.
+O problema aqui torna-se como identificar a mudança de regime.&lt;/p&gt;
+&lt;p&gt;A segunda abordadem, que apresenta um &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; alto, na minha opinião, já visa um comportamento mais estacionário.
+Também pode ser utilizado para calcular o VAR diário, por exemplo, no entanto, poderia ser utilizado para o VAR de janelas maiores como 10 dias, sem perda de generalidade.
+Acredito que com essa abordagem, a necessidade de reestimar o parâmetro seja menor, dado o efeito da utilização da média na estimação.&lt;/p&gt;
+&lt;p&gt;Contudo, seria prudente buscar formas quantitativas de comparar as abordagens.
+Acredito que testes de frequência e testes fora da amostra são boas alternativas.&lt;/p&gt;
+&lt;p&gt;A estimação via máxima verosimilhança fica para outro post, onde teremos uma técnica que considera premissas relacionadas aos retornos ao invés da variância e assim poderemos ver de qual abordadem ela se aproxima, em termos do &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; estimado.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+    
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Sun, 13 Apr 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-04-13:posts/2014-04/estimando-ewma-na-pratica.html</guid><category>R</category><category>volatility</category><category>risk management</category></item><item><title>Computing EWMA 2</title><link>http://wilsonfreitas.github.io/posts/2014-04/computing-ewma-2.html</link><description>&lt;p&gt;Months ago I released a post entitled &lt;a href="http://wilsonfreitas.github.io/posts/2013-08/computing-ewma.html" title="Computing EWMA"&gt;Computing EWMA&lt;/a&gt; exploring the functional approach to implement EWMA calculations in R and also compared that with what I called &lt;em&gt;loop-oriented&lt;/em&gt; implementation.
+That was quite ammazing to see that the functional approach was almost 2 times faster.&lt;/p&gt;
+&lt;p&gt;After a while I found the function &lt;code&gt;filter&lt;/code&gt; of the package &lt;code&gt;stats&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;method&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;convolution&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;recursive&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
+&lt;span class="err"&gt;##&lt;/span&gt;     &lt;span class="nx"&gt;sides&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="nx"&gt;L&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;circular&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;init&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; 
+&lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="nx"&gt;NULL&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This function applies linear filtering to univariate or multivariate time series.
+You can get a moving average by setting &lt;code&gt;method="convolution"&lt;/code&gt; or an autoregression for &lt;code&gt;method="recursive"&lt;/code&gt;.
+Since EWMA is an autoregressive model, the &lt;code&gt;"recursive"&lt;/code&gt; method is appropriate.
+The argument &lt;code&gt;x&lt;/code&gt; receives the time series and &lt;code&gt;filter&lt;/code&gt; a vector of coefficients.
+The &lt;code&gt;"recursive"&lt;/code&gt; method uses the &lt;code&gt;init&lt;/code&gt; argument to specify the initial values of the time series.
+Providing a series &lt;code&gt;x&lt;/code&gt; and a filter &lt;span class="math"&gt;\(\phi\)&lt;/span&gt; the response &lt;code&gt;y&lt;/code&gt; is much like the sequence below:&lt;/p&gt;
+&lt;div class="math"&gt;$$
+y_1 = 0 \hspace{0.5cm}
+y_2 = \phi y_1 + x_1 \hspace{0.5cm}
+y_2 = \phi y_2 + x_2 \hspace{0.5cm}
+\dots \hspace{0.5cm}
+y_{n+1} = \phi y_n + x_n
+$$&lt;/div&gt;
+&lt;p&gt;Taking a look at EWMA's dynamics&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\hat\sigma^2_0 = 0  \hspace{0.5cm}
+\hat\sigma^2_1 = \lambda\hat\sigma^2_0 + (1 - \lambda)r^2_0  \hspace{0.5cm}
+\hat\sigma^2_2 = \lambda\hat\sigma^2_1 + (1 - \lambda)r^2_1  \hspace{0.5cm}
+\dots  \hspace{0.5cm}
+\hat\sigma^2_{t+1} = \lambda\hat\sigma^2_t + (1 - \lambda)r^2_t
+$$&lt;/div&gt;
+&lt;p&gt;we observe that the input &lt;span class="math"&gt;\(x_i = (1 - \lambda)r^2_i\)&lt;/span&gt;, the filter &lt;span class="math"&gt;\(\phi = \lambda\)&lt;/span&gt; and &lt;span class="math"&gt;\(y_i = \sigma^2_i\)&lt;/span&gt; is the response.
+The initial value can be set to &lt;span class="math"&gt;\(0\)&lt;/span&gt;.
+The code implementation follows below:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ewma.filter &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    r2 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; lambda&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; rets&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;
+    &lt;span class="kp"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;filter&lt;span class="p"&gt;(&lt;/span&gt;r2&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;recursive&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; init &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;See that this implementation is even simpler than the others, although it is not so easy to comprehend.
+Running the same test done before we see that this is not only simpler but also faster.
+It runs almost 2 times faster than the functional approach.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;system.time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;replicate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; ewma.loop&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;##    user  system elapsed 
+##   4.101   0.026   4.127
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;system.time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;replicate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; ewma.func&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;##    user  system elapsed 
+##   2.293   0.009   2.302
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;system.time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;replicate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; ewma.filter&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;##    user  system elapsed 
+##   1.062   0.009   1.072
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Here it has the &lt;a href="https://gist.github.com/wilsonfreitas/9972408"&gt;full code&lt;/a&gt;.&lt;/p&gt;
+&lt;script src="https://gist.github.com/wilsonfreitas/9972408.js"&gt;&lt;/script&gt;
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+    
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Fri, 04 Apr 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-04-04:posts/2014-04/computing-ewma-2.html</guid><category>risk management</category><category>volatility</category><category>R</category></item><item><title>Computing EWMA</title><link>http://wilsonfreitas.github.io/posts/2013-08/computing-ewma.html</link><description>&lt;p&gt;As a loop oriented developer—and long time user of old static typed languages—my first attempt to compute EWMA in R was&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;ewma&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;loop&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;rets&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;rets&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+    &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;rets&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;tail&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;At a first sigh this implementation seemed to be good but from the perspective of an R developer it isn't.
+Avoiding loops would be a better.
+After a little research I found &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;ewma&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;func&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;rets&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+    &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;vapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;rets&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This implementation looked clean and sexy to me and it also reveals the power of &lt;code&gt;*apply&lt;/code&gt; functions.
+I decided to evaluate the performance of both implementations in order to find out which one is really the best.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;lambda &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0.94&lt;/span&gt;
+rets &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0.02&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;rnorm&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;system.time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kp"&gt;replicate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; ewma.loop&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# user  system elapsed &lt;/span&gt;
+&lt;span class="c1"&gt;# 4.075   0.018   4.093 &lt;/span&gt;
+&lt;span class="kp"&gt;system.time&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kp"&gt;replicate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;10000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; ewma.func&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# user  system elapsed &lt;/span&gt;
+&lt;span class="c1"&gt;# 2.271   0.001   2.272&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The results are amazing.
+Using functional approach is, without doubt, much better.
+It is almost 2 times better and this is significant.&lt;/p&gt;
+&lt;script src="https://gist.github.com/wilsonfreitas/6279978.js"&gt;&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Sun, 18 Aug 2013 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2013-08-18:posts/2013-08/computing-ewma.html</guid><category>risk management</category><category>volatility</category><category>R</category></item><item><title>EWMA convergence and divergence</title><link>http://wilsonfreitas.github.io/posts/2013-08/ewma-convergence-and-divergence.html</link><description>&lt;p&gt;The so famous EWMA (Exponentially Weighted Moving Average) model&lt;/p&gt;
+&lt;div class="math"&gt;$$
+\hat\sigma^2_t = \lambda\hat\sigma^2_{t-1} + (1 - \lambda)r^2_t
+$$&lt;/div&gt;
+&lt;p&gt;used to estimate the volatility of asset returns.
+It is extensively used in Risk Management and is in the core of RiskMetrics.
+EWMA has a magic parameter &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; that is &lt;span class="math"&gt;\(0.94\)&lt;/span&gt; in the absolutely great amount of Risk Management Systems running World Wide.
+I can't tell if it is JPMorgan's fault or it's one more of those situations where the idiots are taking over, but why &lt;span class="math"&gt;\(0.94\)&lt;/span&gt;, why people seem to accept it without have any idea where it came from. (Why so serious.)
+But ok, JPM said that and JPM is great, so I see no reason to question that.
+However, there is another point which disturbs me more, the well accepted EWMA's &lt;em&gt;period of convergence&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;It is well known, among risk management practioneers, that EWMA with &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt; has a &lt;em&gt;period of convergence&lt;/em&gt; that is about 60 time steps.
+Unfortunately, for some series, you don't have 60 points of historical data and EWMA can't reach its convergence.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Oh! It looks a bad thing&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Some practioneers usually use a &lt;em&gt;proxy&lt;/em&gt; to fulfill that pre-requisite and that proxy can be any related asset (yeah! a bit heuristic).
+Of course I have one question: does it really matters?.
+I mean, is it really necessary to use a proxy to have a good estimative of the volatility?
+Use no proxy isn't an option?
+Or it is operational pre-requisite, the risk management system can't compute the volatility of a time series that doesn't enough historical data to guarantee the convergence its convergence.&lt;/p&gt;
+&lt;p&gt;I am going too far and I am afraid my anger on that subject attracts more attention than what really matters: &lt;strong&gt;how many returns are necessary to estimate &lt;span class="math"&gt;\(\hat\sigma^2_t\)&lt;/span&gt;?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I don't know the answer and I do think it has no right answer.
+I did an experiment in order to try to observe the EWMA's convergence and the results gave me a little hope.&lt;/p&gt;
+&lt;h2&gt;Bootstraping time series&lt;/h2&gt;
+&lt;p&gt;I picked up PETR4 time series and computed the returns for the year of 2009.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;xts&lt;span class="p"&gt;)&lt;/span&gt;
+table.df &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read.csv&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;PETR4.daily.raw.csv&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; header&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; stringsAsFactors&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;rownames&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;table.df&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;table.df&lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Date&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+prices.df &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; table.df&lt;span class="p"&gt;[,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Adj.Close&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; drop&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+prices.x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; as.xts&lt;span class="p"&gt;(&lt;/span&gt;prices.df&lt;span class="p"&gt;[,&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; order.by&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;rownames&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;prices.df&lt;span class="p"&gt;)))&lt;/span&gt;
+ret.x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;diff&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;prices.x&lt;span class="p"&gt;))[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2009&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;prices.x&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2009&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+boxplot&lt;span class="p"&gt;(&lt;/span&gt;coredata&lt;span class="p"&gt;(&lt;/span&gt;ret.x&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The graph below shows time series of prices of PETR4 for the year of 2009—that seemed to be a good year for PETR4.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PETR4 prices" src="http://wilsonfreitas.github.io/figure/prices.png" /&gt;&lt;/p&gt;
+&lt;p&gt;To have an idea of how volatile its was in that year I looked at the box plot of returns.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PETR4 returns boxplot" src="http://wilsonfreitas.github.io/figure/boxplot.png" /&gt;&lt;/p&gt;
+&lt;p&gt;I put the returns into a matrix because it is easier to work with this structure instead of working with a time series.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;rets &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; coredata&lt;span class="p"&gt;(&lt;/span&gt;first&lt;span class="p"&gt;(&lt;/span&gt;ret.x&lt;span class="p"&gt;,&lt;/span&gt; n&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now, assuming that the returns are IID I ran a bootstrap computating EWMA for each sample of the time series generated by &lt;code&gt;boot&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;boot&lt;span class="p"&gt;)&lt;/span&gt;
+ewma.boot &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;r&lt;span class="p"&gt;,&lt;/span&gt; idx&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    sig.p &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+    sig.s &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;vapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;idx&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;i&lt;span class="p"&gt;)&lt;/span&gt; sig.p &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt; sig.p&lt;span class="o"&gt;*&lt;/span&gt;lambda &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;r&lt;span class="p"&gt;[&lt;/span&gt;i&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; lambda&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;sig.s&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+lambda &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0.94&lt;/span&gt;
+r.ewma.boot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; boot&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; statistic&lt;span class="o"&gt;=&lt;/span&gt;ewma.boot&lt;span class="p"&gt;,&lt;/span&gt; R&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;200&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In the end of the bootstrap process I got a sample of EWMA time series in the variable &lt;code&gt;r.ewma.boot&lt;/code&gt;.
+&lt;code&gt;r.ewma.boot&lt;/code&gt; is an instance of the &lt;em&gt;class&lt;/em&gt; &lt;code&gt;boot&lt;/code&gt;, which is returned by the function with the same name.
+It has an attribute &lt;code&gt;t&lt;/code&gt; which stores all samples generated by the execution of &lt;code&gt;boot&lt;/code&gt; and other attribute &lt;code&gt;t0&lt;/code&gt; which stores the result for the original time series.
+I ran that experiment with &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt;, but it can be run with any other value.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Bootstraping EWMA calculations with lambda=0.94" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda94.png" /&gt;&lt;/p&gt;
+&lt;p&gt;The red line is the mean volatility and as we can observe, it converges to the long run standard deviation—shown by the black horizontal line.
+And, as some practioneers usually say, 60 time steps isn't a bad choice for EWMA's convergence, when &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt;.
+For &lt;span class="math"&gt;\(\lambda=0.98\)&lt;/span&gt; we need more time steps to reach the convergence—as can be seen in the image below the time series used has 200 time steps instead of 100.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Bootstraping EWMA calculations with lambda=0.98" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda98.png" /&gt;&lt;/p&gt;
+&lt;p&gt;We clearly observe the convergence, I tend to believe it is in distribution.
+Assintoticaly the mean value of EWMA estimator converges to the sample &lt;code&gt;sd&lt;/code&gt;, but EWMA gives a local estimative of volatility as we observe in the blue line.&lt;/p&gt;
+&lt;h2&gt;Simulated time series&lt;/h2&gt;
+&lt;p&gt;I extended that experiment for an environment where I could control all variables.
+So, following the assumption of IID returns I created one sample of returns and bootstraped it.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Bootstraping simulated time series with lambda=0.94" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda94-sim.png" /&gt;&lt;/p&gt;
+&lt;p&gt;We observe the convergence to the sample &lt;code&gt;sd&lt;/code&gt; which differs a little from the theoretical standard deviation (0.02).
+As expected the convergence with &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt; occurs within the same numbers of time steps we've observed in the real time series.
+This result might help confirming the assumption that assets' returns are IID.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="mf"&gt;0.94&lt;/span&gt;
+&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;matrix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;nrow&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;ncol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;r&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="mf"&gt;0.02&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;rnorm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;n&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;xlab&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;ylab&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;expression&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sigma&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
+    &lt;span class="nx"&gt;xlim&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nx"&gt;ylim&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mf"&gt;0.03&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+    &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;vapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;p&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="nx"&gt;lines&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;k&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="cp"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;sqrt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nx"&gt;col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;grey&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nx"&gt;abline&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;h&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;sd&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;r&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nx"&gt;col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;black&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;abline&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;60&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;black&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nx"&gt;lines&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nx"&gt;col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;red&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;I am obliged to agree that the &lt;em&gt;market convention&lt;/em&gt; isn't silly.
+Indeed, 60 times steps are reasonable for &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt; as more time steps are made necessary for greater values of &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt;.
+Though I couldn't validate the use of a proxy for series that don't have this minimal number of points I see that I can't use EWMA without it.&lt;/p&gt;
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+    
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Fri, 16 Aug 2013 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2013-08-16:posts/2013-08/ewma-convergence-and-divergence.html</guid><category>risk management</category><category>volatility</category><category>R</category></item></channel></rss>

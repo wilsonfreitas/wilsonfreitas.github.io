@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>R versus Python Comparação da Velocidade em Simulação — WilsonFreitas</title>
+	<meta name="description" content="Title: R versus Python Comparação da Velocidade em Simulação; Date: 2015-05-22; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">WilsonFreitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">R versus Python Comparação da Velocidade em Simulação</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2015-05-22T00:00:00-03:00" itemprop="datePublished">22/05/2015</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/data-science.html" rel="category">data science</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/python.html" rel="tag">python</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/performance.html" rel="tag">performance</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><div class="highlight"><pre><span class="kp">set.seed</span><span class="p">(</span><span class="m">101</span><span class="p">)</span>
+
+<span class="c1"># generate data</span>
+x <span class="o">&lt;-</span> <span class="m">0</span><span class="o">:</span><span class="m">100</span>
+y <span class="o">&lt;-</span> <span class="m">2</span><span class="o">*</span>x <span class="o">+</span> rnorm<span class="p">(</span><span class="m">101</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">)</span>
+
+<span class="c1"># plot data</span>
+plot<span class="p">(</span>x<span class="p">,</span> y<span class="p">)</span>
+
+<span class="c1"># run the regression</span>
+mod1 <span class="o">&lt;-</span> lm<span class="p">(</span>y <span class="o">~</span> x<span class="p">)</span>
+yHat <span class="o">&lt;-</span> fitted<span class="p">(</span>mod1<span class="p">)</span>
+
+<span class="c1"># get the residuals</span>
+errors <span class="o">&lt;-</span> resid<span class="p">(</span>mod1<span class="p">)</span>
+
+<span class="c1"># make a bootstrapping function</span>
+boot <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>n <span class="o">=</span> <span class="m">10000</span><span class="p">)</span> <span class="p">{</span>
+ b1 <span class="o">&lt;-</span> <span class="kt">numeric</span><span class="p">(</span>n<span class="p">)</span>
+ b1<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="o">&lt;-</span> coef<span class="p">(</span>mod1<span class="p">)[</span><span class="m">2</span><span class="p">]</span>
+
+ <span class="kr">for</span><span class="p">(</span>i <span class="kr">in</span> <span class="m">2</span><span class="o">:</span>n<span class="p">){</span>
+ residBoot <span class="o">&lt;-</span> <span class="kp">sample</span><span class="p">(</span>errors<span class="p">,</span> replace<span class="o">=</span><span class="bp">F</span><span class="p">)</span>
+ yBoot <span class="o">&lt;-</span> yHat <span class="o">+</span> residBoot
+ modBoot <span class="o">&lt;-</span> lm<span class="p">(</span>yBoot <span class="o">~</span> x<span class="p">)</span>
+ b1<span class="p">[</span>i<span class="p">]</span> <span class="o">&lt;-</span> coef<span class="p">(</span>modBoot<span class="p">)[</span><span class="m">2</span><span class="p">]</span>
+ <span class="p">}</span>
+
+ <span class="kr">return</span><span class="p">(</span>b1<span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># Run the bootstrapping function</span>
+<span class="kp">system.time</span><span class="p">(</span> bootB1 <span class="o">&lt;-</span> boot<span class="p">()</span> <span class="p">)</span>
+<span class="kp">mean</span><span class="p">(</span>bootB1<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">py</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="kn">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c"># Create the data</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+
+<span class="c"># Add the column of ones for the intercept</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">add_constant</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">prepend</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<span class="c"># Plot the data</span>
+<span class="n">py</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span>
+<span class="n">py</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&#39;bo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c"># Define the OLS models</span>
+<span class="n">mod1</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+
+<span class="c"># Fit the OLS model</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">mod1</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+
+<span class="c"># Get the fitted values</span>
+<span class="n">yHat</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">fittedvalues</span>
+
+<span class="c"># Get the residuals</span>
+<span class="n">resid</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">resid</span>
+
+<span class="c"># Set bootstrap size</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="c"># Save the slope</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">b1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">):</span>
+    <span class="n">residBoot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">resid</span><span class="p">)</span>
+    <span class="n">yBoot</span> <span class="o">=</span> <span class="n">yHat</span> <span class="o">+</span> <span class="n">residBoot</span>
+    <span class="n">modBoot</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">yBoot</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    <span class="n">resultsBoot</span> <span class="o">=</span> <span class="n">modBoot</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="n">b1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">resultsBoot</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="n">elapsedTime</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span>
+<span class="k">print</span> <span class="n">elapsedTime</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">b1</span><span class="p">)</span>
+</pre></div></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'R versus Python Comparação da Velocidade em Simulação';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-4510606-3', 'aboutwilson.net');
+ga('require', 'displayfeatures');
+ga('require', 'linkid', 'linkid.js');
+ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>
