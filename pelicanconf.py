@@ -55,8 +55,6 @@ EXTRA_PATH_METADATA = {
 
 THEME = '../lib/pelican-themes/aboutwilson'
 
-# MARKUP = ('md', 'Rmd', 'rmd')
-
 PLUGIN_PATHS = ('../lib/pelican-plugins', )
 
 PLUGINS = ['sitemap',
