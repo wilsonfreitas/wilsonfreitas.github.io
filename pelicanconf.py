@@ -3,12 +3,9 @@
 from __future__ import unicode_literals
 
 AUTHOR = u'Wilson Freitas'
-# MAINQUOTE = u'And in the end, the love you take is equal to the love you make.'
 MAINQUOTE = u'Data analysis is a mix of belief and evidence'
-SITENAME = u'WilsonFreitas'
-SITEURL = '/.'
-# SITEURL = 'http://blog.aboutwilson.net'
-
+SITENAME = u'Wilson Freitas'
+SITEURL = ''
 
 GOOGLE_ANALYTICS = True
 DISPLAY_PAGES_ON_MENU = False
@@ -22,12 +19,10 @@ DATE_FORMATS = {
     'en': '%Y-%m-%d',
 }
 
-# ARTICLE_URL = 'posts/{date:%Y}-{date:%m}-{date:%d}/{slug}/'
-# ARTICLE_SAVE_AS = 'posts/{date:%Y}-{date:%m}-{date:%d}/{slug}/index.html'
-ARTICLE_URL = 'posts/{date:%Y}-{date:%m}/{slug}.html'
-ARTICLE_LANG_URL = 'posts/{date:%Y}-{date:%m}/{slug}.html'
-ARTICLE_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}.html'
-ARTICLE_LANG_SAVE_AS = 'posts/{date:%Y}-{date:%m}/{slug}.html'
+ARTICLE_URL = 'posts/{slug}.html'
+ARTICLE_LANG_URL = 'posts/{slug}.html'
+ARTICLE_SAVE_AS = 'posts/{slug}.html'
+ARTICLE_LANG_SAVE_AS = 'posts/{slug}.html'
 DEFAULT_PAGINATION = False
 
 MENUITEMS = [('Arquivo', 'archive', 'archives.html'),
@@ -65,7 +60,6 @@ THEME = '../lib/pelican-themes/aboutwilson'
 PLUGIN_PATHS = ('../lib/pelican-plugins', )
 
 PLUGINS = ['sitemap',
-           'summary',
            'liquid_tags.img',
            'liquid_tags.video',
            'liquid_tags.include_code',
@@ -73,7 +67,6 @@ PLUGINS = ['sitemap',
            'liquid_tags.literal',
            'rmd_reader',
            'pymd_reader',
-           'render_math',
        ]
 
 # sitemap
@@ -99,3 +92,6 @@ TAG_CLOUD_STEPS = 4
 TAG_CLOUD_MAX_ITEMS = 100
 
 LOAD_CONTENT_CACHE = True
+
+# render_math
+TYPOGRIFY = False
