@@ -1,0 +1,116 @@
+Title: Empenada na Curva de Juros de DI1
+Category: finance
+Author: Wilson Freitas
+Tags: R, bizdays, term structure, interpolation
+Date: 2015-09-18
+Lang: pt
+Description: A empenada que a Curva de Juros de DI1 deu em setembro de 2015, após o downgrade do Brasil pelo S&P e o anúncio do pacote fiscal do governo.
+
+```{r, echo=FALSE}
+hook_plot <- knit_hooks$get('plot')
+knit_hooks$set(plot=function(x, options) {
+    if (!is.null(options$pelican.publish) && options$pelican.publish) {
+        x <- paste0("{filename}", x)
+    }
+    hook_plot(x, options)
+})
+opts_chunk$set(pelican.publish=TRUE)
+```
+
+[bmf]: http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br "BM&F Bovespa"
+[bmf-curves]: http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp "BVMF Curves"
+
+A curva de juros DI1, de depósitos interbancários de 1 dia, a curva mais negociada em nosso mercado, sofreu uma metamorfose nos últimos meses.
+Saímos de uma expectativa de juros de longo prazo de 12% para quase 16%.
+Quando falo juros de longo prazo me refiro aos contratos com vencimento a partir de 2020, com aproximadamente 5 anos de *duration*.
+
+Eu fiz o código abaixo para baixar curvas do site da [BM&F Bovespa][bmf] e vou usá-lo para baixar curvas de DI1 para diferentes datas deste ano de forma que seja possível obvervar a evolução dos juros.
+
+```{r, message=FALSE}
+library(XML)
+library(bizdays)
+
+cal <- Calendar(holidaysANBIMA, weekdays=c('saturday', 'sunday'), dib=252, name='ANBIMA')
+bizdays.options$set(default.calendar=cal)
+
+str_supplant <- function (string, repl) {
+	result <- str_match_all(string, "\\{([^{}]*)\\}")
+	if (length(result[[1]]) == 0)
+		return(string)
+	result <- result[[1]]
+	for (i in seq_len(dim(result)[1])) {
+		x <- result[i,]
+		pattern <- x[1]
+		key <- x[2]
+		if (!is.null(repl[[key]]))
+			string <- gsub(pattern, repl[[key]], string, perl=TRUE)
+	}
+	string
+}
+
+.get_curve_url <- function(refdate, ticker) {
+	url <- 'http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp'
+	query <- str_supplant('?Data={refdate}&Data1={sysdate}&slcTaxa={ticker}',
+		list(refdate=format(as.Date(refdate), '%d/%m/%Y'),
+			sysdate=format(Sys.Date(), '%Y%m%d'),
+			ticker=ticker))
+	paste0(url, query)
+}
+
+get_curve <- function (refdate, ticker='PRE') {
+	refdate <- as.Date(refdate)
+	url <- .get_curve_url(refdate, ticker)
+	doc <- htmlTreeParse(url, useInternalNodes=TRUE)
+	num <- xpathSApply(doc, "//td[contains(@class, 'tabelaConteudo')]", 
+		function(x) gsub('[\r\n \t]+', '', xmlValue(x)))
+	num <- sapply(num, function(x) as.numeric(gsub(',', '.', x)), USE.NAMES=FALSE)
+
+	colspan <- as.integer(xpathApply(doc, "//td[contains(@class, 'tabelaTitulo')]",  xmlAttrs )[[2]][3])
+	if (colspan == 1) {
+		terms <- num[c(TRUE, FALSE)]
+		rates <- num[c(FALSE, TRUE)]/100
+		log_pu <- log(1 + rates*terms/360)
+		rate <- function(pu, term) (pu - 1)*(360/term)
+	} else {
+		terms <- bizdayse(refdate, num[c(TRUE, FALSE, FALSE)])
+		rates <- num[c(FALSE, TRUE, FALSE)]/100
+		log_pu <- log((1 + rates)^(terms/252))
+		rate <- function(pu, term) pu^(252/term) - 1
+	}
+
+	log_price_interpolator <- approxfun(terms, log_pu, method='linear')
+	function (term) {
+		pu <- exp(log_price_interpolator(term))
+		rate(pu, term)*100
+	}
+}
+```
+
+Uma vez que este código foi *sourced* basta executar a função `get_curve` passando a data e a curva de interesse, no nosso caso a curva de interesse é a de DI1 que tem código `PRE` (de juros pré-fixados).
+
+```{r}
+irbrl <- get_curve('2015-01-02', 'PRE')
+irbrl(seq(21, 252, by=21))
+```
+
+Vamos comparar as curvas para diferentes datas, e assim será possível observar a empenada que a curva deu no mês de setembro.
+
+```{r many-di1-term-structure-plot, fig.width=15, fig.cap="Brazilian Term Structure", warning=FALSE}
+seq(21, 2520, by=21) -> terms
+
+dates <- seq(as.Date('2015-01-01'), as.Date('2015-09-01'), by='2 months')
+dates <- adjust.next(dates)
+curves <- lapply(dates, function(d) {
+	get_curve(d, 'PRE')(terms)
+})
+names(curves) <- dates
+
+ir_df <- stack(curves)
+ir_df$date <- terms + Sys.Date()
+
+library(ggplot2)
+ggplot(data=ir_df, aes(x=date, y=values, colour=ind)) + geom_point() + geom_line() +
+  xlab('Datas') + ylab('Taxas') + theme(legend.title=element_blank(), legend.position='top') + ggtitle('Curvas de DI1')
+```
+
+Observe que de julho para setembro as taxas de longo prazo se elevaram em 2 pontos percentuais (200bps), o que para um prazo de 10 anos é uma variação significativa.
