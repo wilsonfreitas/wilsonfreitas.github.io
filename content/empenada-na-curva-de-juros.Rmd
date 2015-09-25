@@ -29,6 +29,7 @@ Eu fiz o código abaixo para baixar curvas do site da [BM&F Bovespa][bmf] e vou 
 ```{r, message=FALSE}
 library(XML)
 library(bizdays)
+library(stringr)
 
 cal <- Calendar(holidaysANBIMA, weekdays=c('saturday', 'sunday'), dib=252, name='ANBIMA')
 bizdays.options$set(default.calendar=cal)
