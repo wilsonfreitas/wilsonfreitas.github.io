@@ -44,7 +44,7 @@ DISQUS_SITENAME = 'aboutwilson'
 TWITTER_USERNAME = 'aboutwilson'
 # GITHUB_URL = 'https://github.com/wilsonfreitas'
 
-STATIC_PATHS = ['figure', 'datasets', 'talks',
+STATIC_PATHS = ['figure', 'datasets', 'talks', 'images',
     # 'extra/CNAME',
     'extra/google5b4e57fed68382ab.txt']
 STATIC_EXCLUDE_SOURCES = False

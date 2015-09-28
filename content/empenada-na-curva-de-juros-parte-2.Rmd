@@ -82,14 +82,14 @@ get_curve <- function (refdate, ticker='PRE') {
 
 O mês de setembro de 2015 não está sendo fácil para o mercado financeiro.
 Alta de dólar (rompeu a barreira de R$ 4,00 e segue sem rumo), disparada de juros, pacote bomba do governo, pacote fiscal nebuloso, volta da CPMF e por aí vai.
-Mas no dia 23 de setembro de 2015 aconteceu algo interessante, após o nome do deputado Eduardo Cunha aparecer na lista de acusados da Operação Lava Jato, a curva de juros deu uma nova empenada.
+Mas no dia 23 de setembro de 2015 aconteceu algo interessante, após o nome do deputado Eduardo Cunha aparecer na lista de acusados da Operação Lava Jato, a curva de juros apresentou forte elevação.
 Essa empenada é reflexo da incerteza que ronda a aprovação de medidas importantes para a economia e para o país, incluindo o corte de gastos e o ajuste fiscal.
 Olhe no gráfico abaixo a curva de juros de DI1 para a semana do dia 21 de setembro.
 
 ```{r many-di1-term-structure-plot-2, fig.width=15, fig.cap="Brazilian Term Structure", warning=FALSE, message=FALSE}
 seq(21, 1260, by=21) -> terms
 
-dates <- seq(as.Date('2015-09-21'), as.Date('2015-09-23'), by='days')
+dates <- seq(as.Date('2015-09-21'), as.Date('2015-09-25'), by='days')
 curves <- lapply(dates, function(d) {
 	get_curve(d, 'PRE')(terms)
 })
@@ -103,6 +103,8 @@ ggplot(data=ir_df, aes(x=date, y=values, colour=ind)) + geom_point() + geom_line
   xlab('Datas') + ylab('Taxas') + theme(legend.title=element_blank(), legend.position='top') + ggtitle('Curvas de DI1')
 ```
 
-Isso mesmo, em 3 dias a curva deu uma empenada de 1 ponto percentual (100 basis points (bps)).
+Isso mesmo, em 3 dias a curva deu uma empenada de 1 ponto percentual (100 basis points (bps)) e depois retornou ao nível inicial no último dia da semana.
+Esses movimentos do mercado, na minha opinião são muito difíceis de se explicar.
+Em geral os analistas se prendem a algum fato, como as notícias do governo, ou criam um factóide, mas a verdade é que pode ser um grande *player* manipulando o mercado de forma indireta.
 
 > os códigos da função `get_curve` estão no post [Empenada na Curva de Juros de DI1]({filename}empenada-na-curva-de-juros.Rmd)
