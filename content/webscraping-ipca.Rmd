@@ -1,0 +1,138 @@
+Title: Webscraping IPCA
+Category: webscraping
+Author: Wilson Freitas
+Tags: R, rvest
+Date: 2015-10-02
+Lang: pt
+
+```{r set-options, echo=FALSE, cache=FALSE}
+options(width=120)
+```
+
+```{r, echo=FALSE}
+hook_plot <- knit_hooks$get('plot')
+knit_hooks$set(plot=function(x, options) {
+    if (!is.null(options$pelican.publish) && options$pelican.publish) {
+        x <- paste0("{filename}", x)
+    }
+    hook_plot(x, options)
+})
+opts_chunk$set(pelican.publish=TRUE)
+```
+
+Frequentemente eu consumo dados disponíveis na Internet para construir *datasets* em minhas análises.
+Em sua maioria são dados de mercado financeiro, que incluem:
+
+- indicadores econômicos
+- índices de inflação
+- taxas de juros
+- preços de ações
+- preços de contratos futuros
+- dados cadastrais de instrumentos financeiros negociados na BM&FBovespa
+- taxas e preços de títulos públicos
+- entre outros
+
+Decidi apresentar formas automáticas de obter estes dados e este post é o primeiro da série [webscraping](/category/webscraping.html).
+
+Vou começar com IPCA porque venho trabalhando muito com ele recentemente de forma que criamos uma relação.
+
+Eu capturo a série IPCA do site [PortalBrasil](http://portalbrasil.net) no link
+http://www.portalbrasil.net/ipca.htm.
+Para fazer o webscraping eu usei o [rvest](https://github.com/hadley/rvest).
+No código abaixo eu leio a URL, seleciono a tabela com o IPCA mensal e converto em um `data.frame`.
+
+```{r, results='hold', message=FALSE, width=120}
+library(rvest)
+url <- 'http://www.portalbrasil.net/ipca.htm'
+ipca_data <- read_html(url) %>%
+  html_nodes(xpath="//table[6]") %>%
+  .[[1]] %>%
+  html_table(header=TRUE)
+head(ipca_data)
+```
+
+Alguns pontos escondidos nas linhas de código acima:
+
+- da página carregada a informação que eu queria estava na sexta tabela da página, como eu sabia disso? Não sou adivinho, imprimi tabala a tabela até chegar a que eu desejava.
+- eu prefiro usar `xpath` para especificar os elementos de interesse. Nem sempre isso é possível, eventualmente o HTML não está bem formatado e os parsers não funcionam direito. Nestes casos bibliotecas como BeautifulSoup do python são mais eficazes.
+- eu utilizo a operação `.[[1]]` após selecionar a tabela, porque? O `html_nodes` retorno uma lista com 1 elemento e tenho que extrair esse elemento da lista para trabalhar com ele.
+- `html_table` converte a tabela em HTML em um `data.frame` que eu chamo de `ipca_data`.
+
+A `data.frame` `ipca_data` tem alguns problemas de formato:
+
+- os nomes das colunas devem ser formatados, em particular a primeira que está sem nome.
+- as colunas estão como texto e devem ser convertidas para decimal
+- a última coluna vai exigir um esforço adicional na conversão
+
+Vamos limpar os dados extraindo apenas os números que interessam.
+Eu uso uma expressão regular onde especifico um decimal separado (ou não) por vírgula e capturo em um grupo.
+Em seguida eu troco `,` por `.` e depois converto para `numeric`.
+Note que eu uso `suppressWarnings` porque alguns valores não são convertidos e geram `NA` e eu não quero as mensagens de aviso na saída.
+
+```{r}
+.d <- dim(ipca_data)
+.data <- lapply(ipca_data[,1:.d[2]], function (x) {
+  x <- stringr::str_replace(x, '^[^0-9]*(\\d+(\\.\\d+)?(,\\d+)?)[^0-9]*$', '\\1')
+  x <- stringr::str_replace(x, '\\.', '')
+  x <- stringr::str_replace(x, ',', '.')
+  x <- suppressWarnings(as.numeric(x))
+  x
+})
+```
+
+`.data` é uma lista com as colunas do `data.frame` contendo todos os números formatados.
+Agora vou converte-lo novamente em um `data.frame`.
+
+```{r}
+.data <- do.call(data.frame, .data)
+```
+
+Ainda é necessário corrigir os nomes.
+Vou renomear todas as colunas, pois prefiro trabalhar com os meses em formato numérico e separar a primeira coluna do ano e a última da inflação acumulada no ano.
+
+```{r}
+colnames(.data) <- c('ano', 1:12, 'acumulado')
+.data
+```
+
+Eu diria que aqui termina o trabalho de webscraping, no entanto, os dados não estão em um formato adequado para trabalhar.
+Um formato que eu considero interessante é o de uma série temporal onde cada inflação é representada por um par data (mês e ano) e valor.
+Neste contexto a coluna `acumulado` é ignorada e por isso vamos começar removendo-a
+
+```{r}
+.data <- subset(.data, select=-acumulado)
+```
+
+Agora vou transformar os dados.
+
+```{r}
+.data <- within(reshape2::melt(.data, id="ano"), {
+  variable <- as.numeric(variable)
+  mes <- as.Date(paste(ano, variable, '01', sep='-'))
+  rm(ano, variable)
+})
+```
+
+Esse comando faz diversas coisas e retorna um `data.frame` com a _pattern_ data-valor, no entando as datas estão fora de ordem.
+Para colocar os dados em ordem cronológica eu vou criar um objeto de série temporal.
+Gosto do pacote `xts` que cria objetos de séries de tempo com avançadas funcionalidades de indexação.
+
+```{r, message=FALSE, fig.width=14}
+library(xts)
+ipca <- with(.data, xts(value, mes))
+names(ipca) <- 'IPCA'
+plot(ipca, main='IPCA')
+```
+
+A inflação no governo Dilma Rousseff (2011-).
+
+```{r, fig.width=14}
+plot(ipca['2011/'], type='b', pch=19, main='IPCA - Governo Dilma Rousseff')
+```
+
+## Conclusão
+
+Vimos como capturar a série temporal do IPCA do site PortalBrasil.
+Há outras formas de obter a série do IPCA, para citar 2 temos o webservice do Banco Central e o Quandl.
+No entanto a extração apresentada aqui trabalha dados brutos, o que pra mim é melhor porque eu tomo as decisões sobre a manipulação e interpretação dos dados.
+Além disso utilizo apenas HTTP, preciso apenas que o site esteja no ar disponibilizando páginas estáticas, as outras alternativas são serviços onde é necessário uma API para obter os dados.

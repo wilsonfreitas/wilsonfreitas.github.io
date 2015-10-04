@@ -56,7 +56,7 @@ get_curve <- function (refdate, ticker='PRE') {
 	refdate <- as.Date(refdate)
 	url <- .get_curve_url(refdate, ticker)
 	doc <- htmlTreeParse(url, useInternalNodes=TRUE)
-	num <- xpathSApply(doc, "//td[contains(@class, 'tabelaConteudo')]", 
+	num <- xpathSApply(doc, "//td[contains(@class, 'tabelaConteudo')]",
 		function(x) gsub('[\r\n \t]+', '', xmlValue(x)))
 	num <- sapply(num, function(x) as.numeric(gsub(',', '.', x)), USE.NAMES=FALSE)
 
@@ -129,4 +129,3 @@ ir_df <- stack(list(`2014-06-11`=d11, `2014-06-13`=d13))
 ir_df$date <- terms
 ggplot(data=ir_df, aes(x=date, y=values, colour=ind)) + geom_point() + geom_line() + xlab('Dates') + ylab('Rates') + theme(legend.title=element_blank())
 ```
-
