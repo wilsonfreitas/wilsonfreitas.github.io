@@ -36,7 +36,7 @@ MEDIAITEMS = [
     ('http://br.linkedin.com/pub/wilson-freitas/a/572/609/en', 'linkedin', 'Wilson Freitas')
 ]
 
-FEED_DOMAIN = 'http://blog.aboutwilson.net'
+FEED_DOMAIN = 'http://wilsonfreitas.github.io'
 FEED_ALL_RSS = 'feeds/rss.xml'
 TAG_FEED_RSS = 'feeds/%s.rss.xml'
 
@@ -44,7 +44,7 @@ DISQUS_SITENAME = 'aboutwilson'
 TWITTER_USERNAME = 'aboutwilson'
 # GITHUB_URL = 'https://github.com/wilsonfreitas'
 
-STATIC_PATHS = ['figure', 'datasets', 'talks', 'images',
+STATIC_PATHS = ['figure', 'datasets', 'images',
     # 'extra/CNAME',
     'extra/google5b4e57fed68382ab.txt']
 STATIC_EXCLUDE_SOURCES = False
