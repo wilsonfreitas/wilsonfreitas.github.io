@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WilsonFreitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/statsmodels.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 06 May 2015 00:00:00 -0300</lastBuildDate><item><title>Captura de dados da Corrida de São Silvestre com Python—Parte 3</title><link>http://wilsonfreitas.github.io/posts/2015-05/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-3.html</link><description>&lt;p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wilson Freitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/statsmodels.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 06 May 2015 00:00:00 -0300</lastBuildDate><item><title>Captura de dados da Corrida de São Silvestre com Python—Parte 3</title><link>http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-3.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;
 &lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Dando sequência a série de posts onde eu faço a análise do &lt;em&gt;dataset&lt;/em&gt; de campeões da Corrida de São Silvestre, vou desenvolver a análise exploratória através de gráficos que me ajudam e compreender melhor os dados e a levantar algumas questões interessantes como o desempenho da participação dos quenianos a partir da década de 90.&lt;/p&gt;
-&lt;p&gt;Mostro como este &lt;em&gt;dataset&lt;/em&gt; foi construído no post &lt;a href="http://wilsonfreitas.github.io/posts/2015-01/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-1.html"&gt;Captura de dados da Corrida de São Silvestre com Python—Parte 1&lt;/a&gt; e faço o tratamento e limpeza dos dados no post &lt;a href="http://wilsonfreitas.github.io/posts/2015-04/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html"&gt;Captura de dados da Corrida de São Silvestre com Python—Parte 2&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Mostro como este &lt;em&gt;dataset&lt;/em&gt; foi construído no post &lt;a href="http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-1.html"&gt;Captura de dados da Corrida de São Silvestre com Python—Parte 1&lt;/a&gt; e faço o tratamento e limpeza dos dados no post &lt;a href="http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html"&gt;Captura de dados da Corrida de São Silvestre com Python—Parte 2&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Lembrando que o objetivo disso tudo é entender como o clima pode influenciar o desempenho dos corredores.
-Na &lt;a href="http://wilsonfreitas.github.io/posts/2015-04/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html"&gt;Parte 2&lt;/a&gt; dessa sequência eu criei a variável &lt;code&gt;pace&lt;/code&gt; mas não disse porque.
+Na &lt;a href="http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html"&gt;Parte 2&lt;/a&gt; dessa sequência eu criei a variável &lt;code&gt;pace&lt;/code&gt; mas não disse porque.
 O &lt;code&gt;pace&lt;/code&gt; é uma medida relativa que relaciona o &lt;code&gt;percurso&lt;/code&gt; com o &lt;code&gt;tempo&lt;/code&gt;, ou seja, é uma forma diferente de expressar a velocidade do corredor, também poderia ter utilizado a velocidade em km/min ou km/h, mas o &lt;code&gt;pace&lt;/code&gt; é mais comum entre os corredores.
 Não poderia utilizar apenas o &lt;code&gt;tempo&lt;/code&gt; porque o ele depende do &lt;code&gt;percurso&lt;/code&gt;, e quanto maior o percurso maior o tempo, logo isso compromete qualquer comparação que eu queira fazer.
 A idéia neste post é explorar os dados, entender o seu comportamento e como posso trabalhar com eles para tentar responder a pergunta colocada.
@@ -72,7 +72,7 @@ statsmodels 0.6.1
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;Começo carregando o arquivo CSV &lt;code&gt;saosilvestre-lf.csv&lt;/code&gt; que são os dados limpos e formatados produzidos no último &lt;a href="http://wilsonfreitas.github.io/posts/2015-04/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html"&gt;post&lt;/a&gt;. O &lt;em&gt;dataset&lt;/em&gt; está limpo e formatado, os campos de data já estão no formato ISO e as colunas &lt;code&gt;tempo&lt;/code&gt; e &lt;code&gt;pace&lt;/code&gt; estão em decimais que representam os minutos.&lt;/p&gt;
+&lt;p&gt;Começo carregando o arquivo CSV &lt;code&gt;saosilvestre-lf.csv&lt;/code&gt; que são os dados limpos e formatados produzidos no último &lt;a href="http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html"&gt;post&lt;/a&gt;. O &lt;em&gt;dataset&lt;/em&gt; está limpo e formatado, os campos de data já estão no formato ISO e as colunas &lt;code&gt;tempo&lt;/code&gt; e &lt;code&gt;pace&lt;/code&gt; estão em decimais que representam os minutos.&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2259,4 +2259,4 @@ Na análise de dados é preciso ter parsimônia para saber interpretar o que os 
 
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Wed, 06 May 2015 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2015-05-06:posts/2015-05/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-3.html</guid><category>python</category><category>statsmodels</category></item></channel></rss>
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Wed, 06 May 2015 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2015-05-06:posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-3.html</guid><category>python</category><category>statsmodels</category></item></channel></rss>

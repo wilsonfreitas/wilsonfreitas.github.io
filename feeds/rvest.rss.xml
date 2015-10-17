@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wilson Freitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/rvest.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 02 Oct 2015 00:00:00 -0300</lastBuildDate><item><title>Webscraping IPCA</title><link>http://wilsonfreitas.github.io/posts/webscraping-ipca.html</link><description>&lt;p&gt;Frequentemente eu consumo dados disponíveis na Internet para construir &lt;em&gt;datasets&lt;/em&gt; em minhas análises.
+Em sua maioria são dados de mercado financeiro, que incluem:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;indicadores econômicos&lt;/li&gt;
+&lt;li&gt;índices de inflação&lt;/li&gt;
+&lt;li&gt;taxas de juros&lt;/li&gt;
+&lt;li&gt;preços de ações&lt;/li&gt;
+&lt;li&gt;preços de contratos futuros&lt;/li&gt;
+&lt;li&gt;dados cadastrais de instrumentos financeiros negociados na BM&amp;amp;FBovespa&lt;/li&gt;
+&lt;li&gt;taxas e preços de títulos públicos&lt;/li&gt;
+&lt;li&gt;entre outros&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Decidi apresentar formas automáticas de obter estes dados e este post é o primeiro da série &lt;a href="/category/webscraping.html"&gt;webscraping&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Vou começar com IPCA porque venho trabalhando muito com ele recentemente de forma que criamos uma relação.&lt;/p&gt;
+&lt;p&gt;Eu capturo a série IPCA do site &lt;a href="http://portalbrasil.net"&gt;PortalBrasil&lt;/a&gt; no link
+http://www.portalbrasil.net/ipca.htm.
+Para fazer o webscraping eu usei o &lt;a href="https://github.com/hadley/rvest"&gt;rvest&lt;/a&gt;.
+No código abaixo eu leio a URL, seleciono a tabela com o IPCA mensal e converto em um &lt;code&gt;data.frame&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rvest&lt;span class="p"&gt;)&lt;/span&gt;
+url &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://www.portalbrasil.net/ipca.htm&amp;#39;&lt;/span&gt;
+ipca_data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read_html&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  html_nodes&lt;span class="p"&gt;(&lt;/span&gt;xpath&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//table[6]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  html_table&lt;span class="p"&gt;(&lt;/span&gt;header&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ipca_data&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;##          JAN   FEV   MAR  ABR  MAI   JUN   JUL   AGO   SET   OUT   NOV   DEZ ACUMULADO\n          NO ANO 
+## 1 1980  6,62  4,62  6,04 5,29 5,70  5,31  5,55  4,95  4,23  9,48  6,67  6,61                       99,27%
+## 2 1981  6,84  6,40  4,97 6,46 5,56  5,52  6,26  5,50  5,26  5,08  5,27  5,93                       95,65%
+## 3 1982  6,97  6,64  5,71 5,89 6,66  7,10  6,36  5,97  5,08  4,44  5,29  7,81                      104,80%
+## 4 1983  8,64  7,86  7,34 6,58 6,48  9,88 10,08  9,11 10,30  8,87  7,38  8,68                      163,99%
+## 5 1984  9,67  9,50  8,94 9,54 9,05 10,08  9,72  9,35 11,75 10,44 10,53 11,98                      215,27%
+## 6 1985 11,76 10,87 10,16 8,20 7,20  8,49 10,31 12,05 11,12 10,62 13,97 15,07                      242,24%
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Alguns pontos escondidos nas linhas de código acima:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;da página carregada a informação que eu queria estava na sexta tabela da página, como eu sabia disso? Não sou adivinho, imprimi tabala a tabela até chegar a que eu desejava.&lt;/li&gt;
+&lt;li&gt;eu prefiro usar &lt;code&gt;xpath&lt;/code&gt; para especificar os elementos de interesse. Nem sempre isso é possível, eventualmente o HTML não está bem formatado e os parsers não funcionam direito. Nestes casos bibliotecas como BeautifulSoup do python são mais eficazes.&lt;/li&gt;
+&lt;li&gt;eu utilizo a operação &lt;code&gt;.[[1]]&lt;/code&gt; após selecionar a tabela, porque? O &lt;code&gt;html_nodes&lt;/code&gt; retorno uma lista com 1 elemento e tenho que extrair esse elemento da lista para trabalhar com ele.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;html_table&lt;/code&gt; converte a tabela em HTML em um &lt;code&gt;data.frame&lt;/code&gt; que eu chamo de &lt;code&gt;ipca_data&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;A &lt;code&gt;data.frame&lt;/code&gt; &lt;code&gt;ipca_data&lt;/code&gt; tem alguns problemas de formato:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;os nomes das colunas devem ser formatados, em particular a primeira que está sem nome.&lt;/li&gt;
+&lt;li&gt;as colunas estão como texto e devem ser convertidas para decimal&lt;/li&gt;
+&lt;li&gt;a última coluna vai exigir um esforço adicional na conversão&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Vamos limpar os dados extraindo apenas os números que interessam.
+Eu uso uma expressão regular onde especifico um decimal separado (ou não) por vírgula e capturo em um grupo.
+Em seguida eu troco &lt;code&gt;,&lt;/code&gt; por &lt;code&gt;.&lt;/code&gt; e depois converto para &lt;code&gt;numeric&lt;/code&gt;.
+Note que eu uso &lt;code&gt;suppressWarnings&lt;/code&gt; porque alguns valores não são convertidos e geram &lt;code&gt;NA&lt;/code&gt; e eu não quero as mensagens de aviso na saída.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="m"&gt;.&lt;/span&gt;d &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ipca_data&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;.&lt;/span&gt;data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ipca_data&lt;span class="p"&gt;[,&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;d&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]],&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; stringr&lt;span class="o"&gt;::&lt;/span&gt;str_replace&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;^[^0-9]*(\\d+(\\.\\d+)?(,\\d+)?)[^0-9]*$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;\\1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; stringr&lt;span class="o"&gt;::&lt;/span&gt;str_replace&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;\\.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; stringr&lt;span class="o"&gt;::&lt;/span&gt;str_replace&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;suppressWarnings&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;))&lt;/span&gt;
+  x
+&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;.data&lt;/code&gt; é uma lista com as colunas do &lt;code&gt;data.frame&lt;/code&gt; contendo todos os números formatados.
+Agora vou converte-lo novamente em um &lt;code&gt;data.frame&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="m"&gt;.&lt;/span&gt;data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;do.call&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;data&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Ainda é necessário corrigir os nomes.
+Vou renomear todas as colunas, pois prefiro trabalhar com os meses em formato numérico e separar a primeira coluna do ano e a última da inflação acumulada no ano.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;colnames&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;data&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;ano&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;12&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;acumulado&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="m"&gt;.&lt;/span&gt;data
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;##     ano     1     2     3     4     5     6     7     8     9    10    11    12 acumulado
+## 1  1980  6,62  4,62  6,04  5,29  5,70  5,31  5,55  4,95  4,23  9,48  6,67  6,61     99,27
+## 2  1981  6,84  6,40  4,97  6,46  5,56  5,52  6,26  5,50  5,26  5,08  5,27  5,93     95,65
+## 3  1982  6,97  6,64  5,71  5,89  6,66  7,10  6,36  5,97  5,08  4,44  5,29  7,81    104,80
+## 4  1983  8,64  7,86  7,34  6,58  6,48  9,88 10,08  9,11 10,30  8,87  7,38  8,68    163,99
+## 5  1984  9,67  9,50  8,94  9,54  9,05 10,08  9,72  9,35 11,75 10,44 10,53 11,98    215,27
+## 6  1985 11,76 10,87 10,16  8,20  7,20  8,49 10,31 12,05 11,12 10,62 13,97 15,07    242,24
+## 7  1986 14,37 12,72  4,77  0,78  1,40  1,27  1,71  3,55  1,72  1,90  5,45 11,65     79,65
+## 8  1987 13,21 12,64 16,37 19,10 21,45 19,71  9,21  4,87  7,78 11,22 15,08 14,15    363,41
+## 9  1988 18,89 15,70 17,60 19,29 17,42 22,00 21,91 21,59 27,45 25,62 27,94 28,70    980,22
+## 10 1989 37,49 16,78  6,82  8,33 17,92 28,65 27,74 33,71 37,56 39,77 47,82 51,50   1972,91
+## 11 1990 67,55 75,73 82,39 15,52  7,59 11,75 12,92 12,88 14,41 14,36 16,81 18,44   1620,96
+## 12 1991 20,75 20,72 11,92  4,99  7,43 11,19 12,41 15,63 15,63 20,23 25,21 23,71    472,69
+## 13 1992 25,94 24,32 21,40 19,93 24,86 20,21 21,83 22,14 24,63 25,24 22,49 25,24   1119,09
+## 14 1993 30,35 24,98 27,26 27,75 27,69 30,07 30,72 32,96 35,69 33,92 35,56 36,84   2477,15
+## 15 1994 41,31 40,27 42,75 42,68 44,03 47,43  6,84  1,86  1,53  2,62  2,81  1,71    916,43
+## 16 1995  1,70  1,02  1,55  2,43  2,67  2,26  2,36  0,99  0,99  1,41  1,47  1,56     22,41
+## 17 1996  1,34  1,03  0,35  1,26  1,22  1,19  1,11  0,44  0,15  0,30  0,32  0,47      9,56
+## 18 1997  1,18  0,50  0,51  0,88  0,41  0,54  0,22  0,02  0,06  0,23  0,17  0,43      5,22
+## 19 1998  0,71  0,46  0,34  0,24  0,50  0,02  0,12  0,51  0,22  0,02  0,12  0,33      1,66
+## 20 1999  0,70  1,05  1,10  0,56  0,30  0,19  1,09  0,56  0,31  1,19  0,95  0,60      8,94
+## 21 2000  0,62  0,13  0,22  0,42  0,01  0,23  1,61  1,31  0,23  0,14  0,32  0,59      5,97
+## 22 2001  0,57  0,46  0,38  0,58  0,41  0,52  1,33  0,70  0,28  0,83  0,71  0,65      7,67
+## 23 2002  0,52  0,36  0,60  0,80  0,21  0,42  1,19  0,65  0,72  1,31  3,02  2,10     12,53
+## 24 2003  2,25  1,57  1,23  0,97  0,61  0,15  0,20  0,34  0,78  0,29  0,34  0,52      9,30
+## 25 2004  0,76  0,61  0,47  0,37  0,51  0,71  0,91  0,69  0,33  0,44  0,69  0,86      7,60
+## 26 2005  0,58  0,59  0,61  0,87  0,49  0,02  0,25  0,17  0,35  0,75  0,55  0,36      5,69
+## 27 2006  0,59  0,41  0,43  0,21  0,10  0,21  0,19  0,05  0,21  0,33  0,31  0,48      3,14
+## 28 2007  0,44  0,44  0,37  0,25  0,28  0,28  0,24  0,47  0,18  0,30  0,38  0,74      4,45
+## 29 2008  0,54  0,49  0,48  0,55  0,79  0,74  0,53  0,28  0,26  0,45  0,36  0,28      5,90
+## 30 2009  0,48  0,55  0,20  0,48  0,47  0,36  0,24  0,15  0,24  0,28  0,41  0,37      4,31
+## 31 2010  0,75  0,78  0,52  0,57  0,43  0,00  0,01  0,04  0,45  0,75  0,83  0,63      5,90
+## 32 2011  0,83  0,80  0,79  0,77  0,47  0,15  0,16  0,37  0,53  0,43  0,52  0,50      6,50
+## 33 2012  0,56  0,45  0,21  0,64  0,36  0,08  0,43  0,41  0,57  0,59  0,60  0,79      5,83
+## 34 2013  0,86  0,60  0,47  0,55  0,37  0,26  0,03  0,24  0,35  0,57  0,54  0,92      5,91
+## 35 2014  0,55  0,69  0,92  0,67  0,46  0,40  0,01  0,25  0,57  0,42  0,51  0,78      6,40
+## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22    NA    NA    NA    NA      7,06
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Eu diria que aqui termina o trabalho de webscraping, no entanto, os dados não estão em um formato adequado para trabalhar.
+Um formato que eu considero interessante é o de uma série temporal onde cada inflação é representada por um par data (mês e ano) e valor.
+Neste contexto a coluna &lt;code&gt;acumulado&lt;/code&gt; é ignorada e por isso vamos começar removendo-a&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="m"&gt;.&lt;/span&gt;data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;subset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;data&lt;span class="p"&gt;,&lt;/span&gt; select&lt;span class="o"&gt;=-&lt;/span&gt;acumulado&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Agora vou transformar os dados.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="m"&gt;.&lt;/span&gt;data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;within&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;reshape2&lt;span class="o"&gt;::&lt;/span&gt;melt&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;data&lt;span class="p"&gt;,&lt;/span&gt; id&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ano&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  variable &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;variable&lt;span class="p"&gt;)&lt;/span&gt;
+  mes &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;paste&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ano&lt;span class="p"&gt;,&lt;/span&gt; variable&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;01&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; sep&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;-&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="kp"&gt;rm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ano&lt;span class="p"&gt;,&lt;/span&gt; variable&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Esse comando faz diversas coisas e retorna um &lt;code&gt;data.frame&lt;/code&gt; com a &lt;em&gt;pattern&lt;/em&gt; data-valor, no entando as datas estão fora de ordem.
+Para colocar os dados em ordem cronológica eu vou criar um objeto de série temporal.
+Gosto do pacote &lt;code&gt;xts&lt;/code&gt; que cria objetos de séries de tempo com avançadas funcionalidades de indexação.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;xts&lt;span class="p"&gt;)&lt;/span&gt;
+ipca &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;data&lt;span class="p"&gt;,&lt;/span&gt; xts&lt;span class="p"&gt;(&lt;/span&gt;value&lt;span class="p"&gt;,&lt;/span&gt; mes&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;IPCA&amp;#39;&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;,&lt;/span&gt; main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;IPCA&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="plot of chunk unnamed-chunk-8" src="http://wilsonfreitas.github.io/figure/unnamed-chunk-8-1.png" /&gt; &lt;/p&gt;
+&lt;p&gt;A inflação no governo Dilma Rousseff (2011-).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2011/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; pch&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;19&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;IPCA - Governo Dilma Rousseff&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="plot of chunk unnamed-chunk-9" src="http://wilsonfreitas.github.io/figure/unnamed-chunk-9-1.png" /&gt; &lt;/p&gt;
+&lt;h2&gt;Conclusão&lt;/h2&gt;
+&lt;p&gt;Vimos como capturar a série temporal do IPCA do site PortalBrasil.
+Há outras formas de obter a série do IPCA, para citar 2 temos o webservice do Banco Central e o Quandl.
+No entanto a extração apresentada aqui trabalha dados brutos, o que pra mim é melhor porque eu tomo as decisões sobre a manipulação e interpretação dos dados.
+Além disso utilizo apenas HTTP, preciso apenas que o site esteja no ar disponibilizando páginas estáticas, as outras alternativas são serviços onde é necessário uma API para obter os dados.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Fri, 02 Oct 2015 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2015-10-02:posts/webscraping-ipca.html</guid><category>R</category><category>rvest</category></item></channel></rss>

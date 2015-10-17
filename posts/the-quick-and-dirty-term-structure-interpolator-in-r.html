@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>The quick and dirty term structure interpolator in R — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: The quick and dirty term structure interpolator in R; Date: 2014-06-15; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="The quick and dirty term structure interpolator in R"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html"/>
+	<meta property="og:description" content=""/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">The quick and dirty term structure interpolator in R</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2014-06-15T00:00:00-03:00" itemprop="datePublished">2014-06-15</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/bizdays.html" rel="tag">bizdays</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/term-structure.html" rel="tag">term structure</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/interpolation.html" rel="tag">interpolation</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/quick-tips.html" rel="tag">quick tips</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
+I use the many of the curves released by <a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;F Bovespa">BM&amp;F Bovespa</a> in that <a href="http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp" title="BVMF Curves">page</a>.
+In order to have the curves always at hand I've written that few lines of code to download and return an interpolator where the only argument is the number of days I want to interpolate.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>XML<span class="p">)</span>
+
+<span class="m">.</span>get_curve_url <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>refdate<span class="p">,</span> ticker<span class="p">)</span> <span class="p">{</span>
+    url <span class="o">&lt;-</span> <span class="s">&#39;http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp&#39;</span>
+    query <span class="o">&lt;-</span> str_supplant<span class="p">(</span><span class="s">&#39;?Data={refdate}&amp;Data1={sysdate}&amp;slcTaxa={ticker}&#39;</span><span class="p">,</span>
+        <span class="kt">list</span><span class="p">(</span>refdate<span class="o">=</span><span class="kp">format</span><span class="p">(</span><span class="kp">as.Date</span><span class="p">(</span>refdate<span class="p">),</span> <span class="s">&#39;%d/%m/%Y&#39;</span><span class="p">),</span>
+            sysdate<span class="o">=</span><span class="kp">format</span><span class="p">(</span><span class="kp">Sys.Date</span><span class="p">(),</span> <span class="s">&#39;%Y%m%d&#39;</span><span class="p">),</span>
+            ticker<span class="o">=</span>ticker<span class="p">))</span>
+    <span class="kp">paste0</span><span class="p">(</span><span class="kp">url</span><span class="p">,</span> query<span class="p">)</span>
+<span class="p">}</span>
+
+get_curve <span class="o">&lt;-</span> <span class="kr">function</span> <span class="p">(</span>refdate<span class="p">,</span> ticker<span class="o">=</span><span class="s">&#39;PRE&#39;</span><span class="p">)</span> <span class="p">{</span>
+    refdate <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span>refdate<span class="p">)</span>
+    url <span class="o">&lt;-</span> <span class="m">.</span>get_curve_url<span class="p">(</span>refdate<span class="p">,</span> ticker<span class="p">)</span>
+    doc <span class="o">&lt;-</span> htmlTreeParse<span class="p">(</span><span class="kp">url</span><span class="p">,</span> useInternalNodes<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+    num <span class="o">&lt;-</span> xpathSApply<span class="p">(</span>doc<span class="p">,</span> <span class="s">&quot;//td[contains(@class, &#39;tabelaConteudo&#39;)]&quot;</span><span class="p">,</span>
+        <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&#39;[\r\n \t]+&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> xmlValue<span class="p">(</span>x<span class="p">)))</span>
+    num <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>num<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="kp">as.numeric</span><span class="p">(</span><span class="kp">gsub</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">,</span> x<span class="p">)),</span> USE.NAMES<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+
+    colspan <span class="o">&lt;-</span> <span class="kp">as.integer</span><span class="p">(</span>xpathApply<span class="p">(</span>doc<span class="p">,</span> <span class="s">&quot;//td[contains(@class, &#39;tabelaTitulo&#39;)]&quot;</span><span class="p">,</span>  xmlAttrs <span class="p">)[[</span><span class="m">2</span><span class="p">]][</span><span class="m">3</span><span class="p">])</span>
+    <span class="kr">if</span> <span class="p">(</span>colspan <span class="o">==</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+        terms <span class="o">&lt;-</span> num<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">)]</span>
+        rates <span class="o">&lt;-</span> num<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="kc">FALSE</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">)]</span><span class="o">/</span><span class="m">100</span>
+        log_pu <span class="o">&lt;-</span> <span class="kp">log</span><span class="p">(</span><span class="m">1</span> <span class="o">+</span> rates<span class="o">*</span>terms<span class="o">/</span><span class="m">360</span><span class="p">)</span>
+        rate <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>pu<span class="p">,</span> term<span class="p">)</span> <span class="p">(</span>pu <span class="o">-</span> <span class="m">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="m">360</span><span class="o">/</span>term<span class="p">)</span>
+    <span class="p">}</span> <span class="kr">else</span> <span class="p">{</span>
+        terms <span class="o">&lt;-</span> bizdayse<span class="p">(</span>refdate<span class="p">,</span> num<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">)])</span>
+        rates <span class="o">&lt;-</span> num<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="kc">FALSE</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">)]</span><span class="o">/</span><span class="m">100</span>
+        log_pu <span class="o">&lt;-</span> <span class="kp">log</span><span class="p">((</span><span class="m">1</span> <span class="o">+</span> rates<span class="p">)</span><span class="o">^</span><span class="p">(</span>terms<span class="o">/</span><span class="m">252</span><span class="p">))</span>
+        rate <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>pu<span class="p">,</span> term<span class="p">)</span> pu<span class="o">^</span><span class="p">(</span><span class="m">252</span><span class="o">/</span>term<span class="p">)</span> <span class="o">-</span> <span class="m">1</span>
+    <span class="p">}</span>
+
+    log_price_interpolator <span class="o">&lt;-</span> approxfun<span class="p">(</span>terms<span class="p">,</span> log_pu<span class="p">,</span> method<span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">)</span>
+    <span class="kr">function</span> <span class="p">(</span>term<span class="p">)</span> <span class="p">{</span>
+        pu <span class="o">&lt;-</span> <span class="kp">exp</span><span class="p">(</span>log_price_interpolator<span class="p">(</span>term<span class="p">))</span>
+        rate<span class="p">(</span>pu<span class="p">,</span> term<span class="p">)</span><span class="o">*</span><span class="m">100</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>So, once you have loaded that code you can get the Brazilian interbank curve by calling:</p>
+<div class="highlight"><pre>irbrl <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
+irbrl<span class="p">(</span><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">252</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##  [1] 7,880000 8,010000 8,158363 8,369100 8,537173 8,655198 8,740000
+##  [8] 8,826095 8,895053 8,965071 9,050000 9,121180
+</pre></div>
+
+
+<p>The curve for US dollar deposits in Brazil</p>
+<div class="highlight"><pre>irusd <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;DOL&#39;</span><span class="p">)</span>
+irusd<span class="p">(</span><span class="kp">seq</span><span class="p">(</span><span class="m">30</span><span class="p">,</span> <span class="m">360</span><span class="p">,</span> by<span class="o">=</span><span class="m">30</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##  [1] 0,3135554 0,6300000 0,8300000 1,0400000 1,1381183 1,2000000 1,2400000
+##  [8] 1,2699991 1,2900000 1,3200000 1,3400000 1,3592817
+</pre></div>
+
+
+<p>You could compare in the same chart curves of different dates</p>
+<div class="highlight"><pre>irbrl_20130613 <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
+irbrl_20130611 <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-11&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
+<span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">252</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">)</span> <span class="o">-&gt;</span> terms
+irbrl_20130611<span class="p">(</span>terms<span class="p">)</span> <span class="o">-&gt;</span> d11
+irbrl_20130613<span class="p">(</span>terms<span class="p">)</span> <span class="o">-&gt;</span> d13
+terms <span class="o">&lt;-</span> terms <span class="o">+</span> <span class="kp">Sys.Date</span><span class="p">()</span>
+plot<span class="p">(</span>terms<span class="p">,</span> d11<span class="p">,</span> type<span class="o">=</span><span class="s">&#39;n&#39;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&#39;Dates&#39;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&#39;Rates&#39;</span><span class="p">,</span> xaxt<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">)</span>
+axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> terms<span class="p">,</span> <span class="kp">format</span><span class="p">(</span>terms<span class="p">,</span> <span class="s">&quot;%b %y&quot;</span><span class="p">))</span>
+points<span class="p">(</span>terms<span class="p">,</span> d11<span class="p">,</span> pch<span class="o">=</span><span class="m">20</span><span class="p">,</span> col<span class="o">=</span><span class="s">&#39;steelblue&#39;</span><span class="p">)</span>
+points<span class="p">(</span>terms<span class="p">,</span> d13<span class="p">,</span> pch<span class="o">=</span><span class="m">20</span><span class="p">,</span> col<span class="o">=</span><span class="s">&#39;darkred&#39;</span><span class="p">)</span>
+lines<span class="p">(</span>terms<span class="p">,</span> d11<span class="p">,</span> lwd<span class="o">=</span><span class="m">2</span><span class="p">,</span> col<span class="o">=</span><span class="s">&#39;steelblue&#39;</span><span class="p">)</span>
+lines<span class="p">(</span>terms<span class="p">,</span> d13<span class="p">,</span> lwd<span class="o">=</span><span class="m">2</span><span class="p">,</span> col<span class="o">=</span><span class="s">&#39;darkred&#39;</span><span class="p">)</span>
+legend<span class="p">(</span><span class="s">&quot;bottomright&quot;</span><span class="p">,</span> legend<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;2013-06-11&quot;</span><span class="p">,</span> <span class="s">&quot;2013-06-13&quot;</span><span class="p">),</span> col<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;steelblue&quot;</span><span class="p">,</span> <span class="s">&quot;darkred&quot;</span><span class="p">),</span> pch<span class="o">=</span><span class="m">20</span><span class="p">,</span>lwd<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+grid<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-plot-1.png" /> </p>
+<p>The function <code>str_supplant</code> was explained in another <a href="http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html">post</a>.
+I mostly use the tickers <code>PRE</code> for deposits in Brazilian Real and <code>DOL</code> for deposits in US Dollar.
+That code works pretty well for <code>EUR</code> (Euro deposits) interest rates, but it has to be adjusted to handle <code>DIC</code> and <code>DIM</code> tickers (IPCA and IGP-M inflation rates).</p>
+<p>As I told before that is a quick and dirt implementation but it is also quite useful.
+With far none effort you have at hand an interpolator for interest rate term structures that can easily be ported to any other curve feeder.</p>
+<p>Other point I'd like to mention is the huge effort, in my opinion, to build a attractive chart using the plot function, bellow I present an example using the <a href="http://ggplot2.org">ggplot2</a> package for the same data.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+ir_df <span class="o">&lt;-</span> stack<span class="p">(</span><span class="kt">list</span><span class="p">(</span><span class="sb">`2014-06-11`</span><span class="o">=</span>d11<span class="p">,</span> <span class="sb">`2014-06-13`</span><span class="o">=</span>d13<span class="p">))</span>
+ir_df<span class="o">$</span>date <span class="o">&lt;-</span> terms
+ggplot<span class="p">(</span>data<span class="o">=</span>ir_df<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span><span class="kp">date</span><span class="p">,</span> y<span class="o">=</span>values<span class="p">,</span> colour<span class="o">=</span>ind<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">()</span> <span class="o">+</span> geom_line<span class="p">()</span> <span class="o">+</span> xlab<span class="p">(</span><span class="s">&#39;Dates&#39;</span><span class="p">)</span> <span class="o">+</span> ylab<span class="p">(</span><span class="s">&#39;Rates&#39;</span><span class="p">)</span> <span class="o">+</span> theme<span class="p">(</span>legend.title<span class="o">=</span>element_blank<span class="p">())</span>
+</pre></div>
+
+
+<p><img alt="Brazilian Term Structure with ggplot2" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png" /> </p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'The quick and dirty term structure interpolator in R';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

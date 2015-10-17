@@ -5,160 +5,209 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://wilsonfreitas.github.io/</loc>
-<lastmod>2015-09-20T10:06:38-00:00</lastmod>
+<lastmod>2015-10-17T06:38:18-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://wilsonfreitas.github.io/archives.html</loc>
-<lastmod>2015-09-20T10:06:38-00:00</lastmod>
+<lastmod>2015-10-17T06:38:18-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://wilsonfreitas.github.io/tags.html</loc>
-<lastmod>2015-09-20T10:06:38-00:00</lastmod>
+<lastmod>2015-10-17T06:38:18-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://wilsonfreitas.github.io/categories.html</loc>
-<lastmod>2015-09-20T10:06:38-00:00</lastmod>
+<lastmod>2015-10-17T06:38:18-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
 <loc>http://wilsonfreitas.github.io/pages/about.html</loc>
-<lastmod>2015-09-20T10:06:38-00:00</lastmod>
+<lastmod>2015-10-17T06:38:18-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2015-05/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-3.html</loc>
+<loc>http://wilsonfreitas.github.io/pages/dieta-do-abdomen.html</loc>
+<lastmod>2015-10-17T06:38:18-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/pages/talks.html</loc>
+<lastmod>2015-10-17T06:38:18-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/posts/webscraping-ipca.html</loc>
+<lastmod>2015-10-02T00:00:00-03:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>1.0</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/posts/nada-e-tao-ruim-que-nao-possa-piorar-empenada-na-curva-de-juros-de-di1-parte-2.html</loc>
+<lastmod>2015-09-23T00:00:00-03:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>1.0</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html</loc>
+<lastmod>2015-09-21T00:00:00-03:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>1.0</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html</loc>
+<lastmod>2015-09-18T00:00:00-03:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>1.0</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-3.html</loc>
 <lastmod>2015-05-06T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2015-04/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html</loc>
 <lastmod>2015-04-27T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2015-01/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-1.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-1.html</loc>
 <lastmod>2015-01-15T00:00:00-02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-12/no-brasil-ate-o-passado-e-duvidoso.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/no-brasil-ate-o-passado-e-duvidoso.html</loc>
 <lastmod>2014-12-23T00:00:00-02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-12/faca-voce-mesmo-um-web-scraper-em-python.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/faca-voce-mesmo-um-web-scraper-em-python.html</loc>
 <lastmod>2014-12-18T00:00:00-02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-06/refinando-o-estilo-do-matplotlib-com-seaborn.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/covariance-between-stochastic-processes.html</loc>
+<lastmod>2014-07-04T00:00:00-03:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>1.0</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/posts/refinando-o-estilo-do-matplotlib-com-seaborn.html</loc>
 <lastmod>2014-06-23T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-06/the-quick-and-dirty-term-structure-interpolator-in-r.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html</loc>
 <lastmod>2014-06-15T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-06/refinando-o-estilo-do-matplotlib.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/refinando-o-estilo-do-matplotlib.html</loc>
 <lastmod>2014-06-12T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-05/bizdays-dias-uteis-no-r.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/bizdays-dias-uteis-no-r.html</loc>
 <lastmod>2014-05-15T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-04/estimando-ewma-na-pratica.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/estimando-ewma-na-pratica.html</loc>
 <lastmod>2014-04-13T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-04/string-interpolation-in-r.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html</loc>
 <lastmod>2014-04-09T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-04/computing-ewma-2.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/computing-ewma-2.html</loc>
 <lastmod>2014-04-04T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-04/pricing-brazilian-government-bonds-lft.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/pricing-brazilian-government-bonds-lft.html</loc>
 <lastmod>2014-04-03T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-03/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html</loc>
 <lastmod>2014-03-30T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-03/lista-da-forbes-de-2013-com-python-e-pandas.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/lista-da-forbes-de-2013-com-python-e-pandas.html</loc>
 <lastmod>2014-03-03T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2014-01/que-2014-seja-um-ano-melhor-para-a-petrobras.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/que-2014-seja-um-ano-melhor-para-a-petrobras.html</loc>
 <lastmod>2014-01-25T00:00:00-02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2013-08/computing-ewma.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/computing-ewma.html</loc>
 <lastmod>2013-08-18T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/posts/2013-08/ewma-convergence-and-divergence.html</loc>
+<loc>http://wilsonfreitas.github.io/posts/ewma-convergence-and-divergence.html</loc>
 <lastmod>2013-08-16T00:00:00-03:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>1.0</priority>
@@ -173,7 +222,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://wilsonfreitas.github.io/category/finance.html</loc>
-<lastmod>2014-12-23T00:00:00-03:06</lastmod>
+<lastmod>2015-09-23T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
@@ -186,42 +235,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/python.html</loc>
-<lastmod>2015-05-06T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/category/webscraping.html</loc>
+<lastmod>2015-10-02T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/finance.html</loc>
-<lastmod>2014-01-25T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/tag/volatility.html</loc>
+<lastmod>2014-04-13T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/statsmodels.html</loc>
-<lastmod>2015-05-06T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/tag/seaborn.html</loc>
+<lastmod>2014-06-23T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/string-handling.html</loc>
-<lastmod>2014-04-09T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/tag/dias-uteis.html</loc>
+<lastmod>2014-05-15T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/brazilian-bonds.html</loc>
-<lastmod>2014-04-03T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/tag/interpolation.html</loc>
+<lastmod>2015-09-23T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/bizdays.html</loc>
+<loc>http://wilsonfreitas.github.io/tag/quick-tips.html</loc>
 <lastmod>2014-06-15T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
@@ -235,22 +284,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/dias-uteis.html</loc>
-<lastmod>2014-05-15T00:00:00-03:06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.7</priority>
-</url>
-
-<url>
 <loc>http://wilsonfreitas.github.io/tag/r.html</loc>
-<lastmod>2015-04-27T00:00:00-03:06</lastmod>
+<lastmod>2015-10-02T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/scraps.html</loc>
-<lastmod>2015-01-15T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/tag/visualization.html</loc>
+<lastmod>2015-09-21T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
@@ -263,8 +305,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/quick-tips.html</loc>
-<lastmod>2014-06-15T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/tag/term-structure.html</loc>
+<lastmod>2015-09-23T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
@@ -277,6 +319,20 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://wilsonfreitas.github.io/tag/finance.html</loc>
+<lastmod>2014-01-25T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/tag/numpy.html</loc>
+<lastmod>2015-09-21T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
 <loc>http://wilsonfreitas.github.io/tag/tinydf.html</loc>
 <lastmod>2015-01-15T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
@@ -284,36 +340,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/interpolation.html</loc>
-<lastmod>2014-06-15T00:00:00-03:06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.7</priority>
-</url>
-
-<url>
-<loc>http://wilsonfreitas.github.io/tag/visualization.html</loc>
-<lastmod>2014-06-23T00:00:00-03:06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.7</priority>
-</url>
-
-<url>
-<loc>http://wilsonfreitas.github.io/tag/volatility.html</loc>
-<lastmod>2014-04-13T00:00:00-03:06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.7</priority>
-</url>
-
-<url>
-<loc>http://wilsonfreitas.github.io/tag/term-structure.html</loc>
-<lastmod>2014-06-15T00:00:00-03:06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.7</priority>
-</url>
-
-<url>
-<loc>http://wilsonfreitas.github.io/tag/pandas.html</loc>
-<lastmod>2014-12-23T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/tag/statsmodels.html</loc>
+<lastmod>2015-05-06T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
@@ -326,8 +354,43 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://wilsonfreitas.github.io/tag/seaborn.html</loc>
-<lastmod>2014-06-23T00:00:00-03:06</lastmod>
+<loc>http://wilsonfreitas.github.io/tag/brazilian-bonds.html</loc>
+<lastmod>2014-04-03T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/tag/pandas.html</loc>
+<lastmod>2015-09-21T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/tag/python.html</loc>
+<lastmod>2015-09-21T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/tag/scraps.html</loc>
+<lastmod>2015-01-15T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/tag/string-handling.html</loc>
+<lastmod>2014-04-09T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/tag/bizdays.html</loc>
+<lastmod>2015-09-23T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
@@ -347,8 +410,22 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://wilsonfreitas.github.io/tag/rvest.html</loc>
+<lastmod>2015-10-02T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>http://wilsonfreitas.github.io/tag/math.html</loc>
+<lastmod>2014-07-04T00:00:00-03:06</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
 <loc>http://wilsonfreitas.github.io/author/wilson-freitas.html</loc>
-<lastmod>2015-05-06T00:00:00-03:06</lastmod>
+<lastmod>2015-10-02T00:00:00-03:06</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>

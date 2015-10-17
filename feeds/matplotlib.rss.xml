@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WilsonFreitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/matplotlib.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 23 Jun 2014 00:00:00 -0300</lastBuildDate><item><title>Refinando o estilo do matplotlib com seaborn</title><link>http://wilsonfreitas.github.io/posts/2014-06/refinando-o-estilo-do-matplotlib-com-seaborn.html</link><description>&lt;p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wilson Freitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/matplotlib.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 23 Jun 2014 00:00:00 -0300</lastBuildDate><item><title>Refinando o estilo do matplotlib com seaborn</title><link>http://wilsonfreitas.github.io/posts/refinando-o-estilo-do-matplotlib-com-seaborn.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;
 &lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;No post &lt;a href="http://wilsonfreitas.github.io/posts/2014-06/refinando-o-estilo-do-matplotlib.html"&gt;Refinando a apresentação do matplotlib&lt;/a&gt; eu mostrei como melhorar o &lt;em&gt;layout&lt;/em&gt; dos gráficos do &lt;strong&gt;matplotlib&lt;/strong&gt; utilizando o &lt;strong&gt;seaborn&lt;/strong&gt;.
+&lt;p&gt;No post &lt;a href="http://wilsonfreitas.github.io/posts/refinando-o-estilo-do-matplotlib.html"&gt;Refinando a apresentação do matplotlib&lt;/a&gt; eu mostrei como melhorar o &lt;em&gt;layout&lt;/em&gt; dos gráficos do &lt;strong&gt;matplotlib&lt;/strong&gt; utilizando o &lt;strong&gt;seaborn&lt;/strong&gt;.
 Continuando com as dicas para refinar a apresentação dos gráficos em matplotlib vou mostrar como construir um gráfico mais científico, semelhante aos que aparecem em livros de cálculo da graduação.
 Para isso vou apresentar as funções &lt;code&gt;despine&lt;/code&gt; e &lt;code&gt;offset_spines&lt;/code&gt; do &lt;strong&gt;seaborn&lt;/strong&gt; e algumas de suas opções.&lt;/p&gt;
 &lt;p&gt;O &lt;em&gt;layout&lt;/em&gt; padrão coloca os gráficos em uma caixa, como se fosse uma borda.
@@ -5207,7 +5207,7 @@ AICh/At2eUOk4Gc7ygAAAABJRU5ErkJggg==
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Mon, 23 Jun 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-06-23:posts/2014-06/refinando-o-estilo-do-matplotlib-com-seaborn.html</guid><category>python</category><category>visualization</category><category>seaborn</category><category>matplotlib</category></item><item><title>Refinando o estilo do matplotlib</title><link>http://wilsonfreitas.github.io/posts/2014-06/refinando-o-estilo-do-matplotlib.html</link><description>&lt;p&gt;
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Mon, 23 Jun 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-06-23:posts/refinando-o-estilo-do-matplotlib-com-seaborn.html</guid><category>python</category><category>visualization</category><category>seaborn</category><category>matplotlib</category></item><item><title>Refinando o estilo do matplotlib</title><link>http://wilsonfreitas.github.io/posts/refinando-o-estilo-do-matplotlib.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;
 &lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
@@ -11827,4 +11827,4 @@ RK5CYII=
 
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 12 Jun 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-06-12:posts/2014-06/refinando-o-estilo-do-matplotlib.html</guid><category>python</category><category>visualization</category><category>seaborn</category><category>matplotlib</category></item></channel></rss>
+&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 12 Jun 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-06-12:posts/refinando-o-estilo-do-matplotlib.html</guid><category>python</category><category>visualization</category><category>seaborn</category><category>matplotlib</category></item></channel></rss>

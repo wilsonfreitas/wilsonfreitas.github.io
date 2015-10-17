@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>WilsonFreitas</title><link href="http://wilsonfreitas.github.io/" rel="alternate"></link><link href="http://wilsonfreitas.github.io/feeds/all-en.atom.xml" rel="self"></link><id>http://wilsonfreitas.github.io/</id><updated>2014-06-15T00:00:00-03:00</updated><entry><title>The quick and dirty term structure interpolator in R</title><link href="http://wilsonfreitas.github.io/posts/2014-06/the-quick-and-dirty-term-structure-interpolator-in-r.html" rel="alternate"></link><updated>2014-06-15T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-06-15:posts/2014-06/the-quick-and-dirty-term-structure-interpolator-in-r.html</id><summary type="html">&lt;p&gt;Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Wilson Freitas</title><link href="http://wilsonfreitas.github.io/" rel="alternate"></link><link href="http://wilsonfreitas.github.io/feeds/all-en.atom.xml" rel="self"></link><id>http://wilsonfreitas.github.io/</id><updated>2014-07-04T00:00:00-03:00</updated><entry><title>Covariance between stochastic processes</title><link href="http://wilsonfreitas.github.io/posts/covariance-between-stochastic-processes.html" rel="alternate"></link><updated>2014-07-04T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-07-04:posts/covariance-between-stochastic-processes.html</id><summary type="html">&lt;p&gt;Let $dX_1$ and $dX_2$, describe the asset returns in different time intervals, $s$ and $u$.&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+dX_1(s) &amp;amp; = \sigma_1 dW_1 \\
+dX_2(u) &amp;amp; = \sigma_2 dW_2
+\end{aligned}
+$$&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note that these processes are arithmetic and Gaussian.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;We consider the returns being independent and since we are working with only one asset we have:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\sigma_1 &amp;amp; \equiv \sigma\sqrt{t_1} \\
+\sigma_2 &amp;amp; \equiv \sigma\sqrt{t_2}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;where $\sigma$ is the daily volatility.&lt;/p&gt;
+&lt;h2&gt;Covariance between $dX_1$ and $dX_2$&lt;/h2&gt;
+&lt;p&gt;The covariance between $dX_1$ and $dX_2$ is given by:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+COV(dX_1, dX_2) &amp;amp; = E[dX_1(t_1) dX_2(t_2)] \\
+                &amp;amp; = E[\sigma_1 dW_1 \sigma_2 dW_2]
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;If $t_1 &amp;lt; t_2$ we can write:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+COV(dX_1, dX_2) &amp;amp; = E[\sigma_1 dW_1 (\sigma_1 dW_1 + \sigma_2 dW_2 - \sigma_1 dW_1)] \\
+                &amp;amp; = E[\sigma_1^2 dW_1^2 + \sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)] \\
+                &amp;amp; = \sigma_1^2 E[dW_1^2] +  E[\sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)] \\
+                &amp;amp; = \sigma_1^2 t1 +  E[\sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)]
+\end{aligned}
+$$&lt;/p&gt;</summary><category term="math"></category></entry><entry><title>The quick and dirty term structure interpolator in R</title><link href="http://wilsonfreitas.github.io/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html" rel="alternate"></link><updated>2014-06-15T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-06-15:posts/the-quick-and-dirty-term-structure-interpolator-in-r.html</id><summary type="html">&lt;p&gt;Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
 I use the many of the curves released by &lt;a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;amp;F Bovespa"&gt;BM&amp;amp;F Bovespa&lt;/a&gt; in that &lt;a href="http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp" title="BVMF Curves"&gt;page&lt;/a&gt;.
 In order to have the curves always at hand I've written that few lines of code to download and return an interpolator where the only argument is the number of days I want to interpolate.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;XML&lt;span class="p"&gt;)&lt;/span&gt;
@@ -17,7 +51,7 @@ get_curve &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;fu
     refdate &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;)&lt;/span&gt;
     url &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;get_curve_url&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;,&lt;/span&gt; ticker&lt;span class="p"&gt;)&lt;/span&gt;
     doc &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; htmlTreeParse&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; useInternalNodes&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    num &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; xpathSApply&lt;span class="p"&gt;(&lt;/span&gt;doc&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;//td[contains(@class, &amp;#39;tabelaConteudo&amp;#39;)]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+    num &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; xpathSApply&lt;span class="p"&gt;(&lt;/span&gt;doc&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;//td[contains(@class, &amp;#39;tabelaConteudo&amp;#39;)]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;[\r\n \t]+&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; xmlValue&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))&lt;/span&gt;
     num &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;num&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; x&lt;span class="p"&gt;)),&lt;/span&gt; USE.NAMES&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -84,7 +118,7 @@ grid&lt;span class="p"&gt;()&lt;/span&gt;
 
 
 &lt;p&gt;&lt;img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-plot-1.png" /&gt; &lt;/p&gt;
-&lt;p&gt;The function &lt;code&gt;str_supplant&lt;/code&gt; was explained in another &lt;a href="http://wilsonfreitas.github.io/posts/2014-04/string-interpolation-in-r.html"&gt;post&lt;/a&gt;.
+&lt;p&gt;The function &lt;code&gt;str_supplant&lt;/code&gt; was explained in another &lt;a href="http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html"&gt;post&lt;/a&gt;.
 I mostly use the tickers &lt;code&gt;PRE&lt;/code&gt; for deposits in Brazilian Real and &lt;code&gt;DOL&lt;/code&gt; for deposits in US Dollar.
 That code works pretty well for &lt;code&gt;EUR&lt;/code&gt; (Euro deposits) interest rates, but it has to be adjusted to handle &lt;code&gt;DIC&lt;/code&gt; and &lt;code&gt;DIM&lt;/code&gt; tickers (IPCA and IGP-M inflation rates).&lt;/p&gt;
 &lt;p&gt;As I told before that is a quick and dirt implementation but it is also quite useful.
@@ -97,7 +131,7 @@ ggplot&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="Brazilian Term Structure with ggplot2" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png" /&gt; &lt;/p&gt;</summary><category term="R"></category><category term="bizdays"></category><category term="term structure"></category><category term="interpolation"></category><category term="quick tips"></category></entry><entry><title>String interpolation in R</title><link href="http://wilsonfreitas.github.io/posts/2014-04/string-interpolation-in-r.html" rel="alternate"></link><updated>2014-04-09T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-09:posts/2014-04/string-interpolation-in-r.html</id><summary type="html">&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
+&lt;p&gt;&lt;img alt="Brazilian Term Structure with ggplot2" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png" /&gt; &lt;/p&gt;</summary><category term="R"></category><category term="bizdays"></category><category term="term structure"></category><category term="interpolation"></category><category term="quick tips"></category></entry><entry><title>String interpolation in R</title><link href="http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html" rel="alternate"></link><updated>2014-04-09T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-09:posts/string-interpolation-in-r.html</id><summary type="html">&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
 url = "{media}logo.gif".supplant(param); --&gt;
 
 &lt;p&gt;String handling in R is hard, there are a few packages that help making that task not so hard, but it is still hard.
@@ -145,7 +179,7 @@ str_supplant&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;
 
 &lt;p&gt;That implementation was deeply inspired by &lt;a href="http://javascript.crockford.com/remedial.html" title="Douglas Crockford"&gt;Douglas Crockford&lt;/a&gt;'s &lt;code&gt;supplant&lt;/code&gt; implementation.
 Unfortunately that implementation hasn't been vectorized yet, but I think it is quite useful anyway.
-I hope it help others like it's been helping me.&lt;/p&gt;</summary><category term="R"></category><category term="string handling"></category></entry><entry><title>Computing EWMA 2</title><link href="http://wilsonfreitas.github.io/posts/2014-04/computing-ewma-2.html" rel="alternate"></link><updated>2014-04-04T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-04:posts/2014-04/computing-ewma-2.html</id><summary type="html">&lt;p&gt;Months ago I released a post entitled &lt;a href="http://wilsonfreitas.github.io/posts/2013-08/computing-ewma.html" title="Computing EWMA"&gt;Computing EWMA&lt;/a&gt; exploring the functional approach to implement EWMA calculations in R and also compared that with what I called &lt;em&gt;loop-oriented&lt;/em&gt; implementation.
+I hope it help others like it's been helping me.&lt;/p&gt;</summary><category term="R"></category><category term="string handling"></category></entry><entry><title>Computing EWMA 2</title><link href="http://wilsonfreitas.github.io/posts/computing-ewma-2.html" rel="alternate"></link><updated>2014-04-04T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-04:posts/computing-ewma-2.html</id><summary type="html">&lt;p&gt;Months ago I released a post entitled &lt;a href="http://wilsonfreitas.github.io/posts/computing-ewma.html" title="Computing EWMA"&gt;Computing EWMA&lt;/a&gt; exploring the functional approach to implement EWMA calculations in R and also compared that with what I called &lt;em&gt;loop-oriented&lt;/em&gt; implementation.
 That was quite ammazing to see that the functional approach was almost 2 times faster.&lt;/p&gt;
 &lt;p&gt;After a while I found the function &lt;code&gt;filter&lt;/code&gt; of the package &lt;code&gt;stats&lt;/code&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;##&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;filter&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;method&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;convolution&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;recursive&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; 
@@ -159,24 +193,24 @@ You can get a moving average by setting &lt;code&gt;method="convolution"&lt;/cod
 Since EWMA is an autoregressive model, the &lt;code&gt;"recursive"&lt;/code&gt; method is appropriate.
 The argument &lt;code&gt;x&lt;/code&gt; receives the time series and &lt;code&gt;filter&lt;/code&gt; a vector of coefficients.
 The &lt;code&gt;"recursive"&lt;/code&gt; method uses the &lt;code&gt;init&lt;/code&gt; argument to specify the initial values of the time series.
-Providing a series &lt;code&gt;x&lt;/code&gt; and a filter &lt;span class="math"&gt;\(\phi\)&lt;/span&gt; the response &lt;code&gt;y&lt;/code&gt; is much like the sequence below:&lt;/p&gt;
-&lt;div class="math"&gt;$$
+Providing a series &lt;code&gt;x&lt;/code&gt; and a filter $\phi$ the response &lt;code&gt;y&lt;/code&gt; is much like the sequence below:&lt;/p&gt;
+&lt;p&gt;$$
 y_1 = 0 \hspace{0.5cm}
 y_2 = \phi y_1 + x_1 \hspace{0.5cm}
 y_2 = \phi y_2 + x_2 \hspace{0.5cm}
 \dots \hspace{0.5cm}
 y_{n+1} = \phi y_n + x_n
-$$&lt;/div&gt;
+$$&lt;/p&gt;
 &lt;p&gt;Taking a look at EWMA's dynamics&lt;/p&gt;
-&lt;div class="math"&gt;$$
+&lt;p&gt;$$
 \hat\sigma^2_0 = 0  \hspace{0.5cm}
 \hat\sigma^2_1 = \lambda\hat\sigma^2_0 + (1 - \lambda)r^2_0  \hspace{0.5cm}
 \hat\sigma^2_2 = \lambda\hat\sigma^2_1 + (1 - \lambda)r^2_1  \hspace{0.5cm}
 \dots  \hspace{0.5cm}
 \hat\sigma^2_{t+1} = \lambda\hat\sigma^2_t + (1 - \lambda)r^2_t
-$$&lt;/div&gt;
-&lt;p&gt;we observe that the input &lt;span class="math"&gt;\(x_i = (1 - \lambda)r^2_i\)&lt;/span&gt;, the filter &lt;span class="math"&gt;\(\phi = \lambda\)&lt;/span&gt; and &lt;span class="math"&gt;\(y_i = \sigma^2_i\)&lt;/span&gt; is the response.
-The initial value can be set to &lt;span class="math"&gt;\(0\)&lt;/span&gt;.
+$$&lt;/p&gt;
+&lt;p&gt;we observe that the input $x_i = (1 - \lambda)r^2_i$, the filter $\phi = \lambda$ and $y_i = \sigma^2_i$ is the response.
+The initial value can be set to $0$.
 The code implementation follows below:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;ewma.filter &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     r2 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; lambda&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; rets&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;
@@ -216,62 +250,7 @@ It runs almost 2 times faster than the functional approach.&lt;/p&gt;
 
 
 &lt;p&gt;Here it has the &lt;a href="https://gist.github.com/wilsonfreitas/9972408"&gt;full code&lt;/a&gt;.&lt;/p&gt;
-&lt;script src="https://gist.github.com/wilsonfreitas/9972408.js"&gt;&lt;/script&gt;
-
-&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-    
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</summary><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry><entry><title>Pricing Brazilian Government Bonds: LFT</title><link href="http://wilsonfreitas.github.io/posts/2014-04/pricing-brazilian-government-bonds-lft.html" rel="alternate"></link><updated>2014-04-03T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-03:posts/2014-04/pricing-brazilian-government-bonds-lft.html</id><summary type="html">&lt;p&gt;For many years I've been working for and with software vendors in the brazilian financial industry.
+&lt;script src="https://gist.github.com/wilsonfreitas/9972408.js"&gt;&lt;/script&gt;</summary><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry><entry><title>Pricing Brazilian Government Bonds: LFT</title><link href="http://wilsonfreitas.github.io/posts/pricing-brazilian-government-bonds-lft.html" rel="alternate"></link><updated>2014-04-03T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-03:posts/pricing-brazilian-government-bonds-lft.html</id><summary type="html">&lt;p&gt;For many years I've been working for and with software vendors in the brazilian financial industry.
 The great majority of pricing and risk management aplications running on here were not developed here in Brazil.
 I think that is the main reason I saw many projects struggling to deliver a glimpse of what had been promissed during the software selection meetings.
 One thing that is usually said is that brazilian market has its &lt;a href="http://en.wikipedia.org/wiki/Jabuticaba"&gt;jabuticabas&lt;/a&gt;, yeah jabuticaba.
@@ -291,15 +270,15 @@ These calculations seem to be pretty simple but it hides some pitfalls and becau
 &lt;h2&gt;The instrument&lt;/h2&gt;
 &lt;p&gt;As mentioned before, LFT is a Floating Rate Bond so it accumulates daily interest rate from its issue date up to maturity.
 The LFT's issue value is R$ 1000,00 then the fair value of a LFT is&lt;/p&gt;
-&lt;div class="math"&gt;$$
+&lt;p&gt;$$
 LFT_t = 1000 \prod_{n=t_i}^{t-1}(1 + r_{n})^\frac{1}{252}
-$$&lt;/div&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(t\)&lt;/span&gt; refers to the mark-to-market date, &lt;span class="math"&gt;\(t_i\)&lt;/span&gt; the issue date and &lt;span class="math"&gt;\(t-1\)&lt;/span&gt; the business day before mark-to-market date.
+$$&lt;/p&gt;
+&lt;p&gt;where $t$ refers to the mark-to-market date, $t_i$ the issue date and $t-1$ the business day before mark-to-market date.
 However, it is usually traded in values higher than the fair value as if a negative spread was applied discounting the fair value, leading to:&lt;/p&gt;
-&lt;div class="math"&gt;$$
+&lt;p&gt;$$
 LFT_t = \frac{1000 \prod_{n=t_i}^{t-1}(1 + r_{n})^\frac{1}{252}}{(1 + s_t)^{D_T/252}}
-$$&lt;/div&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(s_t\)&lt;/span&gt; is the spread and &lt;span class="math"&gt;\(D_T\)&lt;/span&gt; the number of business days up to maturity.&lt;/p&gt;
+$$&lt;/p&gt;
+&lt;p&gt;where $s_t$ is the spread and $D_T$ the number of business days up to maturity.&lt;/p&gt;
 &lt;h2&gt;Notional Value — VNA&lt;/h2&gt;
 &lt;p&gt;The rule to compute the notional value (VNA—Valor Nominal Acumulado) is fairly simple, accumulate the daily interest rate from LFT's issue date up to reference date (mark-to-market date).&lt;/p&gt;
 &lt;p&gt;What do we need?&lt;/p&gt;
@@ -317,90 +296,27 @@ Let's start setting the reference date:&lt;/p&gt;
 &lt;p&gt;The historical interest rates are downloaded from &lt;a href="http://www.quandl.com" title="Quandl"&gt;Quandl&lt;/a&gt; and data in properly transformed to suitable formats:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Quandl&lt;span class="p"&gt;)&lt;/span&gt;
 selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; Quandl&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;BCB/1178&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; start_date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2000-07-01&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; end_date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2014-03-21&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; sort&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;asc&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;,&lt;/span&gt; Date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Date&lt;span class="p"&gt;))&lt;/span&gt;
+str&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error: &lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Server Error (Sorry)&lt;span class="nt"&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;style&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/css&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-##         body {
-##             background-color: #283c43;
-##             color: #d1d2d4;
-##             text-align: center;
-##             font-family: helvetica, arial, sans-serif;
-##             height:100%;
-##             margin:0px 0px; padding:0px;
-##             text-align:center; /* Hack for IE5/Win */
-##             font-size: 100%;
-##         }
-##         .wrapper {
-##             width: 800px;
-##             margin: 150px auto;
-##         }
-##         h1 {
-##             font-size: 100px;
-##             color: #e15829;
-##             line-height: 0.5;
-##             margin-bottom: 10px;
-##         }
-##         h2 {
-##             font-size:24px;
-##             color: #e15829;
-##         }
-##         p {
-##             margin-bottom: 20px;
-##         }
-##         a {
-##             color: #00adef;
-##         }
-##     &lt;span class="nt"&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-## 
-## &lt;span class="nt"&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;wrapper&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;500&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;Server Error&lt;span class="nt"&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Sorry, your request has failed completely. The one thing you can try immediately is to reload this page.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Perhaps this was simply a temporary glitch.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;This will be fixed&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;We work very hard to ensure Quandl is 100% per cent functional at all times.  Please know that the problem you encountered here was logged and will be fixed promptly.
-##         We apologize for this inconvenience. &lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;- &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;Jason Byck, CTO, Quandl&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;For further updates on the status of the website please visit our &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://status.quandl.com/&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;status&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; page.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;,&lt;/span&gt; Date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Date&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in transform(selic, Date = as.Date(Date)): objeto &amp;#39;selic&amp;#39; não encontrado
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;str&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in str(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;div class="highlight"&gt;&lt;pre&gt;## &amp;#39;data.frame&amp;#39;:    3448 obs. of  2 variables:
+##  $ Date : Date, format: &amp;quot;2000-07-03&amp;quot; &amp;quot;2000-07-04&amp;quot; ...
+##  $ Value: num  17 17 17 17 17 17 16 16 16 16 ...
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;Computing VNA&lt;/h3&gt;
 &lt;p&gt;The formula to compute VNA is&lt;/p&gt;
-&lt;div class="math"&gt;$$
+&lt;p&gt;$$
 VNA_n = 1000\prod_{n=1}^{T}(1 + r_{n-i})^\frac{1}{252}
-$$&lt;/div&gt;
+$$&lt;/p&gt;
 &lt;p&gt;where &lt;code&gt;T&lt;/code&gt; refers to issue date.
 As I said before, the formula is pretty simple but hides inconvenient secrets.
 This formula is computed in 3 steps, enumerated below:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Compute the interest rate factor &lt;span class="math"&gt;\((1 + r_i)^\frac{1}{252}\)&lt;/span&gt; and round it in 8 digits&lt;/li&gt;
+&lt;li&gt;Compute the interest rate factor $(1 + r_i)^\frac{1}{252}$ and round it in 8 digits&lt;/li&gt;
 &lt;li&gt;Compute the accumulated factor, using &lt;code&gt;cumprod&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Compute the VNA multiplying the accumulated factor by 1000 and truncate it in 6 digits&lt;/li&gt;
 &lt;/ol&gt;
@@ -415,18 +331,18 @@ The function &lt;code&gt;compute_vna&lt;/code&gt; below execute these steps.&lt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
 selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_vna&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in transform(ds, Factor = round((1 + Value/100)^(1/252), 8)): objeto &amp;#39;selic&amp;#39; não encontrado
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in head(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;div class="highlight"&gt;&lt;pre&gt;##         Date Value     Factor   CumFactor         VNA
+## 1 2000-07-03    17 1,00062322 1,000623220          NA
+## 2 2000-07-04    17 1,00062322 1,001246828 1000,623220
+## 3 2000-07-05    17 1,00062322 1,001870825 1001,246828
+## 4 2000-07-06    17 1,00062322 1,002495211 1001,870825
+## 5 2000-07-07    17 1,00062322 1,003119986 1002,495211
+## 6 2000-07-10    17 1,00062322 1,003745151 1003,119986
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -434,7 +350,13 @@ selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_vna&lt;span class="p"
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in tail(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;div class="highlight"&gt;&lt;pre&gt;##            Date Value     Factor   CumFactor         VNA
+## 3443 2014-03-14    10 1,00037829 5,656913278 5654,774133
+## 3444 2014-03-17    10 1,00037829 5,659053231 5656,913277
+## 3445 2014-03-18    10 1,00037829 5,661193995 5659,053231
+## 3446 2014-03-19    10 1,00037829 5,663335568 5661,193994
+## 3447 2014-03-20    10 1,00037829 5,665477951 5663,335567
+## 3448 2014-03-21    10 1,00037829 5,667621144 5665,477950
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -516,18 +438,7 @@ lft_quot
 Note that the &lt;code&gt;Quotation&lt;/code&gt; is truncated in 4 digits and the theoretical price in 6.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; Quotation&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; Spread&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;BusinessDays&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;252&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 VNA &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;,&lt;/span&gt; VNA&lt;span class="p"&gt;[&lt;/span&gt;Date &lt;span class="o"&gt;==&lt;/span&gt; ref_date&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in with(selic, VNA[Date == ref_date]): objeto &amp;#39;selic&amp;#39; não encontrado
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; TheoPrice&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;VNA&lt;span class="o"&gt;*&lt;/span&gt;Quotation&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in truncate(VNA * Quotation/100, 6): objeto &amp;#39;VNA&amp;#39; não encontrado
+lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; TheoPrice&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;VNA&lt;span class="o"&gt;*&lt;/span&gt;Quotation&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -536,68 +447,14 @@ VNA &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in eval(expr, envir, enclos): objeto &amp;#39;TheoPrice&amp;#39; não encontrado
+&lt;div class="highlight"&gt;&lt;pre&gt;## [1] FALSE
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Since the output is &lt;code&gt;TRUE&lt;/code&gt; we all have to agree that these values match.
 As I said this is pretty much easy once you know all truncations and roundings that appears along the way.
 Another tricky point is that we can't invert that formula analytically, to find out the spread having the spot price of the bond.
-Because of the truncations we have to use that algorithm and implement a kind of goal seek mechanism to obtain the spread.&lt;/p&gt;
-&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-    
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</summary><category term="R"></category><category term="brazilian bonds"></category><category term="LFT"></category><category term="bizdays"></category></entry><entry><title>Computing EWMA</title><link href="http://wilsonfreitas.github.io/posts/2013-08/computing-ewma.html" rel="alternate"></link><updated>2013-08-18T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2013-08-18:posts/2013-08/computing-ewma.html</id><summary type="html">&lt;p&gt;As a loop oriented developer—and long time user of old static typed languages—my first attempt to compute EWMA in R was&lt;/p&gt;
+Because of the truncations we have to use that algorithm and implement a kind of goal seek mechanism to obtain the spread.&lt;/p&gt;</summary><category term="R"></category><category term="brazilian bonds"></category><category term="LFT"></category><category term="bizdays"></category></entry><entry><title>Computing EWMA</title><link href="http://wilsonfreitas.github.io/posts/computing-ewma.html" rel="alternate"></link><updated>2013-08-18T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2013-08-18:posts/computing-ewma.html</id><summary type="html">&lt;p&gt;As a loop oriented developer—and long time user of old static typed languages—my first attempt to compute EWMA in R was&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;ewma&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;loop&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;rets&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;lambda&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="nx"&gt;n&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;rets&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
     &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -636,17 +493,17 @@ rets &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0.02&lt;
 &lt;p&gt;The results are amazing.
 Using functional approach is, without doubt, much better.
 It is almost 2 times better and this is significant.&lt;/p&gt;
-&lt;script src="https://gist.github.com/wilsonfreitas/6279978.js"&gt;&lt;/script&gt;</summary><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry><entry><title>EWMA convergence and divergence</title><link href="http://wilsonfreitas.github.io/posts/2013-08/ewma-convergence-and-divergence.html" rel="alternate"></link><updated>2013-08-16T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2013-08-16:posts/2013-08/ewma-convergence-and-divergence.html</id><summary type="html">&lt;p&gt;The so famous EWMA (Exponentially Weighted Moving Average) model&lt;/p&gt;
-&lt;div class="math"&gt;$$
+&lt;script src="https://gist.github.com/wilsonfreitas/6279978.js"&gt;&lt;/script&gt;</summary><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry><entry><title>EWMA convergence and divergence</title><link href="http://wilsonfreitas.github.io/posts/ewma-convergence-and-divergence.html" rel="alternate"></link><updated>2013-08-16T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2013-08-16:posts/ewma-convergence-and-divergence.html</id><summary type="html">&lt;p&gt;The so famous EWMA (Exponentially Weighted Moving Average) model&lt;/p&gt;
+&lt;p&gt;$$
 \hat\sigma^2_t = \lambda\hat\sigma^2_{t-1} + (1 - \lambda)r^2_t
-$$&lt;/div&gt;
+$$&lt;/p&gt;
 &lt;p&gt;used to estimate the volatility of asset returns.
 It is extensively used in Risk Management and is in the core of RiskMetrics.
-EWMA has a magic parameter &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt; that is &lt;span class="math"&gt;\(0.94\)&lt;/span&gt; in the absolutely great amount of Risk Management Systems running World Wide.
-I can't tell if it is JPMorgan's fault or it's one more of those situations where the idiots are taking over, but why &lt;span class="math"&gt;\(0.94\)&lt;/span&gt;, why people seem to accept it without have any idea where it came from. (Why so serious.)
+EWMA has a magic parameter $\lambda$ that is $0.94$ in the absolutely great amount of Risk Management Systems running World Wide.
+I can't tell if it is JPMorgan's fault or it's one more of those situations where the idiots are taking over, but why $0.94$, why people seem to accept it without have any idea where it came from. (Why so serious.)
 But ok, JPM said that and JPM is great, so I see no reason to question that.
 However, there is another point which disturbs me more, the well accepted EWMA's &lt;em&gt;period of convergence&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;It is well known, among risk management practioneers, that EWMA with &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt; has a &lt;em&gt;period of convergence&lt;/em&gt; that is about 60 time steps.
+&lt;p&gt;It is well known, among risk management practioneers, that EWMA with $\lambda=0.94$ has a &lt;em&gt;period of convergence&lt;/em&gt; that is about 60 time steps.
 Unfortunately, for some series, you don't have 60 points of historical data and EWMA can't reach its convergence.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Oh! It looks a bad thing&lt;/p&gt;
@@ -656,7 +513,7 @@ Of course I have one question: does it really matters?.
 I mean, is it really necessary to use a proxy to have a good estimative of the volatility?
 Use no proxy isn't an option?
 Or it is operational pre-requisite, the risk management system can't compute the volatility of a time series that doesn't enough historical data to guarantee the convergence its convergence.&lt;/p&gt;
-&lt;p&gt;I am going too far and I am afraid my anger on that subject attracts more attention than what really matters: &lt;strong&gt;how many returns are necessary to estimate &lt;span class="math"&gt;\(\hat\sigma^2_t\)&lt;/span&gt;?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I am going too far and I am afraid my anger on that subject attracts more attention than what really matters: &lt;strong&gt;how many returns are necessary to estimate $\hat\sigma^2_t$?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;I don't know the answer and I do think it has no right answer.
 I did an experiment in order to try to observe the EWMA's convergence and the results gave me a little hope.&lt;/p&gt;
 &lt;h2&gt;Bootstraping time series&lt;/h2&gt;
@@ -696,11 +553,11 @@ r.ewma.boot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; boot&lt;span class="p"&
 &lt;p&gt;In the end of the bootstrap process I got a sample of EWMA time series in the variable &lt;code&gt;r.ewma.boot&lt;/code&gt;.
 &lt;code&gt;r.ewma.boot&lt;/code&gt; is an instance of the &lt;em&gt;class&lt;/em&gt; &lt;code&gt;boot&lt;/code&gt;, which is returned by the function with the same name.
 It has an attribute &lt;code&gt;t&lt;/code&gt; which stores all samples generated by the execution of &lt;code&gt;boot&lt;/code&gt; and other attribute &lt;code&gt;t0&lt;/code&gt; which stores the result for the original time series.
-I ran that experiment with &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt;, but it can be run with any other value.&lt;/p&gt;
+I ran that experiment with $\lambda=0.94$, but it can be run with any other value.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Bootstraping EWMA calculations with lambda=0.94" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda94.png" /&gt;&lt;/p&gt;
 &lt;p&gt;The red line is the mean volatility and as we can observe, it converges to the long run standard deviation—shown by the black horizontal line.
-And, as some practioneers usually say, 60 time steps isn't a bad choice for EWMA's convergence, when &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt;.
-For &lt;span class="math"&gt;\(\lambda=0.98\)&lt;/span&gt; we need more time steps to reach the convergence—as can be seen in the image below the time series used has 200 time steps instead of 100.&lt;/p&gt;
+And, as some practioneers usually say, 60 time steps isn't a bad choice for EWMA's convergence, when $\lambda=0.94$.
+For $\lambda=0.98$ we need more time steps to reach the convergence—as can be seen in the image below the time series used has 200 time steps instead of 100.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Bootstraping EWMA calculations with lambda=0.98" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda98.png" /&gt;&lt;/p&gt;
 &lt;p&gt;We clearly observe the convergence, I tend to believe it is in distribution.
 Assintoticaly the mean value of EWMA estimator converges to the sample &lt;code&gt;sd&lt;/code&gt;, but EWMA gives a local estimative of volatility as we observe in the blue line.&lt;/p&gt;
@@ -709,7 +566,7 @@ Assintoticaly the mean value of EWMA estimator converges to the sample &lt;code&
 So, following the assumption of IID returns I created one sample of returns and bootstraped it.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Bootstraping simulated time series with lambda=0.94" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda94-sim.png" /&gt;&lt;/p&gt;
 &lt;p&gt;We observe the convergence to the sample &lt;code&gt;sd&lt;/code&gt; which differs a little from the theoretical standard deviation (0.02).
-As expected the convergence with &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt; occurs within the same numbers of time steps we've observed in the real time series.
+As expected the convergence with $\lambda=0.94$ occurs within the same numbers of time steps we've observed in the real time series.
 This result might help confirming the assumption that assets' returns are IID.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;lambda&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="mf"&gt;0.94&lt;/span&gt;
 &lt;span class="nx"&gt;sig&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nx"&gt;matrix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;nrow&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;ncol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -729,59 +586,5 @@ This result might help confirming the assumption that assets' returns are IID.&l
 
 &lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;I am obliged to agree that the &lt;em&gt;market convention&lt;/em&gt; isn't silly.
-Indeed, 60 times steps are reasonable for &lt;span class="math"&gt;\(\lambda=0.94\)&lt;/span&gt; as more time steps are made necessary for greater values of &lt;span class="math"&gt;\(\lambda\)&lt;/span&gt;.
-Though I couldn't validate the use of a proxy for series that don't have this minimal number of points I see that I can't use EWMA without it.&lt;/p&gt;
-&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-    
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</summary><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry></feed>
+Indeed, 60 times steps are reasonable for $\lambda=0.94$ as more time steps are made necessary for greater values of $\lambda$.
+Though I couldn't validate the use of a proxy for series that don't have this minimal number of points I see that I can't use EWMA without it.&lt;/p&gt;</summary><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry></feed>

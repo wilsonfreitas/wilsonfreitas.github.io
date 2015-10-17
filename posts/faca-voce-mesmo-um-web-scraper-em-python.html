@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Faça você mesmo um Web Scraper em Python — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Faça você mesmo um Web Scraper em Python; Date: 2014-12-18; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Faça você mesmo um Web Scraper em Python"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/faca-voce-mesmo-um-web-scraper-em-python.html"/>
+	<meta property="og:description" content=""/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Faça você mesmo um Web Scraper em Python</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2014-12-18T00:00:00-02:00" itemprop="datePublished">18/12/2014</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/programming.html" rel="category">programming</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/python.html" rel="tag">python</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/scraps.html" rel="tag">scraps</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Já não é de hoje que Python é tida como uma ótima linguagem para realizar tarefas de captura de dados na Internet.
+Eu sempre gostei de utilizar Python para capturar dados na Internet, mas nunca me preocupei em fazer isso de forma estruturada.
+No entanto, para um projeto pessoal, eu precisei recentemente realizar capturas de dados financeiros em diversos sites e senti a necessidade de alguma ferramenta que me permitisse fazer as capturas de forma mais estruturada.
+Eu sei que há diversos projetos que atacam este problema de diversas formas.
+Até investi algum tempo utilizando o <a href="http://scrapy.org/" title="Scrapy">Scrapy</a>, mas logo vi que ele era demais para o que eu precisava.
+Fora que eu não encontrei, num primeiro momento, uma forma de fazer nele exatamente o que eu precisava (já explico).
+Foi assim que decidi fazer o meu próprio <em>web scraper</em> utilizando algumas coisas que eu já havia construído.</p>
+<h4>Por que você não usa o Scrapy?</h4>
+<p>Bem, não sei. Simplismente não gostei. Acho que tem dependências demais e não gosto de dependências demais.
+Já basta o Pandas, numpy, scipy e matplotlib que eu tenho que usar e ter uma vida miserável toda vez que eu decido compilar uma nova versão.
+Mas a verdade mesmo é que eu queria algo que pudesse executar no Google App Engine e com tamanha quantidade de dependências logo vi que não ia rolar.</p>
+<p>Mas na verdade ainda, houveram alguns pontos que eu entendia relevantes e posto isso eu resolvi tentar uma solução caseira.
+Estes pontos são:</p>
+<ul>
+<li>Não gostei da forma que a classe <code>Item</code> funciona. Na verdade gostei muito da classe <code>Item</code>, mas pra usar da maneira proposta eu me viro bem com um <code>dict</code>.</li>
+<li>Outra coisa é que o método de <em>parse</em> é implementado de uma forma que toda a inteligência do <em>scraper</em> fica num lugar só.Eu procurava algo com uma idéia mais transcedental, de transformação, onde eu tivesse o conteúdo extraído da página e fosse transformando ele até obter o que eu desejasse.</li>
+<li>A declaração das URLs no <em>spider</em> pra mim era limitada, uma vez que eu precisava de URLs dinâmicas (com datas), pois alguns dados do mercado financeiro são divulgados assim, infelizmente!</li>
+</ul>
+<h2>Entra em cena: <code>scraps</code></h2>
+<p>Bem, foi assim que eu começei, há alguns meses atrás, a escrever o <code>scraps</code> e desde então venho usando ele pra diversas capturas.</p>
+<script src="https://gist.github.com/wilsonfreitas/8bd1a0a5296c65948918.js"></script>
+
+<p>O <code>scraps</code> é um módulo Python muito simples onde eu tenho apenas 2 classes (<code>Scrap</code> e <code>Attribute</code>) e com elas eu resolvo a minha vida com capturas na Internet.
+É óbvio que esta não é uma solução final, é um quebra galho mesmo, mas é um macaco gordo!</p>
+<p>Coisas legais ao desenvolver <code>scraps</code></p>
+<ul>
+<li>É muito bom desenvolver módulos para necessidades específicas. As vezes eu tenho a impressão que toda a programação (ou os programadores) querem tratar as soluções como grandes LEGOs e para isso ficam a busca de quais são os <em>frameworks</em> da moda para compor a obra. Obviamente para mim é fácil falar dado que não vivo de programação e não tenho a necessidade de mercado me pressionando para ficar na vanguarda. Na minha praia que é computação científica eu defendo menos bibliotecas e mais implementação.</li>
+<li>Eu pude finalmente utilizar <strong>Python Descriptors</strong> ou pelo mesmo usá-lo em algo útil que não um exemplo de descriptors. Fiquei muito feliz com o resultado final, apesar da implementação ainda parecer um <em>hack</em> malígno.</li>
+</ul>
+<h2><code>scraps</code> em ação</h2>
+<p>A seguir vou mostrar um exemplo simples do meu uso para <code>scraps</code>, mas a idéia é bastante simples: capturar a taxa de juros de depósitos interbancários (Taxa DI) no site da <a href="http://www.cetip.com.br/" title="CETIP">CETIP</a>.
+A URL é da página incial da CETIP: http://www.cetip.com.br/ e segue o trecho de código HTML de onde quero capturar os dados:</p>
+<div class="highlight"><pre>...
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;box-taxa&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+        <span class="nt">&lt;strong&gt;&lt;b&gt;</span>TAXA DI:<span class="nt">&lt;/b&gt;&lt;/strong&gt;</span>
+        <span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">&quot;ctl00_Banner_lblTaxDateDI&quot;</span><span class="nt">&gt;</span>(18/12/2014)<span class="nt">&lt;/span&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;bg-taxa&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;txt-taxa-porcentagem&quot;</span><span class="nt">&gt;&lt;span</span> <span class="na">id=</span><span class="s">&quot;ctl00_Banner_lblTaxDI&quot;</span><span class="nt">&gt;</span>11,59%<span class="nt">&lt;/span&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+...
+</pre></div>
+
+
+<p>Segue também um pedaço da tela com uma visualização da informação:</p>
+<p><img alt="CETIP" src="/figure/cetip.png" /></p>
+<p>Por sorte a CETIP utiliza <code>id</code> nas <em>tags</em> que me interessam, o que torna tudo mais simples.
+Do trecho acima eu quero as tags <code>span</code> com ids <code>ctl00_Banner_lblTaxDateDI</code> e <code>ctl00_Banner_lblTaxDI</code>, com a data de divulgação da taxa e a taxa, respectivamente.</p>
+<p>No mundo <code>scraps</code> eu tenho a classe <code>scpras.Scrap</code> que representa o que eu quero extrair do conteúdo da URL.
+Nessa classe eu declaro atributros de classe que são instâncias da classe <code>scraps.Attribute</code> e identificam as <em>tags</em> que serão capturadas.
+As <em>tags</em> são definidas pelo XPath que eu quero capturar.
+Para o HTML acima temos:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">CetipScrap</span><span class="p">(</span><span class="n">scraps</span><span class="o">.</span><span class="n">Scrap</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@id=&quot;ctl00_Banner_lblTaxDateDI&quot;]&#39;</span><span class="p">)</span>
+    <span class="n">taxa</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@id=&quot;ctl00_Banner_lblTaxDI&quot;]&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Declarado dessa forma temos que o atributo <code>data</code> captura o conteúdo em texto de todas as <em>tags</em> com id <code>ctl00_Banner_lblTaxDateDI</code> e o atributo <code>taxa</code> o mesmo para o id <code>ctl00_Banner_lblTaxDI</code>.
+Poderia ser mais específico com o XPath, no entanto, para este exemplo não faria diferença.
+Em HTMLs menos estruturados vale a pena dedicar mais tempo a definição do XPath.</p>
+<p>Para testar a captura é necessário apenas instanciar a classe <code>CetipScrap</code> e invocar o seu método <code>fetch</code> passando a URL.</p>
+<div class="highlight"><pre><span class="n">scrap</span> <span class="o">=</span> <span class="n">CetipScrap</span><span class="p">()</span>
+<span class="n">scrap</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;http://www.cetip.com.br&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">scrap</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">scrap</span><span class="o">.</span><span class="n">taxa</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Este código gera:</p>
+<div class="highlight"><pre><span class="k">[&#39;(18/12/2014)&#39;]</span>
+<span class="k">[&#39;11,59%&#39;]</span>
+</pre></div>
+
+
+<p>Note que os atributos <code>data</code> e <code>taxa</code> retornam listas, da mesma forma que as APIs de XML sempre retornam listas de elementos nas suas consultas e o conteúdo das listas são textos contidos nas tags.</p>
+<blockquote>
+<h3>Dica: retorno dos atributos</h3>
+<p>Os atributos, instâncias de <code>scraps.Attribute</code>, sempre retornam listas de textos.</p>
+</blockquote>
+<h3>Formatando os atributos</h3>
+<p>O trabalho poderia dar-se por encerrado aqui, afinal já consegui extrair os textos com a data de divulgação e o valor da taxa DI.
+No entanto, eu ainda quero que estes dados sejam formatados.
+Para trabalhar os dados eu tenho o atributo <code>apply</code> do construtor de <code>scraps.Attribute</code> onde eu passo uma coleção de funções que será aplicada a cada elemento da lista com o conteúdo em texto dos elementos.
+Dessa maneira eu posso estruturar a transformação dos dados sem ficar preso a um método onde todo o trabalho de tratamento e transformação é realizado.</p>
+<p>Para realizar essa tarefa eu crio algumas pequenas funções para me ajudarem e altero a declaração de <code>CetipScrap</code>, ficando tudo mais ou menos assim:</p>
+<div class="highlight"><pre><span class="n">divide_by</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">y</span><span class="o">/</span><span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">strptime</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">format</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="n">_from</span><span class="p">,</span> <span class="n">_to</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_replace</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">_from</span><span class="p">,</span> <span class="n">_to</span><span class="p">):</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">text</span>
+    <span class="k">return</span> <span class="n">_replace</span>
+
+<span class="k">class</span> <span class="nc">CetipScrap</span><span class="p">(</span><span class="n">scraps</span><span class="o">.</span><span class="n">Scrap</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@id=&quot;ctl00_Banner_lblTaxDateDI&quot;]&#39;</span><span class="p">,</span> <span class="nb">apply</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">strptime</span><span class="p">(</span><span class="s">&#39;(</span><span class="si">%d</span><span class="s">/%m/%Y)&#39;</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="n">taxa</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@id=&quot;ctl00_Banner_lblTaxDI&quot;]&#39;</span><span class="p">,</span> <span class="nb">apply</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">replace</span><span class="p">([</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;%&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">]),</span> <span class="nb">float</span><span class="p">,</span> <span class="n">divide_by</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+    <span class="p">])</span>
+
+<span class="n">scrap</span> <span class="o">=</span> <span class="n">CetipScrap</span><span class="p">()</span>
+<span class="n">scrap</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;http://www.cetip.com.br&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">scrap</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">scrap</span><span class="o">.</span><span class="n">taxa</span><span class="p">)</span>
+</pre></div>
+
+
+<p>A idéia aqui é:</p>
+<ul>
+<li>No atributo <code>data</code> formatar como <code>datetime.datetime</code></li>
+<li>No atributo <code>taxa</code> formatar como <code>float</code>, mas como o número está em pt-BT e em percentual, é necessário substituir vírgula por ponto e remover o símbolo de por cento, para na sequência converter para floar e dividir por 100</li>
+</ul>
+<p>No atributo <code>data</code> a função <code>strptime('(%d/%m/%Y)')</code> é aplicada a cada elemento da lista.
+Já no atributo <code>taxa</code> a funções <code>replace([',', '%'], ['.', ''])</code>, <code>float</code> e <code>divide_by(100)</code> são aplicadas na ordem espeficidada, a cada elemento da lista.</p>
+<p>Executando o código acima temos:</p>
+<div class="highlight"><pre><span class="k">[datetime.datetime(2014, 12, 18, 0, 0)]</span>
+<span class="k">[0.1159]</span>
+</pre></div>
+
+
+<p>As funções <code>strptime</code>, <code>replace</code> e <code>divide_by</code> me ajudaram na transformação dos dados.
+Estas funções retornam funções que executam as tarefas para as quais foram especificadas.
+Por exemplo, a chamada <code>divide_by(100)</code> retorna uma função que divide o argumento por 100 e a chamada <code>strptime('(%/d/%m/%Y)')</code> retorna uma função que recebe uma argumento texto, no formato especificado, e retorna um <code>datetime.datetime</code>.
+Uma abordagem interessante para o uso de <code>scraps</code> seria investir mais tempo na criação dessas funções, para assim tornar a transformação em um conjunto de regras padrão.
+Funcionaria mais ou menos como no diagrama abaixo.</p>
+<p><img alt="Diagrama da classe Attribute" src="/figure/attribute-diag-1.png" /> </p>
+<p>Abaixo segue o código final da implementação onde eu utilizo <code>scraps</code> para obter a taxa de juros diária divulgada no site da <a href="http://www.cetip.com.br/" title="CETIP">CETIP</a>.</p>
+<script src="https://gist.github.com/wilsonfreitas/4b8e7e215e3a8a27eb90/a315f617b2059640a17edc72907a5b68571629c9.js"></script>
+
+<h2>Conclusão</h2>
+<p>Escrever <code>scpras</code> foi divertido e usá-lo é mais legal ainda.
+Exercito muito a minha criatividade pensando em transformações para os dados.
+Mas há uma ideia subliminar aqui que é estruturar do tratamento dos dados em pequenas etapas.
+Uma vez que eu consiga mapear um conjunto de funções que atende a um número considerável de problemas eu posso estruturar essa solução e torná-la mais automática, o que me faz pensar na construção de capturas on-line.
+De qualquer forma, <code>scraps</code> é um módulo que eu classificaria como <em>quick-and-dirty</em>, mas me ajuda a exercitar a minha criatividade e a dar vazão as coisas.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Faça você mesmo um Web Scraper em Python';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

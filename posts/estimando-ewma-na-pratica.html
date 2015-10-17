@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Estimando EWMA na prática — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Estimando EWMA na prática; Date: 2014-04-13; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Estimando EWMA na prática"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/estimando-ewma-na-pratica.html"/>
+	<meta property="og:description" content=""/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Estimando EWMA na prática</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2014-04-13T00:00:00-03:00" itemprop="datePublished">13/04/2014</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/volatility.html" rel="tag">volatility</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/risk-management.html" rel="tag">risk management</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Este post é para quem, assim como eu, sempre quis saber de onde vem o coeficiente $\lambda=0.94$ proposto pelo JP Morgan para estimar a volatilidade via EWMA (Exponential Weighted Moving Average).</p>
+<p>Vou mostrar aqui como estimar o $\lambda$ utilizando:</p>
+<ul>
+<li>minimização da soma do erro quadrático $S$</li>
+<li>máxima verosimilhança</li>
+</ul>
+<p>Ambas abordagens apresentam resultados semelhantes e vamos observar isso claramente nas funções objetivo utilizadas nos processos de otimização.
+Conhecendo estas técnicas você poderá estimar o coeficiente para qualquer série e assim ter autonomia sobre os resultados produzidos por você.</p>
+<h2>Dados utilizados</h2>
+<p>Vou utilizar a série de retornos BOVESPA de março/1997 até março/2014 (retornos contínuos).</p>
+<div class="highlight"><pre>bvsp <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&#39;http://www.quandl.com/api/v1/datasets/YAHOO/INDEX_BVSP.csv?&amp;trim_start=1997-03-12&amp;trim_end=2014-03-31&amp;sort_order=desc&#39;</span><span class="p">,</span> colClasses<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;Date&#39;</span><span class="o">=</span><span class="s">&#39;Date&#39;</span><span class="p">))</span>
+bvsp.ts <span class="o">&lt;-</span> <span class="kp">with</span><span class="p">(</span>bvsp<span class="p">,</span> as.xts<span class="p">(</span>Close<span class="p">,</span> order.by<span class="o">=</span><span class="kp">as.Date</span><span class="p">(</span>Date<span class="p">)))</span>
+bvsp.r <span class="o">&lt;-</span> <span class="kp">diff</span><span class="p">(</span><span class="kp">log</span><span class="p">(</span>bvsp.ts<span class="p">))</span>
+</pre></div>
+
+
+<!-- ```{r, echo=FALSE, fig.width=15, fig.cap="BVSP 1997-2014", warning=FALSE}
+plot(bvsp.ts, main='', major.ticks='year', minor.ticks=FALSE, major.format='%Y', cex.axis = .7, log="y")
+``` -->
+
+<p><img alt="BVSP Returns 1997-2014" src="http://wilsonfreitas.github.io/figure/bvsp-returns-1997-2014.png" /> </p>
+<p>É interessante observar os <em>clusters</em> de volatilidade, os de 1998 e 2008 são os mais relevantes (e curiosamente ocorreram em 10 anos).
+<em>Clusters</em> menores podem ser observados em 1997 e 2011.</p>
+<h2>Introduzindo o EWMA</h2>
+<p>Uma excelente fonte sobre Alisamento Exponencial é Capítulo 4 do <a href="http://www.ime.usp.br/~pam/ST.html" title="Séries Temporais">livro do Morettin</a> sobre séries temporais.
+Também sugiro fortemente a leitura do capítulo sobre volatilidade e correlação do <a href="http://www-2.rotman.utoronto.ca/~hull/ofod/index.html" title="John Hull">livro do Hull</a>.
+Aqui eu apenas apresentarei a equação que vou utilizar nas próximas seções para estimar o $\lambda$.</p>
+<p>O EWMA é definido como:</p>
+<p>$$
+\sigma^2_n = \lambda\sigma^2_{n-1} + (1-\lambda)r^2_{n-1}
+$$</p>
+<p>onde $\sigma^2_n$ é a variância estimada e $r^2_n$ é o retorno, ambos referentes ao instante $n$.</p>
+<p>Abaixo segue uma implemetação do EWMA utilizando <em>closures</em>:</p>
+<div class="highlight"><pre>ewma_builder <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>rets<span class="p">,</span> init<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;zero&#39;</span><span class="p">,</span> <span class="s">&#39;first&#39;</span><span class="p">,</span> <span class="s">&#39;var&#39;</span><span class="p">))</span> <span class="p">{</span>
+
+  <span class="m">.</span>check_init <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>value<span class="p">)</span> <span class="p">(</span>init <span class="o">==</span> value<span class="p">)[</span><span class="m">1</span><span class="p">]</span>
+  <span class="m">.</span>rets <span class="o">&lt;-</span> na.trim<span class="p">(</span>rets<span class="p">)</span>
+  <span class="m">.</span>n <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span><span class="m">.</span>rets<span class="p">)</span>
+  <span class="kr">if</span> <span class="p">(</span><span class="m">.</span>check_init<span class="p">(</span><span class="s">&#39;zero&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="m">.i</span>nit <span class="o">&lt;-</span> <span class="m">0</span>
+  <span class="p">}</span> <span class="kr">else</span> <span class="kr">if</span> <span class="p">(</span><span class="m">.</span>check_init<span class="p">(</span><span class="s">&#39;first&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="m">.i</span>nit <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span><span class="m">.</span>rets<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">^</span><span class="m">2</span><span class="p">)</span>
+  <span class="p">}</span> <span class="kr">else</span> <span class="kr">if</span> <span class="p">(</span><span class="m">.</span>check_init<span class="p">(</span><span class="s">&#39;var&#39;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="m">.i</span>nit <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span>var<span class="p">(</span><span class="m">.</span>rets<span class="p">))</span>
+  <span class="p">}</span> <span class="kr">else</span> <span class="kr">if</span> <span class="p">(</span><span class="kp">is.numeric</span><span class="p">(</span>init<span class="p">))</span> <span class="p">{</span>
+    <span class="m">.i</span>nit <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span>init<span class="p">)</span>
+  <span class="p">}</span> <span class="kr">else</span> <span class="p">{</span>
+    <span class="kp">stop</span><span class="p">(</span><span class="s">&#39;unknown init: &#39;</span><span class="p">,</span> init<span class="p">)</span>
+  <span class="p">}</span>
+
+    <span class="m">.</span>r2 <span class="o">&lt;-</span> <span class="m">.</span>rets<span class="o">^</span><span class="m">2</span>
+  <span class="kr">function</span><span class="p">(</span>lambda<span class="p">)</span> <span class="p">{</span>
+    r2 <span class="o">&lt;-</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> lambda<span class="p">)</span><span class="o">*</span><span class="m">.</span>r2
+    s <span class="o">&lt;-</span> filter<span class="p">(</span>r2<span class="p">,</span> lambda<span class="p">,</span> <span class="s">&quot;recursive&quot;</span><span class="p">,</span> init<span class="o">=</span><span class="m">.i</span>nit<span class="p">)[</span><span class="m">-.</span>n<span class="p">]</span>
+    x <span class="o">&lt;-</span> as.xts<span class="p">(</span>s<span class="p">,</span> order.by<span class="o">=</span>index<span class="p">(</span>r2<span class="p">)[</span><span class="m">-1</span><span class="p">])</span>
+    <span class="kp">names</span><span class="p">(</span>x<span class="p">)</span> <span class="o">&lt;-</span> <span class="s">&#39;EWMA&#39;</span>
+    x
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>A função <code>ewma_builder</code> retorna uma <em>closure</em> que calcula o EWMA para a série de retornos fornecida em <code>rets</code> e considerando $\sigma^2_1$ de acordo com <code>init</code>.
+<code>init</code> pode assumir 4 valores:</p>
+<ul>
+<li><code>zero</code> onde $\sigma^2_1 = 0$</li>
+<li><code>first</code> onde $\sigma^2_1 = r^2_1$</li>
+<li><code>var</code> onde $\sigma^2_1$ é a variância amostral</li>
+<li>um número para ser utilizado diretamente como $\sigma_1^2$</li>
+</ul>
+<p>Pontos importantes:</p>
+<ul>
+<li>A função retornada calcula a variância na frequência da série de retornos fornecida, portanto, uma série diária retornará variância diária e para obter a volatilidade anualizada é necessário $\sqrt{252 \cdot}$.</li>
+<li>$\sigma^2_1$ não é retornado pela função que calcula a variância. Entendo que $\sigma^2_1$ é uma suposição que contribui para a convergência das estimativas de volatilidade, portanto, não incluo esse <em>chute</em> na série retornada.</li>
+<li>A função <code>ewma_builder</code> foi desenvolvida para receber séries <code>xts</code> ou <code>zoo</code>.</li>
+</ul>
+<p>Abaixo segue o cálculo da volatilidade utilizando $\lambda=0.94$.</p>
+<div class="highlight"><pre>compute_ewma <span class="o">&lt;-</span> ewma_builder<span class="p">(</span>bvsp.r<span class="p">,</span> <span class="s">&#39;first&#39;</span><span class="p">)</span>
+x.ewma <span class="o">&lt;-</span> <span class="kp">sqrt</span><span class="p">(</span>compute_ewma<span class="p">(</span><span class="m">0.94</span><span class="p">))</span>
+</pre></div>
+
+
+<p><img alt="BVSP EWMA 0.94" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-094-volatility.png" /> </p>
+<p>Note que considero $\sigma^2_1=r^2_1$.</p>
+<h2>Estimando via minimização de $S$</h2>
+<p>$S$ é a soma do erro quadrático, ou seja:</p>
+<p>$$
+S = \sum^N_{n=1}(s^2_n - \sigma^2_n)^2
+$$</p>
+<p>é a soma quadrado da diferença entre a variância estimada $\sigma^2_n$ e a variância observada $s^2_n$, para uma amostra de tamanho $N$.
+O $\lambda$ que nos interessa é aquele que minimiza essa soma.</p>
+<p>Aqui temos o primeiro obstáculo:</p>
+<blockquote>
+<p>quem é $s^2$?</p>
+</blockquote>
+<p>Antes de definir a variância observada (o que chega a ser um contrasenso dado que não observamos a variância de fato) vou listar duas alternativas:</p>
+<ul>
+<li>retorno quadrático $r^2_n$: é uma alternativa honesta pois assim estariamos utilizando EWMA para estimar o retorno quadrático 1 passo a frente.</li>
+<li>desvio padrão amostral dos próximos $T$ pontos: uma alternativa mais ambiciosa tentando prever uma janela maior no futuro. Segundo <a href="http://www-2.rotman.utoronto.ca/~hull/ofod/index.html" title="John Hull">Hull</a> essa foi a abordagem adotada pelo JPMorgan para chegar ao $\lambda=0.94$, eles utilizaram $T=25$.</li>
+</ul>
+<p>Nas próximas sessões vou encontrar $\lambda$ em ambas as abordagens.</p>
+<h3>Utilizando o retorno quadrático</h3>
+<p>Para encontrar $\lambda$ minimizando $S$ e considerando o retorno quadrático como variância observada</p>
+<p>$$
+S = \sum^N_{n=1} (r^2_n - \sigma^2_n)
+$$</p>
+<p>precisamos construir a função objetivo que retorne $S$ para uma dado $\lambda$.
+A função abaixo retorna uma <em>closure</em> que faz isso.</p>
+<div class="highlight"><pre>f_obj_builder <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>rets<span class="p">,</span> init<span class="o">=</span><span class="s">&#39;first&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="m">.</span>mean <span class="o">&lt;-</span> <span class="kp">mean</span><span class="p">(</span>rets<span class="p">,</span> na.rm<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+  <span class="m">.</span>rets <span class="o">&lt;-</span> rets <span class="o">-</span> <span class="m">.</span><span class="kp">mean</span>
+  compute_ewma <span class="o">&lt;-</span> ewma_builder<span class="p">(</span><span class="m">.</span>rets<span class="p">,</span> init<span class="p">)</span>
+    <span class="m">.</span>r2 <span class="o">&lt;-</span> <span class="m">.</span>rets<span class="o">^</span><span class="m">2</span>
+  <span class="kr">function</span><span class="p">(</span>lambda<span class="p">)</span> <span class="p">{</span>
+    <span class="m">.</span>ewma <span class="o">&lt;-</span> compute_ewma<span class="p">(</span>lambda<span class="p">)</span>
+    <span class="kp">sum</span><span class="p">(</span>na.omit<span class="p">((</span><span class="m">.</span>r2 <span class="o">-</span> <span class="m">.</span>ewma<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Note que tiro diretamente a diferença entre o retorno quadrático e <code>.ewma</code>, pois dado que ambos são séries temporais <code>xts</code>, tenho a garantida de que as operações serão realizadas entre elementos da mesma data.</p>
+<p>Para encontrar $\lambda$ basta minimizar a função objetivo.
+Vou utilizar a função <code>optimize</code>.
+Essa função procura o menor valor em um intervalo dado para uma função com apenas 1 parâmetro.
+Como a nossa função objetivo recebe apenas $\lambda$ e sabemos que $0 &lt; \lambda &lt; 1$, <code>optimize</code> resolve o nosso problema.</p>
+<div class="highlight"><pre>f_obj <span class="o">&lt;-</span> f_obj_builder<span class="p">(</span>bvsp.r<span class="p">,</span> <span class="s">&#39;first&#39;</span><span class="p">)</span>
+<span class="p">(</span>o <span class="o">&lt;-</span> optimize<span class="p">(</span>f_obj<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">)))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="cp">##</span><span class="c"> $minimum</span><span class="x"></span>
+<span class="cp">##</span><span class="c"> [1] 0.9091</span><span class="x"></span>
+<span class="cp">##</span><span class="c"> </span><span class="x"></span>
+<span class="cp">##</span><span class="c"> $objective</span><span class="x"></span>
+<span class="cp">##</span><span class="c"> [1] 0.01267</span><span class="x"></span>
+</pre></div>
+
+
+<p>O valor encontrado foi $\lambda = 0.91$ e não fica muito longe do $0.94$ proposto pelo RiskMetrics.</p>
+<p>Uma coisa interessante é olhar o comportamento da função objetivo.
+Dado que temos a função objetivo e ela tem apenas 1 argumento, fica fácil vê-la em um gráfico:</p>
+<div class="highlight"><pre>s <span class="o">&lt;-</span> <span class="kp">seq</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> length.out<span class="o">=</span><span class="m">1000</span><span class="p">)</span>
+t <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>s<span class="p">,</span> f_obj<span class="p">)</span>
+plot<span class="p">(</span>s<span class="p">,</span> <span class="kp">t</span><span class="p">,</span> type<span class="o">=</span><span class="s">&#39;l&#39;</span><span class="p">,</span> xlim<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
+abline<span class="p">(</span>h<span class="o">=</span>o<span class="o">$</span>objective<span class="p">,</span> col<span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="Objective Function Squared Returns" src="http://wilsonfreitas.github.io/figure/objective-function-squared-returns.png" /> </p>
+<p>Olhando o gráfico observamos que há apenas 1 ponto de mínimo na função e que este está bem próximo a $\lambda = 0.91$.</p>
+<p>Podemos agora calcular a variância da série e visualizar o resultado.</p>
+<div class="highlight"><pre>x.ewma <span class="o">&lt;-</span> compute_ewma<span class="p">(</span><span class="m">0.91</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="BVSP EWMA Squared Returns" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-squared-returns.png" /> </p>
+<h3>Utilizando o desvio padrão futuro</h3>
+<p>Agora para encontrar $\lambda$ minimizando $S$ e considerando que o desvio padrão dos próximos $T$ pontos, $v_n$, é a variância observada.</p>
+<p>$$
+S = \sum^N_{n=1} (v_n - \sigma^2_n)
+$$</p>
+<p>precisamos construir a seguinte função objetivo.</p>
+<div class="highlight"><pre>f_obj_builder <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>rets<span class="p">,</span> width<span class="p">,</span> init<span class="o">=</span><span class="s">&#39;first&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="m">.</span>mean <span class="o">&lt;-</span> <span class="kp">mean</span><span class="p">(</span>rets<span class="p">,</span> na.rm<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+  <span class="m">.</span>rets <span class="o">&lt;-</span> rets <span class="o">-</span> <span class="m">.</span><span class="kp">mean</span>
+  <span class="m">.</span>var <span class="o">&lt;-</span> rollapply<span class="p">(</span><span class="m">.</span>rets<span class="p">,</span> var<span class="p">,</span> width<span class="o">=</span>width<span class="p">,</span> align<span class="o">=</span><span class="s">&#39;left&#39;</span><span class="p">)</span>
+  compute_ewma <span class="o">&lt;-</span> ewma_builder<span class="p">(</span>rets<span class="p">,</span> init<span class="p">)</span>
+  <span class="kr">function</span><span class="p">(</span>lambda<span class="p">)</span> <span class="p">{</span>
+    <span class="m">.</span>ewma <span class="o">&lt;-</span> compute_ewma<span class="p">(</span>lambda<span class="p">)</span>
+    <span class="kp">sum</span><span class="p">(</span>na.omit<span class="p">((</span><span class="m">.</span>var <span class="o">-</span> <span class="m">.</span>ewma<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Note que essa função recebe, no parâmetro <code>width</code>, a quantidade de pontos que será utilizada no cálculo da variância amostral.
+Vou utilizar 25, seguindo a sugestão descrita no Hull.</p>
+<div class="highlight"><pre>f_obj <span class="o">&lt;-</span> f_obj_builder<span class="p">(</span>bvsp.r<span class="p">,</span> <span class="m">25</span><span class="p">,</span> <span class="s">&#39;first&#39;</span><span class="p">)</span>
+<span class="p">(</span>o <span class="o">&lt;-</span> optimize<span class="p">(</span>f_obj<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">)))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="cp">##</span><span class="c"> $minimum</span><span class="x"></span>
+<span class="cp">##</span><span class="c"> [1] 0.9813</span><span class="x"></span>
+<span class="cp">##</span><span class="c"> </span><span class="x"></span>
+<span class="cp">##</span><span class="c"> $objective</span><span class="x"></span>
+<span class="cp">##</span><span class="c"> [1] 0.001958</span><span class="x"></span>
+</pre></div>
+
+
+<p>Desta vez o valor encontrado foi $\lambda = 0.98$, significativamente diferente de $0.91$.</p>
+<div class="highlight"><pre>s <span class="o">&lt;-</span> <span class="kp">seq</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> length.out<span class="o">=</span><span class="m">1000</span><span class="p">)</span>
+t <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>s<span class="p">,</span> f_obj<span class="p">)</span>
+plot<span class="p">(</span>s<span class="p">,</span> <span class="kp">t</span><span class="p">,</span> type<span class="o">=</span><span class="s">&#39;l&#39;</span><span class="p">,</span> xlim<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">0.5</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
+abline<span class="p">(</span>h<span class="o">=</span>o<span class="o">$</span>objective<span class="p">,</span> col<span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="Objective Function Squared Returns" src="http://wilsonfreitas.github.io/figure/objective-function-volatility-forecast.png" /> </p>
+<p>A função objetivo para esta abordagem também apresenta apenas 1 ponto de mínimo, garantindo a coerência do resultado encontrado.</p>
+<p>Vamos novamente ver o gráfico dos retornos envolvidos pela volatilidade para ter uma idéia de como se comporta a volatilidade com relação aos retornos observados utilizando-se um $\lambda$ tão alto.</p>
+<p><img alt="BVSP EWMA Squared Returns" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-forecast.png" /> </p>
+<h2>Conclusão</h2>
+<p>Dada a diferença entre os valores de $\lambda$ é necessária uma reflexão mais profunda sobre o tema.
+Obviamente a diferença reflete a escolha de $s^2$ e essa deve refletir o objetivo do modelo.
+Na minha opinião, a primeira abordadem tem como objetivo o <em>forecast</em> da variância de retornos diários, e portanto é mais adequada para o cálculo de VAR diário, por exemplo.
+Observando a série de retornos identificamos os <em>clusters</em> de volatilidade, que indicam uma mudança de regime da série, o que me leva a supor que o parâmetro $\lambda$ varia ao longo do tempo.
+Um teste fora da amostra pode ser utilizado para avaliar o período de aderência do modelo encontrado, pois, uma vez que ocorra mudança de regime na série é importante reestimar o parâmetro.
+O problema aqui torna-se como identificar a mudança de regime.</p>
+<p>A segunda abordadem, que apresenta um $\lambda$ alto, na minha opinião, já visa um comportamento mais estacionário.
+Também pode ser utilizado para calcular o VAR diário, por exemplo, no entanto, poderia ser utilizado para o VAR de janelas maiores como 10 dias, sem perda de generalidade.
+Acredito que com essa abordagem, a necessidade de reestimar o parâmetro seja menor, dado o efeito da utilização da média na estimação.</p>
+<p>Contudo, seria prudente buscar formas quantitativas de comparar as abordagens.
+Acredito que testes de frequência e testes fora da amostra são boas alternativas.</p>
+<p>A estimação via máxima verosimilhança fica para outro post, onde teremos uma técnica que considera premissas relacionadas aos retornos ao invés da variância e assim poderemos ver de qual abordadem ela se aproxima, em termos do $\lambda$ estimado.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Estimando EWMA na prática';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

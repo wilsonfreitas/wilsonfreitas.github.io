@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Empenada na Curva de Juros de DI1 — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Empenada na Curva de Juros de DI1; Date: 2015-09-18; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Empenada na Curva de Juros de DI1"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html"/>
+	<meta property="og:description" content="A empenada que a Curva de Juros de DI1 deu em setembro de 2015, após o downgrade do Brasil pelo S&P e o anúncio do pacote fiscal do governo."/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Empenada na Curva de Juros de DI1</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2015-09-18T00:00:00-03:00" itemprop="datePublished">18/09/2015</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/bizdays.html" rel="tag">bizdays</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/term-structure.html" rel="tag">term structure</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/interpolation.html" rel="tag">interpolation</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>A curva de juros DI1, de depósitos interbancários de 1 dia, a curva mais negociada em nosso mercado, sofreu uma metamorfose nos últimos meses.
+Saímos de uma expectativa de juros de longo prazo de 12% para quase 16%.
+Quando falo juros de longo prazo me refiro aos contratos com vencimento a partir de 2020, com aproximadamente 5 anos de <em>duration</em>.</p>
+<p>Eu fiz o código abaixo para baixar curvas do site da <a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;F Bovespa">BM&amp;F Bovespa</a> e vou usá-lo para baixar curvas de DI1 para diferentes datas deste ano de forma que seja possível obvervar a evolução dos juros.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>XML<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>bizdays<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>stringr<span class="p">)</span>
+
+cal <span class="o">&lt;-</span> Calendar<span class="p">(</span>holidaysANBIMA<span class="p">,</span> weekdays<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;saturday&#39;</span><span class="p">,</span> <span class="s">&#39;sunday&#39;</span><span class="p">),</span> dib<span class="o">=</span><span class="m">252</span><span class="p">,</span> name<span class="o">=</span><span class="s">&#39;ANBIMA&#39;</span><span class="p">)</span>
+bizdays.options<span class="o">$</span>set<span class="p">(</span>default.calendar<span class="o">=</span>cal<span class="p">)</span>
+
+str_supplant <span class="o">&lt;-</span> <span class="kr">function</span> <span class="p">(</span>string<span class="p">,</span> repl<span class="p">)</span> <span class="p">{</span>
+    result <span class="o">&lt;-</span> str_match_all<span class="p">(</span>string<span class="p">,</span> <span class="s">&quot;\\{([^{}]*)\\}&quot;</span><span class="p">)</span>
+    <span class="kr">if</span> <span class="p">(</span><span class="kp">length</span><span class="p">(</span>result<span class="p">[[</span><span class="m">1</span><span class="p">]])</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span>
+        <span class="kr">return</span><span class="p">(</span>string<span class="p">)</span>
+    result <span class="o">&lt;-</span> result<span class="p">[[</span><span class="m">1</span><span class="p">]]</span>
+    <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="kp">seq_len</span><span class="p">(</span><span class="kp">dim</span><span class="p">(</span>result<span class="p">)[</span><span class="m">1</span><span class="p">]))</span> <span class="p">{</span>
+        x <span class="o">&lt;-</span> result<span class="p">[</span>i<span class="p">,]</span>
+        pattern <span class="o">&lt;-</span> x<span class="p">[</span><span class="m">1</span><span class="p">]</span>
+        key <span class="o">&lt;-</span> x<span class="p">[</span><span class="m">2</span><span class="p">]</span>
+        <span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="kp">is.null</span><span class="p">(</span>repl<span class="p">[[</span>key<span class="p">]]))</span>
+            string <span class="o">&lt;-</span> <span class="kp">gsub</span><span class="p">(</span>pattern<span class="p">,</span> repl<span class="p">[[</span>key<span class="p">]],</span> string<span class="p">,</span> perl<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+    <span class="p">}</span>
+    string
+<span class="p">}</span>
+
+<span class="m">.</span>get_curve_url <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>refdate<span class="p">,</span> ticker<span class="p">)</span> <span class="p">{</span>
+    url <span class="o">&lt;-</span> <span class="s">&#39;http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp&#39;</span>
+    query <span class="o">&lt;-</span> str_supplant<span class="p">(</span><span class="s">&#39;?Data={refdate}&amp;Data1={sysdate}&amp;slcTaxa={ticker}&#39;</span><span class="p">,</span>
+        <span class="kt">list</span><span class="p">(</span>refdate<span class="o">=</span><span class="kp">format</span><span class="p">(</span><span class="kp">as.Date</span><span class="p">(</span>refdate<span class="p">),</span> <span class="s">&#39;%d/%m/%Y&#39;</span><span class="p">),</span>
+            sysdate<span class="o">=</span><span class="kp">format</span><span class="p">(</span><span class="kp">Sys.Date</span><span class="p">(),</span> <span class="s">&#39;%Y%m%d&#39;</span><span class="p">),</span>
+            ticker<span class="o">=</span>ticker<span class="p">))</span>
+    <span class="kp">paste0</span><span class="p">(</span><span class="kp">url</span><span class="p">,</span> query<span class="p">)</span>
+<span class="p">}</span>
+
+get_curve <span class="o">&lt;-</span> <span class="kr">function</span> <span class="p">(</span>refdate<span class="p">,</span> ticker<span class="o">=</span><span class="s">&#39;PRE&#39;</span><span class="p">)</span> <span class="p">{</span>
+    refdate <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span>refdate<span class="p">)</span>
+    url <span class="o">&lt;-</span> <span class="m">.</span>get_curve_url<span class="p">(</span>refdate<span class="p">,</span> ticker<span class="p">)</span>
+    doc <span class="o">&lt;-</span> htmlTreeParse<span class="p">(</span><span class="kp">url</span><span class="p">,</span> useInternalNodes<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+    num <span class="o">&lt;-</span> xpathSApply<span class="p">(</span>doc<span class="p">,</span> <span class="s">&quot;//td[contains(@class, &#39;tabelaConteudo&#39;)]&quot;</span><span class="p">,</span> 
+        <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&#39;[\r\n \t]+&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">,</span> xmlValue<span class="p">(</span>x<span class="p">)))</span>
+    num <span class="o">&lt;-</span> <span class="kp">sapply</span><span class="p">(</span>num<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="kp">as.numeric</span><span class="p">(</span><span class="kp">gsub</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">,</span> x<span class="p">)),</span> USE.NAMES<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+
+    colspan <span class="o">&lt;-</span> <span class="kp">as.integer</span><span class="p">(</span>xpathApply<span class="p">(</span>doc<span class="p">,</span> <span class="s">&quot;//td[contains(@class, &#39;tabelaTitulo&#39;)]&quot;</span><span class="p">,</span>  xmlAttrs <span class="p">)[[</span><span class="m">2</span><span class="p">]][</span><span class="m">3</span><span class="p">])</span>
+    <span class="kr">if</span> <span class="p">(</span>colspan <span class="o">==</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+        terms <span class="o">&lt;-</span> num<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">)]</span>
+        rates <span class="o">&lt;-</span> num<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="kc">FALSE</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">)]</span><span class="o">/</span><span class="m">100</span>
+        log_pu <span class="o">&lt;-</span> <span class="kp">log</span><span class="p">(</span><span class="m">1</span> <span class="o">+</span> rates<span class="o">*</span>terms<span class="o">/</span><span class="m">360</span><span class="p">)</span>
+        rate <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>pu<span class="p">,</span> term<span class="p">)</span> <span class="p">(</span>pu <span class="o">-</span> <span class="m">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="m">360</span><span class="o">/</span>term<span class="p">)</span>
+    <span class="p">}</span> <span class="kr">else</span> <span class="p">{</span>
+        terms <span class="o">&lt;-</span> bizdayse<span class="p">(</span>refdate<span class="p">,</span> num<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">)])</span>
+        rates <span class="o">&lt;-</span> num<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="kc">FALSE</span><span class="p">,</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">)]</span><span class="o">/</span><span class="m">100</span>
+        log_pu <span class="o">&lt;-</span> <span class="kp">log</span><span class="p">((</span><span class="m">1</span> <span class="o">+</span> rates<span class="p">)</span><span class="o">^</span><span class="p">(</span>terms<span class="o">/</span><span class="m">252</span><span class="p">))</span>
+        rate <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>pu<span class="p">,</span> term<span class="p">)</span> pu<span class="o">^</span><span class="p">(</span><span class="m">252</span><span class="o">/</span>term<span class="p">)</span> <span class="o">-</span> <span class="m">1</span>
+    <span class="p">}</span>
+
+    log_price_interpolator <span class="o">&lt;-</span> approxfun<span class="p">(</span>terms<span class="p">,</span> log_pu<span class="p">,</span> method<span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">)</span>
+    <span class="kr">function</span> <span class="p">(</span>term<span class="p">)</span> <span class="p">{</span>
+        pu <span class="o">&lt;-</span> <span class="kp">exp</span><span class="p">(</span>log_price_interpolator<span class="p">(</span>term<span class="p">))</span>
+        rate<span class="p">(</span>pu<span class="p">,</span> term<span class="p">)</span><span class="o">*</span><span class="m">100</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Uma vez que este código foi <em>sourced</em> basta executar a função <code>get_curve</code> passando a data e a curva de interesse, no nosso caso a curva de interesse é a de DI1 que tem código <code>PRE</code> (de juros pré-fixados).</p>
+<div class="highlight"><pre>irbrl <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2015-01-02&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
+irbrl<span class="p">(</span><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">252</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##  [1] 11,80000 12,04666 12,28111 12,46142 12,58328 12,66676 12,72591
+##  [8] 12,77506 12,81516 12,85459 12,88258 12,91228
+</pre></div>
+
+
+<p>Vamos comparar as curvas para diferentes datas, e assim será possível observar a empenada que a curva deu no mês de setembro.</p>
+<div class="highlight"><pre><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">2520</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">)</span> <span class="o">-&gt;</span> terms
+
+dates <span class="o">&lt;-</span> <span class="kp">seq</span><span class="p">(</span><span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2015-01-01&#39;</span><span class="p">),</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2015-09-01&#39;</span><span class="p">),</span> by<span class="o">=</span><span class="s">&#39;2 months&#39;</span><span class="p">)</span>
+dates <span class="o">&lt;-</span> adjust.next<span class="p">(</span>dates<span class="p">)</span>
+curves <span class="o">&lt;-</span> <span class="kp">lapply</span><span class="p">(</span>dates<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>d<span class="p">)</span> <span class="p">{</span>
+    get_curve<span class="p">(</span>d<span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)(</span>terms<span class="p">)</span>
+<span class="p">})</span>
+<span class="kp">names</span><span class="p">(</span>curves<span class="p">)</span> <span class="o">&lt;-</span> dates
+
+ir_df <span class="o">&lt;-</span> stack<span class="p">(</span>curves<span class="p">)</span>
+ir_df<span class="o">$</span>date <span class="o">&lt;-</span> terms <span class="o">+</span> <span class="kp">Sys.Date</span><span class="p">()</span>
+
+<span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+ggplot<span class="p">(</span>data<span class="o">=</span>ir_df<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span><span class="kp">date</span><span class="p">,</span> y<span class="o">=</span>values<span class="p">,</span> colour<span class="o">=</span>ind<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">()</span> <span class="o">+</span> geom_line<span class="p">()</span> <span class="o">+</span>
+  xlab<span class="p">(</span><span class="s">&#39;Datas&#39;</span><span class="p">)</span> <span class="o">+</span> ylab<span class="p">(</span><span class="s">&#39;Taxas&#39;</span><span class="p">)</span> <span class="o">+</span> theme<span class="p">(</span>legend.title<span class="o">=</span>element_blank<span class="p">(),</span> legend.position<span class="o">=</span><span class="s">&#39;top&#39;</span><span class="p">)</span> <span class="o">+</span> ggtitle<span class="p">(</span><span class="s">&#39;Curvas de DI1&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-1.png" /> </p>
+<p>Observe que de julho para setembro as taxas de longo prazo se elevaram em 2 pontos percentuais (200bps), o que para um prazo de 10 anos é uma variação significativa.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Empenada na Curva de Juros de DI1';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

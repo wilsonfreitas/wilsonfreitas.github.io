@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WilsonFreitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/string-handling.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 09 Apr 2014 00:00:00 -0300</lastBuildDate><item><title>String interpolation in R</title><link>http://wilsonfreitas.github.io/posts/2014-04/string-interpolation-in-r.html</link><description>&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wilson Freitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/string-handling.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 09 Apr 2014 00:00:00 -0300</lastBuildDate><item><title>String interpolation in R</title><link>http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html</link><description>&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
 url = "{media}logo.gif".supplant(param); --&gt;
 
 &lt;p&gt;String handling in R is hard, there are a few packages that help making that task not so hard, but it is still hard.
@@ -47,4 +47,4 @@ str_supplant&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;
 
 &lt;p&gt;That implementation was deeply inspired by &lt;a href="http://javascript.crockford.com/remedial.html" title="Douglas Crockford"&gt;Douglas Crockford&lt;/a&gt;'s &lt;code&gt;supplant&lt;/code&gt; implementation.
 Unfortunately that implementation hasn't been vectorized yet, but I think it is quite useful anyway.
-I hope it help others like it's been helping me.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Wed, 09 Apr 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-04-09:posts/2014-04/string-interpolation-in-r.html</guid><category>R</category><category>string handling</category></item></channel></rss>
+I hope it help others like it's been helping me.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Wed, 09 Apr 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-04-09:posts/string-interpolation-in-r.html</guid><category>R</category><category>string handling</category></item></channel></rss>

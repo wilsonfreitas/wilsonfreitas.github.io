@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Captura de dados da Corrida de São Silvestre com Python—Parte 2 — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Captura de dados da Corrida de São Silvestre com Python—Parte 2; Date: 2015-04-27; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Captura de dados da Corrida de São Silvestre com Python—Parte 2"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-2.html"/>
+	<meta property="og:description" content=""/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Captura de dados da Corrida de São Silvestre com Python—Parte 2</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2015-04-27T00:00:00-03:00" itemprop="datePublished">27/04/2015</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/data-science.html" rel="category">data science</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/dplyr.html" rel="tag">dplyr</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>No post <a href="http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-1.html">Captura de dados da Corrida de São Silvestre com Python—Parte 1</a> eu levanto uma questão: Como o clima influencia o desempenho dos corredores de rua?
+Nesse post eu apresento como os dados dos campeões da corrida de São Silvestre foram capturados do site da corrida utilizando Python e em seguida transformados em um arquivos CSV.</p>
+<p>Agora vou mostrar como o arquivo CSV foi utilizado, como os dados foram limpos e como foram formatados para que eu tenha os tipos corretos para a análise dos dados.
+Neste post eu uso R ao invés de Python, sem nenhuma razão específica.</p>
+<h2>Montando o ambiente</h2>
+<p>Para fazer esta análise eu carreguei os seguintes pacotes:</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>tidyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>lubridate<span class="p">)</span>
+</pre></div>
+
+
+<p>O <code>ggplot2</code> é para fazer gráficos, <code>dplyr</code> e <code>tidyr</code> para tratar os <em>datasets</em> e <code>lubridate</code> para manipulação de data e hora.
+Pessoalmente acho o <code>dplyr</code> excepcional para o manejo com os dados, ele impõe uma forma fluida de pensar nas colunas do <em>dataset</em> como variáveis e a partir daí todo o processo de manipulação de dados se torna simples.</p>
+<h2>Carregando os dados</h2>
+<p>Vamos começar carregando o arquivo <code>saosilvestre.csv</code>.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>RCurl<span class="p">)</span>
+csv_file <span class="o">&lt;-</span> getURL<span class="p">(</span><span class="s">&#39;https://raw.githubusercontent.com/wilsonfreitas/saosilvestre/master/saosilvestre.csv&#39;</span><span class="p">)</span>
+ss <span class="o">&lt;-</span> read.csv<span class="p">(</span>text<span class="o">=</span>csv_file<span class="p">,</span> header<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> stringsAsFactor<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="kp">head</span><span class="p">(</span>ss<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##                nome    pais corrida  ano  horario        tempo percurso
+## 1      Dawit Admasu Etiópia      90 2014 09:00:00 00:45:04.000    15000
+## 2  Ymer Wude Ayalew Etiópia      90 2013 08:40:00 00:50:43.000    15000
+## 3     Edwin Kipsang  Quênia      89 2013 09:00:00 00:43:47.000    15000
+## 4      Nancy Kipron  Quênia      89 2013 08:40:00 00:51:58.000    15000
+## 5     Edwin Kipsang  Quênia      88 2012 09:00:00 00:44:05.000    15000
+## 6 Maurine Kipchumba  Quênia      88 2012 08:40:00 00:51:42.000    15000
+##                                                                    largada
+## 1 Av. Paulista, próximo à Rua Ministro Rocha Azevedo (sentido Consolação).
+## 2 Av. Paulista, próximo à Rua Ministro Rocha Azevedo (sentido Consolação).
+## 3 Av. Paulista, próximo à Rua Ministro Rocha Azevedo (sentido Consolação).
+## 4 Av. Paulista, próximo à Rua Ministro Rocha Azevedo (sentido Consolação).
+## 5                                 Av. Paulista, próximo à Rua Frei Caneca.
+## 6                                 Av. Paulista, próximo à Rua Frei Caneca.
+##                                                               chegada
+## 1 Av. Paulista, 900, em frente ao Edifício da Fundação Cásper Líbero.
+## 2 Av. Paulista, 900, em frente ao Edifício da Fundação Cásper Líbero.
+## 3 Av. Paulista, 900, em frente ao Edifício da Fundação Cásper Líbero.
+## 4 Av. Paulista, 900, em frente ao Edifício da Fundação Cásper Líbero.
+## 5 Av. Paulista, 900, em frente ao Edifício da Fundação Cásper Líbero.
+## 6 Av. Paulista, 900, em frente ao Edifício da Fundação Cásper Líbero.
+</pre></div>
+
+
+<p>Eu não vou utilizar as colunas <code>largada</code>, <code>chegada</code> e <code>horario</code> e como elas poluem a vizualização do <em>dataset</em> eu decidi removê-las:</p>
+<div class="highlight"><pre>ss <span class="o">&lt;-</span> ss <span class="o">%&gt;%</span> select<span class="p">(</span><span class="o">-</span>largada<span class="p">,</span> <span class="o">-</span>chegada<span class="p">,</span> <span class="o">-</span>horario<span class="p">)</span>
+<span class="kp">head</span><span class="p">(</span>ss<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##                nome    pais corrida  ano        tempo percurso
+## 1      Dawit Admasu Etiópia      90 2014 00:45:04.000    15000
+## 2  Ymer Wude Ayalew Etiópia      90 2013 00:50:43.000    15000
+## 3     Edwin Kipsang  Quênia      89 2013 00:43:47.000    15000
+## 4      Nancy Kipron  Quênia      89 2013 00:51:58.000    15000
+## 5     Edwin Kipsang  Quênia      88 2012 00:44:05.000    15000
+## 6 Maurine Kipchumba  Quênia      88 2012 00:51:42.000    15000
+</pre></div>
+
+
+<p>Muito melhor!</p>
+<blockquote>
+<p><strong>Importante:</strong> o operador <code>%&gt;%</code> é um <em>pipe</em> e compõe as sucessivas chamadas de funções para transformações em um <em>dataset</em>.
+O retorno da primeira expressão é atribuído ao primeiro argumento da função na segunda expressão, e caso houvessem mais expressões esse comportamento se repetiria até encontrar a última expressão e retornar o seu resultado para o chamador.
+Este operador, que é extensamente utilizado em conjunto com as funções do <code>dplyr</code>, tem origem no pacote <a href="https://github.com/smbache/magrittr"><code>magrittr</code></a>.</p>
+</blockquote>
+<h2>Limpando e formatando os dados</h2>
+<p>Para ter o <em>dataset</em> pronto para uso eu preciso formatar os dados e corrigir os erros.
+No processo de análise eu encontrei alguns erros e como não será possível reproduzir este processo aqui eu vou listar os erros e apresentar as soluções.</p>
+<h3>Corrigindo o <code>ano</code></h3>
+<p>O <code>ano</code> da corrida número 90 está errado.
+Este erro pode ser observado olhando os dados, veja na listagem abaixo onde eu uso a função <code>filter</code> do <code>dplyr</code> para selecionar os registros em que a coluna <code>corrida</code> é 90.</p>
+<div class="highlight"><pre>ss <span class="o">%&gt;%</span> filter<span class="p">(</span>corrida <span class="o">==</span> <span class="m">90</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##               nome    pais corrida  ano        tempo percurso
+## 1     Dawit Admasu Etiópia      90 2014 00:45:04.000    15000
+## 2 Ymer Wude Ayalew Etiópia      90 2013 00:50:43.000    15000
+</pre></div>
+
+
+<p>Para corrigir isso é necessário definir para 2014 o <code>ano</code> dos registros que possuem <code>corrida</code> igual a 90.</p>
+<div class="highlight"><pre>ss <span class="o">&lt;-</span> ss <span class="o">%&gt;%</span> mutate<span class="p">(</span>ano<span class="o">=</span><span class="kp">ifelse</span><span class="p">(</span>corrida <span class="o">==</span> <span class="m">90</span><span class="p">,</span> <span class="m">2014</span><span class="p">,</span> ano<span class="p">))</span>
+</pre></div>
+
+
+<p>Apenas para ter certeza vamos verificar os dados após a correção.</p>
+<div class="highlight"><pre>##               nome    pais corrida  ano        tempo percurso
+## 1     Dawit Admasu Etiópia      90 2014 00:45:04.000    15000
+## 2 Ymer Wude Ayalew Etiópia      90 2014 00:50:43.000    15000
+</pre></div>
+
+
+<p>Ótimo, <code>ano</code> corrigido!</p>
+<h3>Corrigindo o <code>pais</code></h3>
+<p>Na coluna <code>pais</code> há registros mau preenchidos, alguns registros estão preenchidos errados e também há registros vazios.
+Vou começar com os registros errados, eles estão preenchidos com um hífen <code>-</code> e devem ser substituídos pelos países corretos.</p>
+<div class="highlight"><pre>ss <span class="o">%&gt;%</span> filter<span class="p">(</span>pais <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##                        nome pais corrida  ano        tempo percurso
+## 1 Marizete de Paula Rezende    -      78 2002 00:54:02.000    15000
+## 2            Lydia Cheromei    -      76 2000 00:50:33.000    15000
+</pre></div>
+
+
+<p>O <code>pais</code> do primeiro registro é Brasil e para o segundo é Quênia.
+Para corrigir esse erro eu utilizo a função <code>grep</code> para identificar os registros errados e substituir a coluna <code>pais</code> pelos valores comentados, mas mantendo a ordem correta, que eu consigo saber observando a listagem acima.</p>
+<div class="highlight"><pre>idx <span class="o">&lt;-</span> <span class="kp">grep</span><span class="p">(</span><span class="s">&#39;^-&#39;</span><span class="p">,</span> ss<span class="o">$</span>pais<span class="p">)</span>
+ss<span class="p">[</span>idx<span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="s">&#39;pais&#39;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&#39;Brasil&#39;</span>
+ss<span class="p">[</span>idx<span class="p">[</span><span class="m">2</span><span class="p">],</span> <span class="s">&#39;pais&#39;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&#39;Quênia&#39;</span>
+</pre></div>
+
+
+<p>Há também um registro com <code>pais</code> vazio.</p>
+<div class="highlight"><pre>ss <span class="o">%&gt;%</span> filter<span class="p">(</span>pais <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##            nome pais corrida  ano        tempo percurso
+## 1 Alfredo Gomes            1 1925 00:23:10.000     6200
+</pre></div>
+
+
+<p>O <code>pais</code> para este registro é Brasil e como é apenas 1 fica fácil corrigir com <code>dplyr::mutate</code>.</p>
+<div class="highlight"><pre>ss <span class="o">&lt;-</span> ss <span class="o">%&gt;%</span> mutate<span class="p">(</span>pais<span class="o">=</span><span class="kp">ifelse</span><span class="p">(</span>pais <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;Brasil&#39;</span><span class="p">,</span> pais<span class="p">))</span>
+</pre></div>
+
+
+<p>Pronto, <code>pais</code> corrigido.</p>
+<h3>Corrigindo o <code>percurso</code></h3>
+<p>Há 1 registro com erro na coluna <code>percurso</code>, e esse foi <em>tricky</em> para descobrir.
+Fazendo o gráfico de percurso por ano posso observar que a partir da década de 90 os percursos se mantém constantes em 15 km.</p>
+<div class="highlight"><pre>ggplot<span class="p">(</span>data<span class="o">=</span>ss<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>ano<span class="p">,</span> y<span class="o">=</span>percurso<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">(</span>size<span class="o">=</span><span class="m">2</span><span class="p">)</span> <span class="o">+</span> geom_line<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk ano-percurso" src="http://wilsonfreitas.github.io/figure/ano-percurso-1.png" /> </p>
+<p>Entretanto, logo após o ano 2000 há um ponto que caí vertiginosamente de 15 km para aproximadamente a metade.
+Observando o gráfico vejo que há variações semelhantes, porém isso pode me levar a questionar os demais valores.
+Por isso eu somente consegui identificar este erro quando criei a variável <code>pace</code> que mede a quantidade de tempo que um corredor leva para percorrer 1 km.
+Eu converto a variável <code>tempo</code> que é um <code>character</code> para <code>difftime</code> que é um objeto que representa intervalos de tempo.
+Pessoalmente acho <code>difftime</code> um nome miserável de ruim, mas no R algumas coisas são assim mesmo, meio feias ;).
+Depois dessa conversão eu consigo fazer as operações aritiméticas com <code>difftime</code> necessárias para o cálculo do <code>pace</code>.</p>
+<div class="highlight"><pre>ss <span class="o">&lt;-</span> ss <span class="o">%&gt;%</span> mutate<span class="p">(</span>tempo<span class="o">=</span><span class="kp">as.difftime</span><span class="p">(</span>tempo<span class="p">),</span> pace<span class="o">=</span><span class="m">1000</span><span class="o">*</span>tempo<span class="o">/</span>percurso<span class="p">)</span>
+</pre></div>
+
+
+<p>Fazendo o gráfico do <em>pace</em> dos campeões por corrida temos:</p>
+<div class="highlight"><pre>ggplot<span class="p">(</span>data<span class="o">=</span>ss<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>ano<span class="p">,</span> y<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span>pace<span class="p">)))</span> <span class="o">+</span> geom_point<span class="p">(</span>size<span class="o">=</span><span class="m">2</span><span class="p">)</span> <span class="o">+</span> geom_line<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk ano-pace" src="http://wilsonfreitas.github.io/figure/ano-pace-1.png" /> </p>
+<p>Bingo! É possível notar que no mesmo ano que no gráfico anterior há um <em>outliar</em>.
+Os paces de campeões são abaixo de 4 min/km, em média, de forma que um pace de 6 min/km é implausível.
+Para corrigir este registro vou assumir que ele é 15 km, como os demais em anos próximos.
+Dessa forma, será necessário atualizar o <code>percurso</code> e calcular novamente o <code>pace</code>.
+Para corrigir o percurso vou utilizar as operações de indexação no <code>data.frame</code> junto com a função <code>which</code> e para recalcular o pace eu utilizo a mesma expressão de antes (com <code>mutate</code>).</p>
+<div class="highlight"><pre>ss<span class="p">[</span><span class="kp">which</span><span class="p">(</span>ss<span class="o">$</span>pace <span class="o">&gt;</span> <span class="m">4</span><span class="p">),]</span><span class="o">$</span>percurso <span class="o">&lt;-</span> <span class="m">15000</span>
+ss <span class="o">&lt;-</span> ss <span class="o">%&gt;%</span> mutate<span class="p">(</span>pace<span class="o">=</span><span class="m">1000</span><span class="o">*</span>tempo<span class="o">/</span>percurso<span class="p">)</span>
+</pre></div>
+
+
+<p>Gerando novamente o gráfico dos paces observo que o erro está corrigido.</p>
+<p><img alt="plot of chunk ano-pace-corrigido" src="http://wilsonfreitas.github.io/figure/ano-pace-corrigido-1.png" /> </p>
+<blockquote>
+<p><strong>Importante:</strong> é necessário converter o <code>pace</code>, que é um <code>difftime</code>, para <code>numeric</code> para construir o gráfico com ggplot2.</p>
+<p><strong>Importante:</strong> notei no gráfico dos paces que nos anos recentes há dois níveis distintos de pace. Isso refere-se aos paces masculino e feminino que vamos classificar em breve.</p>
+</blockquote>
+<h3>Classificando masculino e feminino: criando <code>sexo</code></h3>
+<p>Como observei nos gráficos de pace, há uma diferença entre os paces: masculino e feminino, de forma que é interessante que eu consiga classificar os corredores quanto ao sexo.
+Eu sei que o tempo masculino é menor que o feminino, ou seja, um campeão do sexo masculino percorre a distância da prova em menos tempo do que uma campeã.
+Então eu posso assumir que nos anos em que há apenas 1 ocorrência, o sexo do campeão é masculino, e quando houverem 2 ocorrências o menor pace é do sexo masculino e o maior é do feminino.
+Também estou assumindo que não há provas com mais de 2 gêneros.
+Bem, posto isso a estratégia para classificar os campeões pelo sexo é:</p>
+<ol>
+<li>ordenar por <code>ano</code> e <code>tempo</code></li>
+<li>agrupar por <code>ano</code></li>
+<li>criar a variável <code>sexo</code> considerando sexo masculino quando a contagem do grupo for 1 e (masculino, feminino), nesta ordem, quando a contagem do grupo for diferente de 1</li>
+</ol>
+<p>Parece meio confuso mas com <code>dplyr</code> isso tudo pode ser resolvido em meia dúzia de linhas.</p>
+<div class="highlight"><pre>ss <span class="o">&lt;-</span> ss <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span>ano<span class="p">,</span> tempo<span class="p">)</span> <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>ano<span class="p">)</span> <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>sexo<span class="o">=</span><span class="kr">if</span> <span class="p">(</span>n<span class="p">()</span> <span class="o">==</span> <span class="m">1</span><span class="p">)</span> <span class="s">&#39;masculino&#39;</span> <span class="kr">else</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;masculino&#39;</span><span class="p">,</span> <span class="s">&#39;feminino&#39;</span><span class="p">))</span> <span class="o">%&gt;%</span>
+  ungroup <span class="o">%&gt;%</span>
+  <span class="kp">as.data.frame</span>
+<span class="kp">tail</span><span class="p">(</span>ss<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##                  nome    pais corrida  ano            tempo percurso
+## 125     Edwin Kipsang  Quênia      88 2012 44,08333333 mins    15000
+## 126 Maurine Kipchumba  Quênia      88 2012 51,70000000 mins    15000
+## 127     Edwin Kipsang  Quênia      89 2013 43,78333333 mins    15000
+## 128      Nancy Kipron  Quênia      89 2013 51,96666667 mins    15000
+## 129      Dawit Admasu Etiópia      90 2014 45,06666667 mins    15000
+## 130  Ymer Wude Ayalew Etiópia      90 2014 50,71666667 mins    15000
+##                 pace      sexo
+## 125 2,938888889 mins masculino
+## 126 3,446666667 mins  feminino
+## 127 2,918888889 mins masculino
+## 128 3,464444444 mins  feminino
+## 129 3,004444444 mins masculino
+## 130 3,381111111 mins  feminino
+</pre></div>
+
+
+<p>Eu executo um <code>tail</code> para apresentar os resultados porque os dados foram ordenados por ano e portanto os últimos registros são os que apresentam provas com os 2 sexos.
+Para verificar se a classificação está correta vou fazer um gráfico do tempo por ano agrupando por sexo para ilustrar a classificação dos campeões.
+Mas antes vou criar mais uma coluna chamada <code>contagem</code>, com a contagem de ocorrências da corrida, essa variável me ajuda a filtar os resultados para apresentar apenas as corridas em que houveram 2 campeões, pois dessa forma eu consigo comparar os níveis de pace por sexo.</p>
+<div class="highlight"><pre>ss <span class="o">&lt;-</span> ss <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>ano<span class="p">)</span> <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>contagem<span class="o">=</span>n<span class="p">())</span> <span class="o">%&gt;%</span>
+  ungroup <span class="o">%&gt;%</span>
+  <span class="kp">as.data.frame</span>
+ggplot<span class="p">(</span>data<span class="o">=</span><span class="kp">subset</span><span class="p">(</span>ss<span class="p">,</span> contagem <span class="o">==</span> <span class="m">2</span><span class="p">),</span>
+       aes<span class="p">(</span>x<span class="o">=</span>ano<span class="p">,</span> y<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span>tempo<span class="p">),</span> group<span class="o">=</span>sexo<span class="p">,</span> colour<span class="o">=</span>sexo<span class="p">))</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>size<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk ano-tempo-masc-fem" src="http://wilsonfreitas.github.io/figure/ano-tempo-masc-fem-1.png" /> </p>
+<p>Este gráfico me intriga porque a é possível observar 3 níveis distintos para o comportamento dos tempos dos campeões.
+Isso é um reflexo do percurso da prova, pois o tamanho do percurso aumentou ao longo dos anos até estacionar em 15 km.
+Outro gráfico semelhante ao anterior, mas apresentando percurso por ano agrupando por sexo, pode mostrar isso melhor.</p>
+<div class="highlight"><pre>ggplot<span class="p">(</span>data<span class="o">=</span><span class="kp">subset</span><span class="p">(</span>ss<span class="p">,</span> contagem <span class="o">==</span> <span class="m">2</span><span class="p">),</span>
+       aes<span class="p">(</span>x<span class="o">=</span>ano<span class="p">,</span> y<span class="o">=</span>percurso<span class="p">,</span> group<span class="o">=</span>sexo<span class="p">,</span> colour<span class="o">=</span>sexo<span class="p">))</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>size<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk ano-percurso-masc-fem" src="http://wilsonfreitas.github.io/figure/ano-percurso-masc-fem-1.png" /> </p>
+<p>Em todos as provas, exceto na segunda ocorrência do gráfico acima, os percursos masculinos e femininos são iguais.
+Este é um forte indício de que o percurso dessa prova para o sexo feminino também está errado.</p>
+<div class="highlight"><pre><span class="kp">head</span><span class="p">(</span><span class="kp">subset</span><span class="p">(</span>ss<span class="p">,</span> contagem <span class="o">==</span> <span class="m">2</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##                  nome      pais corrida  ano            tempo percurso
+## 51        Victor Mora  Colômbia      51 1975 23,21666667 mins     8900
+## 52 Christa Valensieck  Alemanha      51 1975 28,65000000 mins     8900
+## 53     Edmundo Warnke     Chile      52 1976 23,83333333 mins     7300
+## 54 Christa Valensieck  Alemanha      52 1976 28,60000000 mins     8900
+## 55  Domingo Tibaduiza  Colômbia      53 1977 23,91666667 mins     8900
+## 56       Loa Olafsson Dinamarca      53 1977 27,25000000 mins     8900
+##                pace      sexo contagem
+## 51 2,608614232 mins masculino        2
+## 52 3,219101124 mins  feminino        2
+## 53 3,264840183 mins masculino        2
+## 54 3,213483146 mins  feminino        2
+## 55 2,687265918 mins masculino        2
+## 56 3,061797753 mins  feminino        2
+</pre></div>
+
+
+<p>Listando o <em>dataset</em> observo que os registros da corrida 52 possuem os diferentes percursos, dessa forma vou assumir que os 2 deveriam ser 8900 m.
+Identificado o problema vou seguir com a mesma solução, selecionar os registros da corrida 52 e definir o <code>percurso</code> para 8900 m.</p>
+<div class="highlight"><pre>ss<span class="p">[</span><span class="kp">which</span><span class="p">(</span>ss<span class="o">$</span>corrida <span class="o">==</span> <span class="m">52</span><span class="p">),]</span><span class="o">$</span>percurso <span class="o">&lt;-</span> <span class="m">8900</span>
+ss <span class="o">&lt;-</span> ss <span class="o">%&gt;%</span> mutate<span class="p">(</span>pace<span class="o">=</span><span class="m">1000</span><span class="o">*</span>tempo<span class="o">/</span>percurso<span class="p">)</span>
+</pre></div>
+
+
+<p>Para encerrar as dúvidas vou empilhar os gráficos de pace e tempo por ano, para avaliar se as hipóteses assumidas são pertinentes.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>gridExtra<span class="p">)</span>
+ss_mw <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>ss<span class="p">,</span> contagem <span class="o">==</span> <span class="m">2</span><span class="p">)</span>
+
+plot_pace <span class="o">&lt;-</span> ggplot<span class="p">(</span>data<span class="o">=</span>ss_mw<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>ano<span class="p">,</span> y<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span>pace<span class="p">),</span> group<span class="o">=</span>sexo<span class="p">,</span> colour<span class="o">=</span>sexo<span class="p">))</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>size<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+plot_time <span class="o">&lt;-</span> ggplot<span class="p">(</span>data<span class="o">=</span>ss_mw<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>ano<span class="p">,</span> y<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span>tempo<span class="p">),</span> group<span class="o">=</span>sexo<span class="p">,</span> colour<span class="o">=</span>sexo<span class="p">))</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>size<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+
+grid.arrange<span class="p">(</span>plot_pace<span class="p">,</span> plot_time<span class="p">,</span> nrow<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk ano-pace-tempo-masc-fem" src="http://wilsonfreitas.github.io/figure/ano-pace-tempo-masc-fem-1.png" /> </p>
+<p>Neste gráfico observo 2 regimes de pace contra 3 regimes de tempo.
+Há 3 regimes de tempo porque o tempo é diretamente proporcional ao percurso, maior o percurso, maior o tempo, e no período avaliado temos 3 percursos: 8900 m, 13 km e 15 km.
+Por outro lado os 2 regimes de pace são curiosos pois indicam a relação do pace com o tamanho do percurso, ou seja, maior o percurso, maior o pace, o que é esperado, dado que é difícil para um corredor manter o mesmo nível de esforço em provas de diferentes distância.
+No entanto, a diferença de 2 km entre os percursos de 13 km e 15 km não influencia o pace dos campeões.</p>
+<p>Outra coisa, estes gráficos me fazem desconfiar de que a diferença do desempenho entre os sexos se mantém constante, em média, indicando algum tipo de estacionariedade, mas ainda seriam necessários mais gráficos e alguns testes estatísticos para comprovar isso.</p>
+<h2>Trabalho concluído</h2>
+<p>Bem, acredito aqui que o trabalho de limpeza e formatação está concluído.
+Pude passar por diversos problemas oriundos de uma manutenção pobre dos dados.
+O conteúdo das páginas não é confiável e vê-se que a atualização é manual e sem verificações.
+No entanto, este é o trabalho de quem tem que garimpar dados na Internet, é necessário criar formas de verificação e validação das hipóteses assumidas.
+Ainda falta fazer a análise dos dados para tentar responder a pergunta de como o clima pode influenciar o desempenho dos corredores de rua, mas isso fica pra outro post.
+Por ora vou salvar estes dados em um arquivo csv para usar na continuação deste trabalho.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Captura de dados da Corrida de São Silvestre com Python—Parte 2';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

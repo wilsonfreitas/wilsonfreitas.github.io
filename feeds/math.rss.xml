@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wilson Freitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/math.rss.xml" rel="self"></atom:link><lastBuildDate>Fri, 04 Jul 2014 00:00:00 -0300</lastBuildDate><item><title>Covariance between stochastic processes</title><link>http://wilsonfreitas.github.io/posts/covariance-between-stochastic-processes.html</link><description>&lt;p&gt;Let $dX_1$ and $dX_2$, describe the asset returns in different time intervals, $s$ and $u$.&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+dX_1(s) &amp;amp; = \sigma_1 dW_1 \\
+dX_2(u) &amp;amp; = \sigma_2 dW_2
+\end{aligned}
+$$&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note that these processes are arithmetic and Gaussian.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;We consider the returns being independent and since we are working with only one asset we have:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\sigma_1 &amp;amp; \equiv \sigma\sqrt{t_1} \\
+\sigma_2 &amp;amp; \equiv \sigma\sqrt{t_2}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;where $\sigma$ is the daily volatility.&lt;/p&gt;
+&lt;h2&gt;Covariance between $dX_1$ and $dX_2$&lt;/h2&gt;
+&lt;p&gt;The covariance between $dX_1$ and $dX_2$ is given by:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+COV(dX_1, dX_2) &amp;amp; = E[dX_1(t_1) dX_2(t_2)] \\
+                &amp;amp; = E[\sigma_1 dW_1 \sigma_2 dW_2]
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;If $t_1 &amp;lt; t_2$ we can write:&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+COV(dX_1, dX_2) &amp;amp; = E[\sigma_1 dW_1 (\sigma_1 dW_1 + \sigma_2 dW_2 - \sigma_1 dW_1)] \\
+                &amp;amp; = E[\sigma_1^2 dW_1^2 + \sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)] \\
+                &amp;amp; = \sigma_1^2 E[dW_1^2] +  E[\sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)] \\
+                &amp;amp; = \sigma_1^2 t1 +  E[\sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)]
+\end{aligned}
+$$&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Fri, 04 Jul 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-07-04:posts/covariance-between-stochastic-processes.html</guid><category>math</category></item></channel></rss>

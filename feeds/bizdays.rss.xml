@@ -1,5 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>WilsonFreitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/bizdays.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 15 Jun 2014 00:00:00 -0300</lastBuildDate><item><title>The quick and dirty term structure interpolator in R</title><link>http://wilsonfreitas.github.io/posts/2014-06/the-quick-and-dirty-term-structure-interpolator-in-r.html</link><description>&lt;p&gt;Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wilson Freitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/bizdays.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 23 Sep 2015 00:00:00 -0300</lastBuildDate><item><title>Nada é tão ruim que não possa piorar: Empenada na Curva de Juros de DI1 — Parte 2</title><link>http://wilsonfreitas.github.io/posts/nada-e-tao-ruim-que-nao-possa-piorar-empenada-na-curva-de-juros-de-di1-parte-2.html</link><description>&lt;p&gt;O mês de setembro de 2015 não está sendo fácil para o mercado financeiro.
+Alta de dólar (rompeu a barreira de R$ 4,00 e segue sem rumo), disparada de juros, pacote bomba do governo, pacote fiscal nebuloso, volta da CPMF e por aí vai.
+Mas no dia 23 de setembro de 2015 aconteceu algo interessante, após o nome do deputado Eduardo Cunha aparecer na lista de acusados da Operação Lava Jato, a curva de juros apresentou forte elevação.
+Essa empenada é reflexo da incerteza que ronda a aprovação de medidas importantes para a economia e para o país, incluindo o corte de gastos e o ajuste fiscal.
+Olhe no gráfico abaixo a curva de juros de DI1 para a semana do dia 21 de setembro.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;21&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1260&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; by&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;21&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; terms
+
+dates &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2015-09-21&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2015-09-25&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; by&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;days&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+curves &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;dates&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;d&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    get_curve&lt;span class="p"&gt;(&lt;/span&gt;d&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;PRE&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;terms&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;curves&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; dates
+
+ir_df &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; stack&lt;span class="p"&gt;(&lt;/span&gt;curves&lt;span class="p"&gt;)&lt;/span&gt;
+ir_df&lt;span class="o"&gt;$&lt;/span&gt;date &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; terms &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="kp"&gt;Sys.Date&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ggplot2&lt;span class="p"&gt;)&lt;/span&gt;
+ggplot&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&gt;ir_df&lt;span class="p"&gt;,&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; y&lt;span class="o"&gt;=&lt;/span&gt;values&lt;span class="p"&gt;,&lt;/span&gt; colour&lt;span class="o"&gt;=&lt;/span&gt;ind&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_point&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_line&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+  xlab&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Datas&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; ylab&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Taxas&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; theme&lt;span class="p"&gt;(&lt;/span&gt;legend.title&lt;span class="o"&gt;=&lt;/span&gt;element_blank&lt;span class="p"&gt;(),&lt;/span&gt; legend.position&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;top&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; ggtitle&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Curvas de DI1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-2-1.png" /&gt; &lt;/p&gt;
+&lt;p&gt;Isso mesmo, em 3 dias a curva deu uma empenada de 1 ponto percentual (100 basis points (bps)) e depois retornou ao nível inicial no último dia da semana.
+Esses movimentos do mercado, na minha opinião são muito difíceis de se explicar.
+Em geral os analistas se prendem a algum fato, como as notícias do governo, ou criam um factóide, mas a verdade é que pode ser um grande &lt;em&gt;player&lt;/em&gt; manipulando o mercado de forma indireta.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;os códigos da função &lt;code&gt;get_curve&lt;/code&gt; estão no post &lt;a href="http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html"&gt;Empenada na Curva de Juros de DI1&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Wed, 23 Sep 2015 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2015-09-23:posts/nada-e-tao-ruim-que-nao-possa-piorar-empenada-na-curva-de-juros-de-di1-parte-2.html</guid><category>R</category><category>bizdays</category><category>term structure</category><category>interpolation</category></item><item><title>Empenada na Curva de Juros de DI1</title><link>http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html</link><description>&lt;p&gt;A curva de juros DI1, de depósitos interbancários de 1 dia, a curva mais negociada em nosso mercado, sofreu uma metamorfose nos últimos meses.
+Saímos de uma expectativa de juros de longo prazo de 12% para quase 16%.
+Quando falo juros de longo prazo me refiro aos contratos com vencimento a partir de 2020, com aproximadamente 5 anos de &lt;em&gt;duration&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Eu fiz o código abaixo para baixar curvas do site da &lt;a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;amp;F Bovespa"&gt;BM&amp;amp;F Bovespa&lt;/a&gt; e vou usá-lo para baixar curvas de DI1 para diferentes datas deste ano de forma que seja possível obvervar a evolução dos juros.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;XML&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;bizdays&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;stringr&lt;span class="p"&gt;)&lt;/span&gt;
+
+cal &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; Calendar&lt;span class="p"&gt;(&lt;/span&gt;holidaysANBIMA&lt;span class="p"&gt;,&lt;/span&gt; weekdays&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;saturday&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;sunday&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; dib&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;252&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; name&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;ANBIMA&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+bizdays.options&lt;span class="o"&gt;$&lt;/span&gt;set&lt;span class="p"&gt;(&lt;/span&gt;default.calendar&lt;span class="o"&gt;=&lt;/span&gt;cal&lt;span class="p"&gt;)&lt;/span&gt;
+
+str_supplant &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;,&lt;/span&gt; repl&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    result &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_match_all&lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;\\{([^{}]*)\\}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;result&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;)&lt;/span&gt;
+    result &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; result&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+    &lt;span class="kr"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;i &lt;span class="kr"&gt;in&lt;/span&gt; &lt;span class="kp"&gt;seq_len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;result&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; result&lt;span class="p"&gt;[&lt;/span&gt;i&lt;span class="p"&gt;,]&lt;/span&gt;
+        pattern &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; x&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        key &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; x&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kp"&gt;is.null&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;repl&lt;span class="p"&gt;[[&lt;/span&gt;key&lt;span class="p"&gt;]]))&lt;/span&gt;
+            string &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pattern&lt;span class="p"&gt;,&lt;/span&gt; repl&lt;span class="p"&gt;[[&lt;/span&gt;key&lt;span class="p"&gt;]],&lt;/span&gt; string&lt;span class="p"&gt;,&lt;/span&gt; perl&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    string
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="m"&gt;.&lt;/span&gt;get_curve_url &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;,&lt;/span&gt; ticker&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    url &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp&amp;#39;&lt;/span&gt;
+    query &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_supplant&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;?Data={refdate}&amp;amp;Data1={sysdate}&amp;amp;slcTaxa={ticker}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+        &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;%d/%m/%Y&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+            sysdate&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;Sys.Date&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;%Y%m%d&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+            ticker&lt;span class="o"&gt;=&lt;/span&gt;ticker&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="kp"&gt;paste0&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; query&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+get_curve &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;,&lt;/span&gt; ticker&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;PRE&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    refdate &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;)&lt;/span&gt;
+    url &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;get_curve_url&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;,&lt;/span&gt; ticker&lt;span class="p"&gt;)&lt;/span&gt;
+    doc &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; htmlTreeParse&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; useInternalNodes&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    num &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; xpathSApply&lt;span class="p"&gt;(&lt;/span&gt;doc&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;//td[contains(@class, &amp;#39;tabelaConteudo&amp;#39;)]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+        &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;[\r\n \t]+&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; xmlValue&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))&lt;/span&gt;
+    num &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;num&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; x&lt;span class="p"&gt;)),&lt;/span&gt; USE.NAMES&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    colspan &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.integer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;xpathApply&lt;span class="p"&gt;(&lt;/span&gt;doc&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;//td[contains(@class, &amp;#39;tabelaTitulo&amp;#39;)]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  xmlAttrs &lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]][&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;colspan &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        terms &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; num&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+        rates &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; num&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;
+        log_pu &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; rates&lt;span class="o"&gt;*&lt;/span&gt;terms&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;360&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        rate &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pu&lt;span class="p"&gt;,&lt;/span&gt; term&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;pu &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;360&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;term&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="kr"&gt;else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        terms &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; bizdayse&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;,&lt;/span&gt; num&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+        rates &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; num&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;
+        log_pu &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;log&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; rates&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;terms&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;252&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        rate &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pu&lt;span class="p"&gt;,&lt;/span&gt; term&lt;span class="p"&gt;)&lt;/span&gt; pu&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;252&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;term&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    log_price_interpolator &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; approxfun&lt;span class="p"&gt;(&lt;/span&gt;terms&lt;span class="p"&gt;,&lt;/span&gt; log_pu&lt;span class="p"&gt;,&lt;/span&gt; method&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;linear&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kr"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;term&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        pu &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;exp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;log_price_interpolator&lt;span class="p"&gt;(&lt;/span&gt;term&lt;span class="p"&gt;))&lt;/span&gt;
+        rate&lt;span class="p"&gt;(&lt;/span&gt;pu&lt;span class="p"&gt;,&lt;/span&gt; term&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Uma vez que este código foi &lt;em&gt;sourced&lt;/em&gt; basta executar a função &lt;code&gt;get_curve&lt;/code&gt; passando a data e a curva de interesse, no nosso caso a curva de interesse é a de DI1 que tem código &lt;code&gt;PRE&lt;/code&gt; (de juros pré-fixados).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;irbrl &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; get_curve&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2015-01-02&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;PRE&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+irbrl&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;21&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;252&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; by&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;21&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;##  [1] 11,80000 12,04666 12,28111 12,46142 12,58328 12,66676 12,72591
+##  [8] 12,77506 12,81516 12,85459 12,88258 12,91228
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Vamos comparar as curvas para diferentes datas, e assim será possível observar a empenada que a curva deu no mês de setembro.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;21&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;2520&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; by&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;21&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; terms
+
+dates &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;seq&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2015-01-01&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2015-09-01&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; by&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2 months&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+dates &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; adjust.next&lt;span class="p"&gt;(&lt;/span&gt;dates&lt;span class="p"&gt;)&lt;/span&gt;
+curves &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;lapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;dates&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;d&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    get_curve&lt;span class="p"&gt;(&lt;/span&gt;d&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;PRE&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;terms&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;span class="kp"&gt;names&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;curves&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; dates
+
+ir_df &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; stack&lt;span class="p"&gt;(&lt;/span&gt;curves&lt;span class="p"&gt;)&lt;/span&gt;
+ir_df&lt;span class="o"&gt;$&lt;/span&gt;date &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; terms &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="kp"&gt;Sys.Date&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ggplot2&lt;span class="p"&gt;)&lt;/span&gt;
+ggplot&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&gt;ir_df&lt;span class="p"&gt;,&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;date&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; y&lt;span class="o"&gt;=&lt;/span&gt;values&lt;span class="p"&gt;,&lt;/span&gt; colour&lt;span class="o"&gt;=&lt;/span&gt;ind&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_point&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; geom_line&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+  xlab&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Datas&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; ylab&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Taxas&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; theme&lt;span class="p"&gt;(&lt;/span&gt;legend.title&lt;span class="o"&gt;=&lt;/span&gt;element_blank&lt;span class="p"&gt;(),&lt;/span&gt; legend.position&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;top&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; ggtitle&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Curvas de DI1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-1.png" /&gt; &lt;/p&gt;
+&lt;p&gt;Observe que de julho para setembro as taxas de longo prazo se elevaram em 2 pontos percentuais (200bps), o que para um prazo de 10 anos é uma variação significativa.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Fri, 18 Sep 2015 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2015-09-18:posts/empenada-na-curva-de-juros-de-di1.html</guid><category>R</category><category>bizdays</category><category>term structure</category><category>interpolation</category></item><item><title>The quick and dirty term structure interpolator in R</title><link>http://wilsonfreitas.github.io/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html</link><description>&lt;p&gt;Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
 I use the many of the curves released by &lt;a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;amp;F Bovespa"&gt;BM&amp;amp;F Bovespa&lt;/a&gt; in that &lt;a href="http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp" title="BVMF Curves"&gt;page&lt;/a&gt;.
 In order to have the curves always at hand I've written that few lines of code to download and return an interpolator where the only argument is the number of days I want to interpolate.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;XML&lt;span class="p"&gt;)&lt;/span&gt;
@@ -17,7 +141,7 @@ get_curve &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;fu
     refdate &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;)&lt;/span&gt;
     url &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;.&lt;/span&gt;get_curve_url&lt;span class="p"&gt;(&lt;/span&gt;refdate&lt;span class="p"&gt;,&lt;/span&gt; ticker&lt;span class="p"&gt;)&lt;/span&gt;
     doc &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; htmlTreeParse&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; useInternalNodes&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    num &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; xpathSApply&lt;span class="p"&gt;(&lt;/span&gt;doc&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;//td[contains(@class, &amp;#39;tabelaConteudo&amp;#39;)]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+    num &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; xpathSApply&lt;span class="p"&gt;(&lt;/span&gt;doc&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;//td[contains(@class, &amp;#39;tabelaConteudo&amp;#39;)]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
         &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;[\r\n \t]+&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; xmlValue&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)))&lt;/span&gt;
     num &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sapply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;num&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="kp"&gt;as.numeric&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; x&lt;span class="p"&gt;)),&lt;/span&gt; USE.NAMES&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -84,7 +208,7 @@ grid&lt;span class="p"&gt;()&lt;/span&gt;
 
 
 &lt;p&gt;&lt;img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-plot-1.png" /&gt; &lt;/p&gt;
-&lt;p&gt;The function &lt;code&gt;str_supplant&lt;/code&gt; was explained in another &lt;a href="http://wilsonfreitas.github.io/posts/2014-04/string-interpolation-in-r.html"&gt;post&lt;/a&gt;.
+&lt;p&gt;The function &lt;code&gt;str_supplant&lt;/code&gt; was explained in another &lt;a href="http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html"&gt;post&lt;/a&gt;.
 I mostly use the tickers &lt;code&gt;PRE&lt;/code&gt; for deposits in Brazilian Real and &lt;code&gt;DOL&lt;/code&gt; for deposits in US Dollar.
 That code works pretty well for &lt;code&gt;EUR&lt;/code&gt; (Euro deposits) interest rates, but it has to be adjusted to handle &lt;code&gt;DIC&lt;/code&gt; and &lt;code&gt;DIM&lt;/code&gt; tickers (IPCA and IGP-M inflation rates).&lt;/p&gt;
 &lt;p&gt;As I told before that is a quick and dirt implementation but it is also quite useful.
@@ -97,7 +221,7 @@ ggplot&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="Brazilian Term Structure with ggplot2" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png" /&gt; &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Sun, 15 Jun 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-06-15:posts/2014-06/the-quick-and-dirty-term-structure-interpolator-in-r.html</guid><category>R</category><category>bizdays</category><category>term structure</category><category>interpolation</category><category>quick tips</category></item><item><title>bizdays—dias úteis no R</title><link>http://wilsonfreitas.github.io/posts/2014-05/bizdays-dias-uteis-no-r.html</link><description>&lt;p&gt;Quem trabalha no mercado financeiro brasileiro lida constantemente com uma praga que é a contagem de dias úteis.
+&lt;p&gt;&lt;img alt="Brazilian Term Structure with ggplot2" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png" /&gt; &lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Sun, 15 Jun 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-06-15:posts/the-quick-and-dirty-term-structure-interpolator-in-r.html</guid><category>R</category><category>bizdays</category><category>term structure</category><category>interpolation</category><category>quick tips</category></item><item><title>bizdays—dias úteis no R</title><link>http://wilsonfreitas.github.io/posts/bizdays-dias-uteis-no-r.html</link><description>&lt;p&gt;Quem trabalha no mercado financeiro brasileiro lida constantemente com uma praga que é a contagem de dias úteis.
 Não que seja difícil utilizar a contagem de dias úteis para fazer o apreçamento de instrumentos financeiros.
 A dificuldade é ter a contagem de dias úteis a mão e de maneira flexível, onde possamos, eventualmente, inserir ou remover feriados.
 Essa disponibilidade é a razão pela qual o Excel é tão utilizado.
@@ -319,7 +443,7 @@ Para tornar as coisa realmente simples eu coloco essa definição no &lt;code&gt
 &lt;/ul&gt;
 &lt;h2&gt;Conclusão&lt;/h2&gt;
 &lt;p&gt;O pacote &lt;code&gt;bizdays&lt;/code&gt; visa a contagem de dias para o apreçamento de instrumentos financeiros de forma simples e intuitíva de utilizar, trazendo para o R a mesma simplicidade encontrada no Excel.
-É útil tanto para calendários de dias úteis quanto dias corridos, permitindo a realização destes cálculos através de uma mesma interface.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 15 May 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-05-15:posts/2014-05/bizdays-dias-uteis-no-r.html</guid><category>R</category><category>bizdays</category><category>dias úteis</category><category>calendário</category></item><item><title>Pricing Brazilian Government Bonds: LFT</title><link>http://wilsonfreitas.github.io/posts/2014-04/pricing-brazilian-government-bonds-lft.html</link><description>&lt;p&gt;For many years I've been working for and with software vendors in the brazilian financial industry.
+É útil tanto para calendários de dias úteis quanto dias corridos, permitindo a realização destes cálculos através de uma mesma interface.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 15 May 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-05-15:posts/bizdays-dias-uteis-no-r.html</guid><category>R</category><category>bizdays</category><category>dias úteis</category><category>calendário</category></item><item><title>Pricing Brazilian Government Bonds: LFT</title><link>http://wilsonfreitas.github.io/posts/pricing-brazilian-government-bonds-lft.html</link><description>&lt;p&gt;For many years I've been working for and with software vendors in the brazilian financial industry.
 The great majority of pricing and risk management aplications running on here were not developed here in Brazil.
 I think that is the main reason I saw many projects struggling to deliver a glimpse of what had been promissed during the software selection meetings.
 One thing that is usually said is that brazilian market has its &lt;a href="http://en.wikipedia.org/wiki/Jabuticaba"&gt;jabuticabas&lt;/a&gt;, yeah jabuticaba.
@@ -339,15 +463,15 @@ These calculations seem to be pretty simple but it hides some pitfalls and becau
 &lt;h2&gt;The instrument&lt;/h2&gt;
 &lt;p&gt;As mentioned before, LFT is a Floating Rate Bond so it accumulates daily interest rate from its issue date up to maturity.
 The LFT's issue value is R$ 1000,00 then the fair value of a LFT is&lt;/p&gt;
-&lt;div class="math"&gt;$$
+&lt;p&gt;$$
 LFT_t = 1000 \prod_{n=t_i}^{t-1}(1 + r_{n})^\frac{1}{252}
-$$&lt;/div&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(t\)&lt;/span&gt; refers to the mark-to-market date, &lt;span class="math"&gt;\(t_i\)&lt;/span&gt; the issue date and &lt;span class="math"&gt;\(t-1\)&lt;/span&gt; the business day before mark-to-market date.
+$$&lt;/p&gt;
+&lt;p&gt;where $t$ refers to the mark-to-market date, $t_i$ the issue date and $t-1$ the business day before mark-to-market date.
 However, it is usually traded in values higher than the fair value as if a negative spread was applied discounting the fair value, leading to:&lt;/p&gt;
-&lt;div class="math"&gt;$$
+&lt;p&gt;$$
 LFT_t = \frac{1000 \prod_{n=t_i}^{t-1}(1 + r_{n})^\frac{1}{252}}{(1 + s_t)^{D_T/252}}
-$$&lt;/div&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(s_t\)&lt;/span&gt; is the spread and &lt;span class="math"&gt;\(D_T\)&lt;/span&gt; the number of business days up to maturity.&lt;/p&gt;
+$$&lt;/p&gt;
+&lt;p&gt;where $s_t$ is the spread and $D_T$ the number of business days up to maturity.&lt;/p&gt;
 &lt;h2&gt;Notional Value — VNA&lt;/h2&gt;
 &lt;p&gt;The rule to compute the notional value (VNA—Valor Nominal Acumulado) is fairly simple, accumulate the daily interest rate from LFT's issue date up to reference date (mark-to-market date).&lt;/p&gt;
 &lt;p&gt;What do we need?&lt;/p&gt;
@@ -365,90 +489,27 @@ Let's start setting the reference date:&lt;/p&gt;
 &lt;p&gt;The historical interest rates are downloaded from &lt;a href="http://www.quandl.com" title="Quandl"&gt;Quandl&lt;/a&gt; and data in properly transformed to suitable formats:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Quandl&lt;span class="p"&gt;)&lt;/span&gt;
 selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; Quandl&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;BCB/1178&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; start_date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2000-07-01&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; end_date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2014-03-21&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; sort&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;asc&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;,&lt;/span&gt; Date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Date&lt;span class="p"&gt;))&lt;/span&gt;
+str&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error: &lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;html&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;title&amp;gt;&lt;/span&gt;Server Error (Sorry)&lt;span class="nt"&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;style&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/css&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-##         body {
-##             background-color: #283c43;
-##             color: #d1d2d4;
-##             text-align: center;
-##             font-family: helvetica, arial, sans-serif;
-##             height:100%;
-##             margin:0px 0px; padding:0px;
-##             text-align:center; /* Hack for IE5/Win */
-##             font-size: 100%;
-##         }
-##         .wrapper {
-##             width: 800px;
-##             margin: 150px auto;
-##         }
-##         h1 {
-##             font-size: 100px;
-##             color: #e15829;
-##             line-height: 0.5;
-##             margin-bottom: 10px;
-##         }
-##         h2 {
-##             font-size:24px;
-##             color: #e15829;
-##         }
-##         p {
-##             margin-bottom: 20px;
-##         }
-##         a {
-##             color: #00adef;
-##         }
-##     &lt;span class="nt"&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-## 
-## &lt;span class="nt"&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;wrapper&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;500&lt;span class="nt"&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;Server Error&lt;span class="nt"&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Sorry, your request has failed completely. The one thing you can try immediately is to reload this page.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Perhaps this was simply a temporary glitch.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt; &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;This will be fixed&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;We work very hard to ensure Quandl is 100% per cent functional at all times.  Please know that the problem you encountered here was logged and will be fixed promptly.
-##         We apologize for this inconvenience. &lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;- &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;Jason Byck, CTO, Quandl&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-##     &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;For further updates on the status of the website please visit our &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://status.quandl.com/&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;status&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt; page.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
-## &lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;,&lt;/span&gt; Date&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;as.Date&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Date&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in transform(selic, Date = as.Date(Date)): objeto &amp;#39;selic&amp;#39; não encontrado
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;str&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in str(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;div class="highlight"&gt;&lt;pre&gt;## &amp;#39;data.frame&amp;#39;:    3448 obs. of  2 variables:
+##  $ Date : Date, format: &amp;quot;2000-07-03&amp;quot; &amp;quot;2000-07-04&amp;quot; ...
+##  $ Value: num  17 17 17 17 17 17 16 16 16 16 ...
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;Computing VNA&lt;/h3&gt;
 &lt;p&gt;The formula to compute VNA is&lt;/p&gt;
-&lt;div class="math"&gt;$$
+&lt;p&gt;$$
 VNA_n = 1000\prod_{n=1}^{T}(1 + r_{n-i})^\frac{1}{252}
-$$&lt;/div&gt;
+$$&lt;/p&gt;
 &lt;p&gt;where &lt;code&gt;T&lt;/code&gt; refers to issue date.
 As I said before, the formula is pretty simple but hides inconvenient secrets.
 This formula is computed in 3 steps, enumerated below:&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Compute the interest rate factor &lt;span class="math"&gt;\((1 + r_i)^\frac{1}{252}\)&lt;/span&gt; and round it in 8 digits&lt;/li&gt;
+&lt;li&gt;Compute the interest rate factor $(1 + r_i)^\frac{1}{252}$ and round it in 8 digits&lt;/li&gt;
 &lt;li&gt;Compute the accumulated factor, using &lt;code&gt;cumprod&lt;/code&gt;&lt;/li&gt;
 &lt;li&gt;Compute the VNA multiplying the accumulated factor by 1000 and truncate it in 6 digits&lt;/li&gt;
 &lt;/ol&gt;
@@ -463,18 +524,18 @@ The function &lt;code&gt;compute_vna&lt;/code&gt; below execute these steps.&lt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
 selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_vna&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in transform(ds, Factor = round((1 + Value/100)^(1/252), 8)): objeto &amp;#39;selic&amp;#39; não encontrado
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in head(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;div class="highlight"&gt;&lt;pre&gt;##         Date Value     Factor   CumFactor         VNA
+## 1 2000-07-03    17 1,00062322 1,000623220          NA
+## 2 2000-07-04    17 1,00062322 1,001246828 1000,623220
+## 3 2000-07-05    17 1,00062322 1,001870825 1001,246828
+## 4 2000-07-06    17 1,00062322 1,002495211 1001,870825
+## 5 2000-07-07    17 1,00062322 1,003119986 1002,495211
+## 6 2000-07-10    17 1,00062322 1,003745151 1003,119986
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -482,7 +543,13 @@ selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_vna&lt;span class="p"
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in tail(selic): objeto &amp;#39;selic&amp;#39; não encontrado
+&lt;div class="highlight"&gt;&lt;pre&gt;##            Date Value     Factor   CumFactor         VNA
+## 3443 2014-03-14    10 1,00037829 5,656913278 5654,774133
+## 3444 2014-03-17    10 1,00037829 5,659053231 5656,913277
+## 3445 2014-03-18    10 1,00037829 5,661193995 5659,053231
+## 3446 2014-03-19    10 1,00037829 5,663335568 5661,193994
+## 3447 2014-03-20    10 1,00037829 5,665477951 5663,335567
+## 3448 2014-03-21    10 1,00037829 5,667621144 5665,477950
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -564,18 +631,7 @@ lft_quot
 Note that the &lt;code&gt;Quotation&lt;/code&gt; is truncated in 4 digits and the theoretical price in 6.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; Quotation&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; Spread&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;BusinessDays&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;252&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="m"&gt;4&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 VNA &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;,&lt;/span&gt; VNA&lt;span class="p"&gt;[&lt;/span&gt;Date &lt;span class="o"&gt;==&lt;/span&gt; ref_date&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in with(selic, VNA[Date == ref_date]): objeto &amp;#39;selic&amp;#39; não encontrado
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; TheoPrice&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;VNA&lt;span class="o"&gt;*&lt;/span&gt;Quotation&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in truncate(VNA * Quotation/100, 6): objeto &amp;#39;VNA&amp;#39; não encontrado
+lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lft_quot&lt;span class="p"&gt;,&lt;/span&gt; TheoPrice&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;truncate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;VNA&lt;span class="o"&gt;*&lt;/span&gt;Quotation&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -584,65 +640,11 @@ VNA &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;with&lt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## Error in eval(expr, envir, enclos): objeto &amp;#39;TheoPrice&amp;#39; não encontrado
+&lt;div class="highlight"&gt;&lt;pre&gt;## [1] FALSE
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Since the output is &lt;code&gt;TRUE&lt;/code&gt; we all have to agree that these values match.
 As I said this is pretty much easy once you know all truncations and roundings that appears along the way.
 Another tricky point is that we can't invert that formula analytically, to find out the spread having the spot price of the bond.
-Because of the truncations we have to use that algorithm and implement a kind of goal seek mechanism to obtain the spread.&lt;/p&gt;
-&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-    
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 03 Apr 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-04-03:posts/2014-04/pricing-brazilian-government-bonds-lft.html</guid><category>R</category><category>brazilian bonds</category><category>LFT</category><category>bizdays</category></item></channel></rss>
+Because of the truncations we have to use that algorithm and implement a kind of goal seek mechanism to obtain the spread.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 03 Apr 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-04-03:posts/pricing-brazilian-government-bonds-lft.html</guid><category>R</category><category>brazilian bonds</category><category>LFT</category><category>bizdays</category></item></channel></rss>

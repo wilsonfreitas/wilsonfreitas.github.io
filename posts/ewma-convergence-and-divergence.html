@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>EWMA convergence and divergence — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: EWMA convergence and divergence; Date: 2013-08-16; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="EWMA convergence and divergence"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/ewma-convergence-and-divergence.html"/>
+	<meta property="og:description" content=""/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">EWMA convergence and divergence</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2013-08-16T00:00:00-03:00" itemprop="datePublished">2013-08-16</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/risk-management.html" rel="tag">risk management</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/volatility.html" rel="tag">volatility</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>The so famous EWMA (Exponentially Weighted Moving Average) model</p>
+<p>$$
+\hat\sigma^2_t = \lambda\hat\sigma^2_{t-1} + (1 - \lambda)r^2_t
+$$</p>
+<p>used to estimate the volatility of asset returns.
+It is extensively used in Risk Management and is in the core of RiskMetrics.
+EWMA has a magic parameter $\lambda$ that is $0.94$ in the absolutely great amount of Risk Management Systems running World Wide.
+I can't tell if it is JPMorgan's fault or it's one more of those situations where the idiots are taking over, but why $0.94$, why people seem to accept it without have any idea where it came from. (Why so serious.)
+But ok, JPM said that and JPM is great, so I see no reason to question that.
+However, there is another point which disturbs me more, the well accepted EWMA's <em>period of convergence</em>.</p>
+<p>It is well known, among risk management practioneers, that EWMA with $\lambda=0.94$ has a <em>period of convergence</em> that is about 60 time steps.
+Unfortunately, for some series, you don't have 60 points of historical data and EWMA can't reach its convergence.</p>
+<blockquote>
+<p>Oh! It looks a bad thing</p>
+</blockquote>
+<p>Some practioneers usually use a <em>proxy</em> to fulfill that pre-requisite and that proxy can be any related asset (yeah! a bit heuristic).
+Of course I have one question: does it really matters?.
+I mean, is it really necessary to use a proxy to have a good estimative of the volatility?
+Use no proxy isn't an option?
+Or it is operational pre-requisite, the risk management system can't compute the volatility of a time series that doesn't enough historical data to guarantee the convergence its convergence.</p>
+<p>I am going too far and I am afraid my anger on that subject attracts more attention than what really matters: <strong>how many returns are necessary to estimate $\hat\sigma^2_t$?</strong></p>
+<p>I don't know the answer and I do think it has no right answer.
+I did an experiment in order to try to observe the EWMA's convergence and the results gave me a little hope.</p>
+<h2>Bootstraping time series</h2>
+<p>I picked up PETR4 time series and computed the returns for the year of 2009.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>xts<span class="p">)</span>
+table.df <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;PETR4.daily.raw.csv&quot;</span><span class="p">,</span> header<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> stringsAsFactors<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="kp">rownames</span><span class="p">(</span>table.df<span class="p">)</span> <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span>table.df<span class="p">[,</span> <span class="s">&quot;Date&quot;</span><span class="p">])</span>
+prices.df <span class="o">&lt;-</span> table.df<span class="p">[,</span> <span class="s">&quot;Adj.Close&quot;</span><span class="p">,</span> drop<span class="o">=</span><span class="kc">FALSE</span><span class="p">]</span>
+prices.x <span class="o">&lt;-</span> as.xts<span class="p">(</span>prices.df<span class="p">[,</span><span class="m">1</span><span class="p">],</span> order.by<span class="o">=</span><span class="kp">as.Date</span><span class="p">(</span><span class="kp">rownames</span><span class="p">(</span>prices.df<span class="p">)))</span>
+ret.x <span class="o">&lt;-</span> <span class="kp">diff</span><span class="p">(</span><span class="kp">log</span><span class="p">(</span>prices.x<span class="p">))[</span><span class="s">&#39;2009&#39;</span><span class="p">]</span>
+plot<span class="p">(</span>prices.x<span class="p">[</span><span class="s">&#39;2009&#39;</span><span class="p">])</span>
+boxplot<span class="p">(</span>coredata<span class="p">(</span>ret.x<span class="p">))</span>
+</pre></div>
+
+
+<p>The graph below shows time series of prices of PETR4 for the year of 2009—that seemed to be a good year for PETR4.</p>
+<p><img alt="PETR4 prices" src="http://wilsonfreitas.github.io/figure/prices.png" /></p>
+<p>To have an idea of how volatile its was in that year I looked at the box plot of returns.</p>
+<p><img alt="PETR4 returns boxplot" src="http://wilsonfreitas.github.io/figure/boxplot.png" /></p>
+<p>I put the returns into a matrix because it is easier to work with this structure instead of working with a time series.</p>
+<div class="highlight"><pre>rets <span class="o">&lt;-</span> coredata<span class="p">(</span>first<span class="p">(</span>ret.x<span class="p">,</span> n<span class="o">=</span><span class="m">100</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Now, assuming that the returns are IID I ran a bootstrap computating EWMA for each sample of the time series generated by <code>boot</code>.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>boot<span class="p">)</span>
+ewma.boot <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>r<span class="p">,</span> idx<span class="p">)</span> <span class="p">{</span>
+    sig.p <span class="o">&lt;-</span> <span class="m">0</span>
+    sig.s <span class="o">&lt;-</span> <span class="kp">vapply</span><span class="p">(</span>idx<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>i<span class="p">)</span> sig.p <span class="o">&lt;&lt;-</span> sig.p<span class="o">*</span>lambda <span class="o">+</span> <span class="p">(</span>r<span class="p">[</span>i<span class="p">]</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="m">1</span> <span class="o">-</span> lambda<span class="p">),</span> <span class="m">0</span><span class="p">)</span>
+    <span class="kr">return</span><span class="p">(</span><span class="kp">sqrt</span><span class="p">(</span>sig.s<span class="p">))</span>
+<span class="p">}</span>
+lambda <span class="o">&lt;-</span> <span class="m">0.94</span>
+r.ewma.boot <span class="o">&lt;-</span> boot<span class="p">(</span>rets<span class="p">,</span> statistic<span class="o">=</span>ewma.boot<span class="p">,</span> R<span class="o">=</span><span class="m">200</span><span class="p">)</span>
+</pre></div>
+
+
+<p>In the end of the bootstrap process I got a sample of EWMA time series in the variable <code>r.ewma.boot</code>.
+<code>r.ewma.boot</code> is an instance of the <em>class</em> <code>boot</code>, which is returned by the function with the same name.
+It has an attribute <code>t</code> which stores all samples generated by the execution of <code>boot</code> and other attribute <code>t0</code> which stores the result for the original time series.
+I ran that experiment with $\lambda=0.94$, but it can be run with any other value.</p>
+<p><img alt="Bootstraping EWMA calculations with lambda=0.94" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda94.png" /></p>
+<p>The red line is the mean volatility and as we can observe, it converges to the long run standard deviation—shown by the black horizontal line.
+And, as some practioneers usually say, 60 time steps isn't a bad choice for EWMA's convergence, when $\lambda=0.94$.
+For $\lambda=0.98$ we need more time steps to reach the convergence—as can be seen in the image below the time series used has 200 time steps instead of 100.</p>
+<p><img alt="Bootstraping EWMA calculations with lambda=0.98" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda98.png" /></p>
+<p>We clearly observe the convergence, I tend to believe it is in distribution.
+Assintoticaly the mean value of EWMA estimator converges to the sample <code>sd</code>, but EWMA gives a local estimative of volatility as we observe in the blue line.</p>
+<h2>Simulated time series</h2>
+<p>I extended that experiment for an environment where I could control all variables.
+So, following the assumption of IID returns I created one sample of returns and bootstraped it.</p>
+<p><img alt="Bootstraping simulated time series with lambda=0.94" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda94-sim.png" /></p>
+<p>We observe the convergence to the sample <code>sd</code> which differs a little from the theoretical standard deviation (0.02).
+As expected the convergence with $\lambda=0.94$ occurs within the same numbers of time steps we've observed in the real time series.
+This result might help confirming the assumption that assets' returns are IID.</p>
+<div class="highlight"><pre><span class="nx">lambda</span> <span class="o">&lt;-</span> <span class="mf">0.94</span>
+<span class="nx">sig</span><span class="p">.</span><span class="nx">m</span> <span class="o">&lt;-</span> <span class="nx">matrix</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">nrow</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="nx">ncol</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="nx">r</span> <span class="o">&lt;-</span> <span class="mf">0.02</span><span class="o">*</span><span class="nx">rnorm</span><span class="p">(</span><span class="nx">dim</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">m</span><span class="p">)</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">)</span>
+<span class="nx">plot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="nx">xlab</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">ylab</span><span class="o">=</span><span class="nx">expression</span><span class="p">(</span><span class="nx">sigma</span><span class="p">),</span> 
+    <span class="nx">xlim</span><span class="o">=</span><span class="nx">c</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nx">dim</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">m</span><span class="p">)</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">),</span> <span class="nx">ylim</span><span class="o">=</span><span class="nx">c</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.03</span><span class="p">))</span>
+<span class="k">for</span> <span class="p">(</span><span class="nx">k</span> <span class="k">in</span> <span class="mi">1</span><span class="o">:</span><span class="nx">dim</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">m</span><span class="p">)</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">sig</span><span class="p">.</span><span class="nx">p</span> <span class="o">&lt;-</span> <span class="mi">0</span>
+    <span class="nx">sig</span><span class="p">.</span><span class="nx">s</span> <span class="o">&lt;-</span> <span class="nx">vapply</span><span class="p">(</span><span class="nx">sample</span><span class="p">(</span><span class="mi">1</span><span class="o">:</span><span class="nx">dim</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">m</span><span class="p">)</span><span class="cp">[</span><span class="mi">2</span><span class="cp">]</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="nx">sig</span><span class="p">.</span><span class="nx">p</span> <span class="o">&lt;&lt;-</span> <span class="nx">sig</span><span class="p">.</span><span class="nx">p</span><span class="o">*</span><span class="nx">lambda</span> <span class="o">+</span> <span class="p">(</span><span class="nx">r</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">lambda</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nx">lines</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">m</span><span class="cp">[</span><span class="nx">k</span><span class="p">,</span> <span class="cp">]</span> <span class="o">&lt;-</span> <span class="nx">sqrt</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">s</span><span class="p">),</span> <span class="nx">col</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">abline</span><span class="p">(</span><span class="nx">h</span><span class="o">=</span><span class="nx">sd</span><span class="p">(</span><span class="nx">r</span><span class="p">),</span> <span class="nx">col</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="nx">abline</span><span class="p">(</span><span class="nx">v</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="nx">col</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="nx">lines</span><span class="p">(</span><span class="nx">apply</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">m</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">mean</span><span class="p">),</span> <span class="nx">col</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>Conclusion</h2>
+<p>I am obliged to agree that the <em>market convention</em> isn't silly.
+Indeed, 60 times steps are reasonable for $\lambda=0.94$ as more time steps are made necessary for greater values of $\lambda$.
+Though I couldn't validate the use of a proxy for series that don't have this minimal number of points I see that I can't use EWMA without it.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'EWMA convergence and divergence';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

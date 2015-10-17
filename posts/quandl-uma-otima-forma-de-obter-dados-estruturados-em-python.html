@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Quandl uma ótima forma de obter dados estruturados em Python — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Quandl uma ótima forma de obter dados estruturados em Python; Date: 2014-03-30; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Quandl uma ótima forma de obter dados estruturados em Python"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html"/>
+	<meta property="og:description" content=""/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Quandl uma ótima forma de obter dados estruturados em Python</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2014-03-30T00:00:00-03:00" itemprop="datePublished">30/03/2014</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/data-science.html" rel="category">data science</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/python.html" rel="tag">python</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/pandas.html" rel="tag">pandas</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Quem trabalha com análise de dados sabe que o trabalho de análise começa apenas após o tratamento adequado dos dados.
+Quando se assume o compromisso de montar e manter a sua própria base de dados, o trabalho de preparar os dados para análise é grande, e quando se conta com dados disponibilizados por terceiros (em grande parte distribuídos em planilhas, arquivos textos em formatos bizarros ou ainda disponíveis na web) este se torna um trabalho hercúleo, pois além da transformação dos dados para um formato estrutura, ainda é necessária a transformação pertinente à análise.</p>
+<p>Dessa maneira, eu divido o trabalho de pré-análise em três etapas:</p>
+<ol>
+<li>aquisição dos dados brutos</li>
+<li>transformação dos dados em um formato estruturado</li>
+<li>transformação dos dados estruturados para a análise</li>
+</ol>
+<p>Aí um incauto pode se perguntar, mas porque eu não coloco de uma vez os dados no formato final em que eu já quero analisar?
+Bem, por que eu a priori eu não sei como vou atacar o problema, em geral eu acredito que os dados brutos são úteis para o problema que eu quero abordar, mas certeza mesmo só tenho em relação a minha sexualidade.
+Outro fator é que estes dados podem ser úteis em outra análise e mantê-los em um estado preliminar, mas útil, é mais interessante do que mantê-los em um formato final, onde em alguns casos pode haver perda de informação.
+Por isso que além de manter os dados estruturados eu também gosto de manter os dados brutos, por que afinal o seguro morreu de velho e no futuro eu posso resolver estruturar estes dados de outra maneira e eu prefiro voltar a prancheta e partir dos dados brutos.</p>
+<p>Pois bem, por sorte existem indivúduos de bom coração cuja missão é tornar a vida de milhares de pessoas menos miserável.
+Um grande indivíduo é o sr. <a href="https://twitter.com/TEKamel">Tammer Kamel</a> fundador do <a href="http://www.quandl.com/">Quandl</a>, um site que armazena e disponibiliza dados de forma estruturada.</p>
+<p>Hoje, 30 de março de 2014, o Quandl conta com aproximadamente 9 milhões de <em>datasets</em> referentes a diversos paises.
+Obviamente a maior parte é relacionada aos Estados Unidos, mas tem bastante coisa útil do Brasil.
+Boa parte dos dados do <a href="https://www3.bcb.gov.br/sgspub">sistema de séries temporais do Banco Central</a> estão lá e são atualizados diariamente.
+Só por manter os dados estruturados e atualizados, o Quandl já demostra grande valor, no entanto, ele ainda disponibiliza um <a href="http://www.quandl.com/help/api">API</a> online para download dos dados em formatos estruturados como: XML, JSON, CSV, HTML, que também apresenta diversas funções para ordenação, tranformação e filtragem dos dados.
+Através da API é possível especificar o intervalo de datas para aquisição dos dados, a frequência dos dados: diária, semanal, mensal, anual, ..., e realizar calculos no <em>dataset</em> como a diferença entre os dados, a normalização para a indexação, entre outros.
+E além disso, ainda foram desenvolvidas bibliotecas, pela própria equipe do Quandl e por outros desenvolvedores pelo mundo, para customizar o download dos dados.
+Hoje constam bibliotecas para as seguintes linguagens/programas:</p>
+<ul>
+<li>R</li>
+<li>PYTHON</li>
+<li>MATLAB</li>
+<li>EXCEL</li>
+<li>STATA</li>
+<li>MAPLE</li>
+<li>C#</li>
+<li>JULIA</li>
+<li>CLOJURE</li>
+<li>EVIEWS</li>
+<li>JAVA</li>
+<li>.NET</li>
+<li>C/C++</li>
+</ul>
+<p>A grande vantagem dessas bibliotecas é que os dados já são transformados em uma estrutura de dados inerente a linguagem onde parte do esforço de formatação numérica (datas e números) já foi implementada.
+Vamos ver agora como utilizar o Quandl com Python para obter os dados estruturados.</p>
+<h2 id="Quandl-com-Python">Quandl com Python<a class="anchor-link" href="#Quandl-com-Python">&#182;</a></h2><p>Acredito que a biblioteca de Python foi uma das primeiras desenvolvidas para trabalhar com o Quandl.
+O projeto pode ser encontrado no github em <a href="http://www.github.com/quandl/Python">quandl/Python</a> o no <a href="https://pypi.python.org/pypi/Quandl">PyPI</a>.
+Eu fiz a instalação diretamente pelo <code>pip install Quandl</code> e não tive problemas.
+O Quandl precisa do <strong>numpy</strong> e do <strong>pandas</strong> para funcionar de forma que ele não disponibiliza os dados em estruturas de dados padrões do Python como <code>dict</code> e <code>list</code> e caso você queira os dados nestas estruturas sugiro utilizar diretamente a API online, escolher o formato JSON e utilizar o módulo <code>json</code>.</p>
+<p>Bem, vamos meter a mão na massa, para utilizar o Quandl vamos começar importando o módulo <code>Quandl</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">Quandl</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Para obter os dados basta chamar a função <code>get</code> do módulo passando o <em>ticker</em> do <em>dataset</em> que se deseja baixar.
+No exemplo abaixo vamos utilizar o <em>ticker</em> <code>GOOG/BVMF_PETR4</code> referente às ações da Petrobras negociadas na <a href="http://www.bmfbovespa.com.br">BM&amp;FBovespa</a> e disponibilizadas pelo <a href="https://www.google.com/finance">Google Finance</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">petr4</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;GOOG/BVMF_PETR4&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">petr4</span><span class="o">.</span><span class="n">index</span>
+<span class="nb">print</span> <span class="n">petr4</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>No authentication tokens found: usage will be limited.
+See www.quandl.com/api for more information.
+Returning Dataframe for  GOOG/BVMF_PETR4
+&lt;class &apos;pandas.tseries.index.DatetimeIndex&apos;&gt;
+[2003-06-02 00:00:00, ..., 2014-03-28 00:00:00]
+Length: 2682, Freq: None, Timezone: None
+            Open  High   Low  Close    Volume
+Date                                         
+2003-06-02  6.58  6.68  6.54   6.56   7481600
+2003-06-03  6.56  6.56  6.50   6.55   6329600
+2003-06-04  6.62  6.78  6.58   6.75   9747200
+2003-06-05  6.72  6.81  6.71   6.74  10420000
+2003-06-06  6.78  6.88  6.77   6.79   7205600
+
+[5 rows x 5 columns]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note que <code>petr4</code> é um <code>DataFrame</code> <strong>pandas</strong>, caso não queira ou não goste de trabalhar com <strong>pandas</strong> é possível obter os dados em um <strong>numpy</strong> <em>array</em>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">petr4_np</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;GOOG/BVMF_PETR4&quot;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;numpy&#39;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">petr4_np</span><span class="o">.</span><span class="n">shape</span>
+<span class="nb">print</span> <span class="n">petr4_np</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>No authentication tokens found: usage will be limited.
+See www.quandl.com/api for more information.
+(2682,)
+[(&apos;2003-06-02&apos;, 6.58, 6.68, 6.54, 6.56, 7481600.0)
+ (&apos;2003-06-03&apos;, 6.56, 6.56, 6.5, 6.55, 6329600.0)
+ (&apos;2003-06-04&apos;, 6.62, 6.78, 6.58, 6.75, 9747200.0) ...,
+ (&apos;2014-03-26&apos;, 14.55, 14.69, 14.35, 14.4, 29462600.0)
+ (&apos;2014-03-27&apos;, 14.39, 15.57, 14.32, 15.57, 77279000.0)
+ (&apos;2014-03-28&apos;, 15.57, 15.77, 15.2, 15.66, 42202400.0)]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A formatação do <strong>numpy</strong> é mais pobre, no entanto tudo depende do que se queira fazer com os dados, de forma que a opção está aí e cada um utiliza como for conveniente.</p>
+<p>Como sempre falo para <em>olhar</em> os dados, em ambas saídas podemos observar que temos 5 colunas e 2682 registros (ou linhas) ordenadas de forma ascendente.
+Como peguei os dados referentes às ações Petrobras, em geral estes dados vem no formato OHLC (Open, High, Low, Close e Volume).
+No <code>DataFrame</code> isso fica evidente, já no <strong>numpy</strong> <em>array</em> é necessário um conhecimento prévio deste fato, pra pelo menos saber o que é o que.</p>
+<h3 id="Baixando-multiplos-ativos">Baixando multiplos ativos<a class="anchor-link" href="#Baixando-multiplos-ativos">&#182;</a></h3><p>Uma coisa legal é poder baixar diversos ativos em um único <em>request</em>, como fazemos abaixo:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">])</span>
+<span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">index</span>
+<span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>No authentication tokens found: usage will be limited.
+See www.quandl.com/api for more information.
+Returning Dataframe for  [u&apos;GOOG.BVMF_PETR4.4&apos;, u&apos;GOOG.BVMF_BOVA11.4&apos;]
+&lt;class &apos;pandas.tseries.index.DatetimeIndex&apos;&gt;
+[2003-06-02 00:00:00, ..., 2014-03-28 00:00:00]
+Length: 2682, Freq: None, Timezone: None
+            GOOG.BVMF_PETR4 - Close  GOOG.BVMF_BOVA11 - Close
+Date                                                         
+2003-06-02                     6.56                       NaN
+2003-06-03                     6.55                       NaN
+2003-06-04                     6.75                       NaN
+2003-06-05                     6.74                       NaN
+2003-06-06                     6.79                       NaN
+
+[5 rows x 2 columns]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Como a série da Petrobrás é maior do que a do BOVA11 (BOVA11 é um ETF) a maior série é preservada e os dados incompletos vem com <code>NaN</code>.</p>
+<h3 id="Baixando-intervalos-de-datas-espec&#237;ficos">Baixando intervalos de datas espec&#237;ficos<a class="anchor-link" href="#Baixando-intervalos-de-datas-espec&#237;ficos">&#182;</a></h3><p>Querendo evitar os <code>NaN</code> vamos limitar o <em>request</em> às datas em que temos informação do BOVA11, que é a partir de 2012-11-22.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">],</span> <span class="n">trim_start</span><span class="o">=</span><span class="s">&#39;2012-11-22&#39;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">index</span>
+<span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>No authentication tokens found: usage will be limited.
+See www.quandl.com/api for more information.
+Returning Dataframe for  [u&apos;GOOG.BVMF_PETR4.4&apos;, u&apos;GOOG.BVMF_BOVA11.4&apos;]
+&lt;class &apos;pandas.tseries.index.DatetimeIndex&apos;&gt;
+[2012-11-22 00:00:00, ..., 2014-03-28 00:00:00]
+Length: 333, Freq: None, Timezone: None
+            GOOG.BVMF_PETR4 - Close  GOOG.BVMF_BOVA11 - Close
+Date                                                         
+2012-11-22                    18.65                     55.31
+2012-11-23                    19.17                     56.49
+2012-11-26                    18.82                     55.65
+2012-11-27                    18.51                     55.10
+2012-11-28                    18.65                     55.50
+
+[5 rows x 2 columns]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Poderiamos pegar apenas o ano de 2013 fazendo</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">],</span> <span class="n">trim_start</span><span class="o">=</span><span class="s">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="n">trim_end</span><span class="o">=</span><span class="s">&#39;2013-12-31&#39;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">index</span>
+<span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>No authentication tokens found: usage will be limited.
+See www.quandl.com/api for more information.
+Returning Dataframe for  [u&apos;GOOG.BVMF_PETR4.4&apos;, u&apos;GOOG.BVMF_BOVA11.4&apos;]
+&lt;class &apos;pandas.tseries.index.DatetimeIndex&apos;&gt;
+[2013-01-02 00:00:00, ..., 2013-12-30 00:00:00]
+Length: 248, Freq: None, Timezone: None
+            GOOG.BVMF_PETR4 - Close  GOOG.BVMF_BOVA11 - Close
+Date                                                         
+2013-01-02                    19.69                     61.27
+2013-01-03                    20.40                     61.92
+2013-01-04                    20.48                     61.32
+2013-01-07                    20.08                     60.75
+2013-01-08                    19.50                     59.91
+
+[5 rows x 2 columns]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Outras-op&#231;&#245;es-interessantes">Outras op&#231;&#245;es interessantes<a class="anchor-link" href="#Outras-op&#231;&#245;es-interessantes">&#182;</a></h3><p>Uma opção que eu acho muito legal é a opção de baixar os últimos <code>n</code> registros, pois pensando em processamento diário eu não precisaria ficar especificando as datas para download, sabendo sempre que a data atual é a referência.
+Para isso basta utilizar os parâmetros <code>rows=n</code> e <code>sort_order='desc'</code>.
+Vamos utilizar isso para baixar a última divulgação da taxa CDI da <a href="http://www.cetip.com.br">CETIP</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">cdi</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;BCB/4389&quot;</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sort_order</span><span class="o">=</span><span class="s">&#39;desc&#39;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">cdi</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>No authentication tokens found: usage will be limited.
+See www.quandl.com/api for more information.
+Returning Dataframe for  BCB/4389
+            Value
+Date             
+2014-03-27  10.55
+
+[1 rows x 1 columns]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Outra opção interessante, que eu particularmente não uso muito, é a definição de frequência dos dados.
+No entanto, as vezes é interessante analisar as séries temporais em frequências menores como mensal ou anual.
+Vamos ver como baixar os dados do Índice Bovespa em cotação mensal.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">bvsp</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;YAHOO/INDEX_BVSP&quot;</span><span class="p">,</span> <span class="n">collapse</span><span class="o">=</span><span class="s">&quot;monthly&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="n">bvsp</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>No authentication tokens found: usage will be limited.
+See www.quandl.com/api for more information.
+Returning Dataframe for  YAHOO/INDEX_BVSP
+            Open  High   Low  Close  Volume  Adjusted Close
+Date                                                       
+1993-04-30   237   242   237    241       0            24.1
+1993-05-31   349   349   349    349       0            34.9
+1993-06-30   529   542   529    537       0            53.7
+1993-07-31   661   674   656    656       0            65.6
+1993-08-31   998   998   963    964       0            96.4
+1993-09-30  1474  1503  1465   1466       0           146.6
+1993-10-31  1775  1852  1748   1844       0           184.4
+1993-11-30  2765  2782  2700   2740       0           274.0
+1993-12-31  3736  3786  3736   3755       0           375.5
+1994-01-31  6892  7417  6892   7406       0           740.6
+
+[10 rows x 6 columns]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note que cada registro é referente ao fim de cada mês.</p>
+<h2 id="Encontrando-os-tickers">Encontrando os <em>tickers</em><a class="anchor-link" href="#Encontrando-os-tickers">&#182;</a></h2><p>Uma coisa que não mencionei, mas é de toda a relevância é sobre como encontrar os <em>tickers</em>.
+Bem, essa é a coisa mais simples, basta fazer uma busca no próprio site do <a href="http://www.quandl.com">Quandl</a>.
+Lá você encontra os <em>datasets</em>, os seus <em>tickers</em>, as datas de início e fim e outras informações pertinentes ao <em>dataset</em>.</p>
+<h2 id="Conclus&#227;o">Conclus&#227;o<a class="anchor-link" href="#Conclus&#227;o">&#182;</a></h2><p>Bem, é isso.
+Vimos aqui como obter dados estruturados em Python através de uma interface simples que elimina o risco operacional da aquisição de dados na web.
+Na prática este risco foi assumido pelo Quandl e ao utilizar a ferramenta você assume que eles lidam com este risco melhor do que você.</p>
+<p>Uma dica importante é se registrar no site e realizar os downloads utilizando o token de autenticação.
+É possível realizar 50 downloads diários sem autenticação, e autenticando é possível realizar maiores taxas de download e caso você precise de grandes volumes diários entre em contato com o site e negocie, pois eles não cobram pelo serviço mas gostam de avaliar exceções uma a uma.</p>
+
+</div>
+</div>
+</div></p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Quandl uma ótima forma de obter dados estruturados em Python';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

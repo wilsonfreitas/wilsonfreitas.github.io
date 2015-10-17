@@ -2,7 +2,8 @@
 <html lang="pt">
 <head>
 	<meta charset="utf-8">
-	<title>IBOVESPA no longo prazo — WilsonFreitas</title>
+	<title>IBOVESPA no longo prazo — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
 	<meta name="description" content="Title: IBOVESPA no longo prazo; Date: 2014-06-12; Author: Wilson Freitas">
 	<meta name="author" content="Wilson Freitas">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,17 @@
 	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
 	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
 	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="IBOVESPA no longo prazo"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/drafts/ibovespa-no-longo-prazo.html"/>
+	<meta property="og:description" content=""/>
 </head>
 <body>
 <div class="container">
@@ -27,7 +39,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">WilsonFreitas</a>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -75,10 +87,10 @@
 	<div itemprop="articleBody" class="article-body"><p>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[81]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">ibovespa</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -89,16 +101,16 @@
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[13]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[81]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
-<div style="max-height:1000px;max-width:1500px;overflow:auto;">
+<div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>BCB.7 - Value</th>
-      <th>BCB.7832 - Value</th>
+      <th>IPCA</th>
+      <th>IBOVESPA</th>
     </tr>
     <tr>
       <th>Date</th>
@@ -108,29 +120,29 @@
   </thead>
   <tbody>
     <tr>
-      <th>1987-01-31</th>
-      <td>NaN</td>
-      <td>-23.28</td>
+      <th>1999-01-31</th>
+      <td>0.70</td>
+      <td>8171</td>
     </tr>
     <tr>
-      <th>1987-02-28</th>
-      <td>NaN</td>
-      <td> -3.73</td>
+      <th>1999-02-28</th>
+      <td>1.05</td>
+      <td>8910</td>
     </tr>
     <tr>
-      <th>1987-03-31</th>
-      <td>NaN</td>
-      <td> -2.98</td>
+      <th>1999-03-31</th>
+      <td>1.10</td>
+      <td>10696</td>
     </tr>
     <tr>
-      <th>1987-04-30</th>
-      <td>NaN</td>
-      <td> 29.29</td>
+      <th>1999-04-30</th>
+      <td>0.56</td>
+      <td>11350</td>
     </tr>
     <tr>
-      <th>1987-05-31</th>
-      <td>NaN</td>
-      <td>-10.54</td>
+      <th>1999-05-31</th>
+      <td>0.30</td>
+      <td>11089</td>
     </tr>
   </tbody>
 </table>
@@ -186,15 +198,13 @@ jQuery(document).ready(function($) {
 });
 </script>
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-4510606-3', 'aboutwilson.net');
-ga('require', 'displayfeatures');
-ga('require', 'linkid', 'linkid.js');
-ga('send', 'pageview');
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
 
 </script>
  

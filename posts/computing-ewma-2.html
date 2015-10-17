@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Computing EWMA 2 — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Computing EWMA 2; Date: 2014-04-04; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Computing EWMA 2"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/computing-ewma-2.html"/>
+	<meta property="og:description" content=""/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Computing EWMA 2</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2014-04-04T00:00:00-03:00" itemprop="datePublished">2014-04-04</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/risk-management.html" rel="tag">risk management</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/volatility.html" rel="tag">volatility</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Months ago I released a post entitled <a href="http://wilsonfreitas.github.io/posts/computing-ewma.html" title="Computing EWMA">Computing EWMA</a> exploring the functional approach to implement EWMA calculations in R and also compared that with what I called <em>loop-oriented</em> implementation.
+That was quite ammazing to see that the functional approach was almost 2 times faster.</p>
+<p>After a while I found the function <code>filter</code> of the package <code>stats</code>.</p>
+<div class="highlight"><pre><span class="err">##</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">filter</span><span class="p">,</span> <span class="nx">method</span> <span class="o">=</span> <span class="nx">c</span><span class="p">(</span><span class="s2">&quot;convolution&quot;</span><span class="p">,</span> <span class="s2">&quot;recursive&quot;</span><span class="p">),</span> 
+<span class="err">##</span>     <span class="nx">sides</span> <span class="o">=</span> <span class="mi">2</span><span class="nx">L</span><span class="p">,</span> <span class="nx">circular</span> <span class="o">=</span> <span class="nx">FALSE</span><span class="p">,</span> <span class="nx">init</span> <span class="o">=</span> <span class="nx">NULL</span><span class="p">)</span> 
+<span class="err">##</span> <span class="nx">NULL</span>
+</pre></div>
+
+
+<p>This function applies linear filtering to univariate or multivariate time series.
+You can get a moving average by setting <code>method="convolution"</code> or an autoregression for <code>method="recursive"</code>.
+Since EWMA is an autoregressive model, the <code>"recursive"</code> method is appropriate.
+The argument <code>x</code> receives the time series and <code>filter</code> a vector of coefficients.
+The <code>"recursive"</code> method uses the <code>init</code> argument to specify the initial values of the time series.
+Providing a series <code>x</code> and a filter $\phi$ the response <code>y</code> is much like the sequence below:</p>
+<p>$$
+y_1 = 0 \hspace{0.5cm}
+y_2 = \phi y_1 + x_1 \hspace{0.5cm}
+y_2 = \phi y_2 + x_2 \hspace{0.5cm}
+\dots \hspace{0.5cm}
+y_{n+1} = \phi y_n + x_n
+$$</p>
+<p>Taking a look at EWMA's dynamics</p>
+<p>$$
+\hat\sigma^2_0 = 0  \hspace{0.5cm}
+\hat\sigma^2_1 = \lambda\hat\sigma^2_0 + (1 - \lambda)r^2_0  \hspace{0.5cm}
+\hat\sigma^2_2 = \lambda\hat\sigma^2_1 + (1 - \lambda)r^2_1  \hspace{0.5cm}
+\dots  \hspace{0.5cm}
+\hat\sigma^2_{t+1} = \lambda\hat\sigma^2_t + (1 - \lambda)r^2_t
+$$</p>
+<p>we observe that the input $x_i = (1 - \lambda)r^2_i$, the filter $\phi = \lambda$ and $y_i = \sigma^2_i$ is the response.
+The initial value can be set to $0$.
+The code implementation follows below:</p>
+<div class="highlight"><pre>ewma.filter <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)</span> <span class="p">{</span>
+    r2 <span class="o">&lt;-</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> lambda<span class="p">)</span> <span class="o">*</span> rets<span class="o">^</span><span class="m">2</span>
+    <span class="kp">sqrt</span><span class="p">(</span>filter<span class="p">(</span>r2<span class="p">,</span> lambda<span class="p">,</span> <span class="s">&quot;recursive&quot;</span><span class="p">,</span> init <span class="o">=</span> <span class="m">0</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>See that this implementation is even simpler than the others, although it is not so easy to comprehend.
+Running the same test done before we see that this is not only simpler but also faster.
+It runs almost 2 times faster than the functional approach.</p>
+<div class="highlight"><pre><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.loop<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##    user  system elapsed 
+##   4.101   0.026   4.127
+</pre></div>
+
+
+<div class="highlight"><pre><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.func<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##    user  system elapsed 
+##   2.293   0.009   2.302
+</pre></div>
+
+
+<div class="highlight"><pre><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.filter<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>##    user  system elapsed 
+##   1.062   0.009   1.072
+</pre></div>
+
+
+<p>Here it has the <a href="https://gist.github.com/wilsonfreitas/9972408">full code</a>.</p>
+<script src="https://gist.github.com/wilsonfreitas/9972408.js"></script></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Computing EWMA 2';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

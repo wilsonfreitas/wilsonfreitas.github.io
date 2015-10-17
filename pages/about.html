@@ -2,7 +2,8 @@
 <html lang="pt">
 <head>
 	<meta charset="utf-8">
-	<title>About — WilsonFreitas </title>
+	<title>About — Wilson Freitas </title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
 	<meta name="description" content="Things I have done and a few projects I am still involved.">
 	<meta name="author" content="Wilson Freitas">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,12 @@
 	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
 	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
 	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </head>
 <body>
 <div class="container">
@@ -27,7 +34,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">WilsonFreitas</a>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -47,37 +54,51 @@
 		<div class="col-md-10 col-md-offset-1">
         
 <section id="content" class="body">    
-    <div itemscope itemtype="http://data-vocabulary.org/Person"> 
-  My name is <span itemprop="name">Wilson Freitas</span> and I am a <span itemprop="title">physicist</span> who works in the brazilian financial market.
-
-  Here is my home page and personal blog
-  <a href="http://blog.aboutwilson.net" itemprop="url">blog.aboutwilson.net</a>.
+    <div itemscope itemtype="http://data-vocabulary.org/Person">
+Meu nome é <span itemprop="name">Wilson Freitas</span> e eu sou um <span itemprop="title">físico</span> que trabalha no mercado financeiro brasileiro.
+<br/>
+Aqui é a minha página pessoal
+<a href="http://wilsonfreitas.github.io/" itemprop="url">wilsonfreitas.github.io</a>.
 </div>
 
-<h2>Things I did</h2>
-<dl>
-<dt><a href="http://aboutwilson.net/abs-diet.html">The Abs Diet</a></dt>
-<dd>Yeah! I did the abs diet and I can tell that was an enjoyable process. It isn't a radical program to cut everything you eat. No, it is not. It is a program to help you learn how to eat properly.</dd>
-</dl>
-<h2>Courses</h2>
-<dl>
-<dt><a href="http://aboutwilson.net/trading-strategies">Estratégias de trading (Trading Strategies)</a></dt>
-<dd>I was teacher assistant of a course on how to develop quantitative trading strategies held by the Master Program on Quantitative Finance of FGV’s Economics Department. The notes are in portuguese and the material of the course was 100% developed using R tools.</dd>
-</dl>
 <h2>Software</h2>
+<p>Alguns software que eu escrevi, em sua maioria para problemas de finanças e tratamento de dados.</p>
+<h4>bizdays</h4>
+<p><code>bizdays</code> é um pacote para tratamento de dias úteis e foi escrito originalmente em R e depois foi portado para Python:</p>
+<ul>
+<li><a href="https://github.com/wilsonfreitas/R-bizdays">R-bizdays</a></li>
+<li><a href="https://github.com/wilsonfreitas/bizdays">python-bizdays</a>.</li>
+</ul>
+<h4>fixedincome</h4>
+<p><code>fixedincome</code> é um pacote para realizar cálculos de renda fixa, é bastante específico para finanças. O objetivo é trabalhar com cálculos de envolvendo taxas de juros de forma estruturada e limpa. Assim como <code>bizdays</code> também foi implementado em R e Python.</p>
+<ul>
+<li><a href="https://github.com/wilsonfreitas/R-fixedincome">R-fixedincome</a></li>
+<li><a href="https://github.com/wilsonfreitas/python-fixedincome">python-fixedincome</a></li>
+</ul>
+<h4>csvgrep</h4>
+<p>É um programa para trabalhar com arquivos em formato tabular na linha de comando, ele tem uma DSL própria para a manipulação de dados o que torna ele divertido de usar.</p>
+<ul>
+<li><a href="http://wilsonfreitas.github.io/csvgrep">csvgrep</a></li>
+</ul>
+<h2>Apresentações</h2>
+<p>Material sobre apresentações que eu dei sobre temas envolvendo finanças quantitativas, desenvolvimento quantitativo e data science.</p>
+<h4>2015</h4>
+<ul>
+<li>bizdays: Dias Úteis em Qualquer Calendário &middot; <a href="http://www.slideshare.net/wfreitas/bizdays-slides">Slides</a></li>
+<li>Análise dos campeões da Corrida de São Silvestre com Python &middot; <a href="http://www.slideshare.net/wfreitas/analise-dos-campeoes-da-corrida-de-sao-silvestre-com-python">Slides</a></li>
+</ul>
+<h4>2014</h4>
+<ul>
+<li>APIs de visualização em Python &middot; <a href="http://www.slideshare.net/wfreitas/apis-de-visualizacao-em-python">Slides</a> &middot; <a href="http://www.infoq.com/br/presentations/apis-de-visualizacao-em-python">Vídeo</a></li>
+</ul>
+<h2>Cursos</h2>
+<h4>Estratégias de trading (Trading Strategies)</h4>
+<p>Sou monitor do cursos de Estratégias de Trading do Mestrado de Finanças Quantitativas da Faculdade de Economia da Fundação Getúlio Vargas.</p>
+<p>O Material está <a href="http://wilsonfreitas.github.io/estrategias-de-trading/">aqui</a>.</p>
+<h2>Vida Saudável</h2>
 <dl>
-<dt>bizdays</dt>
-<dd><code>bizdays</code> is a set of functions which helps you dealing with calculations using business days. It comes in two flavours: <a href="https://github.com/wilsonfreitas/R-bizdays">R-bizdays</a> and <a href="https://github.com/wilsonfreitas/bizdays">python-bizdays</a>.</dd>
-<dt>fixedincome</dt>
-<dd>Fixed income and interest rate calculations made easy. It also comes in 2 flavours: <a href="https://github.com/wilsonfreitas/R-fixedincome">R-fixedincome</a> and <a href="https://github.com/wilsonfreitas/python-fixedincome">python-fixedincome</a>.</dd>
-<dt><a href="https://github.com/wilsonfreitas/sequela">Sequela</a></dt>
-<dd>Sequela is a web frontend for <a href="http://www.sqlite.org/">SQLite</a>. It started as a Python project but at some point it turned into a JavaScript project. That was a great opportunity to learn JavaScript, <a href="http://getbootstrap.com/2.3.2/index.html">Bootstrap</a> and <a href="http://pivotal.github.io/jasmine/">Jasmine</a> (for unit testing).</dd>
-<dt><a href="http://aboutwilson.net/csvgrep">csvgrep</a></dt>
-<dd>A small Perl script that has been growing since its inception. The original purpouse was to help me handling csv files in command line. Surprisingly it has evolved to a tiny DSL. I have a lot of plans to improve it, but I can't do in Perl, I can't go that far. So, I'm always trying to write the Python version. Maybe someday.</dd>
-<dt><a href="https://github.com/wilsonfreitas/easycsv">easycsv</a></dt>
-<dd>One more point in my track to make csv a useful format. Easycsv is a Python module that wraps the NoSQL library Storm. It processes the csv file and manage to execute some actions into a database table.</dd>
-<dt><a href="https://github.com/wilsonfreitas/pyga">pyga</a></dt>
-<dd>That is my first implementation of a Genetic Algorithm and it is in Python. This code has many flaws and I am trying to find some time to make it useful. Now the code is totally experimental so that it can only help others to implement a Genetic Algorithm from scratch.</dd>
+<dt><a href="http://wilsonfreitas.github.io/pages/dieta-do-abdomen.html">A Dieta do Abdômen</a></dt>
+<dd>Sim eu fiz a dieta do abdômen e posso dizer que foi uma época maravilhosa de auto-conhecimento e alimentação saudável. A dieta do abdômen é um programa de educação alimentar. Não é um programa radical, ela define alimentos em grupos alimentares que você deve priorizar, sem exageros. É um programa que ensina você a comer corretamente.</dd>
 </dl>
 </section>
 		</div>
@@ -108,15 +129,13 @@ jQuery(document).ready(function($) {
 });
 </script>
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-4510606-3', 'aboutwilson.net');
-ga('require', 'displayfeatures');
-ga('require', 'linkid', 'linkid.js');
-ga('send', 'pageview');
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
 
 </script>
  
