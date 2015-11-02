@@ -2,9 +2,9 @@
 <html lang="pt">
 <head>
 	<meta charset="utf-8">
-	<title>math — Wilson Freitas</title>
+	<title>Média de taxas — Wilson Freitas</title>
 	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
-	<meta name="description" content="All posts which refer to tag math">
+	<meta name="description" content="Title: Média de taxas; Date: 2015-11-02; Author: Wilson Freitas">
 	<meta name="author" content="Wilson Freitas">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -22,6 +22,11 @@
 	});
 	</script>
 	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Média de taxas"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/drafts/media-de-taxas.html"/>
+	<meta property="og:description" content=""/>
 </head>
 <body>
 <div class="container">
@@ -51,16 +56,54 @@
 		</div>
 	</nav>
 	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-<h1>Tag <small>math</small></h1>
-<table class="table">
-    <tbody>
-        <tr>
-        <td>04 Jul 2014</td>
-        <td><a href='http://wilsonfreitas.github.io/posts/covariance-between-stochastic-processes.html'>Covariance between stochastic processes</a></td>
-        </tr>
-    </tbody>
-</table>
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Média de taxas</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2015-11-02T00:00:00-02:00" itemprop="datePublished">02/11/2015</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>$$
+[\Pi_i (1 + r_i)]^{1/12}
+$$</p>
+<p>tomando o $\log$:</p>
+<p>$$
+\sum_i \frac{\log(1 + r_i)}{12}
+$$</p>
+<p>$$
+y_i = \log(1 + r_i)
+$$</p>
+<p>$$
+y_i = T_i + S_i + e_i
+$$</p>
+<p>$$
+\log(1 + r_i) = \log(1 + t_i) + \log(1 + s_i) + \log(1 + e_i) \
+\log(1 + r_i) = \log[(1 + t_i)(1 + s_i)(1 + e_i)] \
+(1 + r_i) = (1 + t_i)(1 + s_i)(1 + e_i) \
+$$</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Média de taxas';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
 		</div>
 	</div>
 </div>

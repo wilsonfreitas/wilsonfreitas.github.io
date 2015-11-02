@@ -20,8 +20,8 @@ No código abaixo eu leio a URL, seleciono a tabela com o IPCA mensal e converto
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rvest&lt;span class="p"&gt;)&lt;/span&gt;
 url &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://www.portalbrasil.net/ipca.htm&amp;#39;&lt;/span&gt;
 ipca_data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read_html&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
-  html_nodes&lt;span class="p"&gt;(&lt;/span&gt;xpath&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//table[6]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
-  &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  html_nodes&lt;span class="p"&gt;(&lt;/span&gt;xpath&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//table&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
   html_table&lt;span class="p"&gt;(&lt;/span&gt;header&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ipca_data&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -114,7 +114,7 @@ Vou renomear todas as colunas, pois prefiro trabalhar com os meses em formato nu
 ## 33 2012  0,56  0,45  0,21  0,64  0,36  0,08  0,43  0,41  0,57  0,59  0,60  0,79      5,83
 ## 34 2013  0,86  0,60  0,47  0,55  0,37  0,26  0,03  0,24  0,35  0,57  0,54  0,92      5,91
 ## 35 2014  0,55  0,69  0,92  0,67  0,46  0,40  0,01  0,25  0,57  0,42  0,51  0,78      6,40
-## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22    NA    NA    NA    NA      7,06
+## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22  0,54    NA    NA    NA      7,64
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -144,13 +144,13 @@ plot&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk unnamed-chunk-8" src="http://wilsonfreitas.github.io/figure/unnamed-chunk-8-1.png" /&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk webscraping-ipca" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-1.png" /&gt; &lt;/p&gt;
 &lt;p&gt;A inflação no governo Dilma Rousseff (2011-).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2011/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; pch&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;19&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;IPCA - Governo Dilma Rousseff&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk unnamed-chunk-9" src="http://wilsonfreitas.github.io/figure/unnamed-chunk-9-1.png" /&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk webscraping-ipca-dilma" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-dilma-1.png" /&gt; &lt;/p&gt;
 &lt;h2&gt;Conclusão&lt;/h2&gt;
 &lt;p&gt;Vimos como capturar a série temporal do IPCA do site PortalBrasil.
 Há outras formas de obter a série do IPCA, para citar 2 temos o webservice do Banco Central e o Quandl.

@@ -20,8 +20,8 @@ No código abaixo eu leio a URL, seleciono a tabela com o IPCA mensal e converto
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rvest&lt;span class="p"&gt;)&lt;/span&gt;
 url &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;http://www.portalbrasil.net/ipca.htm&amp;#39;&lt;/span&gt;
 ipca_data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read_html&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
-  html_nodes&lt;span class="p"&gt;(&lt;/span&gt;xpath&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//table[6]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
-  &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  html_nodes&lt;span class="p"&gt;(&lt;/span&gt;xpath&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;//table&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
   html_table&lt;span class="p"&gt;(&lt;/span&gt;header&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="kp"&gt;head&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ipca_data&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -114,7 +114,7 @@ Vou renomear todas as colunas, pois prefiro trabalhar com os meses em formato nu
 ## 33 2012  0,56  0,45  0,21  0,64  0,36  0,08  0,43  0,41  0,57  0,59  0,60  0,79      5,83
 ## 34 2013  0,86  0,60  0,47  0,55  0,37  0,26  0,03  0,24  0,35  0,57  0,54  0,92      5,91
 ## 35 2014  0,55  0,69  0,92  0,67  0,46  0,40  0,01  0,25  0,57  0,42  0,51  0,78      6,40
-## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22    NA    NA    NA    NA      7,06
+## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22  0,54    NA    NA    NA      7,64
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -144,13 +144,13 @@ plot&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk unnamed-chunk-8" src="http://wilsonfreitas.github.io/figure/unnamed-chunk-8-1.png" /&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk webscraping-ipca" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-1.png" /&gt; &lt;/p&gt;
 &lt;p&gt;A inflação no governo Dilma Rousseff (2011-).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2011/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; pch&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;19&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;IPCA - Governo Dilma Rousseff&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk unnamed-chunk-9" src="http://wilsonfreitas.github.io/figure/unnamed-chunk-9-1.png" /&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk webscraping-ipca-dilma" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-dilma-1.png" /&gt; &lt;/p&gt;
 &lt;h2&gt;Conclusão&lt;/h2&gt;
 &lt;p&gt;Vimos como capturar a série temporal do IPCA do site PortalBrasil.
 Há outras formas de obter a série do IPCA, para citar 2 temos o webservice do Banco Central e o Quandl.
@@ -9950,41 +9950,7 @@ Funcionaria mais ou menos como no diagrama abaixo.&lt;/p&gt;
 Exercito muito a minha criatividade pensando em transformações para os dados.
 Mas há uma ideia subliminar aqui que é estruturar do tratamento dos dados em pequenas etapas.
 Uma vez que eu consiga mapear um conjunto de funções que atende a um número considerável de problemas eu posso estruturar essa solução e torná-la mais automática, o que me faz pensar na construção de capturas on-line.
-De qualquer forma, &lt;code&gt;scraps&lt;/code&gt; é um módulo que eu classificaria como &lt;em&gt;quick-and-dirty&lt;/em&gt;, mas me ajuda a exercitar a minha criatividade e a dar vazão as coisas.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 18 Dec 2014 00:00:00 -0200</pubDate><guid>tag:wilsonfreitas.github.io,2014-12-18:posts/faca-voce-mesmo-um-web-scraper-em-python.html</guid><category>python</category><category>scraps</category></item><item><title>Covariance between stochastic processes</title><link>http://wilsonfreitas.github.io/posts/covariance-between-stochastic-processes.html</link><description>&lt;p&gt;Let $dX_1$ and $dX_2$, describe the asset returns in different time intervals, $s$ and $u$.&lt;/p&gt;
-&lt;p&gt;$$
-\begin{aligned}
-dX_1(s) &amp;amp; = \sigma_1 dW_1 \\
-dX_2(u) &amp;amp; = \sigma_2 dW_2
-\end{aligned}
-$$&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;Note that these processes are arithmetic and Gaussian.&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;We consider the returns being independent and since we are working with only one asset we have:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{aligned}
-\sigma_1 &amp;amp; \equiv \sigma\sqrt{t_1} \\
-\sigma_2 &amp;amp; \equiv \sigma\sqrt{t_2}
-\end{aligned}
-$$&lt;/p&gt;
-&lt;p&gt;where $\sigma$ is the daily volatility.&lt;/p&gt;
-&lt;h2&gt;Covariance between $dX_1$ and $dX_2$&lt;/h2&gt;
-&lt;p&gt;The covariance between $dX_1$ and $dX_2$ is given by:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{aligned}
-COV(dX_1, dX_2) &amp;amp; = E[dX_1(t_1) dX_2(t_2)] \\
-                &amp;amp; = E[\sigma_1 dW_1 \sigma_2 dW_2]
-\end{aligned}
-$$&lt;/p&gt;
-&lt;p&gt;If $t_1 &amp;lt; t_2$ we can write:&lt;/p&gt;
-&lt;p&gt;$$
-\begin{aligned}
-COV(dX_1, dX_2) &amp;amp; = E[\sigma_1 dW_1 (\sigma_1 dW_1 + \sigma_2 dW_2 - \sigma_1 dW_1)] \\
-                &amp;amp; = E[\sigma_1^2 dW_1^2 + \sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)] \\
-                &amp;amp; = \sigma_1^2 E[dW_1^2] +  E[\sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)] \\
-                &amp;amp; = \sigma_1^2 t1 +  E[\sigma_1 dW_1(\sigma_2 dW_2 - \sigma_1 dW_1)]
-\end{aligned}
-$$&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Fri, 04 Jul 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-07-04:posts/covariance-between-stochastic-processes.html</guid><category>math</category></item><item><title>Refinando o estilo do matplotlib com seaborn</title><link>http://wilsonfreitas.github.io/posts/refinando-o-estilo-do-matplotlib-com-seaborn.html</link><description>&lt;p&gt;
+De qualquer forma, &lt;code&gt;scraps&lt;/code&gt; é um módulo que eu classificaria como &lt;em&gt;quick-and-dirty&lt;/em&gt;, mas me ajuda a exercitar a minha criatividade e a dar vazão as coisas.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Thu, 18 Dec 2014 00:00:00 -0200</pubDate><guid>tag:wilsonfreitas.github.io,2014-12-18:posts/faca-voce-mesmo-um-web-scraper-em-python.html</guid><category>python</category><category>scraps</category></item><item><title>Refinando o estilo do matplotlib com seaborn</title><link>http://wilsonfreitas.github.io/posts/refinando-o-estilo-do-matplotlib-com-seaborn.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;
 &lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
@@ -22518,8 +22484,8 @@ str&lt;span class="p"&gt;(&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt;
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;## &amp;#39;data.frame&amp;#39;:    3448 obs. of  2 variables:
-##  $ Date : Date, format: &amp;quot;2000-07-03&amp;quot; &amp;quot;2000-07-04&amp;quot; ...
-##  $ Value: num  17 17 17 17 17 17 16 16 16 16 ...
+##  $ Date : Date, format: &amp;quot;2014-03-21&amp;quot; &amp;quot;2014-03-20&amp;quot; ...
+##  $ Value: num  10 10 10 10 10 10 10 10 10 10 ...
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -22553,12 +22519,12 @@ selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_vna&lt;span class="p"
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;##         Date Value     Factor   CumFactor         VNA
-## 1 2000-07-03    17 1,00062322 1,000623220          NA
-## 2 2000-07-04    17 1,00062322 1,001246828 1000,623220
-## 3 2000-07-05    17 1,00062322 1,001870825 1001,246828
-## 4 2000-07-06    17 1,00062322 1,002495211 1001,870825
-## 5 2000-07-07    17 1,00062322 1,003119986 1002,495211
-## 6 2000-07-10    17 1,00062322 1,003745151 1003,119986
+## 1 2014-03-21    10 1,00037829 1,000378290          NA
+## 2 2014-03-20    10 1,00037829 1,000756723 1000,378290
+## 3 2014-03-19    10 1,00037829 1,001135299 1000,756723
+## 4 2014-03-18    10 1,00037829 1,001514019 1001,135299
+## 5 2014-03-17    10 1,00037829 1,001892882 1001,514018
+## 6 2014-03-14    10 1,00037829 1,002271888 1001,892881
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -22567,12 +22533,12 @@ selic &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_vna&lt;span class="p"
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;##            Date Value     Factor   CumFactor         VNA
-## 3443 2014-03-14    10 1,00037829 5,656913278 5654,774133
-## 3444 2014-03-17    10 1,00037829 5,659053231 5656,913277
-## 3445 2014-03-18    10 1,00037829 5,661193995 5659,053231
-## 3446 2014-03-19    10 1,00037829 5,663335568 5661,193994
-## 3447 2014-03-20    10 1,00037829 5,665477951 5663,335567
-## 3448 2014-03-21    10 1,00037829 5,667621144 5665,477950
+## 3443 2000-07-10    17 1,00062322 5,649993242 5646,474246
+## 3444 2000-07-07    17 1,00062322 5,653514431 5649,993242
+## 3445 2000-07-06    17 1,00062322 5,657037814 5653,514430
+## 3446 2000-07-05    17 1,00062322 5,660563393 5657,037814
+## 3447 2000-07-04    17 1,00062322 5,664091170 5660,563393
+## 3448 2000-07-03    17 1,00062322 5,667621144 5664,091169
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -22663,7 +22629,7 @@ lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;tra
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## [1] FALSE
+&lt;div class="highlight"&gt;&lt;pre&gt;## [1] NA
 &lt;/pre&gt;&lt;/div&gt;
 
 

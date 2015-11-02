@@ -102,8 +102,8 @@ No código abaixo eu leio a URL, seleciono a tabela com o IPCA mensal e converto
 <div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>rvest<span class="p">)</span>
 url <span class="o">&lt;-</span> <span class="s">&#39;http://www.portalbrasil.net/ipca.htm&#39;</span>
 ipca_data <span class="o">&lt;-</span> read_html<span class="p">(</span><span class="kp">url</span><span class="p">)</span> <span class="o">%&gt;%</span>
-  html_nodes<span class="p">(</span>xpath<span class="o">=</span><span class="s">&quot;//table[6]&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
-  <span class="m">.</span><span class="p">[[</span><span class="m">1</span><span class="p">]]</span> <span class="o">%&gt;%</span>
+  html_nodes<span class="p">(</span>xpath<span class="o">=</span><span class="s">&quot;//table&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="m">.</span><span class="p">[[</span><span class="m">6</span><span class="p">]]</span> <span class="o">%&gt;%</span>
   html_table<span class="p">(</span>header<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 <span class="kp">head</span><span class="p">(</span>ipca_data<span class="p">)</span>
 </pre></div>
@@ -196,7 +196,7 @@ Vou renomear todas as colunas, pois prefiro trabalhar com os meses em formato nu
 ## 33 2012  0,56  0,45  0,21  0,64  0,36  0,08  0,43  0,41  0,57  0,59  0,60  0,79      5,83
 ## 34 2013  0,86  0,60  0,47  0,55  0,37  0,26  0,03  0,24  0,35  0,57  0,54  0,92      5,91
 ## 35 2014  0,55  0,69  0,92  0,67  0,46  0,40  0,01  0,25  0,57  0,42  0,51  0,78      6,40
-## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22    NA    NA    NA    NA      7,06
+## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22  0,54    NA    NA    NA      7,64
 </pre></div>
 
 
@@ -226,13 +226,13 @@ plot<span class="p">(</span>ipca<span class="p">,</span> main<span class="o">=</
 </pre></div>
 
 
-<p><img alt="plot of chunk unnamed-chunk-8" src="http://wilsonfreitas.github.io/figure/unnamed-chunk-8-1.png" /> </p>
+<p><img alt="plot of chunk webscraping-ipca" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-1.png" /> </p>
 <p>A inflação no governo Dilma Rousseff (2011-).</p>
 <div class="highlight"><pre>plot<span class="p">(</span>ipca<span class="p">[</span><span class="s">&#39;2011/&#39;</span><span class="p">],</span> type<span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span> main<span class="o">=</span><span class="s">&#39;IPCA - Governo Dilma Rousseff&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<p><img alt="plot of chunk unnamed-chunk-9" src="http://wilsonfreitas.github.io/figure/unnamed-chunk-9-1.png" /> </p>
+<p><img alt="plot of chunk webscraping-ipca-dilma" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-dilma-1.png" /> </p>
 <h2>Conclusão</h2>
 <p>Vimos como capturar a série temporal do IPCA do site PortalBrasil.
 Há outras formas de obter a série do IPCA, para citar 2 temos o webservice do Banco Central e o Quandl.
