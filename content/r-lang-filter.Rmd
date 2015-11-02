@@ -1,0 +1,105 @@
+Title: Pérolas escondidas: filter
+Author: Wilson Freitas
+Date: 2015-11-02
+Status: draft
+Category: data science
+
+Seja uma série $Y_t$
+
+$$
+Y_t = T_t + S_t + e_t
+$$
+
+> tendência + sazonalidade + ruído
+
+### função filter
+
+    function (x, filter, method = c("convolution", "recursive"),
+        sides = 2L, circular = FALSE, init = NULL)
+
+**Autoregressivo**
+
+    function (x, filter, method="recursive", init=NULL)
+
+
+**Média móvel**
+
+    function (x, filter, method="convolution", sides=2L, circular=FALSE)
+
+
+#### AR(1) _recursive_
+
+$x_t$ e $y_t$ ... $y_0 = 0$
+
+$$
+y_t = x_t + \phi y_{t-1}
+$$
+
+$$
+y_1 = x_1 + \phi y_0 \\
+y_2 = x_2 + \phi y_1 \\
+y_3 = x_3 + \phi y_2 \\
+$$
+
+    filter(x_t, filter=phi, method='recursive', init=0)
+
+#### AR(2)
+
+AR
+
+$$
+y_t = x_t + \phi_1 y_{t-1} + \phi_2 y_{t-2}
+$$
+
+$$
+y_1 = x_1 + \phi_1 y_0 + \phi_2 y_{-1}\\
+y_2 = x_2 + \phi_1 y_1 + \phi_2 y_0\\
+y_3 = x_3 + \phi_1 y_2 + \phi_2 y_1\\
+$$
+
+    filter(x_t, filter=c(phi_1, phi_2), method='recursive', init=0)
+
+
+#### convolution 1 sides=1
+
+$$
+y_t = \phi_1 x_t + \phi_2 x_{t-1}
+$$
+
+    function (x, filter=c(phi_1, phi_2), method="convolution", sides=1L, circular=FALSE)
+
+
+#### convolution 2 sides=1
+
+$$
+y_t = \phi_1 x_t + \phi_2 x_{t-1} + \phi_3 x_{t-2}
+$$
+
+    function (x, filter=c(phi_1, phi_2, phi_3), method="convolution", sides=1L, circular=FALSE)
+
+
+#### convolution 1 sides=2
+
+$$
+y_t = \phi x_t
+$$
+
+    function (x, filter=phi, method="convolution", sides=2L, circular=FALSE)
+
+
+#### convolution 2 sides=2
+
+$$
+y_t = \phi_1 x_{t+1} + \phi_2 x_{t}
+$$
+
+    function (x, filter=c(phi_1, phi_2), method="convolution", sides=2L, circular=FALSE)
+
+
+#### convolution 3 sides=2
+
+$$
+y_t = \phi_1 x_{t+1} + \phi_2 x_{t} + \phi_3 x_{t-1}
+$$
+
+    function (x, filter=c(phi_1, phi_2, phi_3), method="convolution", sides=2L, circular=FALSE)

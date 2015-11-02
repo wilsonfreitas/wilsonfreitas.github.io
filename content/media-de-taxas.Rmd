@@ -1,0 +1,29 @@
+Title: Média de taxas
+Author: Wilson Freitas
+Date: 2015-11-02
+Status: draft
+Category: finance
+
+$$
+[\Pi_i (1 + r_i)]^{1/12}
+$$
+
+tomando o $\log$:
+
+$$
+\sum_i \frac{\log(1 + r_i)}{12}
+$$
+
+$$
+y_i = \log(1 + r_i)
+$$
+
+$$
+y_i = T_i + S_i + e_i
+$$
+
+$$
+\log(1 + r_i) = \log(1 + t_i) + \log(1 + s_i) + \log(1 + e_i) \\
+\log(1 + r_i) = \log[(1 + t_i)(1 + s_i)(1 + e_i)] \\
+(1 + r_i) = (1 + t_i)(1 + s_i)(1 + e_i) \\
+$$
