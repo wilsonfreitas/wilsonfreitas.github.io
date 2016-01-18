@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Variação do IBOVESPA por Governo Federal — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Variação do IBOVESPA por Governo Federal; Date: 2015-10-19; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Variação do IBOVESPA por Governo Federal"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/drafts/variacao-do-ibovespa-por-governo-federal.html"/>
+	<meta property="og:description" content=""/>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Variação do IBOVESPA por Governo Federal</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2015-10-19T00:00:00-02:00" itemprop="datePublished">19/10/2015</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/python.html" rel="tag">python</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/visualization.html" rel="tag">visualization</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/pandas.html" rel="tag">pandas</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">mpl_style</span> <span class="o">=</span> <span class="s">&#39;default&#39;</span>
+<span class="kn">import</span> <span class="nn">Quandl</span>
+<span class="o">%</span><span class="k">pylab</span> inline
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Populating the interactive namespace from numpy and matplotlib
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>O objetivo aqui é analisar a variação do IBOVESPA nos períodos dos governos federais desde a estabilização da moeda.
+Adicionalmente vou considerar a variação do índice deflacionado para entender o impacto da inflação na economia nestes períodos.
+Já calculei o IBOVESPA deflacionado no <a href="http://wilsonfreitas.github.io/posts/no-brasil-ate-o-passado-e-duvidoso.html">post</a>.
+As contas são simples:</p>
+<ul>
+<li>calcular os retornos do IBOVESPA mensais nos governos federais</li>
+<li>calcular estes retornos descontados da inflação (uso o IPCA)</li>
+<li>agrupar os retornos por períodos (governos federais) e calcular os retornos acumulados</li>
+</ul>
+<p>Vou começar baixando as séries de IPCA e IBOVESPA (mensal) via <a href="http://wilsonfreitas.github.io/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html">Quandl</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s">&quot;BCB/433&quot;</span><span class="p">,</span> <span class="s">&quot;BCB/7845&quot;</span><span class="p">],</span> <span class="n">trim_start</span><span class="o">=</span><span class="s">&quot;1994-12-01&quot;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;IPCA&quot;</span><span class="p">,</span> <span class="s">&quot;IBOVESPA&quot;</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>IPCA</th>
+      <th>IBOVESPA</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1994-12-31</th>
+      <td>1.71</td>
+      <td>43539</td>
+    </tr>
+    <tr>
+      <th>1995-01-31</th>
+      <td>1.70</td>
+      <td>38850</td>
+    </tr>
+    <tr>
+      <th>1995-02-28</th>
+      <td>1.02</td>
+      <td>32708</td>
+    </tr>
+    <tr>
+      <th>1995-03-31</th>
+      <td>1.55</td>
+      <td>29789</td>
+    </tr>
+    <tr>
+      <th>1995-04-30</th>
+      <td>2.43</td>
+      <td>38137</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As séries são capturadas desde 1994-12-31, fim do Governo Itamar Franco, pois dessa forma é possível calcular os retornos desde o primeiro mês do governo Fernando Henrique.</p>
+<p>A seguir os retornos do índice são calculados (<code>IBOVESPA_D</code>) e deflacionados (<code>IBOVESPA_D_DEFL</code>).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">data</span><span class="p">[</span><span class="s">&quot;IBOVESPA_D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&quot;IBOVESPA&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">/</span><span class="n">data</span><span class="p">[</span><span class="s">&quot;IBOVESPA&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>IPCA</th>
+      <th>IBOVESPA</th>
+      <th>IBOVESPA_D</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1994-12-31</th>
+      <td>1.71</td>
+      <td>43539</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1995-01-31</th>
+      <td>1.70</td>
+      <td>38850</td>
+      <td>-0.107697</td>
+    </tr>
+    <tr>
+      <th>1995-02-28</th>
+      <td>1.02</td>
+      <td>32708</td>
+      <td>-0.158095</td>
+    </tr>
+    <tr>
+      <th>1995-03-31</th>
+      <td>1.55</td>
+      <td>29789</td>
+      <td>-0.089244</td>
+    </tr>
+    <tr>
+      <th>1995-04-30</th>
+      <td>2.43</td>
+      <td>38137</td>
+      <td>0.280238</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">data</span><span class="p">[</span><span class="s">&quot;IBOVESPA_D_DEFL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="s">&quot;IBOVESPA_D&quot;</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">data</span><span class="p">[</span><span class="s">&quot;IPCA&quot;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">data</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>IPCA</th>
+      <th>IBOVESPA</th>
+      <th>IBOVESPA_D</th>
+      <th>IBOVESPA_D_DEFL</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2015-05-31</th>
+      <td>0.74</td>
+      <td>52760</td>
+      <td>-0.061694</td>
+      <td>-0.068587</td>
+    </tr>
+    <tr>
+      <th>2015-06-30</th>
+      <td>0.79</td>
+      <td>53080</td>
+      <td>0.006065</td>
+      <td>-0.001820</td>
+    </tr>
+    <tr>
+      <th>2015-07-31</th>
+      <td>0.62</td>
+      <td>50864</td>
+      <td>-0.041748</td>
+      <td>-0.047653</td>
+    </tr>
+    <tr>
+      <th>2015-08-31</th>
+      <td>0.22</td>
+      <td>46625</td>
+      <td>-0.083340</td>
+      <td>-0.085352</td>
+    </tr>
+    <tr>
+      <th>2015-09-30</th>
+      <td>0.54</td>
+      <td>45059</td>
+      <td>-0.033587</td>
+      <td>-0.038778</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Como o objetivo é agrupar pelos governos federais, vou criar uma columa <code>ANO</code> com o ano de cada ponto da série para que eu possa fazer a identificação do governo.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">data</span><span class="p">[</span><span class="s">&#39;ANO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>IPCA</th>
+      <th>IBOVESPA</th>
+      <th>IBOVESPA_D</th>
+      <th>IBOVESPA_D_DEFL</th>
+      <th>ANO</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1994-12-31</th>
+      <td>1.71</td>
+      <td>43539</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1994</td>
+    </tr>
+    <tr>
+      <th>1995-01-31</th>
+      <td>1.70</td>
+      <td>38850</td>
+      <td>-0.107697</td>
+      <td>-0.122612</td>
+      <td>1995</td>
+    </tr>
+    <tr>
+      <th>1995-02-28</th>
+      <td>1.02</td>
+      <td>32708</td>
+      <td>-0.158095</td>
+      <td>-0.166596</td>
+      <td>1995</td>
+    </tr>
+    <tr>
+      <th>1995-03-31</th>
+      <td>1.55</td>
+      <td>29789</td>
+      <td>-0.089244</td>
+      <td>-0.103145</td>
+      <td>1995</td>
+    </tr>
+    <tr>
+      <th>1995-04-30</th>
+      <td>2.43</td>
+      <td>38137</td>
+      <td>0.280238</td>
+      <td>0.249866</td>
+      <td>1995</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Tendo criado a coluna <code>ANO</code> eu agora faço o mapeamento com a função <code>governo</code> abaixo para criar a variável categorica referente ao governo na coluna <code>GOVERNO</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="k">def</span> <span class="nf">governo</span><span class="p">(</span><span class="n">ano</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">ano</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1995</span><span class="p">,</span> <span class="mi">1999</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;FCH 1&#39;</span>
+    <span class="k">elif</span> <span class="n">ano</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1999</span><span class="p">,</span> <span class="mi">2003</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;FHC 2&#39;</span>
+    <span class="k">elif</span> <span class="n">ano</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2003</span><span class="p">,</span> <span class="mi">2007</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;LULA 1&#39;</span>
+    <span class="k">elif</span> <span class="n">ano</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2007</span><span class="p">,</span> <span class="mi">2011</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;LULA 2&#39;</span>
+    <span class="k">elif</span> <span class="n">ano</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2011</span><span class="p">,</span> <span class="mi">2015</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;DILMA 1&#39;</span>
+    <span class="k">elif</span> <span class="n">ano</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2015</span><span class="p">,</span> <span class="mi">2019</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;DILMA 2&#39;</span>
+
+<span class="n">data</span><span class="p">[</span><span class="s">&#39;GOVERNO&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">&#39;ANO&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">governo</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Agora eu agrupo (<code>groupby</code>) pela coluna governo e sumarizo os dados com a função <code>aggregate</code> calculando o retorno acumulado em cada grupo (governo federal).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">data_gov</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">&#39;GOVERNO&#39;</span><span class="p">)</span>
+<span class="n">data_gov_agg</span> <span class="o">=</span> <span class="n">data_gov</span><span class="p">[[</span><span class="s">&#39;IBOVESPA_D&#39;</span><span class="p">,</span> <span class="s">&#39;IBOVESPA_D_DEFL&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">data_gov_agg</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>IBOVESPA_D</th>
+      <th>IBOVESPA_D_DEFL</th>
+    </tr>
+    <tr>
+      <th>GOVERNO</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>DILMA 1</th>
+      <td>-27.843992</td>
+      <td>-43.199362</td>
+    </tr>
+    <tr>
+      <th>DILMA 2</th>
+      <td>-9.894615</td>
+      <td>-16.291894</td>
+    </tr>
+    <tr>
+      <th>FCH 1</th>
+      <td>-84.418567</td>
+      <td>-89.138794</td>
+    </tr>
+    <tr>
+      <th>FHC 2</th>
+      <td>66.096698</td>
+      <td>18.739626</td>
+    </tr>
+    <tr>
+      <th>LULA 1</th>
+      <td>294.684061</td>
+      <td>207.855809</td>
+    </tr>
+    <tr>
+      <th>LULA 2</th>
+      <td>55.833877</td>
+      <td>27.511680</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A função que me dá o retorno acumulado é</p>
+$$
+100 \cdot \left( \left[ \prod^{n}_{i=1} \left(1 + x_i \right) \right] - 1 \right)
+$$<p>onde eu apenas multiplico o resultado por 100 para obter o número em percentual.</p>
+<p>Agora que já tenho os percentuais, vou criar o gráfico para poder visualizar os resultados.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">ax</span> <span class="o">=</span> <span class="n">data_gov_agg</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;Variação % do IBOVESPA nos Governos Federais&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&quot;Governo&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&quot;Variação (%)&quot;</span><span class="p">);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>A tabela já apresentava os resultados de maneira clara, mas o gráfico é capaz de tornar a compreensão quase que instantânea.
+Nos gráfico é possível observar o que todo mundo já sabe, a economia não vai nada bem no governo Dilma, foi mal no primeiro e o segundo, que está apenas começando, não acredito que vá ser muito melhor.
+A análise deflacionada nos permiter observar que nos períodos de crescimento a figura não é tão boa assim, como observa-se no primeiro governo FHC, onde o crescimento real da economia foi severamente prejudicado pela inflação.
+Os governos LULA foram bons, apesar de ficar claro houve perda significativa do poder de compra nestes períodos também.
+É importante ficar claro que o IPCA é uma média muito geral, se a inflação for medida localmente estes resultados podem ser bem piores em algumas capitais.</p>
+<p>De qualquer formar vimos que é simples fazer uma análise interessante com Python e apresentar os resultados de forma clara e simples.
+Este é o poder dos dados abertos!
+O Quandl é muito bom, mas precisamos de mais ferramentas de dados estrutuados com informações do Brasil.</p>
+
+</div>
+</div>
+</div></p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Variação do IBOVESPA por Governo Federal';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>

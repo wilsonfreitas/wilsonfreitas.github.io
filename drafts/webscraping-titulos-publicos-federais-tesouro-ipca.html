@@ -2,9 +2,9 @@
 <html lang="pt">
 <head>
 	<meta charset="utf-8">
-	<title>Webscraping IPCA — Wilson Freitas</title>
+	<title>Webscraping Títulos Públicos Federais: Tesouro IPCA — Wilson Freitas</title>
 	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
-	<meta name="description" content="Title: Webscraping IPCA; Date: 2015-10-02; Author: Wilson Freitas">
+	<meta name="description" content="Title: Webscraping Títulos Públicos Federais: Tesouro IPCA; Date: 2015-11-05; Author: Wilson Freitas">
 	<meta name="author" content="Wilson Freitas">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -24,8 +24,8 @@
 	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	<meta property="og:site_name" content="Wilson Freitas" />
 	<meta property="og:type" content="article"/>
-	<meta property="og:title" content="Webscraping IPCA"/>
-	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/webscraping-ipca.html"/>
+	<meta property="og:title" content="Webscraping Títulos Públicos Federais: Tesouro IPCA"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/drafts/webscraping-titulos-publicos-federais-tesouro-ipca.html"/>
 	<meta property="og:description" content=""/>
 </head>
 <body>
@@ -59,11 +59,11 @@
 		<div class="col-md-12">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">Webscraping IPCA</h1>
+		<h1 itemprop="name headline" class="article-title">Webscraping Títulos Públicos Federais: Tesouro IPCA</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">Wilson Freitas</h4>
 		</span>
-		<time datetime="2015-10-02T00:00:00-03:00" itemprop="datePublished">02/10/2015</time>
+		<time datetime="2015-11-05T00:00:00-02:00" itemprop="datePublished">05/11/2015</time>
 	</div>
 	<div>
 		Categoria:
@@ -81,24 +81,8 @@
 			<a href="http://wilsonfreitas.github.io/tag/rvest.html" rel="tag">rvest</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>Frequentemente eu consumo dados disponíveis na Internet para construir <em>datasets</em> em minhas análises.
-Em sua maioria são dados de mercado financeiro, que incluem:</p>
-<ul>
-<li>indicadores econômicos</li>
-<li>índices de inflação</li>
-<li>taxas de juros</li>
-<li>preços de ações</li>
-<li>preços de contratos futuros</li>
-<li>dados cadastrais de instrumentos financeiros negociados na BM&amp;FBovespa</li>
-<li>taxas e preços de títulos públicos</li>
-<li>entre outros</li>
-</ul>
-<p>Decidi apresentar formas automáticas de obter estes dados e este post é o primeiro da série <a href="/category/webscraping.html">webscraping</a>.</p>
-<p>Vou começar com IPCA porque venho trabalhando muito com ele recentemente de forma que criamos uma relação.</p>
-<p>Eu capturo a série IPCA do site <a href="http://portalbrasil.net">PortalBrasil</a> no link
-http://www.portalbrasil.net/ipca.htm.
-Para fazer o webscraping eu usei o <a href="https://github.com/hadley/rvest">rvest</a>.
-No código abaixo eu leio a URL, seleciono a tabela com o IPCA mensal e converto em um <code>data.frame</code>.</p>
+	<div itemprop="articleBody" class="article-body"><p>Dando continuidade a série <a href="/category/webscraping.html">webscraping</a> vou mostrar como capturar dados de titulos públicos federais.
+Como mencionei no post sobre <a href="http://wilsonfreitas.github.io/posts/webscraping-ipca.html">captura de IPCA</a>, recentemente tenho trabalha do bastante com títulos indexados a inflação, particularmente IPCA, e por este motivo vou mostrar aqui como capturar informações dos títulos públicos federais indexados ao IPCA: os recentemente renomeados Tesouro IPCA (antiga NTN-B).</p>
 <div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>rvest<span class="p">)</span>
 url <span class="o">&lt;-</span> <span class="s">&#39;http://www.portalbrasil.net/ipca.htm&#39;</span>
 ipca_data <span class="o">&lt;-</span> read_html<span class="p">(</span><span class="kp">url</span><span class="p">)</span> <span class="o">%&gt;%</span>
@@ -123,7 +107,7 @@ ipca_data <span class="o">&lt;-</span> read_html<span class="p">(</span><span cl
 <ul>
 <li>da página carregada a informação que eu queria estava na sexta tabela da página, como eu sabia disso? Não sou adivinho, imprimi tabala a tabela até chegar a que eu desejava.</li>
 <li>eu prefiro usar <code>xpath</code> para especificar os elementos de interesse. Nem sempre isso é possível, eventualmente o HTML não está bem formatado e os parsers não funcionam direito. Nestes casos bibliotecas como BeautifulSoup do python são mais eficazes.</li>
-<li>eu utilizo a operação <code>.[[6]]</code> após selecionar a tabela, porque? O <code>html_nodes</code> retorna uma lista e tenho que extrair o sexto elemento da lista para trabalhar com ele.</li>
+<li>eu utilizo a operação <code>.[[1]]</code> após selecionar a tabela, porque? O <code>html_nodes</code> retorno uma lista com 1 elemento e tenho que extrair esse elemento da lista para trabalhar com ele.</li>
 <li><code>html_table</code> converte a tabela em HTML em um <code>data.frame</code> que eu chamo de <code>ipca_data</code>.</li>
 </ul>
 <p>A <code>data.frame</code> <code>ipca_data</code> tem alguns problemas de formato:</p>
@@ -243,7 +227,7 @@ Além disso utilizo apenas HTTP, preciso apenas que o site esteja no ar disponib
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'aboutwilson'; 
-    var disqus_title = 'Webscraping IPCA';
+    var disqus_title = 'Webscraping Títulos Públicos Federais: Tesouro IPCA';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

@@ -41,7 +41,7 @@ ipca_data &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; read_html&lt;span class="
 &lt;ul&gt;
 &lt;li&gt;da página carregada a informação que eu queria estava na sexta tabela da página, como eu sabia disso? Não sou adivinho, imprimi tabala a tabela até chegar a que eu desejava.&lt;/li&gt;
 &lt;li&gt;eu prefiro usar &lt;code&gt;xpath&lt;/code&gt; para especificar os elementos de interesse. Nem sempre isso é possível, eventualmente o HTML não está bem formatado e os parsers não funcionam direito. Nestes casos bibliotecas como BeautifulSoup do python são mais eficazes.&lt;/li&gt;
-&lt;li&gt;eu utilizo a operação &lt;code&gt;.[[1]]&lt;/code&gt; após selecionar a tabela, porque? O &lt;code&gt;html_nodes&lt;/code&gt; retorno uma lista com 1 elemento e tenho que extrair esse elemento da lista para trabalhar com ele.&lt;/li&gt;
+&lt;li&gt;eu utilizo a operação &lt;code&gt;.[[6]]&lt;/code&gt; após selecionar a tabela, porque? O &lt;code&gt;html_nodes&lt;/code&gt; retorna uma lista e tenho que extrair o sexto elemento da lista para trabalhar com ele.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;html_table&lt;/code&gt; converte a tabela em HTML em um &lt;code&gt;data.frame&lt;/code&gt; que eu chamo de &lt;code&gt;ipca_data&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;A &lt;code&gt;data.frame&lt;/code&gt; &lt;code&gt;ipca_data&lt;/code&gt; tem alguns problemas de formato:&lt;/p&gt;
@@ -114,7 +114,7 @@ Vou renomear todas as colunas, pois prefiro trabalhar com os meses em formato nu
 ## 33 2012  0,56  0,45  0,21  0,64  0,36  0,08  0,43  0,41  0,57  0,59  0,60  0,79      5,83
 ## 34 2013  0,86  0,60  0,47  0,55  0,37  0,26  0,03  0,24  0,35  0,57  0,54  0,92      5,91
 ## 35 2014  0,55  0,69  0,92  0,67  0,46  0,40  0,01  0,25  0,57  0,42  0,51  0,78      6,40
-## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22  0,54    NA    NA    NA      7,64
+## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22  0,54  0,82  1,01  0,96     10,67
 &lt;/pre&gt;&lt;/div&gt;
 
 
