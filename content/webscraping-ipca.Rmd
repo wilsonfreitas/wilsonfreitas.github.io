@@ -55,7 +55,7 @@ Alguns pontos escondidos nas linhas de código acima:
 
 - da página carregada a informação que eu queria estava na sexta tabela da página, como eu sabia disso? Não sou adivinho, imprimi tabala a tabela até chegar a que eu desejava.
 - eu prefiro usar `xpath` para especificar os elementos de interesse. Nem sempre isso é possível, eventualmente o HTML não está bem formatado e os parsers não funcionam direito. Nestes casos bibliotecas como BeautifulSoup do python são mais eficazes.
-- eu utilizo a operação `.[[1]]` após selecionar a tabela, porque? O `html_nodes` retorno uma lista com 1 elemento e tenho que extrair esse elemento da lista para trabalhar com ele.
+- eu utilizo a operação `.[[6]]` após selecionar a tabela, porque? O `html_nodes` retorna uma lista e tenho que extrair o sexto elemento da lista para trabalhar com ele.
 - `html_table` converte a tabela em HTML em um `data.frame` que eu chamo de `ipca_data`.
 
 A `data.frame` `ipca_data` tem alguns problemas de formato:

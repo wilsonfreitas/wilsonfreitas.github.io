@@ -7,12 +7,12 @@ Description: Dieta do abdômem
 
 - julho/2007
 
-![]({filename}/images/wilson_gordo_640-480.jpg)
+![Gordo]({filename}/images/wilson_gordo_640-480.jpg)
 
 - outubro/2008
 
-![]({filename}/images/wilson_magro_640-480.jpg)
+![Magro]({filename}/images/wilson_magro_640-480.jpg)
 
 - maio/2015
 
-![]({filename}/images/wilson-runner_640-480.jpg)
+![Corredor]({filename}/images/wilson-runner_640-480.jpg)
