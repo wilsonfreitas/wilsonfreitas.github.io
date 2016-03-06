@@ -11,5 +11,8 @@ cache/*
 .ipynb_*
 __pycache__
 *.pid
-
+Makefile
+_nb_header.html
+.RData
+.Rhistory
 .DS_Store
