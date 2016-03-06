@@ -1,0 +1,81 @@
+Title: Temas do ggplot
+Category: data science
+Author: Wilson Freitas
+Tags: R, ggplot, visualization, rbmfbovespa, BM&FBovespa
+Date: 2016-02-29
+Lang: pt
+
+[rbmfbovespa]: https://github.com/wilsonfreitas/rbmfbovespa "rbmfbovespa"
+[bmf]: http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br "BM&FBovespa"
+[ggplot]: http://ggplot.org
+
+Considero que fazer gráficos no R com [ggplot][ggplot] é melhor por dois aspectos:
+
+- mudança de mentalidade na construção do gráfico: colocar foco nas variáveis e suas relações ao invés de focar em coordenadas. As variáveis aestéticas permitem explorar as relações entre as variáveis já na construção do `data.frame` evitando construções algorítmicas na criação do gráfico.
+- gráficos visualmente mais agradáveis, sem configuração adicional, afinal visualização deve ser agradável para que a informação seja absorvida da melhor forma possível.
+
+
+[ggthemes]: https://github.com/jrnold/ggthemes
+[cowplot]: https://github.com/wilkelab/cowplot
+
+Um característica do ggplot que acho interessante é o seu conjunto de temas pré-definidos.
+Há outros pacotes que definem novos temas (como o [ggthemes][ggthemes]) ou que ajudam na configuração de temas (como o [cowplot][cowplot]).
+No entanto, aqui eu quero focar apenas nos temas que já vem com o ggplot, são 9 temas.
+
+Vou fazer um gráfico dos TOP 10 papéis mais negociados na BM&FBovespa em cada um dos temas do ggplot.
+Adicionalmente vou dispor os gráficos em um *grid* para melhorar a comparação e para fazer isso eu vou usar o [cowplot][cowplot], que como eu disse tem algumas funcionalidades que ajudam criação dos gráficos e colocar os gráficos em *grid* é uma delas.
+
+Recentemente eu lancei o pacote [rbmfbovespa][rbmfbovespa] que lê os arquivos distribuídos pela [BM&FBovespa][bmf].
+Vou utilizá-lo para ler o arquivo `BDIN` de dados diários do mercados de ações.
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+library(rbmfbovespa)
+
+ext_rename <- function(x, ...) {
+  idx <- list(...)
+  x <- x[,names(idx)]
+  names(x) <- unname(unlist(idx))
+  x
+}
+
+bdin_2015 <- read_marketdata('datasets/BDIN-2015-11-19.txt', template='bdin')
+
+top <- bdin_2015[["As Mais Negociadas no Mercado a Vista"]] %>%
+  ext_rename('Código de negociação'='code',
+             'Volume geral no pregão deste papel-mercado'='volume')
+
+top %>% top_n(5)
+```
+
+Carregados os dados, eu crio um gráfico de barras com os volumes financeiros negociados pelo código dos papéis.
+
+```{r, warning=FALSE, message=FALSE}
+library(ggplot2)
+
+p <- ggplot(top, aes(x=code, y=volume, fill=code)) +
+  geom_bar(stat='identity') +
+  labs(x=NULL, y='Vol.') +
+  guides(fill=FALSE)
+```
+
+Agora utilizando `cowplot` e crio um *grid* 5x2 apresentando o gráfico em cada um dos temas do ggplot e adicionalmente no tema do `cowplot`.
+
+```{r, fig.width=15, fig.height=11, warning=FALSE, message=FALSE}
+library(cowplot)
+
+plot_grid(p, p + theme_bw(), p + theme_grey(), p + theme_gray(), p + theme_linedraw(), p + theme_light(), p + theme_minimal(), p + theme_classic(), p + theme_dark(), p + theme_void(),
+          labels = c("cowplot", "bw", "gray", "grey", "linedraw", "light", "minimal", "classic", "dark", "void"),
+          nrow = 5, align = "h", hjust = 0, vjust = 1, label_size = 10)
+```
+
+`theme_gray` é o tema *default* do ggplot, e francamente não vejo diferenção para o `theme_grey` (talvez seja uma forma de evitar erros por variações linguísticas).
+O tema padrão já é legal e a paleta de cores padrão também é bem interessante e esse é um dos fatores citados para a adoção do ggplot.
+Obviamente eu posso construír gráficos assim com o pacote `graphics` do R, no entanto seriam necessárias diversas linhas de código complicado para obter o mesmo *look-and-feel*.
+No [link](http://www.cookbook-r.com/Graphs/Colors_(ggplot2)) há formas de configurar novas paletas de cores e orientações para criar sua própria paleta.
+O tema padrão já é interessante, mas segue um especial destaque para os temas:
+
+- `bw`: tema mais próximo do que eu estou acostumado a ver.
+- `light`: *look-and-feel* agradável.
+- `minimal`: algo mais próximo de gráficos de jornal.
+- `void`: com esse tema é possível começar quase do zero na criação de um gráfico adicionando características evitando conflito com definições de outros temas.

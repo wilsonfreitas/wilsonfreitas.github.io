@@ -1,0 +1,71 @@
+Title: Gráfico de barras no ggplot com características ordenadas
+Category: data science
+Author: Wilson Freitas
+Tags: R, ggplot, visualization, rbmfbovespa, BM&FBovespa
+Date: 2016-03-01
+Lang: pt
+
+[rbmfbovespa]: https://github.com/wilsonfreitas/rbmfbovespa "rbmfbovespa"
+[bmf]: http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br "BM&FBovespa"
+
+
+Neste [post]({filename}/temas-do-ggplot.Rmd) eu crio diversos gráficos das TOP 10 ações com maior volume financeiro negociadas na BM&FBovespa.
+Para isso eu uso o pacote [rbmfbovespa][rbmfbovespa] para ler o arquivo `BDIN` com as informações diárias do mercado a vista da BM&FBovespa.
+Este arquivo possui uma sessão com as ações mais negociadas no mercado a vista e traz informações de volume, quantidade de negócios e quantidade de contratos negociados.
+
+Abaixo segue o código que carrega os dados e cria o gráfico usando o tema *light*.
+Neste gráfico as barras estão ordenadas de acordo com os códigos das ações que estão em ordem alfabética.
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(rbmfbovespa)
+
+ext_rename <- function(x, ...) {
+  idx <- list(...)
+  x <- x[,names(idx)]
+  names(x) <- unname(unlist(idx))
+  x
+}
+
+bdin <- read_marketdata('datasets/BDIN-2015-11-19.txt', template='bdin')
+
+top <- bdin[["As Mais Negociadas no Mercado a Vista"]] %>%
+  ext_rename('Código de negociação'='code',
+             'Volume geral no pregão deste papel-mercado'='volume')
+
+ggplot(top, aes(x=code, y=volume, fill=code)) +
+  geom_bar(stat='identity') +
+  labs(x=NULL, y='Vol.') +
+  guides(fill=FALSE) +
+  theme_light()
+```
+
+No entanto é interessante analisar estes dados de forma ordenada pela variável em questão, neste caso o volume.
+Um forma de fazer isso no R é criar um fator ordenado (tipo `ordered`) e essa ordem é utilizada pelo ggplot na construção do gráfico.
+Para criar um fator ordenado eu preciso criar um `factor` com os níveis (`levels`) ordenados e definir o argumento `ordered=TRUE`.
+
+```{r}
+# obter a ordenação do volume
+idx <- order(top$volume, decreasing = TRUE)
+# criar os níveis ordenados
+levels <- top$code[idx]
+# criar um factor com níveis ordenados
+top$code <- factor(top$code, levels=levels, ordered=TRUE)
+```
+
+```{r}
+top$code
+class(top$code)
+```
+
+Note que os níveis estão dispostos em ordem `ITUB4 < PETR4 < ITSA4 < BBDC4 < CIEL3 < ABEV3 < ... < KROT3`, indicando a ordenação definida e a classe `ordered` é uma generalização de `factor`.
+Ordenados os códigos eu posso construir o gráfico da mesma maneira.
+
+```{r}
+ggplot(top, aes(x=code, y=volume, fill=code)) +
+  geom_bar(stat='identity') +
+  labs(x=NULL, y='Vol.') +
+  guides(fill=FALSE) +
+  theme_light()
+```
