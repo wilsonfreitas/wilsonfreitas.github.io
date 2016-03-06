@@ -6,17 +6,6 @@ Date: 2015-09-23
 Lang: pt
 Description: Uma nova empenada na Curva de Juros de DI1 após o nome do deputado Eduardo Cunha aparecer na lista de acusados da Operação Lava Jato.
 
-```{r, echo=FALSE}
-hook_plot <- knit_hooks$get('plot')
-knit_hooks$set(plot=function(x, options) {
-    if (!is.null(options$pelican.publish) && options$pelican.publish) {
-        x <- paste0("{filename}", x)
-    }
-    hook_plot(x, options)
-})
-opts_chunk$set(pelican.publish=TRUE)
-```
-
 ```{r, message=FALSE, echo=FALSE}
 library(XML)
 library(bizdays)

@@ -5,18 +5,6 @@ Tags: R, dplyr
 Date: 2015-04-27
 Lang: pt
 
-```{r, echo=FALSE}
-hook_plot <- knit_hooks$get('plot')
-knit_hooks$set(plot=function(x, options) {
-    if (!is.null(options$pelican.publish) && options$pelican.publish) {
-        x <- paste0("{filename}../", x)
-    }
-    hook_plot(x, options)
-})
-opts_chunk$set(pelican.publish=TRUE)
-```
-
-
 [saosilvestre]: https://github.com/wilsonfreitas/saosilvestre
 [parte-1]: {filename}captura-de-dados-da-sao-silvestre-com-python.md
 

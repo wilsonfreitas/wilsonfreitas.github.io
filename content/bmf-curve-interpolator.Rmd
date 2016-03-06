@@ -6,17 +6,6 @@ Date: 2014-06-15
 Lang: en
 
 ```{r, echo=FALSE}
-hook_plot <- knit_hooks$get('plot')
-knit_hooks$set(plot=function(x, options) {
-    if (!is.null(options$pelican.publish) && options$pelican.publish) {
-        x <- paste0("{filename}", x)
-    }
-    hook_plot(x, options)
-})
-opts_chunk$set(pelican.publish=TRUE)
-```
-
-```{r, echo=FALSE}
 str_supplant <- function (string, repl) {
 	result <- str_match_all(string, "\\{([^{}]*)\\}")
 	if (length(result[[1]]) == 0)

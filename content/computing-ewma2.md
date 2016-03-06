@@ -28,21 +28,25 @@ The `"recursive"` method uses the `init` argument to specify the initial values 
 Providing a series `x` and a filter $\phi$ the response `y` is much like the sequence below:
 
 $$
-y_1 = 0 \hspace{0.5cm}
-y_2 = \phi y_1 + x_1 \hspace{0.5cm}
-y_2 = \phi y_2 + x_2 \hspace{0.5cm}
-\dots \hspace{0.5cm}
-y_{n+1} = \phi y_n + x_n
+\begin{align}
+y_1 & = 0 \hspace{0.5cm} \\\\
+y_2 & = \phi y_1 + x_1 \hspace{0.5cm} \\\\
+y_2 & = \phi y_2 + x_2 \hspace{0.5cm} \\\\
+\vdots & \hspace{0.5cm} \\\\
+y_{n+1} & = \phi y_n + x_n
+\end{align}
 $$
 
 Taking a look at EWMA's dynamics
 
 $$
-\hat\sigma^2_0 = 0  \hspace{0.5cm}
-\hat\sigma^2_1 = \lambda\hat\sigma^2_0 + (1 - \lambda)r^2_0  \hspace{0.5cm}
-\hat\sigma^2_2 = \lambda\hat\sigma^2_1 + (1 - \lambda)r^2_1  \hspace{0.5cm}
-\dots  \hspace{0.5cm}
-\hat\sigma^2_{t+1} = \lambda\hat\sigma^2_t + (1 - \lambda)r^2_t
+\begin{align}
+\hat\sigma^2_0 & = 0  \hspace{0.5cm} \\\\
+\hat\sigma^2_1 & = \lambda\hat\sigma^2_0 + (1 - \lambda)r^2_0  \hspace{0.5cm} \\\\
+\hat\sigma^2_2 & = \lambda\hat\sigma^2_1 + (1 - \lambda)r^2_1  \hspace{0.5cm} \\\\
+\vdots & \hspace{0.5cm} \\\\
+\hat\sigma^2_{t+1} & = \lambda\hat\sigma^2_t + (1 - \lambda)r^2_t
+\end{align}
 $$
 
 we observe that the input $x_i = (1 - \lambda)r^2_i$, the filter $\phi = \lambda$ and $y_i = \sigma^2_i$ is the response.

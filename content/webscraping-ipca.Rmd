@@ -9,17 +9,6 @@ Lang: pt
 options(width=120)
 ```
 
-```{r, echo=FALSE}
-hook_plot <- knit_hooks$get('plot')
-knit_hooks$set(plot=function(x, options) {
-    if (!is.null(options$pelican.publish) && options$pelican.publish) {
-        x <- paste0("{filename}", x)
-    }
-    hook_plot(x, options)
-})
-opts_chunk$set(pelican.publish=TRUE)
-```
-
 Frequentemente eu consumo dados disponíveis na Internet para construir *datasets* em minhas análises.
 Em sua maioria são dados de mercado financeiro, que incluem:
 

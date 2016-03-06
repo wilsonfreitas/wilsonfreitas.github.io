@@ -6,17 +6,6 @@ Date: 2015-09-18
 Lang: pt
 Description: A empenada que a Curva de Juros de DI1 deu em setembro de 2015, após o downgrade do Brasil pelo S&P e o anúncio do pacote fiscal do governo.
 
-```{r, echo=FALSE}
-hook_plot <- knit_hooks$get('plot')
-knit_hooks$set(plot=function(x, options) {
-    if (!is.null(options$pelican.publish) && options$pelican.publish) {
-        x <- paste0("{filename}", x)
-    }
-    hook_plot(x, options)
-})
-opts_chunk$set(pelican.publish=TRUE)
-```
-
 [bmf]: http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br "BM&F Bovespa"
 [bmf-curves]: http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp "BVMF Curves"
 
