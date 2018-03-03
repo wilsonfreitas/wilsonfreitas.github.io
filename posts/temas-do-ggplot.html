@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Temas do ggplot — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Temas do ggplot; Date: 2016-02-29; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Temas do ggplot"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/temas-do-ggplot.html"/>
+	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Temas do ggplot</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2016-02-29T00:00:00-03:00" itemprop="datePublished">29/02/2016</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/data-science.html" rel="category">data science</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/ggplot.html" rel="tag">ggplot</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/visualization.html" rel="tag">visualization</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/rbmfbovespa.html" rel="tag">rbmfbovespa</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/bmfbovespa.html" rel="tag">BM&FBovespa</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Considero que fazer gráficos no R com <a href="http://ggplot.org">ggplot</a> é melhor por dois aspectos:</p>
+<ul>
+<li>mudança de mentalidade na construção do gráfico: colocar foco nas variáveis e suas relações ao invés de focar em coordenadas. As variáveis aestéticas permitem explorar as relações entre as variáveis já na construção do <code>data.frame</code> evitando construções algorítmicas na criação do gráfico.</li>
+<li>gráficos visualmente mais agradáveis, sem configuração adicional, afinal visualização deve ser agradável para que a informação seja absorvida da melhor forma possível.</li>
+</ul>
+<p>Um característica do ggplot que acho interessante é o seu conjunto de temas pré-definidos.
+Há outros pacotes que definem novos temas (como o <a href="https://github.com/jrnold/ggthemes">ggthemes</a>) ou que ajudam na configuração de temas (como o <a href="https://github.com/wilkelab/cowplot">cowplot</a>).
+No entanto, aqui eu quero focar apenas nos temas que já vem com o ggplot, são 9 temas.</p>
+<p>Vou fazer um gráfico dos TOP 10 papéis mais negociados na BM&amp;FBovespa em cada um dos temas do ggplot.
+Adicionalmente vou dispor os gráficos em um <em>grid</em> para melhorar a comparação e para fazer isso eu vou usar o <a href="https://github.com/wilkelab/cowplot">cowplot</a>, que como eu disse tem algumas funcionalidades que ajudam criação dos gráficos e colocar os gráficos em <em>grid</em> é uma delas.</p>
+<p>Recentemente eu lancei o pacote <a href="https://github.com/wilsonfreitas/rbmfbovespa" title="rbmfbovespa">rbmfbovespa</a> que lê os arquivos distribuídos pela <a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;FBovespa">BM&amp;FBovespa</a>.
+Vou utilizá-lo para ler o arquivo <code>BDIN</code> de dados diários do mercados de ações.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>rbmfbovespa<span class="p">)</span>
+
+ext_rename <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+  idx <span class="o">&lt;-</span> <span class="kt">list</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span>
+  x <span class="o">&lt;-</span> x<span class="p">[,</span><span class="kp">names</span><span class="p">(</span>idx<span class="p">)]</span>
+  <span class="kp">names</span><span class="p">(</span>x<span class="p">)</span> <span class="o">&lt;-</span> <span class="kp">unname</span><span class="p">(</span><span class="kp">unlist</span><span class="p">(</span>idx<span class="p">))</span>
+  x
+<span class="p">}</span>
+
+bdin_2015 <span class="o">&lt;-</span> read_marketdata<span class="p">(</span><span class="s">&#39;datasets/BDIN-2015-11-19.txt&#39;</span><span class="p">,</span> template<span class="o">=</span><span class="s">&#39;BDIN&#39;</span><span class="p">)</span>
+
+top <span class="o">&lt;-</span> bdin_2015<span class="p">[[</span><span class="s">&quot;As Mais Negociadas no Mercado a Vista&quot;</span><span class="p">]]</span> <span class="o">%&gt;%</span>
+  ext_rename<span class="p">(</span><span class="s">&#39;cod_negociacao&#39;</span><span class="o">=</span><span class="s">&#39;code&#39;</span><span class="p">,</span>
+             <span class="s">&#39;volume_titulos_negociados&#39;</span><span class="o">=</span><span class="s">&#39;volume&#39;</span><span class="p">)</span>
+
+top <span class="o">%&gt;%</span> top_n<span class="p">(</span><span class="m">5</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    code    volume
+## 1 ITUB4 553419909
+## 2 PETR4 395648591
+## 3 ITSA4 294250142
+## 4 BBDC4 288959359
+## 5 CIEL3 256340295
+</pre></div>
+
+
+<p>Carregados os dados, eu crio um gráfico de barras com os volumes financeiros negociados pelo código dos papéis.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+
+p <span class="o">&lt;-</span> ggplot<span class="p">(</span>top<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>code<span class="p">,</span> y<span class="o">=</span>volume<span class="p">,</span> fill<span class="o">=</span>code<span class="p">))</span> <span class="o">+</span>
+  geom_bar<span class="p">(</span>stat<span class="o">=</span><span class="s">&#39;identity&#39;</span><span class="p">)</span> <span class="o">+</span>
+  labs<span class="p">(</span>x<span class="o">=</span><span class="kc">NULL</span><span class="p">,</span> y<span class="o">=</span><span class="s">&#39;Vol.&#39;</span><span class="p">)</span> <span class="o">+</span>
+  guides<span class="p">(</span>fill<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Agora utilizando <code>cowplot</code> e crio um <em>grid</em> 5x2 apresentando o gráfico em cada um dos temas do ggplot e adicionalmente no tema do <code>cowplot</code>.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>cowplot<span class="p">)</span>
+
+plot_grid<span class="p">(</span>p<span class="p">,</span> p <span class="o">+</span> theme_bw<span class="p">(),</span> p <span class="o">+</span> theme_grey<span class="p">(),</span> p <span class="o">+</span> theme_gray<span class="p">(),</span> p <span class="o">+</span> theme_linedraw<span class="p">(),</span> p <span class="o">+</span> theme_light<span class="p">(),</span> p <span class="o">+</span> theme_minimal<span class="p">(),</span> p <span class="o">+</span> theme_classic<span class="p">(),</span> p <span class="o">+</span> theme_dark<span class="p">(),</span>
+          labels <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;cowplot&quot;</span><span class="p">,</span> <span class="s">&quot;bw&quot;</span><span class="p">,</span> <span class="s">&quot;gray&quot;</span><span class="p">,</span> <span class="s">&quot;grey&quot;</span><span class="p">,</span> <span class="s">&quot;linedraw&quot;</span><span class="p">,</span> <span class="s">&quot;light&quot;</span><span class="p">,</span> <span class="s">&quot;minimal&quot;</span><span class="p">,</span> <span class="s">&quot;classic&quot;</span><span class="p">,</span> <span class="s">&quot;dark&quot;</span><span class="p">),</span>
+          nrow <span class="o">=</span> <span class="m">3</span><span class="p">,</span> align <span class="o">=</span> <span class="s">&quot;h&quot;</span><span class="p">,</span> hjust <span class="o">=</span> <span class="m">0</span><span class="p">,</span> vjust <span class="o">=</span> <span class="m">1</span><span class="p">,</span> label_size <span class="o">=</span> <span class="m">10</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk temas-do-ggplot-3" src="http://wilsonfreitas.github.io/figure/temas-do-ggplot-3-1.png"></p>
+<p><code>theme_gray</code> é o tema <em>default</em> do ggplot, e francamente não vejo diferenção para o <code>theme_grey</code> (talvez seja uma forma de evitar erros por variações linguísticas).
+O tema padrão já é legal e a paleta de cores padrão também é bem interessante e esse é um dos fatores citados para a adoção do ggplot.
+Obviamente eu posso construír gráficos assim com o pacote <code>graphics</code> do R, no entanto seriam necessárias diversas linhas de código complicado para obter o mesmo <em>look-and-feel</em>.
+No <a href="http://www.cookbook-r.com/Graphs/Colors_(ggplot2)">link</a> há formas de configurar novas paletas de cores e orientações para criar sua própria paleta.
+O tema padrão já é interessante, mas segue um especial destaque para os temas:</p>
+<ul>
+<li><code>bw</code>: tema mais próximo do que eu estou acostumado a ver.</li>
+<li><code>light</code>: <em>look-and-feel</em> agradável.</li>
+<li><code>minimal</code>: algo mais próximo de gráficos de jornal.</li>
+<li><code>void</code>: com esse tema é possível começar quase do zero na criação de um gráfico adicionando características evitando conflito com definições de outros temas.</li>
+</ul></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Temas do ggplot';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+ 
+</body>
+</html>

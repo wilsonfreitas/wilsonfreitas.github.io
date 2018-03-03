@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Empenada na Curva de Juros de DI1"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html"/>
 	<meta property="og:description" content="A empenada que a Curva de Juros de DI1 deu em setembro de 2015, após o downgrade do Brasil pelo S&P e o anúncio do pacote fiscal do governo."/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -91,12 +102,11 @@
 Saímos de uma expectativa de juros de longo prazo de 12% para quase 16%.
 Quando falo juros de longo prazo me refiro aos contratos com vencimento a partir de 2020, com aproximadamente 5 anos de <em>duration</em>.</p>
 <p>Eu fiz o código abaixo para baixar curvas do site da <a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;F Bovespa">BM&amp;F Bovespa</a> e vou usá-lo para baixar curvas de DI1 para diferentes datas deste ano de forma que seja possível obvervar a evolução dos juros.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>XML<span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>XML<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>bizdays<span class="p">)</span>
 <span class="kn">library</span><span class="p">(</span>stringr<span class="p">)</span>
 
-cal <span class="o">&lt;-</span> Calendar<span class="p">(</span>holidaysANBIMA<span class="p">,</span> weekdays<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;saturday&#39;</span><span class="p">,</span> <span class="s">&#39;sunday&#39;</span><span class="p">),</span> dib<span class="o">=</span><span class="m">252</span><span class="p">,</span> name<span class="o">=</span><span class="s">&#39;ANBIMA&#39;</span><span class="p">)</span>
-bizdays.options<span class="o">$</span>set<span class="p">(</span>default.calendar<span class="o">=</span>cal<span class="p">)</span>
+bizdays.options<span class="o">$</span>set<span class="p">(</span>default.calendar<span class="o">=</span><span class="s">&quot;Brazil/ANBIMA&quot;</span><span class="p">)</span>
 
 str_supplant <span class="o">&lt;-</span> <span class="kr">function</span> <span class="p">(</span>string<span class="p">,</span> repl<span class="p">)</span> <span class="p">{</span>
     result <span class="o">&lt;-</span> str_match_all<span class="p">(</span>string<span class="p">,</span> <span class="s">&quot;\\{([^{}]*)\\}&quot;</span><span class="p">)</span>
@@ -153,18 +163,18 @@ get_curve <span class="o">&lt;-</span> <span class="kr">function</span> <span cl
 
 
 <p>Uma vez que este código foi <em>sourced</em> basta executar a função <code>get_curve</code> passando a data e a curva de interesse, no nosso caso a curva de interesse é a de DI1 que tem código <code>PRE</code> (de juros pré-fixados).</p>
-<div class="highlight"><pre>irbrl <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2015-01-02&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>irbrl <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2015-01-02&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
 irbrl<span class="p">(</span><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">252</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>##  [1] 11,80000 12,04666 12,28111 12,46142 12,58328 12,66676 12,72591
-##  [8] 12,77506 12,81516 12,85459 12,88258 12,91228
+<div class="highlight"><pre><span></span>##  [1] 11.80000 12.04666 12.28111 12.46142 12.58328 12.66676 12.72591
+##  [8] 12.77506 12.81516 12.85459 12.88258 12.91228
 </pre></div>
 
 
 <p>Vamos comparar as curvas para diferentes datas, e assim será possível observar a empenada que a curva deu no mês de setembro.</p>
-<div class="highlight"><pre><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">2520</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">)</span> <span class="o">-&gt;</span> terms
+<div class="highlight"><pre><span></span><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">2520</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">)</span> <span class="o">-&gt;</span> terms
 
 dates <span class="o">&lt;-</span> <span class="kp">seq</span><span class="p">(</span><span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2015-01-01&#39;</span><span class="p">),</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2015-09-01&#39;</span><span class="p">),</span> by<span class="o">=</span><span class="s">&#39;2 months&#39;</span><span class="p">)</span>
 dates <span class="o">&lt;-</span> adjust.next<span class="p">(</span>dates<span class="p">)</span>
@@ -182,7 +192,7 @@ ggplot<span class="p">(</span>data<span class="o">=</span>ir_df<span class="p">,
 </pre></div>
 
 
-<p><img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-1.png" /> </p>
+<p><img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-1.png"></p>
 <p>Observe que de julho para setembro as taxas de longo prazo se elevaram em 2 pontos percentuais (200bps), o que para um prazo de 10 anos é uma variação significativa.</p></div>
 	<hr>
 	<h2>Comments</h2>
@@ -214,7 +224,7 @@ ggplot<span class="p">(</span>data<span class="o">=</span>ir_df<span class="p">,
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -225,16 +235,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

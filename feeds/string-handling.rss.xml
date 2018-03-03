@@ -1,50 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Wilson Freitas</title><link>http://wilsonfreitas.github.io/</link><description></description><atom:link href="http://wilsonfreitas.github.io/feeds/string-handling.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 09 Apr 2014 00:00:00 -0300</lastBuildDate><item><title>String interpolation in R</title><link>http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html</link><description>&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
+<rss version="2.0"><channel><title>Wilson Freitas - string handling</title><link>http://wilsonfreitas.github.io/</link><description></description><lastBuildDate>Wed, 09 Apr 2014 00:00:00 -0300</lastBuildDate><item><title>String interpolation in R</title><link>http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html</link><description>&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
 url = "{media}logo.gif".supplant(param); --&gt;
 
 &lt;p&gt;String handling in R is hard, there are a few packages that help making that task not so hard, but it is still hard.
-In my opinion string handling in R will never be as good as languages like Python or Perl, it looks like the language hasn't been designed to face that problem.
-But sincerely speaking, I don't think R realy need that, I can pass without it, I can go fairly well with the packages available, and the most popular is &lt;a href="http://cran.r-project.org/web/packages/stringr/index.html" title="Hadley Wickham's stringr"&gt;&lt;code&gt;stringr&lt;/code&gt;&lt;/a&gt; developed by Hadley Wickham.
-It has several good functions for string handling, but it lacks string interpolation like we do in Python.
-That's the reason why I developed &lt;code&gt;str_supplant&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;str_supplant &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;,&lt;/span&gt; repl&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    result &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_match_all&lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;\\{([^{}]*)\\}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;result&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;)&lt;/span&gt;
-    result &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; result&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
-    &lt;span class="kr"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;i &lt;span class="kr"&gt;in&lt;/span&gt; &lt;span class="kp"&gt;seq_len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;result&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        x &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; result&lt;span class="p"&gt;[&lt;/span&gt;i&lt;span class="p"&gt;,]&lt;/span&gt;
-        pattern &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; x&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-        key &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; x&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-        &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kp"&gt;is.null&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;repl&lt;span class="p"&gt;[[&lt;/span&gt;key&lt;span class="p"&gt;]]))&lt;/span&gt;
-            string &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;gsub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;pattern&lt;span class="p"&gt;,&lt;/span&gt; repl&lt;span class="p"&gt;[[&lt;/span&gt;key&lt;span class="p"&gt;]],&lt;/span&gt; string&lt;span class="p"&gt;,&lt;/span&gt; perl&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-    string
-&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Here it follows an example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;parms &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;media&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://aboutwilson.net&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; face&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;wilson&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-str_supplant&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{media}/logo.gif, {media}/img/ {face}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; parms&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## [1] &amp;quot;http://aboutwilson.net/logo.gif, http://aboutwilson.net/img/ wilson&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;The first argument is the string to be interpolated and the second a &lt;code&gt;list&lt;/code&gt; with the keys to be used.
-If a key doesn't match it isn't interpolated.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;parms &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-str_supplant&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;My name is {name}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; parms&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;## [1] &amp;quot;My name is {name}&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;That implementation was deeply inspired by &lt;a href="http://javascript.crockford.com/remedial.html" title="Douglas Crockford"&gt;Douglas Crockford&lt;/a&gt;'s &lt;code&gt;supplant&lt;/code&gt; implementation.
-Unfortunately that implementation hasn't been vectorized yet, but I think it is quite useful anyway.
-I hope it help others like it's been helping me.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Wed, 09 Apr 2014 00:00:00 -0300</pubDate><guid>tag:wilsonfreitas.github.io,2014-04-09:posts/string-interpolation-in-r.html</guid><category>R</category><category>string handling</category></item></channel></rss>
+In my opinion string handling in R will never be as good as languages like Python or Perl, it looks like the language hasn't been designed …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Wed, 09 Apr 2014 00:00:00 -0300</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2014-04-09:/posts/string-interpolation-in-r.html</guid><category>R</category><category>string handling</category></item></channel></rss>

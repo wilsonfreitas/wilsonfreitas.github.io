@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Wilson Freitas</title><link href="http://wilsonfreitas.github.io/" rel="alternate"></link><link href="http://wilsonfreitas.github.io/feeds/programming.atom.xml" rel="self"></link><id>http://wilsonfreitas.github.io/</id><updated>2014-12-18T00:00:00-02:00</updated><entry><title>Faça você mesmo um Web Scraper em Python</title><link href="http://wilsonfreitas.github.io/posts/faca-voce-mesmo-um-web-scraper-em-python.html" rel="alternate"></link><updated>2014-12-18T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-12-18:posts/faca-voce-mesmo-um-web-scraper-em-python.html</id><summary type="html">&lt;p&gt;Já não é de hoje que Python é tida como uma ótima linguagem para realizar tarefas de captura de dados na Internet.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Wilson Freitas - programming</title><link href="http://wilsonfreitas.github.io/" rel="alternate"></link><link href="http://wilsonfreitas.github.io/feeds/programming.atom.xml" rel="self"></link><id>http://wilsonfreitas.github.io/</id><updated>2014-12-18T00:00:00-02:00</updated><entry><title>Faça você mesmo um Web Scraper em Python</title><link href="http://wilsonfreitas.github.io/posts/faca-voce-mesmo-um-web-scraper-em-python.html" rel="alternate"></link><published>2014-12-18T00:00:00-02:00</published><updated>2014-12-18T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-12-18:/posts/faca-voce-mesmo-um-web-scraper-em-python.html</id><summary type="html">&lt;p&gt;Já não é de hoje que Python é tida como uma ótima linguagem para realizar tarefas de captura de dados na Internet.
+Eu sempre gostei de utilizar Python para capturar dados na Internet, mas nunca me preocupei em fazer isso de forma estruturada.
+No entanto, para um projeto pessoal, eu …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Já não é de hoje que Python é tida como uma ótima linguagem para realizar tarefas de captura de dados na Internet.
 Eu sempre gostei de utilizar Python para capturar dados na Internet, mas nunca me preocupei em fazer isso de forma estruturada.
 No entanto, para um projeto pessoal, eu precisei recentemente realizar capturas de dados financeiros em diversos sites e senti a necessidade de alguma ferramenta que me permitisse fazer as capturas de forma mais estruturada.
 Eu sei que há diversos projetos que atacam este problema de diversas formas.
@@ -31,30 +33,30 @@ Estes pontos são:&lt;/p&gt;
 &lt;h2&gt;&lt;code&gt;scraps&lt;/code&gt; em ação&lt;/h2&gt;
 &lt;p&gt;A seguir vou mostrar um exemplo simples do meu uso para &lt;code&gt;scraps&lt;/code&gt;, mas a idéia é bastante simples: capturar a taxa de juros de depósitos interbancários (Taxa DI) no site da &lt;a href="http://www.cetip.com.br/" title="CETIP"&gt;CETIP&lt;/a&gt;.
 A URL é da página incial da CETIP: http://www.cetip.com.br/ e segue o trecho de código HTML de onde quero capturar os dados:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;...
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;box-taxa&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;lt;strong&amp;gt;&amp;lt;b&amp;gt;&lt;/span&gt;TAXA DI:&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/strong&amp;gt;&lt;/span&gt;
-        &lt;span class="nt"&gt;&amp;lt;span&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ctl00_Banner_lblTaxDateDI&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;(18/12/2014)&lt;span class="nt"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;span&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;bg-taxa&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;p&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;txt-taxa-porcentagem&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;span&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ctl00_Banner_lblTaxDI&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;11,59%&lt;span class="nt"&gt;&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;...
+&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;box-taxa&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;strong&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;b&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;TAXA DI:&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;b&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;strong&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt; &lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ctl00_Banner_lblTaxDateDI&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;(18/12/2014)&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;bg-taxa&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;txt-taxa-porcentagem&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt; &lt;span class="na"&gt;id&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;ctl00_Banner_lblTaxDI&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;11,59%&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
 ...
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Segue também um pedaço da tela com uma visualização da informação:&lt;/p&gt;
-&lt;p&gt;&lt;img alt="CETIP" src="/figure/cetip.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="CETIP" src="/figure/cetip.png"&gt;&lt;/p&gt;
 &lt;p&gt;Por sorte a CETIP utiliza &lt;code&gt;id&lt;/code&gt; nas &lt;em&gt;tags&lt;/em&gt; que me interessam, o que torna tudo mais simples.
 Do trecho acima eu quero as tags &lt;code&gt;span&lt;/code&gt; com ids &lt;code&gt;ctl00_Banner_lblTaxDateDI&lt;/code&gt; e &lt;code&gt;ctl00_Banner_lblTaxDI&lt;/code&gt;, com a data de divulgação da taxa e a taxa, respectivamente.&lt;/p&gt;
 &lt;p&gt;No mundo &lt;code&gt;scraps&lt;/code&gt; eu tenho a classe &lt;code&gt;scpras.Scrap&lt;/code&gt; que representa o que eu quero extrair do conteúdo da URL.
 Nessa classe eu declaro atributros de classe que são instâncias da classe &lt;code&gt;scraps.Attribute&lt;/code&gt; e identificam as &lt;em&gt;tags&lt;/em&gt; que serão capturadas.
 As &lt;em&gt;tags&lt;/em&gt; são definidas pelo XPath que eu quero capturar.
 Para o HTML acima temos:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CetipScrap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Scrap&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;//*[@id=&amp;quot;ctl00_Banner_lblTaxDateDI&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;taxa&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;//*[@id=&amp;quot;ctl00_Banner_lblTaxDI&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CetipScrap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Scrap&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;//*[@id=&amp;quot;ctl00_Banner_lblTaxDateDI&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;taxa&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;//*[@id=&amp;quot;ctl00_Banner_lblTaxDI&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -62,8 +64,8 @@ Para o HTML acima temos:&lt;/p&gt;
 Poderia ser mais específico com o XPath, no entanto, para este exemplo não faria diferença.
 Em HTMLs menos estruturados vale a pena dedicar mais tempo a definição do XPath.&lt;/p&gt;
 &lt;p&gt;Para testar a captura é necessário apenas instanciar a classe &lt;code&gt;CetipScrap&lt;/code&gt; e invocar o seu método &lt;code&gt;fetch&lt;/code&gt; passando a URL.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;scrap&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;CetipScrap&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;scrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://www.cetip.com.br&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;scrap&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;CetipScrap&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;scrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://www.cetip.com.br&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;scrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;scrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;taxa&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -71,7 +73,7 @@ Em HTMLs menos estruturados vale a pena dedicar mais tempo a definição do XPat
 
 
 &lt;p&gt;Este código gera:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[&amp;#39;(18/12/2014)&amp;#39;]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[&amp;#39;(18/12/2014)&amp;#39;]&lt;/span&gt;
 &lt;span class="k"&gt;[&amp;#39;11,59%&amp;#39;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -87,9 +89,9 @@ No entanto, eu ainda quero que estes dados sejam formatados.
 Para trabalhar os dados eu tenho o atributo &lt;code&gt;apply&lt;/code&gt; do construtor de &lt;code&gt;scraps.Attribute&lt;/code&gt; onde eu passo uma coleção de funções que será aplicada a cada elemento da lista com o conteúdo em texto dos elementos.
 Dessa maneira eu posso estruturar a transformação dos dados sem ficar preso a um método onde todo o trabalho de tratamento e transformação é realizado.&lt;/p&gt;
 &lt;p&gt;Para realizar essa tarefa eu crio algumas pequenas funções para me ajudarem e altero a declaração de &lt;code&gt;CetipScrap&lt;/code&gt;, ficando tudo mais ou menos assim:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;divide_by&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;divide_by&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;
 
-&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;strptime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;%Y-%m-&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;strptime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;%Y-%m-&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;datetime&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;strptime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;_from&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;_to&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -100,15 +102,15 @@ Dessa maneira eu posso estruturar a transformação dos dados sem ficar preso a 
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;_replace&lt;/span&gt;
 
 &lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CetipScrap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Scrap&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;//*[@id=&amp;quot;ctl00_Banner_lblTaxDateDI&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;apply&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="n"&gt;strptime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;(&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s"&gt;/%m/%Y)&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;//*[@id=&amp;quot;ctl00_Banner_lblTaxDateDI&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;apply&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+        &lt;span class="n"&gt;strptime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;(&lt;/span&gt;&lt;span class="si"&gt;%d&lt;/span&gt;&lt;span class="s1"&gt;/%m/%Y)&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="p"&gt;])&lt;/span&gt;
-    &lt;span class="n"&gt;taxa&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;//*[@id=&amp;quot;ctl00_Banner_lblTaxDI&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;apply&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;%&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;divide_by&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;taxa&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;scraps&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Attribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xpath&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;//*[@id=&amp;quot;ctl00_Banner_lblTaxDI&amp;quot;]&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;apply&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;
+        &lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;%&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]),&lt;/span&gt; &lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;divide_by&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="p"&gt;])&lt;/span&gt;
 
 &lt;span class="n"&gt;scrap&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;CetipScrap&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="n"&gt;scrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://www.cetip.com.br&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;scrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fetch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://www.cetip.com.br&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;scrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;scrap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;taxa&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -123,7 +125,7 @@ Dessa maneira eu posso estruturar a transformação dos dados sem ficar preso a 
 &lt;p&gt;No atributo &lt;code&gt;data&lt;/code&gt; a função &lt;code&gt;strptime('(%d/%m/%Y)')&lt;/code&gt; é aplicada a cada elemento da lista.
 Já no atributo &lt;code&gt;taxa&lt;/code&gt; a funções &lt;code&gt;replace([',', '%'], ['.', ''])&lt;/code&gt;, &lt;code&gt;float&lt;/code&gt; e &lt;code&gt;divide_by(100)&lt;/code&gt; são aplicadas na ordem espeficidada, a cada elemento da lista.&lt;/p&gt;
 &lt;p&gt;Executando o código acima temos:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;[datetime.datetime(2014, 12, 18, 0, 0)]&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[datetime.datetime(2014, 12, 18, 0, 0)]&lt;/span&gt;
 &lt;span class="k"&gt;[0.1159]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -133,7 +135,7 @@ Estas funções retornam funções que executam as tarefas para as quais foram e
 Por exemplo, a chamada &lt;code&gt;divide_by(100)&lt;/code&gt; retorna uma função que divide o argumento por 100 e a chamada &lt;code&gt;strptime('(%/d/%m/%Y)')&lt;/code&gt; retorna uma função que recebe uma argumento texto, no formato especificado, e retorna um &lt;code&gt;datetime.datetime&lt;/code&gt;.
 Uma abordagem interessante para o uso de &lt;code&gt;scraps&lt;/code&gt; seria investir mais tempo na criação dessas funções, para assim tornar a transformação em um conjunto de regras padrão.
 Funcionaria mais ou menos como no diagrama abaixo.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Diagrama da classe Attribute" src="/figure/attribute-diag-1.png" /&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="Diagrama da classe Attribute" src="/figure/attribute-diag-1.png"&gt; &lt;/p&gt;
 &lt;p&gt;Abaixo segue o código final da implementação onde eu utilizo &lt;code&gt;scraps&lt;/code&gt; para obter a taxa de juros diária divulgada no site da &lt;a href="http://www.cetip.com.br/" title="CETIP"&gt;CETIP&lt;/a&gt;.&lt;/p&gt;
 &lt;script src="https://gist.github.com/wilsonfreitas/4b8e7e215e3a8a27eb90/a315f617b2059640a17edc72907a5b68571629c9.js"&gt;&lt;/script&gt;
 
@@ -142,7 +144,11 @@ Funcionaria mais ou menos como no diagrama abaixo.&lt;/p&gt;
 Exercito muito a minha criatividade pensando em transformações para os dados.
 Mas há uma ideia subliminar aqui que é estruturar do tratamento dos dados em pequenas etapas.
 Uma vez que eu consiga mapear um conjunto de funções que atende a um número considerável de problemas eu posso estruturar essa solução e torná-la mais automática, o que me faz pensar na construção de capturas on-line.
-De qualquer forma, &lt;code&gt;scraps&lt;/code&gt; é um módulo que eu classificaria como &lt;em&gt;quick-and-dirty&lt;/em&gt;, mas me ajuda a exercitar a minha criatividade e a dar vazão as coisas.&lt;/p&gt;</summary><category term="python"></category><category term="scraps"></category></entry><entry><title>String interpolation in R</title><link href="http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html" rel="alternate"></link><updated>2014-04-09T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-09:posts/string-interpolation-in-r.html</id><summary type="html">&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
+De qualquer forma, &lt;code&gt;scraps&lt;/code&gt; é um módulo que eu classificaria como &lt;em&gt;quick-and-dirty&lt;/em&gt;, mas me ajuda a exercitar a minha criatividade e a dar vazão as coisas.&lt;/p&gt;</content><category term="python"></category><category term="scraps"></category></entry><entry><title>String interpolation in R</title><link href="http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html" rel="alternate"></link><published>2014-04-09T00:00:00-03:00</published><updated>2014-04-09T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-09:/posts/string-interpolation-in-r.html</id><summary type="html">&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
+url = "{media}logo.gif".supplant(param); --&gt;
+
+&lt;p&gt;String handling in R is hard, there are a few packages that help making that task not so hard, but it is still hard.
+In my opinion string handling in R will never be as good as languages like Python or Perl, it looks like the language hasn't been designed …&lt;/p&gt;</summary><content type="html">&lt;!-- param = {domain: 'valvion.com', media: 'http://media.valvion.com/'};
 url = "{media}logo.gif".supplant(param); --&gt;
 
 &lt;p&gt;String handling in R is hard, there are a few packages that help making that task not so hard, but it is still hard.
@@ -150,7 +156,7 @@ In my opinion string handling in R will never be as good as languages like Pytho
 But sincerely speaking, I don't think R realy need that, I can pass without it, I can go fairly well with the packages available, and the most popular is &lt;a href="http://cran.r-project.org/web/packages/stringr/index.html" title="Hadley Wickham's stringr"&gt;&lt;code&gt;stringr&lt;/code&gt;&lt;/a&gt; developed by Hadley Wickham.
 It has several good functions for string handling, but it lacks string interpolation like we do in Python.
 That's the reason why I developed &lt;code&gt;str_supplant&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;str_supplant &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;,&lt;/span&gt; repl&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;str_supplant &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;,&lt;/span&gt; repl&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     result &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; str_match_all&lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;\\{([^{}]*)\\}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="kr"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;result&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
         &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;string&lt;span class="p"&gt;)&lt;/span&gt;
@@ -168,26 +174,26 @@ That's the reason why I developed &lt;code&gt;str_supplant&lt;/code&gt;:&lt;/p&g
 
 
 &lt;p&gt;Here it follows an example:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;parms &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;media&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://aboutwilson.net&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; face&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;wilson&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;parms &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;media&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://aboutwilson.net&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; face&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;wilson&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 str_supplant&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{media}/logo.gif, {media}/img/ {face}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; parms&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## [1] &amp;quot;http://aboutwilson.net/logo.gif, http://aboutwilson.net/img/ wilson&amp;quot;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## [1] &amp;quot;http://aboutwilson.net/logo.gif, http://aboutwilson.net/img/ wilson&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;The first argument is the string to be interpolated and the second a &lt;code&gt;list&lt;/code&gt; with the keys to be used.
 If a key doesn't match it isn't interpolated.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;parms &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;parms &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kt"&gt;list&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 str_supplant&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;My name is {name}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; parms&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;## [1] &amp;quot;My name is {name}&amp;quot;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## [1] &amp;quot;My name is {name}&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;That implementation was deeply inspired by &lt;a href="http://javascript.crockford.com/remedial.html" title="Douglas Crockford"&gt;Douglas Crockford&lt;/a&gt;'s &lt;code&gt;supplant&lt;/code&gt; implementation.
 Unfortunately that implementation hasn't been vectorized yet, but I think it is quite useful anyway.
-I hope it help others like it's been helping me.&lt;/p&gt;</summary><category term="R"></category><category term="string handling"></category></entry></feed>
+I hope it help others like it's been helping me.&lt;/p&gt;</content><category term="R"></category><category term="string handling"></category></entry></feed>

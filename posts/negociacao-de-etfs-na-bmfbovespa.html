@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Negociação de ETFs na BM&FBovespa — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Negociação de ETFs na BM&FBovespa; Date: 2017-01-20; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Negociação de ETFs na BM&FBovespa"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/negociacao-de-etfs-na-bmfbovespa.html"/>
+	<meta property="og:description" content="Utilizando o pacote rbmfbovespa é possível validar as informações de negociação de ETFs divulgadas pela BM&FBovespa."/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Negociação de ETFs na BM&FBovespa</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2017-01-20T00:00:00-02:00" itemprop="datePublished">20/01/2017</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/rbmfbovespa.html" rel="tag">rbmfbovespa</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>No começo deste ano a BM&amp;FBovespa publicou o tweet abaixo:</p>
+<p><img alt="https://twitter.com/BMFBOVESPA/status/818518068439711744" src="/figure/tweet.png"></p>
+<p>Bem, eu achei R$ 46 bi muita grana e decidi utilizar o pacote <a href="https://github.com/wilsonfreitas/rbmfbovespa">rbmfbovespa</a> para realizar um exercício de validação desta informação.
+Para quem não conhece, ETF significa <em>Exchanged Traded Funds</em> e são fundos de ações que são negociados em bolsa, diferentes dos fundos de ações de cotas os quais montam uma carteira de ativos e vendem cotas.</p>
+<p>A BM&amp;FBovespa divulga arquivos de cotações históricas, os famigerados arquivos de comprimento fixo (FWF) <strong>COTAHIST</strong>.
+Estes arquivos são encontrados no site da empresa na seção de <a href="http://www.bmfbovespa.com.br/pt_br/servicos/market-data/historico/mercado-a-vista/series-historicas/">séries históricas do mercado a vista</a>.
+Os dados históricos podem ser baixados em:</p>
+<ul>
+<li>séries anuais</li>
+<li>séries mensais</li>
+<li>séries diárias (do ano corrente)</li>
+</ul>
+<p>Em particular os arquivos anuais são interessantes, apesar de grandes, por estarem disponíveis desde 1986.
+Poucas séries no Brasil são disponíveis com históricos tão longos.
+Para este exercício eu baixei o arquivo anual de 2016: <code>COTAHIST_A2016.TXT</code>.
+Antes de começar vamos carregar os pacotes utilizados: <code>dplyr</code> e <code>rbmfbovespa</code>.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>rbmfbovespa<span class="p">)</span>
+</pre></div>
+
+
+<p>Para ler o arquivo de cotações históricas utilizo o <em>template</em> <code>COTAHIST</code> na função <code>read_marketdata</code>.</p>
+<div class="highlight"><pre><span></span>ch_2016 <span class="o">&lt;-</span> read_marketdata<span class="p">(</span><span class="s">&#39;datasets/COTAHIST_A2016.TXT&#39;</span><span class="p">,</span> <span class="s">&#39;COTAHIST&#39;</span><span class="p">)</span>
+ch_2016
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## Part  1: Header [1 obs. of 5 variables] 
+## Part  2: Cotações históricas por papel-mercado [466734 obs. of 26 variables] 
+## Part  3: Trailer [1 obs. of 6 variables]
+</pre></div>
+
+
+<p>Como é possível observar acima, este <em>dataset</em> possui 3 partes: Header, Trailer e Cotações históricas por papel-mercado, e está última contém toda a informação de interesse com aproximadamente 500K linhas e 26 variáveis.</p>
+<blockquote>
+<h4>Tipos retornados pela função <code>read_marketdata</code></h4>
+<p>A função <code>read_marketdata</code> retorna 2 estruturas de dados:</p>
+<ul>
+<li><code>data.frame</code> com as variáveis do <em>dataset</em></li>
+<li><code>list</code> contendo <code>data.frame</code> em cada elemento para arquivos que possuam 
+  tratamentos distintos em partes diferentes dos arquivos
+</li>
+</ul>
+</blockquote>
+<p>Vou utilizar <code>ch_2016[[2]]</code> na análise pois a <em>Part 2</em> contém as informações de interesse.
+Na <em>Part 2</em> encontro informações para todos os ativos negociado no segmento de ações da BM&amp;FBovespa no ano de 2016.
+O exercício é para validar as informações apenas das ETFs, portanto é necessário filtrar o <em>dataset</em> <code>ch_2016[[2]]</code> para obter apenas as informações sobre ETFs.
+No site da bolsa eu encontrei uma listagem com todas as ETFs</p>
+<p><img alt="http://www.bmfbovespa.com.br/pt_br/produtos/listados-a-vista-e-derivativos/renda-variavel/etf/renda-variavel/etfs-listados/" src="/figure/ETFs-70.png"></p>
+<p>São 15 ETFs negociadas na bolsa.</p>
+<p>O <em>dataset</em> <code>ch_2016</code> possui 26 variáveis e para filtrar as inforações sobre ETFs eu vou utilizar os 3 filtros abaixo:</p>
+<ul>
+<li><code>especificacao == 'CI'</code> porque <code>CI</code> identifica todos os ativos que são fundos de investimento, como as ETFs</li>
+<li><code>tipo_mercado == 10</code> que identifica o mercado à vista (ainda há o mercado fracionário, de opções, de termo, futuros e outros)</li>
+<li><code>nome_empresa ~ ^(BB ETF|CAIXAETF|ISHARE|IT NOW)</code> o nome da empresa representa o nome do fundo e como se observa na tabela acima estes padrões cobrem todos as possibilidades.</li>
+</ul>
+<div class="highlight"><pre><span></span>etfs <span class="o">&lt;-</span> ch_2016<span class="p">[[</span><span class="m">2</span><span class="p">]]</span> <span class="o">%&gt;%</span> filter<span class="p">(</span>especificacao <span class="o">==</span> <span class="s">&#39;CI&#39;</span><span class="p">,</span>
+                                tipo_mercado <span class="o">==</span> <span class="m">10</span><span class="p">,</span>
+                                stringr<span class="o">::</span>str_detect<span class="p">(</span>nome_empresa<span class="p">,</span> <span class="s">&quot;^(BB ETF|CAIXAETF|ISHARE|IT NOW)&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Para verificar se eu obtive todas as ETFs que me interessam eu vou fazer um agrupamento pelas variáveis <code>cod_negociacao</code> e <code>nome_empresa</code> e aproveitando eu vou realizar uma contagem para saber quantos dias no ano de 2016 as ETFs apresentaram informações de negociação.</p>
+<div class="highlight"><pre><span></span>etfs <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>cod_negociacao<span class="p">,</span> nome_empresa<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarise<span class="p">(</span>Count <span class="o">=</span> n<span class="p">())</span> <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span>nome_empresa<span class="p">)</span> <span class="o">%&gt;%</span>
+  formattable<span class="o">::</span>formattable<span class="p">()</span>
+</pre></div>
+
+
+<table class="table table-condensed">
+ <thead>
+  <tr>
+   <th style="text-align:right;"> cod_negociacao </th>
+   <th style="text-align:right;"> nome_empresa </th>
+   <th style="text-align:right;"> Count </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> BBSD11 </td>
+   <td style="text-align:right;"> BB ETF SP DV </td>
+   <td style="text-align:right;"> 238 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> XBOV11 </td>
+   <td style="text-align:right;"> CAIXAETFXBOV </td>
+   <td style="text-align:right;"> 239 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> IVVB11 </td>
+   <td style="text-align:right;"> ISHARE SP500 </td>
+   <td style="text-align:right;"> 249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BOVA11 </td>
+   <td style="text-align:right;"> ISHARES BOVA </td>
+   <td style="text-align:right;"> 249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BRAX11 </td>
+   <td style="text-align:right;"> ISHARES BRAX </td>
+   <td style="text-align:right;"> 225 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> ECOO11 </td>
+   <td style="text-align:right;"> ISHARES ECOO </td>
+   <td style="text-align:right;"> 228 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> SMAL11 </td>
+   <td style="text-align:right;"> ISHARES SMAL </td>
+   <td style="text-align:right;"> 248 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BOVV11 </td>
+   <td style="text-align:right;"> IT NOW IBOV </td>
+   <td style="text-align:right;"> 64 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> DIVO11 </td>
+   <td style="text-align:right;"> IT NOW IDIV </td>
+   <td style="text-align:right;"> 249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> FIND11 </td>
+   <td style="text-align:right;"> IT NOW IFNC </td>
+   <td style="text-align:right;"> 223 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> GOVE11 </td>
+   <td style="text-align:right;"> IT NOW IGCT </td>
+   <td style="text-align:right;"> 242 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> MATB11 </td>
+   <td style="text-align:right;"> IT NOW IMAT </td>
+   <td style="text-align:right;"> 153 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> ISUS11 </td>
+   <td style="text-align:right;"> IT NOW ISE </td>
+   <td style="text-align:right;"> 246 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> PIBB11 </td>
+   <td style="text-align:right;"> IT NOW PIBB </td>
+   <td style="text-align:right;"> 249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> SPXI11 </td>
+   <td style="text-align:right;"> IT NOW SPXI </td>
+   <td style="text-align:right;"> 245 </td>
+  </tr>
+</tbody>
+</table>
+
+<p>O <em>dataset</em> <code>etfs</code> possui todas as ETFs negociadas na bolsa, agora vou fazer uma agregação em todo o <em>dataset</em> somando as variáveis <code>volume_titulos_negociados</code> e <code>qtd_negocios</code> para verificar os dados publicados no <a href="https://twitter.com/BMFBOVESPA/status/818518068439711744">tweet</a>.</p>
+<div class="highlight"><pre><span></span>etfs <span class="o">%&gt;%</span>
+  summarise<span class="p">(</span>Volume <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>volume_titulos_negociados<span class="p">),</span> Negocios <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>qtd_negocios<span class="p">))</span> <span class="o">%&gt;%</span>
+  formattable<span class="o">::</span>formattable<span class="p">(</span><span class="kt">list</span><span class="p">(</span>Volume <span class="o">=</span> formattable<span class="o">::</span>accounting<span class="p">,</span> Negocios <span class="o">=</span> formattable<span class="o">::</span>accounting<span class="p">))</span>
+</pre></div>
+
+
+<table class="table table-condensed">
+ <thead>
+  <tr>
+   <th style="text-align:right;"> Volume </th>
+   <th style="text-align:right;"> Negocios </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 46,458,279,244.30 </td>
+   <td style="text-align:right;"> 2,864,856.00 </td>
+  </tr>
+</tbody>
+</table>
+
+<p>Como é possível observar, preciso até a última casa!
+Podemos ainda fazer o mesmo cálculo agregando novamente pelas variáveis <code>cod_negociacao</code> e <code>nome_empresa</code> para descobrir os volumes negociados em cada ativo.</p>
+<div class="highlight"><pre><span></span>etfs <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>cod_negociacao<span class="p">,</span> nome_empresa<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarise<span class="p">(</span>Volume <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>volume_titulos_negociados<span class="p">),</span> Negocios <span class="o">=</span> <span class="kp">sum</span><span class="p">(</span>qtd_negocios<span class="p">))</span> <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span>desc<span class="p">(</span>Volume<span class="p">))</span> <span class="o">%&gt;%</span>
+  formattable<span class="o">::</span>formattable<span class="p">(</span><span class="kt">list</span><span class="p">(</span>Volume <span class="o">=</span> formattable<span class="o">::</span>accounting<span class="p">,</span> Negocios <span class="o">=</span> formattable<span class="o">::</span>accounting<span class="p">))</span>
+</pre></div>
+
+
+<table class="table table-condensed">
+ <thead>
+  <tr>
+   <th style="text-align:right;"> cod_negociacao </th>
+   <th style="text-align:right;"> nome_empresa </th>
+   <th style="text-align:right;"> Volume </th>
+   <th style="text-align:right;"> Negocios </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> BOVA11 </td>
+   <td style="text-align:right;"> ISHARES BOVA </td>
+   <td style="text-align:right;"> 40,960,623,887.70 </td>
+   <td style="text-align:right;"> 2,750,747.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> PIBB11 </td>
+   <td style="text-align:right;"> IT NOW PIBB </td>
+   <td style="text-align:right;"> 3,334,920,436.20 </td>
+   <td style="text-align:right;"> 59,653.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> IVVB11 </td>
+   <td style="text-align:right;"> ISHARE SP500 </td>
+   <td style="text-align:right;"> 865,491,458.00 </td>
+   <td style="text-align:right;"> 15,002.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BOVV11 </td>
+   <td style="text-align:right;"> IT NOW IBOV </td>
+   <td style="text-align:right;"> 381,199,179.40 </td>
+   <td style="text-align:right;"> 452.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> XBOV11 </td>
+   <td style="text-align:right;"> CAIXAETFXBOV </td>
+   <td style="text-align:right;"> 350,015,104.90 </td>
+   <td style="text-align:right;"> 8,540.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> SPXI11 </td>
+   <td style="text-align:right;"> IT NOW SPXI </td>
+   <td style="text-align:right;"> 266,412,365.00 </td>
+   <td style="text-align:right;"> 13,447.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> SMAL11 </td>
+   <td style="text-align:right;"> ISHARES SMAL </td>
+   <td style="text-align:right;"> 131,108,309.40 </td>
+   <td style="text-align:right;"> 4,428.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> ECOO11 </td>
+   <td style="text-align:right;"> ISHARES ECOO </td>
+   <td style="text-align:right;"> 50,070,769.00 </td>
+   <td style="text-align:right;"> 1,147.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> DIVO11 </td>
+   <td style="text-align:right;"> IT NOW IDIV </td>
+   <td style="text-align:right;"> 35,010,537.50 </td>
+   <td style="text-align:right;"> 4,588.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> FIND11 </td>
+   <td style="text-align:right;"> IT NOW IFNC </td>
+   <td style="text-align:right;"> 28,748,255.70 </td>
+   <td style="text-align:right;"> 1,682.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> ISUS11 </td>
+   <td style="text-align:right;"> IT NOW ISE </td>
+   <td style="text-align:right;"> 16,991,882.90 </td>
+   <td style="text-align:right;"> 2,149.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BRAX11 </td>
+   <td style="text-align:right;"> ISHARES BRAX </td>
+   <td style="text-align:right;"> 13,296,683.40 </td>
+   <td style="text-align:right;"> 824.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> MATB11 </td>
+   <td style="text-align:right;"> IT NOW IMAT </td>
+   <td style="text-align:right;"> 8,606,861.20 </td>
+   <td style="text-align:right;"> 524.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> GOVE11 </td>
+   <td style="text-align:right;"> IT NOW IGCT </td>
+   <td style="text-align:right;"> 8,202,764.30 </td>
+   <td style="text-align:right;"> 868.00 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BBSD11 </td>
+   <td style="text-align:right;"> BB ETF SP DV </td>
+   <td style="text-align:right;"> 7,580,749.70 </td>
+   <td style="text-align:right;"> 805.00 </td>
+  </tr>
+</tbody>
+</table>
+
+<p>O BOVA11 disparado na frente com o maior volume e quantidade de negócios.
+Até o sexto ETF, todos representam índices de ações conhecidos.
+Os ETFs BOVA11, BOVV11, XBOV11 tem o IBOVESPA como índice de referência, já os IVVB11 e SPXI11 tem o SP500 e o PIBB11 o IBrX-50.
+Os demais não estão diretamente relacionados a nenhum índice e apresentam motivações distintas formando carteiras com ações que pagam dividendos, ações de empresas sustentáveis, empresas do governo e por aí vai.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Negociação de ETFs na BM&FBovespa';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+ 
+</body>
+</html>

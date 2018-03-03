@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Encontrando séries temporais do Banco Central com rbcb — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Encontrando séries temporais do Banco Central com rbcb; Date: 2017-03-19; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Encontrando séries temporais do Banco Central com rbcb"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/encontrando-series-temporais-do-banco-central-com-rbcb.html"/>
+	<meta property="og:description" content="Utilizar o pacote rbcb (https://github.com/wilsonfreitas/rbcb) do R (https://www.r-project.org/) para fazer buscas de dados do Banco Central do Brasil."/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Encontrando séries temporais do Banco Central com rbcb</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2017-03-19T00:00:00-03:00" itemprop="datePublished">19/03/2017</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/rbcb.html" rel="tag">rbcb</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/bacen.html" rel="tag">BACEN</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/opendata.html" rel="tag">OpenData</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Já há algum tempo desenvolví o pacote <a href="https://github.com/wilsonfreitas/rbcb">rbcb</a> que é uma interface em R para o <a href="https://www3.bcb.gov.br/sgspub/">SGSPUB</a> Sistema de Séries Temporais do <a href="http://www.bcb.gov.br/">Banco Central do Brasil</a> (BACEN).
+Algumas séries do SGSPUB estão disponíveis no <a href="http://dadosabertos.bcb.gov.br/">portal de dados abertos do Banco Central</a>, onde há documentação informando que as séries podem ser obtidas em diferentes formatos e documentação específica para os formatos e das suas APIs, quando houver.
+Hoje, neste portal são disponibilizadas 454 conjuntos de dados, que são os dados de responsabilidade do BACEN, entretanto, ainda não há dados de outras organizações.</p>
+<p>No <a href="http://dadosabertos.bcb.gov.br/">portal de dados abertos</a> também há uma busca pelas séries temporais onde se digita um termo de interesse e o sistema retorna diversas séries que atendam ao termo solicitado.
+Com o objetivo de tornar a busca pelas séries mais agradável dentro do ambiente do R, eu desenvolvi no <a href="https://github.com/wilsonfreitas/rbcb">rbcb</a> a função <code>search_series</code> para efetuar buscas pelas séries de dentro do RStudio.
+Esta busca retorna apenas as séries presentes no portal de dados abertos, ou seja, um subconjunto dos 454 conjutos de dados.
+Eu sei que não é o ótimo, dado no <a href="https://www3.bcb.gov.br/sgspub/">SGSPUB</a> há bem mais séries de outras organizações, no entanto as séries do BACEN já trazem bastante informação relevante.</p>
+<p>Para usar a busca basta apenas utilizar a função <code>search_series</code> e passar o termo de interesse para a busca.
+Por exemplo,</p>
+<div class="highlight"><pre><span></span>rbcb<span class="o">::</span>search_series<span class="p">(</span><span class="s">&quot;IGP&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - IGP-DI 
+## Code: 4176 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4176-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---igp-di 
+## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - IGP-M 
+## Code: 4175 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4175-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---igp-m 
+## 
+## Dataset: Dvida mobiliria federal (saldos) - Posio em carteira - Ttulo indexado ao... 
+## Code: 10647 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10647-divida-mobiliaria-federal-saldos---posicao-em-carteira---titulo-indexado-ao-igp-m---ntn-c 
+## 
+## 3 results 
+## Pagination 1 / 1
+</pre></div>
+
+
+<p>A consulta por <code>"IGP"</code> retornou 3 resultados.
+O primeiro resultado, código 4176, é a <em>Dívida mobiliária - Participação por indexador - Posição em carteira - IGP-DI</em>.
+Para baixar esta série use a função <code>rbcb::get_series</code> que retorna um data.frame <em>tibble-fashioned</em> com duas colunas: data e valor da série.</p>
+<div class="highlight"><pre><span></span>rbcb<span class="o">::</span>get_series<span class="p">(</span><span class="m">4176</span><span class="p">,</span> last <span class="o">=</span> <span class="m">10</span><span class="p">,</span> name <span class="o">=</span> <span class="s">&quot;divida_IGPDI&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## # A tibble: 10 x 2
+##          date divida_IGPDI
+##  *     &lt;date&gt;        &lt;dbl&gt;
+##  1 2017-01-01         0.04
+##  2 2017-02-01         0.04
+##  3 2017-03-01         0.04
+##  4 2017-04-01         0.04
+##  5 2017-05-01         0.04
+##  6 2017-06-01         0.04
+##  7 2017-07-01         0.04
+##  8 2017-08-01         0.04
+##  9 2017-09-01         0.04
+## 10 2017-10-01         0.04
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>rbcb<span class="o">::</span>search_series<span class="p">(</span><span class="s">&quot;divida mobiliaria&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - Outros 
+## Code: 4180 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4180-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---outros 
+## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - Over/S... 
+## Code: 4177 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4177-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---over-selic 
+## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - TJLP 
+## Code: 4179 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4179-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---tjlp 
+## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - Prefixado 
+## Code: 4178 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4178-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---prefixado 
+## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - IGP-DI 
+## Code: 4176 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4176-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---igp-di 
+## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - IGP-M 
+## Code: 4175 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4175-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---igp-m 
+## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - TR 
+## Code: 4174 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4174-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---tr 
+## 
+## Dataset: Dvida mobiliria - Participao por indexador - Posio em carteira - Cmbio 
+## Code: 4173 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4173-divida-mobiliaria---participacao-por-indexador---posicao-em-carteira---cambio 
+## 
+## Dataset: Dvida mobiliria federal (saldos) - Posio em carteira - Ttulo indexado ao... 
+## Code: 10667 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10667-divida-mobiliaria-federal-saldos---posicao-em-carteira---titulo-indexado-ao-cambio---ntn-a 
+## 
+## Dataset: Dvida mobiliria federal (saldos) - Posio em carteira - Ttulo indexado ao... 
+## Code: 10669 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10669-divida-mobiliaria-federal-saldos---posicao-em-carteira---titulo-indexado-ao-cambio---ntn-i 
+## 
+## Dataset: Dvida mobiliria federal (saldos) - Posio em carteira - Ttulo pr-fixado ... 
+## Code: 10649 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10649-divida-mobiliaria-federal-saldos---posicao-em-carteira---titulo-pre-fixado---ltn 
+## 
+## Dataset: Dvida mobiliria federal (saldos) - Posio em carteira - Ttulo indexado a ... 
+## Code: 10658 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10658-divida-mobiliaria-federal-saldos---posicao-em-carteira---titulo-indexado-a-tr---ntn-p 
+## 
+## Dataset: Dvida mobiliria federal (saldos) - Posio em carteira - Ttulo indexado ao... 
+## Code: 10647 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10647-divida-mobiliaria-federal-saldos---posicao-em-carteira---titulo-indexado-ao-igp-m---ntn-c 
+## 
+## Dataset: Dvida mobiliria federal (saldos) - Posio em carteira - Ttulo indexado ao... 
+## Code: 10642 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10642-divida-mobiliaria-federal-saldos---posicao-em-carteira---titulo-indexado-ao-ipc-a---ntn-b 
+## 
+## Dataset: Dvida mobiliria federal (saldos) - Posio em carteira - Ttulo indexado a ... 
+## Code: 10634 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10634-divida-mobiliaria-federal-saldos---posicao-em-carteira---titulo-indexado-a-selic---lft 
+## 
+## Dataset: Dvida mobiliria federal - Ttulos do Tesouro Nacional - Emitidos - Prazo m... 
+## Code: 10618 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10618-divida-mobiliaria-federal---titulos-do-tesouro-nacional---emitidos---prazo-medio---total 
+## 
+## Dataset: Dvida mobiliria federal - Ttulos do Tesouro Nacional - Emitidos em oferta ... 
+## Code: 10613 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10613-divida-mobiliaria-federal---titulos-do-tesouro-nacional---emitidos-em-oferta-publica---prazo- 
+## 
+## Dataset: Dvida mobiliria federal - Ttulos do Tesouro Nacional - Emitidos em oferta ... 
+## Code: 10614 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10614-divida-mobiliaria-federal---titulos-do-tesouro-nacional---emitidos-em-oferta-publica---prazo- 
+## 
+## Dataset: Dvida mobiliria (Saldos) - Ttulos do Tesouro Nacional-posio em carteira ... 
+## Code: 4154 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4154-divida-mobiliaria-saldos---titulos-do-tesouro-nacional-posicao-em-carteira---total-em-mercado 
+## 
+## Dataset: Dvida mobiliria (Saldos) - Ttulos do Tesouro Nacional-posio em carteira ... 
+## Code: 4152 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4152-divida-mobiliaria-saldos---titulos-do-tesouro-nacional-posicao-em-carteira---carteira-do-banco 
+## 
+## 20 results 
+## Pagination 1 / 2
+</pre></div>
+
+
+<p>Esta busca retorna vinte resultados e indica que há sete páginas de resultados.
+Para ver os resultados da segunda página utilize o argumento <code>page</code> na consulta passando o número da página desejada</p>
+<div class="highlight"><pre><span></span>rbcb<span class="o">::</span>search_series<span class="p">(</span><span class="s">&quot;divida mobiliaria&quot;</span><span class="p">,</span> page <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## 
+## Dataset: Dvida mobiliria (Saldos) - Ttulos do Tesouro Nacional-posio em carteira ... 
+## Code: 4151 
+## Conceito:  Investimentos diretos que os pa&lt;U+00ED&gt;ses realizaram nos diversos setores da economia brasileira. Esses investimentos se caracterizam por uma... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/4151-divida-mobiliaria-saldos---titulos-do-tesouro-nacional-posicao-em-carteira---total-emitido 
+## 
+## Dataset: Dvida mobiliria federal - Ttulos do Tesouro Nacional - Emitidos em oferta ... 
+## Code: 17802 
+## Conceito:  A dvida mobiliria federal  constituda dos ttulos emitidos pelo Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/17802-divida-mobiliaria-federal---titulos-do-tesouro-nacional---emitidos-em-oferta-publica---prazo- 
+## 
+## Dataset: Dvida mobiliria federal - Ttulos do Tesouro Nacional - Emitidos em oferta ... 
+## Code: 10608 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10608-divida-mobiliaria-federal---titulos-do-tesouro-nacional---emitidos-em-oferta-publica---prazo- 
+## 
+## Dataset: Dvida mobiliria federal - Ttulos do Tesouro Nacional - Emitidos em oferta ... 
+## Code: 10609 
+## Conceito:   A dvida mobiliria federal  constituda dos ttulos emitidos pelo  Tesouro Nacional e pelo Banco Central do Brasil e contempla os valores que  esto em poder do... 
+## URL: http://dadosabertos.bcb.gov.br/dataset/10609-divida-mobiliaria-federal---titulos-do-tesouro-nacional---emitidos-em-oferta-publica---prazo- 
+## 
+## 4 results 
+## Pagination 2 / 2
+</pre></div>
+
+
+<p>Na segunda página há 4 resultados e a série de interesse é a 4151, <em>Dívida mobiliária (Saldos) - Títulos do Tesouro Nacional-posição em carteira - Total emitido</em> que vou baixar inteira como um objeto <a href="https://cran.r-project.org/package=xts">xts</a>.</p>
+<div class="highlight"><pre><span></span>x <span class="o">&lt;-</span> rbcb<span class="o">::</span>get_series<span class="p">(</span><span class="m">4151</span><span class="p">,</span> start_date <span class="o">=</span> <span class="s">&quot;1999-01-01&quot;</span><span class="p">,</span> name <span class="o">=</span> <span class="s">&quot;divida_governo&quot;</span><span class="p">,</span> as <span class="o">=</span> <span class="s">&quot;xts&quot;</span><span class="p">)</span>
+plot<span class="p">(</span>x<span class="p">,</span> main <span class="o">=</span> <span class="s">&quot;Dívida Mobiliária (R$ milhões) posição em carteira&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk graf" src="http://wilsonfreitas.github.io/figure/graf-1.png"></p>
+<p>Vixe, parece que a dívida deu um pinote para cima, tem muita coisa interessante aí, dados do Banco Central do Brasil.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Encontrando séries temporais do Banco Central com rbcb';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+ 
+</body>
+</html>

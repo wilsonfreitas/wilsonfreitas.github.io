@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Indicadores de desempenho de ETFs — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Indicadores de desempenho de ETFs; Date: 2017-02-11; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Indicadores de desempenho de ETFs"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/indicadores-de-desempenho-de-etfs.html"/>
+	<meta property="og:description" content="Cálculo do desempenho de ETFs em R com PerformanceAnalytics."/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Indicadores de desempenho de ETFs</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2017-02-11T00:00:00-02:00" itemprop="datePublished">11/02/2017</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/visualization.html" rel="tag">visualization</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/rbmfbovespa.html" rel="tag">rbmfbovespa</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Vimos no post <a href="http://wilsonfreitas.github.io/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html">Usando dados do rbmfbovespa para construir gráficos candlestick no R</a> que a partir do arquivo de cotações históricas de 2016 é possível criar séries de preços para ativos negociados na BM&amp;FBovespa.
+Particularmente, utilizamos as ETFs e fizemos alguns gráficos de <em>candlestick</em> e volume com as bibliotecas <a href="http://www.quantmod.com/">quantmod</a> e <a href="https://cran.r-project.org/package=tidyquant">tidyquant</a>.
+Neste post vamos utilizar novamente as ETFs para fazer uma avaliação do desempenho de algumas delas, as mais líquidas, no ano de 2016.
+A biblioteca <a href="https://cran.r-project.org/package=PerformanceAnalytics">PerformanceAnalytics</a> possui diversas funções para avaliação de desempenho de ativos, muito útil na comparação de fundos de investimentos e avaliação de <em>benchmarks</em>.
+Esta biblioteca traz diversos gráficos e tabelas que enriquecem essa análise e alguns deles serão apresentados ao longo deste post.
+O objetivo aqui é selecionar algumas ETFs que apresentaram boa liquidez em 2016 e avaliar o desempenho delas utilizando as funções da biblioteca <a href="https://cran.r-project.org/package=PerformanceAnalytics">PerformanceAnalytics</a>.</p>
+<p>Começemos carregando os pacotes que serão utilizados.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>rbmfbovespa<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>xts<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>PerformanceAnalytics<span class="p">)</span>
+</pre></div>
+
+
+<p>Carregando o arquivo de cotações históricas de 2016.</p>
+<div class="highlight"><pre><span></span>ch_2016 <span class="o">&lt;-</span> read_marketdata<span class="p">(</span><span class="s">&#39;datasets/COTAHIST_A2016.TXT&#39;</span><span class="p">,</span> <span class="s">&#39;COTAHIST&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>e selecionando as ETFs.</p>
+<div class="highlight"><pre><span></span>etfs <span class="o">&lt;-</span> ch_2016<span class="p">[[</span><span class="m">2</span><span class="p">]]</span> <span class="o">%&gt;%</span> filter<span class="p">(</span>especificacao <span class="o">==</span> <span class="s">&#39;CI&#39;</span><span class="p">,</span>
+                                tipo_mercado <span class="o">==</span> <span class="m">10</span><span class="p">,</span>
+                                stringr<span class="o">::</span>str_detect<span class="p">(</span>nome_empresa<span class="p">,</span> <span class="s">&quot;^(BB ETF|CAIXAETF|ISHARE|IT NOW)&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Agora é necessário fazer uma avaliação da liquidez das ETFs, que para o objetivo traçado é basicamente levantar quantos dias cada ETF apresentou negócios no ano.
+Vamos começar selecionando as variáveis: <code>cod_negociacao</code>, <code>data_referencia</code> e <code>preco_ult</code>, e em seguida agrupar por <code>cod_negociacao</code> e depois contar, com isso teremos a quantidade de dias que cada ativo apresentou de negócios no ano.</p>
+<div class="highlight"><pre><span></span>etfs <span class="o">%&gt;%</span>
+  select<span class="p">(</span>cod_negociacao<span class="p">,</span> data_referencia<span class="p">,</span> preco_ult<span class="p">)</span> <span class="o">%&gt;%</span>
+  group_by<span class="p">(</span>cod_negociacao<span class="p">)</span> <span class="o">%&gt;%</span>
+  summarise<span class="p">(</span>Count <span class="o">=</span> n<span class="p">())</span> <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span>desc<span class="p">(</span>Count<span class="p">))</span> <span class="o">%&gt;%</span>
+  formattable<span class="o">::</span>formattable<span class="p">()</span>
+</pre></div>
+
+
+<table class="table table-condensed">
+ <thead>
+  <tr>
+   <th style="text-align:right;"> cod_negociacao </th>
+   <th style="text-align:right;"> Count </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> BOVA11 </td>
+   <td style="text-align:right;"> 249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> DIVO11 </td>
+   <td style="text-align:right;"> 249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> IVVB11 </td>
+   <td style="text-align:right;"> 249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> PIBB11 </td>
+   <td style="text-align:right;"> 249 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> SMAL11 </td>
+   <td style="text-align:right;"> 248 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> ISUS11 </td>
+   <td style="text-align:right;"> 246 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> SPXI11 </td>
+   <td style="text-align:right;"> 245 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> GOVE11 </td>
+   <td style="text-align:right;"> 242 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> XBOV11 </td>
+   <td style="text-align:right;"> 239 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BBSD11 </td>
+   <td style="text-align:right;"> 238 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> ECOO11 </td>
+   <td style="text-align:right;"> 228 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BRAX11 </td>
+   <td style="text-align:right;"> 225 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> FIND11 </td>
+   <td style="text-align:right;"> 223 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> MATB11 </td>
+   <td style="text-align:right;"> 153 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> BOVV11 </td>
+   <td style="text-align:right;"> 64 </td>
+  </tr>
+</tbody>
+</table>
+
+<p>Ordenando a contagem de forma decrescente, observa-se que as ETFs com maior quantidade de dias negociados são BOVA11, DIVO11, PIBB11 e IVVB11 (se quiser saber o que é cada uma delas veja <a href="http://www.bmfbovespa.com.br/pt_br/produtos/listados-a-vista-e-derivativos/renda-variavel/etf/renda-variavel/etfs-listados/">aqui</a>), entretanto, SMAL11, ISUS11, SPXI11 e GOVE11 ficam logo atrás.
+Dessa forma, estas 8 ETFs serão as selecionadas para este exercício de avaliação de desempenho.</p>
+<div class="highlight"><pre><span></span>etfs <span class="o">%&gt;%</span>
+  select<span class="p">(</span>cod_negociacao<span class="p">,</span> data_referencia<span class="p">,</span> preco_ult<span class="p">)</span> <span class="o">%&gt;%</span>
+  filter<span class="p">(</span>cod_negociacao <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;DIVO11&#39;</span><span class="p">,</span> <span class="s">&#39;GOVE11&#39;</span><span class="p">,</span> <span class="s">&#39;BOVA11&#39;</span><span class="p">,</span> <span class="s">&#39;PIBB11&#39;</span><span class="p">,</span> <span class="s">&#39;SMAL11&#39;</span><span class="p">,</span> <span class="s">&#39;ISUS11&#39;</span><span class="p">,</span> <span class="s">&#39;IVVB11&#39;</span><span class="p">,</span> <span class="s">&#39;SPXI11&#39;</span><span class="p">))</span> <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span>cod_negociacao<span class="p">,</span> data_referencia<span class="p">)</span> <span class="o">-&gt;</span> etfs_data
+</pre></div>
+
+
+<p>Selecionadas as ETFs, é preciso criar objetos de séries temporais para as séries de preços.
+As séries temporais são criadas com a função <code>xts</code> do pacote de mesmo nome.
+Note que aplico um <code>lapply</code> que cria uma lista com as séries e depois uso o <code>merge</code> para juntar todas as séries temporais em um único objeto, <code>etfs_series</code>.</p>
+<div class="highlight"><pre><span></span>etfs_series <span class="o">&lt;-</span> <span class="kp">lapply</span><span class="p">(</span><span class="kp">split</span><span class="p">(</span>etfs_data<span class="p">,</span> etfs_data<span class="o">$</span>cod_negociacao<span class="p">),</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+  xts<span class="p">(</span>x<span class="o">$</span>preco_ult<span class="p">,</span> x<span class="o">$</span>data_referencia<span class="p">)</span>
+<span class="p">})</span>
+
+etfs_series <span class="o">&lt;-</span> <span class="kp">do.call</span><span class="p">(</span><span class="kp">merge</span><span class="p">,</span> etfs_series<span class="p">)</span>
+</pre></div>
+
+
+<p>O objeto <code>etfs_series</code> possui séries de preços, e as análises de desempenho devem ser feitas com as séries de retornos dos ativos (se quiser saber mais sobre retornos veja o post <a href="http://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html">Calculando Retornos Financeiros com Pandas</a>).
+Aqui vamos utilizar a função <code>CalculateReturns</code> do pacote <a href="https://cran.r-project.org/package=PerformanceAnalytics">PerformanceAnalytics</a> para calcular os retornos logarítimicos.</p>
+<div class="highlight"><pre><span></span>etfs_series <span class="o">&lt;-</span> CalculateReturns<span class="p">(</span>etfs_series<span class="p">,</span> method <span class="o">=</span> <span class="s">&#39;log&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Vamos observar então um gráfico de barras com os retornos das séries com <code>charts.Bar</code>.</p>
+<div class="highlight"><pre><span></span>charts.Bar<span class="p">(</span>etfs_series<span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk indicadores_de_desempenho_etfs-7" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-7-1.png"></p>
+<p>A primeira análise é o cálculo dos retornos acumulados, dado que os retornos são a variação percentual diária do ativo, os retornos acumulados apresentam o <em>ganho</em> (ou perda) do ativo no período.
+Para simplificar vamos considerar o investimento de R\$ 1,00 no começo de 2016 e vamos avaliar a evolução deste investimento em 2016, se no fim tivermos mais de R\$ 1,00 o investimento teve um retorno positivo no período, caso contrário teve perda pois chegou-se ao fim com menos do que tinha no começo do ano.
+A função <code>chart.CumReturns</code> apresenta as séries de retornos acumulados para todos os ativos.</p>
+<div class="highlight"><pre><span></span>chart.CumReturns<span class="p">(</span>etfs_series<span class="p">,</span> wealth.index <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> main <span class="o">=</span> <span class="s">&quot;Retornos Acumulados&quot;</span><span class="p">,</span> legend.loc <span class="o">=</span> <span class="s">&#39;topleft&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk indicadores_de_desempenho_etfs-8" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-8-1.png"></p>
+<p>Aqui é possível observar diversas coisas interessantes.</p>
+<ul>
+<li>SPXI11 e IVVB11 apresentaram perda, e estas ETFs, ambas, seguem o S&amp;P500.</li>
+<li>DIVO11 disparou apresentando um resultado no fim de pouco mais de R\$ 1,50, ganho acima de 50% no ano!</li>
+<li>BOVA11, PIBB11 seguem IBOVESPA e IBrX50, respectivamente, por isso apresentam resultado semelhante e andam bastante juntas o tempo todo.</li>
+<li>GOVE11 segue o Índice de Governança Corporativa Trade (IGCT), também segue de perto os índices.</li>
+</ul>
+<p>Um ponto interessante é que podemos mudar o esquema de cores para destacar 1 ativo em particular.
+Por exemplo, o SMAL11 apresentou um resultado interessante, mas não apareceu muito no gráfigo, talvez por estar amarelo.
+Eu vou redefinir a paleta de cores de forma que SMAL11 seja destacado.</p>
+<div class="highlight"><pre><span></span>chart.CumReturns<span class="p">(</span>etfs_series<span class="p">,</span> wealth.index <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> main <span class="o">=</span> <span class="s">&quot;Retornos Acumulados&quot;</span><span class="p">,</span> legend.loc <span class="o">=</span> <span class="s">&#39;topleft&#39;</span><span class="p">,</span>
+                 colorset <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="kp">rep</span><span class="p">(</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> <span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="kp">rep</span><span class="p">(</span><span class="s">&#39;gray&#39;</span><span class="p">,</span> <span class="m">1</span><span class="p">)))</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk indicadores_de_desempenho_etfs-9" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-9-1.png"></p>
+<p>Assim é possível destacar qualquer ativo comparando o seu resultado com os demais.</p>
+<p>Outra forma de verificar o desempenho no ano mais diretamente é montar a tabela de retornos anuais com a função <code>table.AnnualizedReturns</code>.</p>
+<div class="highlight"><pre><span></span>table.AnnualizedReturns<span class="p">(</span>etfs_series<span class="p">)</span> <span class="o">%&gt;%</span> formattable<span class="o">::</span>formattable<span class="p">()</span>
+</pre></div>
+
+
+<table class="table table-condensed">
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> BOVA11 </th>
+   <th style="text-align:right;"> DIVO11 </th>
+   <th style="text-align:right;"> GOVE11 </th>
+   <th style="text-align:right;"> ISUS11 </th>
+   <th style="text-align:right;"> IVVB11 </th>
+   <th style="text-align:right;"> PIBB11 </th>
+   <th style="text-align:right;"> SMAL11 </th>
+   <th style="text-align:right;"> SPXI11 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Annualized Return </td>
+   <td style="text-align:right;"> 0.3738 </td>
+   <td style="text-align:right;"> 0.5841 </td>
+   <td style="text-align:right;"> 0.4181 </td>
+   <td style="text-align:right;"> 0.1781 </td>
+   <td style="text-align:right;"> -0.1051 </td>
+   <td style="text-align:right;"> 0.3780 </td>
+   <td style="text-align:right;"> 0.3614 </td>
+   <td style="text-align:right;"> -0.1129 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Annualized Std Dev </td>
+   <td style="text-align:right;"> 0.2708 </td>
+   <td style="text-align:right;"> 0.3046 </td>
+   <td style="text-align:right;"> 0.2453 </td>
+   <td style="text-align:right;"> 0.2342 </td>
+   <td style="text-align:right;"> 0.1996 </td>
+   <td style="text-align:right;"> 0.2585 </td>
+   <td style="text-align:right;"> 0.2508 </td>
+   <td style="text-align:right;"> 0.1747 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Annualized Sharpe (Rf=0%) </td>
+   <td style="text-align:right;"> 1.3807 </td>
+   <td style="text-align:right;"> 1.9176 </td>
+   <td style="text-align:right;"> 1.7046 </td>
+   <td style="text-align:right;"> 0.7608 </td>
+   <td style="text-align:right;"> -0.5266 </td>
+   <td style="text-align:right;"> 1.4621 </td>
+   <td style="text-align:right;"> 1.4408 </td>
+   <td style="text-align:right;"> -0.6458 </td>
+  </tr>
+</tbody>
+</table>
+
+<p>Diretamente vemos que DIVO11 entregou 58% de retorno em 2016, seguido por GOVE11 com 41%.
+Note que temos o índice Sharpe na tabela, que aqui deve ser ignorado por não estarmos definindo os parâmetros adequadamente para o seu cálculo.</p>
+<p>Vamos reordenar as séries de acordo com os retornos anuais.</p>
+<div class="highlight"><pre><span></span>etfs_series <span class="o">&lt;-</span> etfs_series<span class="p">[,</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;DIVO11&#39;</span><span class="p">,</span> <span class="s">&#39;GOVE11&#39;</span><span class="p">,</span> <span class="s">&#39;BOVA11&#39;</span><span class="p">,</span> <span class="s">&#39;PIBB11&#39;</span><span class="p">,</span> <span class="s">&#39;SMAL11&#39;</span><span class="p">,</span> <span class="s">&#39;ISUS11&#39;</span><span class="p">,</span> <span class="s">&#39;IVVB11&#39;</span><span class="p">,</span> <span class="s">&#39;SPXI11&#39;</span><span class="p">)]</span>
+</pre></div>
+
+
+<p>Fiz isso deliberadamente porque quero fazer a análise de correlação das série e acredito (dadas as observações recentes) que os ativos com bom desempenho estejam correlacionados.
+O PerformanceAnalytics tem a função <code>chart.Correlation</code> que constroi uma matriz de correlação com todos os ativos e traz diversas informações estatísticas e da distribuição dos ativos.</p>
+<div class="highlight"><pre><span></span>chart.Correlation<span class="p">(</span>etfs_series<span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk indicadores_de_desempenho_etfs-12" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-12-1.png"></p>
+<p>Bem, como já imaginava, uma correlação forte entre as ETFs baseadas em ativos nacionais e outro grupo formado por ETFs baseadas em ativos internacionais (basicamente o S&amp;P500).
+Na diagonal principal temos o histograma de retornos com uma densidade em vermelho, no triangulo inferior esquerdo temos os gráficos de pontos com retornos contra retornos dos pares de séries, que trazem uma forma visual de observar a correlação entre ativos.
+Note que, nos gráficos de pontos do SPXI11 com o BOVA11 (ou DIVO11, por exemplo) há quase uma figura circular, não indicando tendência, já entre SPXI11 e IVVB11 temos uma figura mais oval com inclinação bem definida.
+O mesmo gráfico oval aparace para a comparação entre diversas ETFs nacionais, como DIVO11 e GOVE11, por exemplo.
+No trigangulo superior direito, são apresentados os coeficientes de correlação calculados com o método de <a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson</a>, que é o padrão, entretanto também podem ser usados <a href="https://en.wikipedia.org/wiki/Kendall_rank_correlation_coefficient">Kendall</a> e <a href="https://en.wikipedia.org/wiki/Spearman's_rank_correlation_coefficient">Spearman</a>.
+Os tamanhos dos números e os asteriscos em vermelho representam a significância da correlação, quanto mais asteriscos (ou maior) é menor a probabilidade de que o coeficiente de correlação seja nulo.
+Para entender melhor este resultado da correlação dê uma olhada na função <code>cor.test</code>.</p>
+<p>Como último tópico vou apresentar a análise de risco e retorno.
+A função <code>chart.RiskReturnScatter</code> apresenta um gráfico de risco e retorno anuais, onde observa-se o retorno anual de cada ativo contra o risco do ativo no ano.</p>
+<div class="highlight"><pre><span></span>chart.RiskReturnScatter<span class="p">(</span>etfs_series<span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk indicadores_de_desempenho_etfs-13" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-13-1.png"></p>
+<p>O DIVO11 que apresentou o maior retorno, provavelmente deu dor de cabeça a alguns gestores, pois foi quem também apresentou o maior risco.
+O GOVE11 aparece como boa alternativa apresentando 5% a menos de volatilidade.
+O grupinho PIBB11, BOVA11 e SMAL11 são irmãos em risco e retorno e os ETFs baseaos em S&amp;P500 são só desgraça.</p>
+<p>Bem, ainda há mais análises disponíveis no <a href="https://cran.r-project.org/package=PerformanceAnalytics">PerformanceAnalytics</a>, mas essas ficam para outro post.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Indicadores de desempenho de ETFs';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+ 
+</body>
+</html>

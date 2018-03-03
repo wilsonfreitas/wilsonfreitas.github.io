@@ -27,6 +27,16 @@
 	<meta property="og:title" content="The quick and dirty term structure interpolator in R"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -93,7 +104,11 @@
 	<div itemprop="articleBody" class="article-body"><p>Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
 I use the many of the curves released by <a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;F Bovespa">BM&amp;F Bovespa</a> in that <a href="http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp" title="BVMF Curves">page</a>.
 In order to have the curves always at hand I've written that few lines of code to download and return an interpolator where the only argument is the number of days I want to interpolate.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>XML<span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>XML<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>bizdays<span class="p">)</span>
+
+cal <span class="o">&lt;-</span> create.calendar<span class="p">(</span>name<span class="o">=</span><span class="s">&#39;ANBIMA&#39;</span><span class="p">,</span> holidays<span class="o">=</span>holidaysANBIMA<span class="p">,</span> weekdays<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;saturday&#39;</span><span class="p">,</span> <span class="s">&#39;sunday&#39;</span><span class="p">))</span>
+bizdays.options<span class="o">$</span>set<span class="p">(</span>default.calendar<span class="o">=</span>cal<span class="p">)</span>
 
 <span class="m">.</span>get_curve_url <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>refdate<span class="p">,</span> ticker<span class="p">)</span> <span class="p">{</span>
     url <span class="o">&lt;-</span> <span class="s">&#39;http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp&#39;</span>
@@ -135,29 +150,29 @@ get_curve <span class="o">&lt;-</span> <span class="kr">function</span> <span cl
 
 
 <p>So, once you have loaded that code you can get the Brazilian interbank curve by calling:</p>
-<div class="highlight"><pre>irbrl <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>irbrl <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
 irbrl<span class="p">(</span><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">252</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>##  [1] 7,880000 8,010000 8,158363 8,369100 8,537173 8,655198 8,740000
-##  [8] 8,826095 8,895053 8,965071 9,050000 9,121180
+<div class="highlight"><pre><span></span>##  [1] 7.880000 8.010000 8.158363 8.369100 8.537173 8.655198 8.740000
+##  [8] 8.826095 8.895053 8.965071 9.050000 9.121180
 </pre></div>
 
 
 <p>The curve for US dollar deposits in Brazil</p>
-<div class="highlight"><pre>irusd <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;DOL&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>irusd <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;DOL&#39;</span><span class="p">)</span>
 irusd<span class="p">(</span><span class="kp">seq</span><span class="p">(</span><span class="m">30</span><span class="p">,</span> <span class="m">360</span><span class="p">,</span> by<span class="o">=</span><span class="m">30</span><span class="p">))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>##  [1] 0,3135554 0,6300000 0,8300000 1,0400000 1,1381183 1,2000000 1,2400000
-##  [8] 1,2699991 1,2900000 1,3200000 1,3400000 1,3592817
+<div class="highlight"><pre><span></span>##  [1] 0.3135554 0.6300000 0.8300000 1.0400000 1.1381183 1.2000000 1.2400000
+##  [8] 1.2699991 1.2900000 1.3200000 1.3400000 1.3592817
 </pre></div>
 
 
 <p>You could compare in the same chart curves of different dates</p>
-<div class="highlight"><pre>irbrl_20130613 <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>irbrl_20130613 <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-13&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
 irbrl_20130611 <span class="o">&lt;-</span> get_curve<span class="p">(</span><span class="s">&#39;2013-06-11&#39;</span><span class="p">,</span> <span class="s">&#39;PRE&#39;</span><span class="p">)</span>
 <span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">252</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">)</span> <span class="o">-&gt;</span> terms
 irbrl_20130611<span class="p">(</span>terms<span class="p">)</span> <span class="o">-&gt;</span> d11
@@ -174,21 +189,21 @@ grid<span class="p">()</span>
 </pre></div>
 
 
-<p><img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-plot-1.png" /> </p>
+<p><img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-plot-1.png"></p>
 <p>The function <code>str_supplant</code> was explained in another <a href="http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html">post</a>.
 I mostly use the tickers <code>PRE</code> for deposits in Brazilian Real and <code>DOL</code> for deposits in US Dollar.
 That code works pretty well for <code>EUR</code> (Euro deposits) interest rates, but it has to be adjusted to handle <code>DIC</code> and <code>DIM</code> tickers (IPCA and IGP-M inflation rates).</p>
 <p>As I told before that is a quick and dirt implementation but it is also quite useful.
 With far none effort you have at hand an interpolator for interest rate term structures that can easily be ported to any other curve feeder.</p>
 <p>Other point I'd like to mention is the huge effort, in my opinion, to build a attractive chart using the plot function, bellow I present an example using the <a href="http://ggplot2.org">ggplot2</a> package for the same data.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
 ir_df <span class="o">&lt;-</span> stack<span class="p">(</span><span class="kt">list</span><span class="p">(</span><span class="sb">`2014-06-11`</span><span class="o">=</span>d11<span class="p">,</span> <span class="sb">`2014-06-13`</span><span class="o">=</span>d13<span class="p">))</span>
 ir_df<span class="o">$</span>date <span class="o">&lt;-</span> terms
 ggplot<span class="p">(</span>data<span class="o">=</span>ir_df<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span><span class="kp">date</span><span class="p">,</span> y<span class="o">=</span>values<span class="p">,</span> colour<span class="o">=</span>ind<span class="p">))</span> <span class="o">+</span> geom_point<span class="p">()</span> <span class="o">+</span> geom_line<span class="p">()</span> <span class="o">+</span> xlab<span class="p">(</span><span class="s">&#39;Dates&#39;</span><span class="p">)</span> <span class="o">+</span> ylab<span class="p">(</span><span class="s">&#39;Rates&#39;</span><span class="p">)</span> <span class="o">+</span> theme<span class="p">(</span>legend.title<span class="o">=</span>element_blank<span class="p">())</span>
 </pre></div>
 
 
-<p><img alt="Brazilian Term Structure with ggplot2" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png" /> </p></div>
+<p><img alt="Brazilian Term Structure with ggplot2" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png"></p></div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
@@ -219,7 +234,7 @@ ggplot<span class="p">(</span>data<span class="o">=</span>ir_df<span class="p">,
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -230,16 +245,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

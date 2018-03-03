@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Wilson Freitas - apresentações</title><link href="http://wilsonfreitas.github.io/" rel="alternate"></link><link href="http://wilsonfreitas.github.io/feeds/apresentacoes.atom.xml" rel="self"></link><id>http://wilsonfreitas.github.io/</id><updated>2017-12-20T00:00:00-02:00</updated><entry><title>Modelagem de Séries Temporais com Python - SciPy-SP</title><link href="http://wilsonfreitas.github.io/posts/modelagem-de-series-temporais-com-python-scipy-sp.html" rel="alternate"></link><published>2017-12-20T00:00:00-02:00</published><updated>2017-12-20T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-12-20:/posts/modelagem-de-series-temporais-com-python-scipy-sp.html</id><summary type="html">&lt;p&gt;No dia 15/dez/2017 fiz uma apresentação no meetup do Scipy-SP, um spin-off do &lt;a href="https://www.meetup.com/pt-BR/Grupy-SP"&gt;Grupy-SP&lt;/a&gt;.
+O tema do evento foi "Bibliotecas Científicas no Python" e eu falei sobre 2 bibliotecas:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/statsmodels/statsmodels"&gt;statsmodels&lt;/a&gt;: statistical modeling and econometrics in Python&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/bashtage/arch"&gt;arch&lt;/a&gt;: ARCH models in Python&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ambas de séries temporais e econometria, de …&lt;/p&gt;</summary><content type="html">&lt;p&gt;No dia 15/dez/2017 fiz uma apresentação no meetup do Scipy-SP, um spin-off do &lt;a href="https://www.meetup.com/pt-BR/Grupy-SP"&gt;Grupy-SP&lt;/a&gt;.
+O tema do evento foi "Bibliotecas Científicas no Python" e eu falei sobre 2 bibliotecas:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://github.com/statsmodels/statsmodels"&gt;statsmodels&lt;/a&gt;: statistical modeling and econometrics in Python&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/bashtage/arch"&gt;arch&lt;/a&gt;: ARCH models in Python&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;ambas de séries temporais e econometria, de uma forma geral.&lt;/p&gt;
+&lt;p&gt;O evento foi na &lt;a href="https://www.facebook.com/eretz.bio/"&gt;Eretz.bio&lt;/a&gt; que é uma iniciativa da Sociedade Beneficente Israelita Brasileira Albert Einstein para fomentar empreendedorismo na área da saúde.
+Tiveram mais 3 apresentações além da minha:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Heitor Santos: Classificação de variantes genéticas no Kaggle: NLP e classes desbalanceadas&lt;/li&gt;
+&lt;li&gt;Renata Martins: Projeto de Machine Learning. Por onde eu começo e onde quero chegar?&lt;/li&gt;
+&lt;li&gt;Danilo Bellini: &lt;a href="https://github.com/danilobellini/notebooks/blob/master/2017-12-15_Sympy_101/2017-12-15_Sympy_101.ipynb"&gt;Sympy 101&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;O evento foi descontraído, a casa estava cheia e espero que em 2018 tenhamos mais eventos assim.&lt;/p&gt;
+&lt;p&gt;Segue o slideview da minha apresentação segue abaixo e o link para acesso direto está &lt;a href="http://wilsonfreitas.github.io/slides/grupy-dezembro-2017/index.html"&gt;aqui&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;
+&lt;iframe src="http://wilsonfreitas.github.io/slides/grupy-dezembro-2017/index.html" width="667" height="500" scrolling=”no”&gt;&lt;/iframe&gt;
+&lt;/center&gt;&lt;/p&gt;</content><category term="python"></category><category term="time series"></category><category term="statsmodels"></category><category term="arch"></category><category term="volatilidade"></category><category term="garch"></category></entry></feed>

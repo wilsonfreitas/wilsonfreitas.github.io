@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Captura de dados da Corrida de São Silvestre com Python—Parte 1"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/captura-de-dados-da-corrida-de-sao-silvestre-com-python-parte-1.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -89,7 +100,7 @@
 	</div>
 	<div itemprop="articleBody" class="article-body"><p>Eu gosto de praticar corrida de rua, e 2014 foi um ano fenomenal pois eu levei isso para o próximo nível, comecei a praticar meias maratonas.
 Em 2014 foram 4 começando com a Meia Maratona de SP em março e terminando com o Circuito Athenas em novembro.</p>
-<p><img alt="Corridas de 2014" src="/figure/corridas-2014.png" /></p>
+<p><img alt="Corridas de 2014" src="/figure/corridas-2014.png"></p>
 <p>A primeira primeira prova do ano, em março, foi terrível pois, estava o calor estava muito forte.
 Concluí a prova em 2h02m com muito sacrifício.
 Nas 3 provas seguintes eu fiz as marcas 1h48m, 1h49m, 1h47m, ou seja, consegui reduzir o meu tempo em 15m aproximadamente.
@@ -130,37 +141,37 @@ Digo rudimentar por que se eu quisesse um <em>DataFrame</em> de verdade seria me
 <h3>Definindo o <em>scrap</em></h3>
 <p>O <em>scrap</em> é fundamental pois ele determina como o conteúdo da página vai ser capturado de fato, após a captura realizada pelo <em>scrap</em> é massagem nos dados para que fiquem em um formato interesante para a análise.
 Os campeões estão dividos em décadas e em cada década eles são distribuídos em DIVs como este:</p>
-<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6 col-sm-6 col-xs-12&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;h2&gt;</span>Edwin Kipsang<span class="nt">&lt;/h2&gt;</span>
-<span class="nt">&lt;h4&gt;</span>89ª Corrida de São Silvestre – 2013<span class="nt">&lt;/h4&gt;</span>
-<span class="nt">&lt;p&gt;</span>Naturalidade:<span class="ni">&amp;nbsp;</span>Quênia<span class="nt">&lt;br&gt;</span>
-Equipe: -<span class="nt">&lt;br&gt;</span>
-Horário da Largada: 09h00<span class="nt">&lt;br&gt;</span>
-Tempo: 43min47<span class="nt">&lt;br&gt;</span>
-Percurso: 15 Km<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;&lt;strong&gt;</span>Percurso<span class="nt">&lt;/strong&gt;&lt;br&gt;</span>
-Largada: Av. Paulista, próximo à Rua Ministro Rocha Azevedo (sentido Consolação).<span class="nt">&lt;br&gt;</span>
-Chegada: Av. Paulista, 900, em frente ao Edifício da Fundação Cásper Líbero.<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;hr&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;col-lg-6 col-sm-6 col-xs-12&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Edwin Kipsang<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>89ª Corrida de São Silvestre – 2013<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Naturalidade:<span class="ni">&amp;nbsp;</span>Quênia<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+Equipe: -<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+Horário da Largada: 09h00<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+Tempo: 43min47<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+Percurso: 15 Km<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Percurso<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+Largada: Av. Paulista, próximo à Rua Ministro Rocha Azevedo (sentido Consolação).<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
+Chegada: Av. Paulista, 900, em frente ao Edifício da Fundação Cásper Líbero.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">hr</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 </pre></div>
 
 
 <p>Acesse uma página de campeões completa no <a href="http://www.saosilvestre.com.br/campeoes/campeoes-2010-2013/">link</a>.</p>
 <p>Os elementos de interesse são os títulos <code>h2</code> e <code>h4</code>, e os parágrafos.
 Para capturar dados com esta estrutura eu criei o seguinte <em>scrap</em>.</p>
-<div class="highlight"><pre><span class="n">split</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">sep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=-</span><span class="mi">1</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="n">maxsplit</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">split</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">sep</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=-</span><span class="mi">1</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">sep</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="n">maxsplit</span><span class="p">)</span>
 
 <span class="n">foreach</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">func</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">seq</span><span class="p">:</span> <span class="p">[</span><span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">]</span>
 
 <span class="k">class</span> <span class="nc">SaoSilvestreScrap</span><span class="p">(</span><span class="n">scraps</span><span class="o">.</span><span class="n">Scrap</span><span class="p">):</span>
-    <span class="n">names</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@id=&quot;content&quot;]/div/div/div/div/div/h2&#39;</span><span class="p">)</span>
-    <span class="n">races</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@id=&quot;content&quot;]/div/div/div/div/div/h4&#39;</span><span class="p">)</span>
-    <span class="n">info1</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@id=&quot;content&quot;]/div/div/div/div/div/p[1]&#39;</span><span class="p">,</span> <span class="nb">apply</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">),</span> <span class="n">foreach</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s1">&#39;//*[@id=&quot;content&quot;]/div/div/div/div/div/h2&#39;</span><span class="p">)</span>
+    <span class="n">races</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s1">&#39;//*[@id=&quot;content&quot;]/div/div/div/div/div/h4&#39;</span><span class="p">)</span>
+    <span class="n">info1</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s1">&#39;//*[@id=&quot;content&quot;]/div/div/div/div/div/p[1]&#39;</span><span class="p">,</span> <span class="nb">apply</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">),</span> <span class="n">foreach</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
     <span class="p">])</span>
-    <span class="n">info2</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s">&#39;//*[@id=&quot;content&quot;]/div/div/div/div/div/p[2]&#39;</span><span class="p">,</span> <span class="nb">apply</span><span class="o">=</span><span class="p">[</span>
-        <span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">),</span> <span class="n">foreach</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
+    <span class="n">info2</span> <span class="o">=</span> <span class="n">scraps</span><span class="o">.</span><span class="n">Attribute</span><span class="p">(</span><span class="n">xpath</span><span class="o">=</span><span class="s1">&#39;//*[@id=&quot;content&quot;]/div/div/div/div/div/p[2]&#39;</span><span class="p">,</span> <span class="nb">apply</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">),</span> <span class="n">foreach</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">)</span>
     <span class="p">])</span>
 </pre></div>
 
@@ -186,42 +197,42 @@ Eu espero que <code>names</code> contenha uma lista todos os nomes dos campeões
 <li>chegada</li>
 </ul>
 <p>Para extrair a informação que eu quero do texto eu criei uma subclasse de <code>textparser.TextParser</code>.</p>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">SaoSilvestreParser</span><span class="p">(</span><span class="n">textparser</span><span class="o">.</span><span class="n">TextParser</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SaoSilvestreParser</span><span class="p">(</span><span class="n">textparser</span><span class="o">.</span><span class="n">TextParser</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">parseNaturalidade</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;^Naturalidade:\s(.+)\s?$&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;pais&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="sa">r</span><span class="s1">&#39;^Naturalidade:\s(.+)\s?$&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;pais&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">parseHorarioLargada</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;^Horário da Largada:\s(\d?\d)h(\d\d)\s?$&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;horario&#39;</span><span class="p">,</span> <span class="s">&#39;{0}:{1}:00&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
+        <span class="sa">r</span><span class="s1">&#39;^Horário da Largada:\s(\d?\d)h(\d\d)\s?$&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;horario&#39;</span><span class="p">,</span> <span class="s1">&#39;{0}:{1}:00&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">parseHorarioLargada2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;^Horário da Largada:\s(\d+) horas&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;horario&#39;</span><span class="p">,</span> <span class="s">&#39;{0}:00:00&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
+        <span class="sa">r</span><span class="s1">&#39;^Horário da Largada:\s(\d+) horas&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;horario&#39;</span><span class="p">,</span> <span class="s1">&#39;{0}:00:00&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">parseTempo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;^Tempo\s?:\s?(\d\d)m(in)?(\d\d)s?&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;tempo&#39;</span><span class="p">,</span> <span class="s">&#39;00:{0}:{1}.000&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+        <span class="sa">r</span><span class="s1">&#39;^Tempo\s?:\s?(\d\d)m(in)?(\d\d)s?&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;tempo&#39;</span><span class="p">,</span> <span class="s1">&#39;00:{0}:{1}.000&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">parsePercurso</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;^Percurso:.*\s(\d+(\.\d+)?)\s?([Kk]?)m\s?$&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;percurso&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1000</span> <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;k&#39;</span> <span class="k">else</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="sa">r</span><span class="s1">&#39;^Percurso:.*\s(\d+(\.\d+)?)\s?([Kk]?)m\s?$&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;percurso&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1000</span> <span class="k">if</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;k&#39;</span> <span class="k">else</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">parseParticipantes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;^Participantes:\s(\d+\.\d+)\satletas\.\s?$&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;participantes&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)))</span>
+        <span class="sa">r</span><span class="s1">&#39;^Participantes:\s(\d+\.\d+)\satletas\.\s?$&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;participantes&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">parseLargada</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;Largada:\s(.+)\.?\s?$&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;largada&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="sa">r</span><span class="s1">&#39;Largada:\s(.+)\.?\s?$&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;largada&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">parseChegada</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;Chegada:\s(.+)\.?\s?$&#39;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;chegada&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="sa">r</span><span class="s1">&#39;Chegada:\s(.+)\.?\s?$&#39;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;chegada&#39;</span><span class="p">,</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">parseRace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">match</span><span class="p">):</span>
-        <span class="s">r&#39;^(\d+). Corrida de São Silvestre – (\d\d\d\d)a?$&#39;</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="s">&#39;corrida&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))),</span> <span class="p">(</span><span class="s">&#39;ano&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)))]</span>
+        <span class="sa">r</span><span class="s1">&#39;^(\d+). Corrida de São Silvestre – (\d\d\d\d)a?$&#39;</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;corrida&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))),</span> <span class="p">(</span><span class="s1">&#39;ano&#39;</span><span class="p">,</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)))]</span>
 
     <span class="k">def</span> <span class="nf">parseText</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">None</span>
@@ -236,7 +247,7 @@ Caso não ocorra um <em>match</em> o método retorna o padrão, que é executar 
 <p>A idéia aqui é passar os atributos <code>races</code>, <code>info1</code> e <code>info2</code> por <code>parse</code> e assim extrair a informação que me interessa.
 No entanto, temos listas e listas de listas e <code>parse</code> deve ser aplicado para cada elemento atômico.
 Por isso eu criei uma composição de funções que aplica <code>parse</code> a cada elemento atômico e remove os valores nulos, que não deram <em>match</em>.</p>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="o">*</span><span class="n">functions</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="o">*</span><span class="n">functions</span><span class="p">):</span>
     <span class="n">f</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">functions</span><span class="p">)</span>
     <span class="n">f</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
     <span class="k">return</span> <span class="nb">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">f</span><span class="p">)</span>
@@ -257,15 +268,15 @@ Agora veremos como juntar estes campos em uma estrutura tabular.</p>
 <p>Para juntar tudo em uma estrutura tabular antes eu preciso que todos os campos sigam o mesmo modelo, ou seja, preciso de tuplas com pares (nome, valor) de cada campo.
 Como vimos anteriormente, <code>races</code>, <code>info1</code> e <code>info2</code> foram gerados neste modelo, mas <code>names</code> não.
 Para resolver isso eu criei a função <code>keyfy</code></p>
-<div class="highlight"><pre><span class="n">keyfy</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">seq</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">x</span><span class="p">)],</span> <span class="n">seq</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="n">keyfy</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">seq</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[(</span><span class="n">key</span><span class="p">,</span> <span class="n">x</span><span class="p">)],</span> <span class="n">seq</span><span class="p">))</span>
 </pre></div>
 
 
 <p>que gera tuplas identificadas com os elementos de uma sequencia.</p>
 <p>O código abaixo mostra como utilizo <code>tinydf.DataFrame</code> para juntar todos os dados.</p>
-<div class="highlight"><pre><span class="n">ds</span> <span class="o">=</span> <span class="n">tinydf</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
-<span class="n">ds</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;nome&#39;</span><span class="p">,</span> <span class="s">&#39;pais&#39;</span><span class="p">,</span> <span class="s">&#39;corrida&#39;</span><span class="p">,</span> <span class="s">&#39;ano&#39;</span><span class="p">,</span> <span class="s">&#39;horario&#39;</span><span class="p">,</span> <span class="s">&#39;tempo&#39;</span><span class="p">,</span> <span class="s">&#39;percurso&#39;</span><span class="p">,</span> <span class="s">&#39;largada&#39;</span><span class="p">,</span> <span class="s">&#39;chegada&#39;</span><span class="p">]</span>
-<span class="n">names</span> <span class="o">=</span> <span class="n">keyfy</span><span class="p">(</span><span class="n">scrap</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="s">&#39;nome&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">tinydf</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;nome&#39;</span><span class="p">,</span> <span class="s1">&#39;pais&#39;</span><span class="p">,</span> <span class="s1">&#39;corrida&#39;</span><span class="p">,</span> <span class="s1">&#39;ano&#39;</span><span class="p">,</span> <span class="s1">&#39;horario&#39;</span><span class="p">,</span> <span class="s1">&#39;tempo&#39;</span><span class="p">,</span> <span class="s1">&#39;percurso&#39;</span><span class="p">,</span> <span class="s1">&#39;largada&#39;</span><span class="p">,</span> <span class="s1">&#39;chegada&#39;</span><span class="p">]</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">keyfy</span><span class="p">(</span><span class="n">scrap</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="s1">&#39;nome&#39;</span><span class="p">)</span>
 <span class="n">rows</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">info1</span> <span class="o">+</span> <span class="n">info2</span> <span class="o">+</span> <span class="n">race</span> <span class="o">+</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">info1</span><span class="p">,</span> <span class="n">info2</span><span class="p">,</span> <span class="n">race</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">infos1</span><span class="p">,</span> <span class="n">infos2</span><span class="p">,</span> <span class="n">races</span><span class="p">,</span> <span class="n">names</span><span class="p">)]</span>
 <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
     <span class="n">ds</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">**</span><span class="n">row</span><span class="p">)</span>
@@ -284,17 +295,17 @@ Estes erros são consequência da má qualidade dos dados e do fato de não have
 Vou analizar os dados capturados em outro post e neste momento vou detalhar melhor o tratamento dos dados.
 Vou também analizar a evolução dos tempos de corrida e relacionar com a temperatura, com o objetivo de identificar se a temperatura afeta o desempenho dos campeões.</p>
 <p>Por hora eu gerei um gráfico com a contagem de campeões por paises.</p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
 
-<span class="n">ss</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">&quot;https://raw.githubusercontent.com/wilsonfreitas/saosilvestre/master/saosilvestre.csv&quot;</span><span class="p">)</span>
-<span class="n">ss_pais</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">&#39;pais&#39;</span><span class="p">)</span>
-<span class="n">ss_pais</span><span class="o">.</span><span class="n">corrida</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&#39;bar&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<span class="n">ss</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://raw.githubusercontent.com/wilsonfreitas/saosilvestre/master/saosilvestre.csv&quot;</span><span class="p">)</span>
+<span class="n">ss_pais</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;pais&#39;</span><span class="p">)</span>
+<span class="n">ss_pais</span><span class="o">.</span><span class="n">corrida</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
 </pre></div>
 
 
-<p><img alt="Campeões da Corrida de São Silvestre por país" src="/figure/ss-pais-campeoes.png" /></p>
+<p><img alt="Campeões da Corrida de São Silvestre por país" src="/figure/ss-pais-campeoes.png"></p>
 <h2>Código final</h2>
 <p>Segue o código final como é executado.</p>
 <script src="http://gist-it.appspot.com/https://github.com/wilsonfreitas/saosilvestre/blob/master/saosilvestre.py">
@@ -332,7 +343,7 @@ Esse foi um trabalho interessante em que após tê-lo concluído eu achei que fi
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -343,16 +354,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

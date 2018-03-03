@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Computing EWMA"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/computing-ewma.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -85,13 +96,13 @@
 		</span>
 	</div>
 	<div itemprop="articleBody" class="article-body"><p>As a loop oriented developer—and long time user of old static typed languages—my first attempt to compute EWMA in R was</p>
-<div class="highlight"><pre><span class="nx">ewma</span><span class="p">.</span><span class="nx">loop</span> <span class="o">&lt;-</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rets</span><span class="p">,</span> <span class="nx">lambda</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">n</span> <span class="o">&lt;-</span> <span class="nx">length</span><span class="p">(</span><span class="nx">rets</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-    <span class="nx">sig</span><span class="p">.</span><span class="nx">s</span> <span class="o">&lt;-</span> <span class="nx">rep</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">n</span><span class="p">)</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="k">in</span> <span class="mi">2</span><span class="o">:</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">sig</span><span class="p">.</span><span class="nx">s</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span> <span class="o">&lt;-</span> <span class="nx">sig</span><span class="p">.</span><span class="nx">s</span><span class="cp">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="cp">]</span><span class="o">*</span><span class="nx">lambda</span> <span class="o">+</span> <span class="p">(</span><span class="nx">rets</span><span class="cp">[</span><span class="nx">i</span><span class="o">-</span><span class="mi">1</span><span class="cp">]</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">lambda</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>ewma.loop <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)</span> <span class="p">{</span>
+    n <span class="o">&lt;-</span> <span class="kp">length</span><span class="p">(</span>rets<span class="p">)</span><span class="m">+1</span>
+    sig.s <span class="o">&lt;-</span> <span class="kp">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> n<span class="p">)</span>
+    <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">2</span><span class="o">:</span>n<span class="p">)</span> <span class="p">{</span>
+        sig.s<span class="p">[</span>i<span class="p">]</span> <span class="o">&lt;-</span> sig.s<span class="p">[</span>i<span class="m">-1</span><span class="p">]</span><span class="o">*</span>lambda <span class="o">+</span> <span class="p">(</span>rets<span class="p">[</span>i<span class="m">-1</span><span class="p">]</span><span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="m">1</span> <span class="o">-</span> lambda<span class="p">)</span>
     <span class="p">}</span>
-    <span class="k">return</span><span class="p">(</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">tail</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">s</span><span class="p">,</span> <span class="nx">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="kr">return</span><span class="p">(</span><span class="kp">sqrt</span><span class="p">(</span><span class="kp">tail</span><span class="p">(</span>sig.s<span class="p">,</span> n<span class="m">-1</span><span class="p">)))</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -99,17 +110,17 @@
 <p>At a first sigh this implementation seemed to be good but from the perspective of an R developer it isn't.
 Avoiding loops would be a better.
 After a little research I found </p>
-<div class="highlight"><pre><span class="nx">ewma</span><span class="p">.</span><span class="nx">func</span> <span class="o">&lt;-</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rets</span><span class="p">,</span> <span class="nx">lambda</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">sig</span><span class="p">.</span><span class="nx">p</span> <span class="o">&lt;-</span> <span class="mi">0</span>
-    <span class="nx">sig</span><span class="p">.</span><span class="nx">s</span> <span class="o">&lt;-</span> <span class="nx">vapply</span><span class="p">(</span><span class="nx">rets</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">r</span><span class="p">)</span> <span class="nx">sig</span><span class="p">.</span><span class="nx">p</span> <span class="o">&lt;&lt;-</span> <span class="nx">sig</span><span class="p">.</span><span class="nx">p</span><span class="o">*</span><span class="nx">lambda</span> <span class="o">+</span> <span class="p">(</span><span class="nx">r</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">lambda</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">sig</span><span class="p">.</span><span class="nx">s</span><span class="p">))</span>
+<div class="highlight"><pre><span></span>ewma.func <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)</span> <span class="p">{</span>
+    sig.p <span class="o">&lt;-</span> <span class="m">0</span>
+    sig.s <span class="o">&lt;-</span> <span class="kp">vapply</span><span class="p">(</span>rets<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>r<span class="p">)</span> sig.p <span class="o">&lt;&lt;-</span> sig.p<span class="o">*</span>lambda <span class="o">+</span> <span class="p">(</span>r<span class="o">^</span><span class="m">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="m">1</span> <span class="o">-</span> lambda<span class="p">),</span> <span class="m">0</span><span class="p">)</span>
+    <span class="kr">return</span><span class="p">(</span><span class="kp">sqrt</span><span class="p">(</span>sig.s<span class="p">))</span>
 <span class="p">}</span>
 </pre></div>
 
 
 <p>This implementation looked clean and sexy to me and it also reveals the power of <code>*apply</code> functions.
 I decided to evaluate the performance of both implementations in order to find out which one is really the best.</p>
-<div class="highlight"><pre>lambda <span class="o">&lt;-</span> <span class="m">0.94</span>
+<div class="highlight"><pre><span></span>lambda <span class="o">&lt;-</span> <span class="m">0.94</span>
 rets <span class="o">&lt;-</span> <span class="m">0.02</span><span class="o">*</span>rnorm<span class="p">(</span><span class="m">100</span><span class="p">)</span>
 <span class="kp">system.time</span><span class="p">(</span> <span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.loop<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">))</span> <span class="p">)</span>
 <span class="c1"># user  system elapsed </span>
@@ -154,7 +165,7 @@ It is almost 2 times better and this is significant.</p>
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -165,16 +176,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

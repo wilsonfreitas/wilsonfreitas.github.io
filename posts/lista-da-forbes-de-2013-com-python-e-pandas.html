@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Lista da Forbes de 2013 com Python e Pandas"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/lista-da-forbes-de-2013-com-python-e-pandas.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -85,8 +96,7 @@
 		</span>
 	</div>
 	<div itemprop="articleBody" class="article-body"><p>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -119,15 +129,15 @@ Na sequência, vamos dar uma maqueada nos gráficos para valorizar a vizualizaç
 <div class="prompt input_prompt">In&nbsp;[235]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="o">%</span><span class="k">pylab</span> inline
-<span class="nb">print</span> <span class="s">&#39;python&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span>
-<span class="nb">print</span> <span class="s">&#39;pandas&#39;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span>
-<span class="nb">print</span> <span class="s">&#39;statsmodels&#39;</span><span class="p">,</span> <span class="n">sm</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">full_version</span>
+<span class="nb">print</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span>
+<span class="nb">print</span> <span class="s1">&#39;pandas&#39;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span>
+<span class="nb">print</span> <span class="s1">&#39;statsmodels&#39;</span><span class="p">,</span> <span class="n">sm</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">full_version</span>
 </pre></div>
 
 </div>
@@ -138,7 +148,11 @@ Na sequência, vamos dar uma maqueada nos gráficos para valorizar a vizualizaç
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Populating the interactive namespace from numpy and matplotlib
 python 2.7.6 (default, Nov 28 2013, 23:33:48) 
@@ -153,8 +167,7 @@ statsmodels 0.5.0.dev-1bbd4ca
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -168,7 +181,7 @@ statsmodels 0.5.0.dev-1bbd4ca
 <div class="prompt input_prompt">In&nbsp;[236]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">forbes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">&#39;lista-forbes-2014.csv&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">forbes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;lista-forbes-2014.csv&#39;</span><span class="p">)</span>
 <span class="n">forbes</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 
@@ -180,7 +193,11 @@ statsmodels 0.5.0.dev-1bbd4ca
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[236]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[236]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -198,8 +215,7 @@ dtype: object</pre>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -217,7 +233,7 @@ dtype: object</pre>
 <div class="prompt input_prompt">In&nbsp;[237]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">forbes</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">forbes</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -228,7 +244,11 @@ dtype: object</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[237]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[237]:</div>
+
+
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
@@ -296,8 +316,7 @@ dtype: object</pre>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -312,7 +331,7 @@ Dado que temos um conjunto finito gosto de utilizar um gráfico de barras para c
 <div class="prompt input_prompt">In&nbsp;[238]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">forbes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">forbes</span><span class="p">[</span><span class="s">&#39;Fortuna&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">forbes</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">forbes</span><span class="p">[</span><span class="s1">&#39;Fortuna&#39;</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -323,7 +342,11 @@ Dado que temos um conjunto finito gosto de utilizar um gráfico de barras para c
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[238]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[238]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -332,7 +355,11 @@ Dado que temos um conjunto finito gosto de utilizar um gráfico de barras para c
 
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -421,8 +448,7 @@ qAH/CspKAAAAAElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -440,7 +466,7 @@ Esta classe possui uma propriedade <code>groups</code> onde conseguimos ter um i
 <div class="prompt input_prompt">In&nbsp;[239]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">forbes_gb</span> <span class="o">=</span> <span class="n">forbes</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s">&quot;Setor&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">forbes_gb</span> <span class="o">=</span> <span class="n">forbes</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Setor&quot;</span><span class="p">)</span>
 <span class="n">forbes_gb</span><span class="o">.</span><span class="n">groups</span>
 </pre></div>
 
@@ -452,37 +478,41 @@ Esta classe possui uma propriedade <code>groups</code> onde conseguimos ter um i
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[239]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[239]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>{&apos;Alimentos&apos;: [7],
- &apos;A\xc3\xa7o&apos;: [51],
- &apos;Banco&apos;: [1, 10, 11, 25, 33, 39, 48, 52, 54],
- &apos;Banco e minera\xc3\xa7\xc3\xa3o&apos;: [15, 16, 17, 18],
- &apos;Bens de Consumo&apos;: [40],
- &apos;Cal\xc3\xa7ados&apos;: [38],
- &apos;Cerveja&apos;: [0, 2, 6, 9],
- &apos;Constru\xc3\xa7\xc3\xa3o&apos;: [22, 23, 24, 35, 36, 37, 50],
- &apos;Cosm\xc3\xa9ticos&apos;: [20, 26, 49],
- &apos;Diversificado&apos;: [12, 13, 14, 60, 61, 63],
- &apos;Educa\xc3\xa7\xc3\xa3o&apos;: [64],
- &apos;Etanol&apos;: [30],
- &apos;Ferro e minera\xc3\xa7\xc3\xa3o&apos;: [56],
- &apos;G\xc3\xa1s e petroqu\xc3\xadmica&apos;: [53],
- &apos;Hospitais&apos;: [44],
- &apos;Igreja/ M\xc3\xaddia&apos;: [55],
- &apos;Im\xc3\xb3veis&apos;: [42],
- &apos;Ind\xc3\xbastria&apos;: [41, 46, 47],
- &apos;Infraestrutura&apos;: [34],
- &apos;Investimentos&apos;: [31],
- &apos;M\xc3\xaddia&apos;: [3, 4, 5, 57, 58, 59],
- &apos;Papel&apos;: [62],
- &apos;Sa\xc3\xbade&apos;: [21, 28],
- &apos;Seguros&apos;: [32],
- &apos;Shopping&apos;: [43, 45],
- &apos;Tecnologia&apos;: [8],
- &apos;Varejo&apos;: [19, 27, 29]}</pre>
+<pre>{&#39;Alimentos&#39;: [7],
+ &#39;A\xc3\xa7o&#39;: [51],
+ &#39;Banco&#39;: [1, 10, 11, 25, 33, 39, 48, 52, 54],
+ &#39;Banco e minera\xc3\xa7\xc3\xa3o&#39;: [15, 16, 17, 18],
+ &#39;Bens de Consumo&#39;: [40],
+ &#39;Cal\xc3\xa7ados&#39;: [38],
+ &#39;Cerveja&#39;: [0, 2, 6, 9],
+ &#39;Constru\xc3\xa7\xc3\xa3o&#39;: [22, 23, 24, 35, 36, 37, 50],
+ &#39;Cosm\xc3\xa9ticos&#39;: [20, 26, 49],
+ &#39;Diversificado&#39;: [12, 13, 14, 60, 61, 63],
+ &#39;Educa\xc3\xa7\xc3\xa3o&#39;: [64],
+ &#39;Etanol&#39;: [30],
+ &#39;Ferro e minera\xc3\xa7\xc3\xa3o&#39;: [56],
+ &#39;G\xc3\xa1s e petroqu\xc3\xadmica&#39;: [53],
+ &#39;Hospitais&#39;: [44],
+ &#39;Igreja/ M\xc3\xaddia&#39;: [55],
+ &#39;Im\xc3\xb3veis&#39;: [42],
+ &#39;Ind\xc3\xbastria&#39;: [41, 46, 47],
+ &#39;Infraestrutura&#39;: [34],
+ &#39;Investimentos&#39;: [31],
+ &#39;M\xc3\xaddia&#39;: [3, 4, 5, 57, 58, 59],
+ &#39;Papel&#39;: [62],
+ &#39;Sa\xc3\xbade&#39;: [21, 28],
+ &#39;Seguros&#39;: [32],
+ &#39;Shopping&#39;: [43, 45],
+ &#39;Tecnologia&#39;: [8],
+ &#39;Varejo&#39;: [19, 27, 29]}</pre>
 </div>
 
 </div>
@@ -491,8 +521,7 @@ Esta classe possui uma propriedade <code>groups</code> onde conseguimos ter um i
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -509,7 +538,7 @@ Ou seja, vamos agregar a coluna Fortuna por Setor e somar o valores e para isso 
 <div class="prompt input_prompt">In&nbsp;[240]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">sector_fortune</span> <span class="o">=</span> <span class="n">forbes_gb</span><span class="p">[</span><span class="s">&#39;Fortuna&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sector_fortune</span> <span class="o">=</span> <span class="n">forbes_gb</span><span class="p">[</span><span class="s1">&#39;Fortuna&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">)</span>
 <span class="n">sector_fortune</span>
 </pre></div>
 
@@ -521,7 +550,11 @@ Ou seja, vamos agregar a coluna Fortuna por Setor e somar o valores e para isso 
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[240]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[240]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -562,8 +595,7 @@ Name: Fortuna, dtype: float64</pre>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -577,7 +609,7 @@ Name: Fortuna, dtype: float64</pre>
 <div class="prompt input_prompt">In&nbsp;[241]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">sector_fortune</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&quot;bar&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sector_fortune</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -588,7 +620,11 @@ Name: Fortuna, dtype: float64</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[241]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[241]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -597,7 +633,11 @@ Name: Fortuna, dtype: float64</pre>
 
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -1086,8 +1126,7 @@ YFMURZkIGrApiqJMBA3YFEVRJoIGbIqiKBNBAzZFUZSJ+D/RmGeE9Ocq/wAAAABJRU5ErkJggg==
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1104,7 +1143,7 @@ Observando rapidamente os grupos vimos que Banco e Construção eram os mais rep
 <div class="prompt input_prompt">In&nbsp;[242]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">sector_count</span> <span class="o">=</span> <span class="n">forbes_gb</span><span class="p">[</span><span class="s">&#39;Fortuna&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sector_count</span> <span class="o">=</span> <span class="n">forbes_gb</span><span class="p">[</span><span class="s1">&#39;Fortuna&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
 <span class="n">sector_count</span>
 </pre></div>
 
@@ -1116,7 +1155,11 @@ Observando rapidamente os grupos vimos que Banco e Construção eram os mais rep
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[242]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[242]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -1162,7 +1205,7 @@ Name: Fortuna, dtype: float64</pre>
 <div class="prompt input_prompt">In&nbsp;[243]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">sector_count</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&#39;bar&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sector_count</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1173,7 +1216,11 @@ Name: Fortuna, dtype: float64</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[243]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[243]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -1182,7 +1229,11 @@ Name: Fortuna, dtype: float64</pre>
 
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -1657,8 +1708,7 @@ NDBTFEUZGRqYKYqijMz/AVcsstG89g0wAAAAAElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1678,7 +1728,7 @@ NDBTFEUZGRqYKYqijMz/AVcsstG89g0wAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[244]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">sector_fortune_by_person</span> <span class="o">=</span> <span class="n">sector_fortune</span><span class="o">/</span><span class="n">sector_count</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sector_fortune_by_person</span> <span class="o">=</span> <span class="n">sector_fortune</span><span class="o">/</span><span class="n">sector_count</span>
 <span class="n">sector_fortune_by_person</span>
 </pre></div>
 
@@ -1690,7 +1740,11 @@ NDBTFEUZGRqYKYqijMz/AVcsstG89g0wAAAAAElFTkSuQmCC
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[244]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[244]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -1736,7 +1790,7 @@ Name: Fortuna, dtype: float64</pre>
 <div class="prompt input_prompt">In&nbsp;[245]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">sector_fortune_by_person</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&#39;bar&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sector_fortune_by_person</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1747,7 +1801,11 @@ Name: Fortuna, dtype: float64</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[245]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[245]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -1756,7 +1814,11 @@ Name: Fortuna, dtype: float64</pre>
 
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -2218,8 +2280,7 @@ AABJRU5ErkJggg==
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2240,8 +2301,8 @@ Este método ordena a coleção <em>in-place</em>.</p>
 <div class="prompt input_prompt">In&nbsp;[246]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">sector_fortune_by_person</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
-<span class="n">sector_fortune_by_person</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s">&#39;bar&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sector_fortune_by_person</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sector_fortune_by_person</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2252,7 +2313,11 @@ Este método ordena a coleção <em>in-place</em>.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[246]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[246]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -2261,7 +2326,11 @@ Este método ordena a coleção <em>in-place</em>.</p>
 
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -2717,8 +2786,7 @@ lLAJIcRKUMImhBArQQmbEEKsxP8BbHN/GSxMdNUAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2735,21 +2803,21 @@ Mãos a obra.</p>
 <div class="prompt input_prompt">In&nbsp;[247]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
 
 <span class="n">xpos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sector_fortune_by_person</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xpos</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector_fortune_by_person</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;#821122&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
-<span class="n">ticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sector_fortune_by_person</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xpos</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector_fortune_by_person</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#821122&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sector_fortune_by_person</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">xpos</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">ticklabels</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="k">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="k">False</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="k">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">get_xaxis</span><span class="p">()</span><span class="o">.</span><span class="n">tick_bottom</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis</span><span class="p">()</span><span class="o">.</span><span class="n">tick_left</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Setores&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Fortuna per capita (US$ bi)&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s">&#39;Forbes 2013/2014 - Fortunas per capita por Setor&#39;</span><span class="p">,</span>
-         <span class="n">horizontalalignment</span><span class="o">=</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Setores&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Fortuna per capita (US$ bi)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s1">&#39;Forbes 2013/2014 - Fortunas per capita por Setor&#39;</span><span class="p">,</span>
+         <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">transform</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2760,7 +2828,11 @@ Mãos a obra.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[247]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[247]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -2769,7 +2841,11 @@ Mãos a obra.</p>
 
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -3455,8 +3531,7 @@ qajIERERERERU1GRIyIiIiIipvI/rPONGD/T1CQAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3469,7 +3544,10 @@ Francamente não gosto do <strong>matplotlib</strong>, acho ele demasiadamente b
 
 </div>
 </div>
-</div></p></div>
+</div>
+ 
+
+</p></div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
@@ -3500,7 +3578,7 @@ Francamente não gosto do <strong>matplotlib</strong>, acho ele demasiadamente b
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -3511,16 +3589,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>rbcb</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Wilson Freitas" />
+    <meta name="date" content="2017-12-02" />
+    <link href="libs/remark-css/example.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# rbcb
+## Como usar?
+### Wilson Freitas
+### 2017-12-02
+
+---
+
+
+
+
+# rbcb
+
+`rbcb` é um pacote R para acessar dados disponibilizados pelo Banco Central do Brasil (BCB).
+
+Instale `rbcb` do [Github](https://github.com/wilsonfreitas/rbcb):
+
+
+```r
+devtools::install_github("wilsonfreitas/rbcb")
+```
+
+ou do [CRAN](https://cran.r-project.org):
+
+
+```r
+install.packages("rbcb")
+```
+
+---
+
+
+```r
+IBOVESPA &lt;- rbcb::get_series(7,
+                             last = 756, # 3 anos
+                             as = "xts")
+plot(IBOVESPA)
+```
+
+![](rbcb-como-usar_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+IPCA &lt;- rbcb::get_series(433,
+                         start_date = "2004-01-01",
+                         as = "ts",
+                         ts_options = list(frequency = 12,
+                                           start = c(2014, 1)))
+monthplot(IPCA, main = "IPCA agrupado em meses")
+```
+
+![](rbcb-como-usar_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+USDBRL &lt;- rbcb::get_currency("USD",
+                             start_date = "2014-01-01",
+                             end_date = "2017-11-30",
+                             as = "xts")
+plot(USDBRL$ask, main = "USDBRL ask price")
+```
+
+![](rbcb-como-usar_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+# `get_series`
+
+Baixa séries temporais do [SGS](https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries) (Sistema de Gestão de Séries Temporais).
+
+
+```r
+rbcb::get_series(code, start_date, end_date, last, as)
+```
+
+- `code`: código númerico que identifica as séries temporais.
+  - Exemplos: IBOVESPA = 7, IPCA = 433, Dólar = 1
+  - Os códigos são obtidos na busca do [SGS](https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries)
+  
+- `start_date` e `end_date`: datas do intervalo desejado.
+  - Se `start_date = NULL` retorna dados desde o começo da série
+  - Se `end_date = NULL` retorna dados até a última data disponível
+  
+- `last`: retorna os últimos `last` pontos da série
+  - Se `last` é fornecido `start_date` e `end_date` são ignorados
+  
+- `as`: define o tipo de retorno. O padrão é `"tibble"` e as alternativas são `"xts"`, `"ts"`, `"data.frame"` ou `"text"` que retorna o JSON recebido.
+
+---
+
+# Onde encontrar as séries?
+
+Encontre o `code` das séries no [SGS](https://www3.bcb.gov.br/sgspub/localizarseries/localizarSeries.do?method=prepararTelaLocalizarSeries).
+
+![SGS](SGS_busca.png)
+
+---
+
+# Exemplo de busca - séries do IBGE
+
+![SGS séries do IBGE](SGS_IBGE.png)
+
+---
+class: inverse, middle, center
+
+# Dicas
+
+---
+
+# Diferentes retornos (1)
+
+`tibble` (padrão), `xts`, `ts`, `data.frame` e `text` que retorna o JSON.
+
+.pull-left[
+
+
+```r
+rbcb::get_series(
+  7, last = 5
+)
+```
+
+```
+## # A tibble: 5 x 2
+##         date   `7`
+## *     &lt;date&gt; &lt;dbl&gt;
+## 1 2017-11-27 74058
+## 2 2017-11-28 74139
+## 3 2017-11-29 72700
+## 4 2017-11-30 71970
+## 5 2017-12-01 72264
+```
+
+]
+
+.pull-right[
+
+
+```r
+rbcb::get_series(
+  7, last = 5,
+  as = 'xts'
+)
+```
+
+```
+##                7
+## 2017-11-27 74058
+## 2017-11-28 74139
+## 2017-11-29 72700
+## 2017-11-30 71970
+## 2017-12-01 72264
+```
+
+]
+
+---
+
+# Diferentes retornos (2)
+
+As séries `ts`&lt;sup&gt;*&lt;/sup&gt; podem ser configuradas no argumento `ts_options`.
+
+
+```r
+rbcb::get_series(
+  433, start_date = "2017-01-01", end_date = "2018-01-01",
+  as = 'ts', ts_options = list(frequency = 12, start = c(2017, 1))
+)
+```
+
+```
+##        Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct
+## 2017  0.38  0.33  0.25  0.14  0.31 -0.23  0.24  0.19  0.16  0.42
+```
+
+Os elementos de `ts_options` são passados como argumentos para `ts`.
+
+.footnote[[*] Indicado para séries com frequência regular: mensais, anuais, trimestrais, etc.]
+
+---
+
+# Nomear as séries
+
+.pull-left[
+
+### sem nome
+
+
+```r
+rbcb::get_series(
+  7, last = 5,
+  as = 'xts'
+)
+```
+
+```
+               7
+2017-11-27 74058
+2017-11-28 74139
+2017-11-29 72700
+2017-11-30 71970
+2017-12-01 72264
+```
+
+]
+
+.pull-right[
+
+### com nome
+
+
+```r
+rbcb::get_series(
+  7, last = 5,
+  as = 'xts', name = "IBOVESPA"
+)
+```
+
+```
+           IBOVESPA
+2017-11-27    74058
+2017-11-28    74139
+2017-11-29    72700
+2017-11-30    71970
+2017-12-01    72264
+```
+
+]
+
+.footnote[Objetos `ts` ignoram o atributo `names` que define os nomes das variáveis.]
+
+---
+
+# `get_currency`
+
+Baixa as séries temporais de moedas do site do BCB.
+
+As cotações das séries são em reais (BRL).
+
+
+```r
+rbcb::get_currency(symbol, start_date, end_date, as)
+```
+
+- `code`: código que identifica a moeda.
+  - Exemplos: USD = dólar americano, JPY = íene, TRY = líra turca
+  - Para encontrar o código de todas as moedas executar `rbcb::list_currencies()`
+  
+- `start_date` e `end_date`: datas do intervalo desejado.
+  - Se `start_date = NULL` retorna dados desde o começo da série
+  - Se `end_date = NULL` retorna dados até a última data disponível
+  
+- `as`: define o tipo de retorno. O padrão é `"tibble"` e as alternativas são `"xts"`, `"ts"`, `"data.frame"` ou `"text"` que retorna o JSON recebido.
+
+---
+
+# Para listar todas as moedas disponíveis
+
+
+```r
+rbcb::list_currencies()
+```
+
+```
+## Warning in as.POSIXlt.POSIXct(Sys.time()): unknown timezone 'zone/tz/2017c.
+## 1.0/zoneinfo/America/Sao_Paulo'
+```
+
+```
+## # A tibble: 216 x 5
+##                           name  code symbol          country_name
+##  *                       &lt;chr&gt; &lt;dbl&gt;  &lt;chr&gt;                 &lt;chr&gt;
+##  1           AFEGANE AFEGANIST     5    AFN           AFEGANISTAO
+##  2            RANDE/AFRICA SUL   785    ZAR         AFRICA DO SUL
+##  3             LEK ALBANIA REP   490    ALL ALBANIA, REPUBLICA DA
+##  4                        EURO   978    EUR              ALEMANHA
+##  5               KWANZA/ANGOLA   635    AOA                ANGOLA
+##  6       DOLAR CARIBE ORIENTAL   215    XCD              ANGUILLA
+##  7       DOLAR CARIBE ORIENTAL   215    XCD     ANTIGUA E BARBUDA
+##  8 GUILDER ANTILHAS HOLANDESAS   325    ANG   ANTILHAS HOLANDESAS
+##  9           RIAL/ARAB SAUDITA   820    SAR        ARABIA SAUDITA
+## 10              DINAR ARGELINO    95    DZD               ARGELIA
+## # ... with 206 more rows, and 1 more variables: country_code &lt;dbl&gt;
+```
+
+---
+
+
+```r
+ccr_USD &lt;- rbcb::get_currency("USD", as = "xts",
+                              start_date = "2014-01-01",
+                              end_date = "2017-11-30")
+ccr_EUR &lt;- rbcb::get_currency("EUR", as = "xts",
+                              start_date = "2014-01-01",
+                              end_date = "2017-11-30")
+ccr &lt;- merge(ccr_EUR$ask, ccr_USD$ask)
+colnames(ccr) &lt;- c("EUR", "USD")
+plot(ccr, legend.loc = "topleft", main = "")
+```
+
+![](rbcb-como-usar_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {window.dispatchEvent(new Event('resize'));});
+(function() {var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler"); if (!r) return; s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }"; d.head.appendChild(s);})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

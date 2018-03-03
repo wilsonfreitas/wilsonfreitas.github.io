@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Pérolas escondidas do R: função filter — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Pérolas escondidas do R: função filter; Date: 2016-03-06; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Pérolas escondidas do R: função filter"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/perolas-escondidas-do-r-funcao-filter.html"/>
+	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Pérolas escondidas do R: função filter</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2016-03-06T00:00:00-03:00" itemprop="datePublished">06/03/2016</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/data-science.html" rel="category">data science</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/filter.html" rel="tag">filter</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Tem umas funções no R que são difíceis de entender como elas funcionam, mas quando se descobre ai você não para mais de usar.
+Bem, esse é o meu caso com a função <code>filter</code>.
+<code>filter</code> hoje em computação me remete mais a transformação, algo como <code>map</code> do que um filtro estocástico, como é o caso da função <code>filter</code>.
+Não vou aqui ficar explicando o que é um filtro estocástico, até porque eu não sei nada sobre isso.
+Sei apenas entra um sinal de um lado e do outro sai um ruído branco, ou seja, o sinal é filtrado.
+Uma propriedade interessante destes filtros é a reversibilidade, isto é, estes filtros são reversíveis de forma que se você devolve o ruído o sinal aparece do outro lado.
+O estudo destes filtros deu origem a família de modelos ARMA (autoregressivos e de médias móveis) e são exatamente os processos estocásticos dessa família que é possível reproduzir com a função <code>filter</code>.
+Vou aqui mostrar como gerar os processos autoregressivos (AR) e médias móveis de diferentes ordens e tipos.</p>
+<p>Segue a assinatura da função <code>filter</code>.</p>
+<div class="highlight"><pre><span></span><span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">filter</span><span class="p">,</span> <span class="nx">method</span> <span class="o">=</span> <span class="nx">c</span><span class="p">(</span><span class="s2">&quot;convolution&quot;</span><span class="p">,</span> <span class="s2">&quot;recursive&quot;</span><span class="p">),</span> <span class="nx">sides</span> <span class="o">=</span> <span class="mi">2</span><span class="nx">L</span><span class="p">,</span> <span class="nx">circular</span> <span class="o">=</span> <span class="nx">FALSE</span><span class="p">,</span> <span class="nx">init</span> <span class="o">=</span> <span class="nx">NULL</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Em um primeiro olhar tudo isso parece meio confuso, e de fato é, pessoalmente quebraria essa função e duas, mas esse é um dos pontos negativos do R, o design de diversas funções, principalmente as mais antigas não é muito intuitivo para usuários nos dias atuais, acho que o mesmo acontece com PHP.</p>
+<h2>Processos Autoregressivos</h2>
+<p>Para gerar processos autoregressivos considere a seguinte <em>assinatura</em> de <code>filter</code>:</p>
+<div class="highlight"><pre><span></span><span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">filter</span><span class="p">,</span> <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;recursive&quot;</span><span class="p">,</span> <span class="nx">init</span><span class="o">=</span><span class="nx">NULL</span><span class="p">)</span>
+</pre></div>
+
+
+<p>onde <code>x</code> é um vetor com o sinal a ser incrementado a cada passo, o argumento <code>filter</code> é um vetor com os coeficientes do filtro, <code>method</code> é <code>"recursive"</code> e <code>init</code> é o estado inicial do processo.</p>
+<p>Considerando o sinal de entrada $x_t$ e os coeficientes $\phi_i$ (onde $i = 1,\dots, n$) do filtro, a saída é dada por</p>
+<p>$$
+y_t = \sum_{i=1}^n \phi_1 y_{t-i} + x_t
+$$</p>
+<p>Dessa forma <code>filter=c(phi_1, ..., phi_n)</code>, <code>x=x_t</code> e <code>init</code> deve ser um vetor de mesmo comprimento de <code>filter</code> pois se considerarmos o estado inicial de $y_t$ temos $n$ termos autoregressivos que devem ser definidos para darmos início a recursão.</p>
+<p>A equação acima define a estrutura de entradas da função <code>filter</code> de forma que se for possível representar um processo neste formato, é possível utilizar a função <code>filter</code> para reproduzir o processo.</p>
+<h3>Processo AR(1) — Autoregressivo de primeira ordem</h3>
+<p>Tipicamente um processo AR(1) é definido como:</p>
+<p>$$
+y_t = \phi_0 + \phi_1 y_{t-1} + x_t
+$$</p>
+<p>onde $y_t$ é dito autoregressivo por utilizar o seu estado <em>passado</em>, $y_{t-1}$, para descrever o seu estado corrente, $y_t$.
+Os coeficientes $\phi_0$ e $\phi_1$ são coeficientes do processo, o estado inicial $y_0$ deve ser definido, assim como o sinal $x_t$.</p>
+<p>Para utilizar a função <code>filter</code> para gerar um AR(1) vamos reescrever o processo de outra forma</p>
+<p>$$
+\begin{align}
+y_t &amp; = \phi_1 y_{t-1} + (\phi_0 + x_t) \\
+    &amp; = \phi_1 y_{t-1} + x^{\prime}_t
+\end{align}
+$$</p>
+<p>Dessa forma o termo autoregressivo é aplicado ao coeficiente $\phi_1$.
+A chamada a <code>filter</code> fica:</p>
+<div class="highlight"><pre><span></span>ar1 <span class="o">&lt;-</span> stats<span class="o">::</span>filter<span class="p">(</span>phi_0 <span class="o">+</span> x_t<span class="p">,</span> filter<span class="o">=</span>phi_1<span class="p">,</span> method<span class="o">=</span><span class="s">&#39;recursive&#39;</span><span class="p">,</span> init<span class="o">=</span>y_0<span class="p">)</span>
+</pre></div>
+
+
+<p>Vamos gerar alguns processos e visualizar os dados:</p>
+<div class="highlight"><pre><span></span>x_t <span class="o">&lt;-</span> rnorm<span class="p">(</span><span class="m">1000</span><span class="p">)</span><span class="o">*</span><span class="m">0.1</span>
+ar <span class="o">&lt;-</span> stack<span class="p">(</span><span class="kt">list</span><span class="p">(</span>
+    ex1<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span>stats<span class="o">::</span>filter<span class="p">(</span><span class="m">0.2</span> <span class="o">+</span> x_t<span class="p">,</span> <span class="m">0.1</span><span class="p">,</span> method<span class="o">=</span><span class="s">&quot;recursive&quot;</span><span class="p">,</span> init<span class="o">=</span><span class="m">0</span><span class="p">)),</span>
+    ex2<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span>stats<span class="o">::</span>filter<span class="p">(</span><span class="m">0.5</span> <span class="o">+</span> x_t<span class="p">,</span> <span class="m">0.2</span><span class="p">,</span> method<span class="o">=</span><span class="s">&quot;recursive&quot;</span><span class="p">,</span> init<span class="o">=</span><span class="m">0.7</span><span class="p">)),</span>
+    ex3<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span>stats<span class="o">::</span>filter<span class="p">(</span><span class="m">0.7</span> <span class="o">+</span> x_t<span class="p">,</span> <span class="m">0.8</span><span class="p">,</span> method<span class="o">=</span><span class="s">&quot;recursive&quot;</span><span class="p">,</span> init<span class="o">=</span><span class="m">0.1</span><span class="p">))</span>
+<span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+ggplot<span class="p">(</span>ar<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span><span class="kp">rep</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">1000</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> y<span class="o">=</span>values<span class="p">,</span> colour<span class="o">=</span>ind<span class="p">))</span> <span class="o">+</span> geom_line<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk r-lang-filter-2" src="http://wilsonfreitas.github.io/figure/r-lang-filter-2-1.png"></p>
+<h2>Médias Móveis</h2>
+<p>Para calcular a média móvel de uma série temporal considere a seguinte <em>assinatura</em> de <code>filter</code>:</p>
+<div class="highlight"><pre><span></span><span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">filter</span><span class="p">,</span> <span class="nx">method</span><span class="o">=</span><span class="s2">&quot;convolution&quot;</span><span class="p">,</span> <span class="nx">sides</span><span class="o">=</span><span class="mi">2</span><span class="nx">L</span><span class="p">,</span> <span class="nx">circular</span><span class="o">=</span><span class="nx">FALSE</span><span class="p">)</span>
+</pre></div>
+
+
+<p>onde, assim como no caso autoregressivo <code>x</code> é um vetor com o sinal a ser incrementado a cada passo e o argumento <code>filter</code> é um vetor com os coeficientes da média móvel e este argumento determina a quantidade de elementos da média móvel.
+<code>method</code> é <code>"convolution"</code>, <code>sides</code> refere-se ao modo como a janela móvel do cálculo da média está posicionada, <code>sides=1L</code> para médias móveis apenas com valores passados e <code>sides=2L</code> para médias móveis com janela centrada.
+O argumento <code>circular</code> torna o sinal <code>x</code> circular de forma que a média móvel dos instantes iniciais utiliza elementos dos instantes finais.</p>
+<p>Abaixo listo alguns exemplos do posicionamento da janela móvel em relação com a definição dos parâmetros <code>side</code> e <code>circular</code>.</p>
+<h4>Exemplo 1: <code>sides=1</code> média móvel com janela de 5 elementos calculada em $x_9$</h4>
+<p>$$
+x_0, x_1, x_2, x_3, x_4, \underbrace{x_5, x_6, x_7, x_8, x_9}_{\texttt{sides=1}}
+$$</p>
+<h4>Exemplo 2: <code>sides=2</code> média móvel com janela de 5 elementos centrada calculada em $x_7$</h4>
+<p>$$
+x_0, x_1, x_2, x_3, x_4, \underbrace{x_5, x_6, x_7, x_8, x_9}_{\texttt{sides=2}}
+$$</p>
+<h4>Exemplo 3: <code>sides=1, circular=TRUE</code> média móvel circular com janela de 5 elementos calculada em $x_2$</h4>
+<p>$$
+\underbrace{x_8, x_9, x_0, x_1, x_2}_{\texttt{sides=1,circular=T}}, x_3, x_4, x_5, x_6, x_7, x_8, x_9
+$$</p>
+<h4>Exemplo 4: <code>sides=2, circular=TRUE</code> média móvel circular com janela de 5 elementos centrada calculada em $x_9$</h4>
+<p>$$
+x_8, x_9, x_0, x_1, x_2, x_3, x_4, x_5, x_6, \underbrace{x_7, x_8, x_9, x_0, x_1}_{\texttt{sides=2,circular=T}}
+$$</p>
+<h3>Média Móvel Simples</h3>
+<p>A média móvel simples, ou aritmética, é muito usada análise técnica de séries de preço.
+Vou apresentar um exemplo uma média móvel simples para a série de preços da PETR4.
+Abaixo segue a preparação dos dados, eu utilizo os preços de fechamento da PETR4, ordeno por data e seleciono apenas o ano de 2012.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>lubridate<span class="p">)</span>
+ds <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&#39;datasets/PETR4.daily.raw.csv&#39;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;,&#39;</span><span class="p">,</span> header<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> stringsAsFactors<span class="o">=</span><span class="bp">F</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    mutate<span class="p">(</span>Date<span class="o">=</span><span class="kp">as.Date</span><span class="p">(</span>Date<span class="p">))</span> <span class="o">%&gt;%</span>
+    select<span class="p">(</span>Date<span class="p">,</span> Close<span class="p">)</span> <span class="o">%&gt;%</span>
+    arrange<span class="p">(</span>Date<span class="p">)</span> <span class="o">%&gt;%</span>
+    filter<span class="p">(</span>year<span class="p">(</span>Date<span class="p">)</span> <span class="o">==</span> <span class="m">2012</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Utilizo os dados de fechamento como o sinal para o cálculo da média móvel com a função filter.
+Como eu importei o pacote <code>dplyr</code> que também tem uma função filter, eu preciso fazer uma referência ao pacote <code>stats</code> para evitar o conflito de nomes de funções, por isso faço a chamada a <code>stats::filter</code>.</p>
+<div class="highlight"><pre><span></span>ma <span class="o">&lt;-</span> stats<span class="o">::</span>filter<span class="p">(</span>ds<span class="o">$</span>Close<span class="p">,</span> filter<span class="o">=</span><span class="kp">rep</span><span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="m">21</span><span class="p">,</span> <span class="m">21</span><span class="p">),</span> method<span class="o">=</span><span class="s">&quot;convolution&quot;</span><span class="p">,</span> sides<span class="o">=</span><span class="m">1</span><span class="p">,</span> circular<span class="o">=</span><span class="bp">F</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Calculei uma média móvel simples de 21 dias (equivalente a um mês em dias úteis) com <code>sides=1</code> e <code>circular=F</code> .
+Abaixo organizo os dados da série de preços e da média móvel para apresentar em um gráfico do ggplot.</p>
+<div class="highlight"><pre><span></span>ds.ma <span class="o">&lt;-</span> stack<span class="p">(</span><span class="kt">list</span><span class="p">(</span>
+    Close<span class="o">=</span>ds<span class="o">$</span>Close<span class="p">,</span>
+    MA<span class="o">=</span><span class="kp">as.numeric</span><span class="p">(</span>ma<span class="p">)</span>
+<span class="p">))</span>
+ds.ma<span class="o">$</span>Date <span class="o">&lt;-</span> ds<span class="o">$</span>Date
+ggplot<span class="p">(</span>ds.ma<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>Date<span class="p">,</span> y<span class="o">=</span>values<span class="p">,</span> colour<span class="o">=</span>ind<span class="p">))</span> <span class="o">+</span> geom_line<span class="p">()</span> <span class="o">+</span> theme_light<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk r-lang-filter-5" src="http://wilsonfreitas.github.io/figure/r-lang-filter-5-1.png"></p>
+<p>Note que há um deslocamento da média móvel causado pela definição de <code>circular=F</code>, pois a série de preços não é estacionária, não faz sentido utilizar <code>circular</code>.
+Entretanto, para a série de retornos já seria uma possibilidade.</p>
+<h2>Exemplos de processos com filter</h2>
+<h3>Processo AR(2)</h3>
+<p>Definição:</p>
+<p>$$
+\begin{align}
+y_t &amp; = \phi_0 + \phi_1 y_{t-1} + \phi_2 y_{t-2} + x_t \\
+    &amp; = \phi_1 y_{t-1} + \phi_2 y_{t-2} + \phi_0 + x_t \\
+    &amp; = \phi_1 y_{t-1} + \phi_2 y_{t-2} + x^\prime_t \\
+\end{align}
+$$</p>
+<p>Código:</p>
+<div class="highlight"><pre><span></span>filter(phi_0 + x_t, filter=c(phi_1, phi_2), method=&#39;recursive&#39;, init=c(y_0, y_m1))
+</pre></div>
+
+
+<p>onde <code>y_m1=</code> $y_{-1}$</p>
+<h3>Média Móvel Exponencial (EWMA)</h3>
+<p>Definição:</p>
+<p>$$
+\begin{align}
+y_t &amp; = \phi y_{t-1} + (1 - \phi)x_t \\
+    &amp; = \phi y_{t-1} + x^\prime_t
+\end{align}
+$$</p>
+<p>onde $0 &lt; \phi &lt; 1$.</p>
+<p>Código:</p>
+<div class="highlight"><pre><span></span>filter((1 - phi)*x_t, filter=phi, method=&#39;recursive&#39;, init=y_0)
+</pre></div>
+
+
+<h3>Média Móvel Simples com 3 elementos</h3>
+<p>Definição:</p>
+<p>$$
+y_t = \phi_1 x_t + \phi_2 x_{t-1} + \phi_3 x_{t-2}
+$$</p>
+<p>Código:</p>
+<div class="highlight"><pre><span></span>filter(x, filter=c(phi_1, phi_2, phi_3), method=&quot;convolution&quot;, sides=1L, circular=FALSE)
+</pre></div>
+
+
+<h3>Média Móvel centrada com 3 elementos</h3>
+<p>Definição:</p>
+<p>$$
+y_t = \phi_1 x_{t+1} + \phi_2 x_{t} + \phi_3 x_{t-1}
+$$</p>
+<p>Código:</p>
+<div class="highlight"><pre><span></span>filter(x, filter=c(phi_1, phi_2, phi_3), method=&quot;convolution&quot;, sides=2L, circular=FALSE)
+</pre></div>
+
+
+<h3>Processo MA(1)</h3>
+<p>Definição:</p>
+<p>$$
+\begin{align}
+y_t &amp; = x_t - \theta x_{t-1} \\
+    &amp; = \phi_1 x_t + \phi_2 x_{t-1}
+\end{align}
+$$</p>
+<p>onde $\phi_1 = 1$ e $\phi_2 = -\theta$</p>
+<p>Código:</p>
+<div class="highlight"><pre><span></span>filter(x, filter=c(1, -theta), method=&quot;convolution&quot;, sides=1L, circular=FALSE)
+</pre></div>
+
+
+<h3>Processo MA(2)</h3>
+<p>Definição:</p>
+<p>$$
+\begin{align}
+y_t &amp; = x_t - \theta_1 x_{t-1} - \theta_2 x_{t-2} \\
+    &amp; = \phi_1 x_t + \phi_2 x_{t-1} + \phi_3 x_{t-2}
+\end{align}
+$$</p>
+<p>onde $\phi_1 = 1$, $\phi_2 = -\theta_1$ e $\phi_3 = -\theta_2$</p>
+<p>Código:</p>
+<div class="highlight"><pre><span></span>filter(x, filter=c(1, -theta_1, -theta_2), method=&quot;convolution&quot;, sides=1L, circular=FALSE)
+</pre></div></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Pérolas escondidas do R: função filter';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+ 
+</body>
+</html>

@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Quandl uma ótima forma de obter dados estruturados em Python"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -82,8 +93,7 @@
 		</span>
 	</div>
 	<div itemprop="articleBody" class="article-body"><p>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -139,7 +149,7 @@ O Quandl precisa do <strong>numpy</strong> e do <strong>pandas</strong> para fun
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">Quandl</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">Quandl</span>
 </pre></div>
 
 </div>
@@ -147,8 +157,7 @@ O Quandl precisa do <strong>numpy</strong> e do <strong>pandas</strong> para fun
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -163,7 +172,7 @@ No exemplo abaixo vamos utilizar o <em>ticker</em> <code>GOOG/BVMF_PETR4</code> 
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">petr4</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;GOOG/BVMF_PETR4&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">petr4</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GOOG/BVMF_PETR4&quot;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="n">petr4</span><span class="o">.</span><span class="n">index</span>
 <span class="nb">print</span> <span class="n">petr4</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -176,12 +185,16 @@ No exemplo abaixo vamos utilizar o <em>ticker</em> <code>GOOG/BVMF_PETR4</code> 
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>No authentication tokens found: usage will be limited.
 See www.quandl.com/api for more information.
 Returning Dataframe for  GOOG/BVMF_PETR4
-&lt;class &apos;pandas.tseries.index.DatetimeIndex&apos;&gt;
+&lt;class &#39;pandas.tseries.index.DatetimeIndex&#39;&gt;
 [2003-06-02 00:00:00, ..., 2014-03-28 00:00:00]
 Length: 2682, Freq: None, Timezone: None
             Open  High   Low  Close    Volume
@@ -201,8 +214,7 @@ Date
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -216,7 +228,7 @@ Date
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">petr4_np</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;GOOG/BVMF_PETR4&quot;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s">&#39;numpy&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">petr4_np</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GOOG/BVMF_PETR4&quot;</span><span class="p">,</span> <span class="n">returns</span><span class="o">=</span><span class="s1">&#39;numpy&#39;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="n">petr4_np</span><span class="o">.</span><span class="n">shape</span>
 <span class="nb">print</span> <span class="n">petr4_np</span>
 </pre></div>
@@ -229,17 +241,21 @@ Date
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>No authentication tokens found: usage will be limited.
 See www.quandl.com/api for more information.
 (2682,)
-[(&apos;2003-06-02&apos;, 6.58, 6.68, 6.54, 6.56, 7481600.0)
- (&apos;2003-06-03&apos;, 6.56, 6.56, 6.5, 6.55, 6329600.0)
- (&apos;2003-06-04&apos;, 6.62, 6.78, 6.58, 6.75, 9747200.0) ...,
- (&apos;2014-03-26&apos;, 14.55, 14.69, 14.35, 14.4, 29462600.0)
- (&apos;2014-03-27&apos;, 14.39, 15.57, 14.32, 15.57, 77279000.0)
- (&apos;2014-03-28&apos;, 15.57, 15.77, 15.2, 15.66, 42202400.0)]
+[(&#39;2003-06-02&#39;, 6.58, 6.68, 6.54, 6.56, 7481600.0)
+ (&#39;2003-06-03&#39;, 6.56, 6.56, 6.5, 6.55, 6329600.0)
+ (&#39;2003-06-04&#39;, 6.62, 6.78, 6.58, 6.75, 9747200.0) ...,
+ (&#39;2014-03-26&#39;, 14.55, 14.69, 14.35, 14.4, 29462600.0)
+ (&#39;2014-03-27&#39;, 14.39, 15.57, 14.32, 15.57, 77279000.0)
+ (&#39;2014-03-28&#39;, 15.57, 15.77, 15.2, 15.66, 42202400.0)]
 </pre>
 </div>
 </div>
@@ -248,8 +264,7 @@ See www.quandl.com/api for more information.
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -267,7 +282,7 @@ No <code>DataFrame</code> isso fica evidente, já no <strong>numpy</strong> <em>
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s2">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">])</span>
 <span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">index</span>
 <span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -280,12 +295,16 @@ No <code>DataFrame</code> isso fica evidente, já no <strong>numpy</strong> <em>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>No authentication tokens found: usage will be limited.
 See www.quandl.com/api for more information.
-Returning Dataframe for  [u&apos;GOOG.BVMF_PETR4.4&apos;, u&apos;GOOG.BVMF_BOVA11.4&apos;]
-&lt;class &apos;pandas.tseries.index.DatetimeIndex&apos;&gt;
+Returning Dataframe for  [u&#39;GOOG.BVMF_PETR4.4&#39;, u&#39;GOOG.BVMF_BOVA11.4&#39;]
+&lt;class &#39;pandas.tseries.index.DatetimeIndex&#39;&gt;
 [2003-06-02 00:00:00, ..., 2014-03-28 00:00:00]
 Length: 2682, Freq: None, Timezone: None
             GOOG.BVMF_PETR4 - Close  GOOG.BVMF_BOVA11 - Close
@@ -305,8 +324,7 @@ Date
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -321,7 +339,7 @@ Date
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">],</span> <span class="n">trim_start</span><span class="o">=</span><span class="s">&#39;2012-11-22&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s2">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">],</span> <span class="n">trim_start</span><span class="o">=</span><span class="s1">&#39;2012-11-22&#39;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">index</span>
 <span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -334,12 +352,16 @@ Date
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>No authentication tokens found: usage will be limited.
 See www.quandl.com/api for more information.
-Returning Dataframe for  [u&apos;GOOG.BVMF_PETR4.4&apos;, u&apos;GOOG.BVMF_BOVA11.4&apos;]
-&lt;class &apos;pandas.tseries.index.DatetimeIndex&apos;&gt;
+Returning Dataframe for  [u&#39;GOOG.BVMF_PETR4.4&#39;, u&#39;GOOG.BVMF_BOVA11.4&#39;]
+&lt;class &#39;pandas.tseries.index.DatetimeIndex&#39;&gt;
 [2012-11-22 00:00:00, ..., 2014-03-28 00:00:00]
 Length: 333, Freq: None, Timezone: None
             GOOG.BVMF_PETR4 - Close  GOOG.BVMF_BOVA11 - Close
@@ -359,8 +381,7 @@ Date
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -374,7 +395,7 @@ Date
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">],</span> <span class="n">trim_start</span><span class="o">=</span><span class="s">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="n">trim_end</span><span class="o">=</span><span class="s">&#39;2013-12-31&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">petr_bova</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">([</span><span class="s2">&quot;GOOG/BVMF_PETR4.4&quot;</span><span class="p">,</span> <span class="s2">&quot;GOOG/BVMF_BOVA11.4&quot;</span><span class="p">],</span> <span class="n">trim_start</span><span class="o">=</span><span class="s1">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="n">trim_end</span><span class="o">=</span><span class="s1">&#39;2013-12-31&#39;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">index</span>
 <span class="nb">print</span> <span class="n">petr_bova</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -387,12 +408,16 @@ Date
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>No authentication tokens found: usage will be limited.
 See www.quandl.com/api for more information.
-Returning Dataframe for  [u&apos;GOOG.BVMF_PETR4.4&apos;, u&apos;GOOG.BVMF_BOVA11.4&apos;]
-&lt;class &apos;pandas.tseries.index.DatetimeIndex&apos;&gt;
+Returning Dataframe for  [u&#39;GOOG.BVMF_PETR4.4&#39;, u&#39;GOOG.BVMF_BOVA11.4&#39;]
+&lt;class &#39;pandas.tseries.index.DatetimeIndex&#39;&gt;
 [2013-01-02 00:00:00, ..., 2013-12-30 00:00:00]
 Length: 248, Freq: None, Timezone: None
             GOOG.BVMF_PETR4 - Close  GOOG.BVMF_BOVA11 - Close
@@ -412,8 +437,7 @@ Date
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -429,7 +453,7 @@ Vamos utilizar isso para baixar a última divulgação da taxa CDI da <a href="h
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">cdi</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;BCB/4389&quot;</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sort_order</span><span class="o">=</span><span class="s">&#39;desc&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cdi</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BCB/4389&quot;</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sort_order</span><span class="o">=</span><span class="s1">&#39;desc&#39;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="n">cdi</span>
 </pre></div>
 
@@ -441,7 +465,11 @@ Vamos utilizar isso para baixar a última divulgação da taxa CDI da <a href="h
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>No authentication tokens found: usage will be limited.
 See www.quandl.com/api for more information.
@@ -459,8 +487,7 @@ Date
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -476,7 +503,7 @@ Vamos ver como baixar os dados do Índice Bovespa em cotação mensal.</p>
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">bvsp</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;YAHOO/INDEX_BVSP&quot;</span><span class="p">,</span> <span class="n">collapse</span><span class="o">=</span><span class="s">&quot;monthly&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bvsp</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;YAHOO/INDEX_BVSP&quot;</span><span class="p">,</span> <span class="n">collapse</span><span class="o">=</span><span class="s2">&quot;monthly&quot;</span><span class="p">)</span>
 <span class="nb">print</span> <span class="n">bvsp</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 
@@ -488,7 +515,11 @@ Vamos ver como baixar os dados do Índice Bovespa em cotação mensal.</p>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>No authentication tokens found: usage will be limited.
 See www.quandl.com/api for more information.
@@ -515,8 +546,7 @@ Date
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -532,7 +562,10 @@ Na prática este risco foi assumido pelo Quandl e ao utilizar a ferramenta você
 
 </div>
 </div>
-</div></p></div>
+</div>
+ 
+
+</p></div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
@@ -563,7 +596,7 @@ Na prática este risco foi assumido pelo Quandl e ao utilizar a ferramenta você
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -574,16 +607,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Pricing Brazilian Government Bonds: LFT"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/pricing-brazilian-government-bonds-lft.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -126,28 +137,28 @@ $$</p>
 </ul>
 <p>The LFT's issue date is 2000-07-01 and our reference date is 2014-03-21.
 Let's start setting the reference date:</p>
-<div class="highlight"><pre>ref_date <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2014-03-21&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>ref_date <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2014-03-21&#39;</span><span class="p">)</span>
 </pre></div>
 
 
 <p>The historical interest rates are downloaded from <a href="http://www.quandl.com" title="Quandl">Quandl</a> and data in properly transformed to suitable formats:</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>Quandl<span class="p">)</span>
-selic <span class="o">&lt;-</span> Quandl<span class="p">(</span><span class="s">&#39;BCB/1178&#39;</span><span class="p">,</span> start_date<span class="o">=</span><span class="s">&#39;2000-07-01&#39;</span><span class="p">,</span> end_date<span class="o">=</span><span class="s">&#39;2014-03-21&#39;</span><span class="p">,</span> sort<span class="o">=</span><span class="s">&#39;asc&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>Quandl<span class="p">)</span>
+selic <span class="o">&lt;-</span> Quandl<span class="p">(</span><span class="s">&#39;BCB/1178&#39;</span><span class="p">,</span> start_date<span class="o">=</span><span class="s">&#39;2000-07-01&#39;</span><span class="p">,</span> end_date<span class="o">=</span><span class="s">&#39;2014-03-21&#39;</span><span class="p">,</span> order<span class="o">=</span><span class="s">&#39;asc&#39;</span><span class="p">)</span>
 selic <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>selic<span class="p">,</span> Date<span class="o">=</span><span class="kp">as.Date</span><span class="p">(</span>Date<span class="p">))</span>
 str<span class="p">(</span>selic<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## &#39;data.frame&#39;:    3448 obs. of  2 variables:
-##  $ Date : Date, format: &quot;2014-03-21&quot; &quot;2014-03-20&quot; ...
-##  $ Value: num  10 10 10 10 10 10 10 10 10 10 ...
+<div class="highlight"><pre><span></span>## &#39;data.frame&#39;:    3448 obs. of  2 variables:
+##  $ Date : Date, format: &quot;2000-07-03&quot; &quot;2000-07-04&quot; ...
+##  $ Value: num  17.3 17.2 17.2 17.3 17.3 ...
 </pre></div>
 
 
 <h3>Computing VNA</h3>
 <p>The formula to compute VNA is</p>
 <p>$$
-VNA_n = 1000\prod_{n=1}^{T}(1 + r_{n-i})^\frac{1}{252}
+VNA = 1000\prod_{n=1}^{T}(1 + r_{n-i})^\frac{1}{252}
 $$</p>
 <p>where <code>T</code> refers to issue date.
 As I said before, the formula is pretty simple but hides inconvenient secrets.
@@ -159,7 +170,7 @@ This formula is computed in 3 steps, enumerated below:</p>
 </ol>
 <p>The final value is shifted one day because the accumulated amount refers to the day after the interest rate is released.
 The function <code>compute_vna</code> below execute these steps.</p>
-<div class="highlight"><pre>compute_vna <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>ds<span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span>compute_vna <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>ds<span class="p">)</span> <span class="p">{</span>
     ds <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>ds<span class="p">,</span> Factor<span class="o">=</span><span class="kp">round</span><span class="p">((</span><span class="m">1</span> <span class="o">+</span> Value<span class="o">/</span><span class="m">100</span><span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="m">252</span><span class="p">),</span> <span class="m">8</span><span class="p">))</span>
     ds <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>ds<span class="p">,</span> CumFactor<span class="o">=</span><span class="kp">cumprod</span><span class="p">(</span>Factor<span class="p">))</span>
     ds <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>ds<span class="p">,</span> VNA<span class="o">=</span><span class="kp">truncate</span><span class="p">(</span><span class="m">1000</span><span class="o">*</span>CumFactor<span class="p">,</span> <span class="m">6</span><span class="p">))</span>
@@ -173,27 +184,27 @@ selic <span class="o">&lt;-</span> compute_vna<span class="p">(</span>selic<span
 </pre></div>
 
 
-<div class="highlight"><pre>##         Date Value     Factor   CumFactor         VNA
-## 1 2014-03-21    10 1,00037829 1,000378290          NA
-## 2 2014-03-20    10 1,00037829 1,000756723 1000,378290
-## 3 2014-03-19    10 1,00037829 1,001135299 1000,756723
-## 4 2014-03-18    10 1,00037829 1,001514019 1001,135299
-## 5 2014-03-17    10 1,00037829 1,001892882 1001,514018
-## 6 2014-03-14    10 1,00037829 1,002271888 1001,892881
+<div class="highlight"><pre><span></span>##         Date Value     Factor   CumFactor         VNA
+## 1 2000-07-03 17.26 1.00063204 1.000632040          NA
+## 2 2000-07-04 17.22 1.00063068 1.001263119 1000.632040
+## 3 2000-07-05 17.23 1.00063102 1.001894936 1001.263118
+## 4 2000-07-06 17.28 1.00063272 1.002528855 1001.894935
+## 5 2000-07-07 17.28 1.00063272 1.003163175 1002.528854
+## 6 2000-07-10 17.01 1.00062356 1.003788707 1003.163174
 </pre></div>
 
 
-<div class="highlight"><pre><span class="kp">tail</span><span class="p">(</span>selic<span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kp">tail</span><span class="p">(</span>selic<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>##            Date Value     Factor   CumFactor         VNA
-## 3443 2000-07-10    17 1,00062322 5,649993242 5646,474246
-## 3444 2000-07-07    17 1,00062322 5,653514431 5649,993242
-## 3445 2000-07-06    17 1,00062322 5,657037814 5653,514430
-## 3446 2000-07-05    17 1,00062322 5,660563393 5657,037814
-## 3447 2000-07-04    17 1,00062322 5,664091170 5660,563393
-## 3448 2000-07-03    17 1,00062322 5,667621144 5664,091169
+<div class="highlight"><pre><span></span>##            Date Value     Factor   CumFactor         VNA
+## 3443 2014-03-14 10.65 1.00040168 6.013481466 6011.066940
+## 3444 2014-03-17 10.65 1.00040168 6.015896961 6013.481465
+## 3445 2014-03-18 10.65 1.00040168 6.018313427 6015.896961
+## 3446 2014-03-19 10.65 1.00040168 6.020730863 6018.313426
+## 3447 2014-03-20 10.65 1.00040168 6.023149270 6020.730862
+## 3448 2014-03-21 10.65 1.00040168 6.025568648 6023.149269
 </pre></div>
 
 
@@ -204,7 +215,7 @@ That information can be obtained at <a href="http://www.anbima.com.br/merc_sec/m
 Unfortunately, only the last 5 business days are kept available to download.
 The file used to validate the prices can be found <a href="/datasets/ms140321.txt">here</a>.</p>
 <p>The code below loads and prepares data for pricing.</p>
-<div class="highlight"><pre>tit_pub <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&#39;ms140321.txt&#39;</span><span class="p">,</span> skip<span class="o">=</span><span class="m">2</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;@&#39;</span><span class="p">,</span> header<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>tit_pub <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&#39;ms140321.txt&#39;</span><span class="p">,</span> skip<span class="o">=</span><span class="m">2</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;@&#39;</span><span class="p">,</span> header<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 lft_quot <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span>tit_pub<span class="p">,</span> Titulo <span class="o">==</span> <span class="s">&#39;LFT&#39;</span><span class="p">)</span>
 lft_quot <span class="o">&lt;-</span> lft_quot<span class="p">[,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;Data.Referencia&#39;</span><span class="p">,</span> <span class="s">&#39;Data.Vencimento&#39;</span><span class="p">,</span> <span class="s">&#39;Tx..Indicativas&#39;</span><span class="p">,</span> <span class="s">&#39;PU&#39;</span><span class="p">)]</span>
 <span class="kp">names</span><span class="p">(</span>lft_quot<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;RefDate&#39;</span><span class="p">,</span> <span class="s">&#39;Maturity&#39;</span><span class="p">,</span> <span class="s">&#39;Spread&#39;</span><span class="p">,</span> <span class="s">&#39;SpotPrice&#39;</span><span class="p">)</span>
@@ -219,18 +230,18 @@ lft_quot
 </pre></div>
 
 
-<div class="highlight"><pre>##       RefDate   Maturity  Spread   SpotPrice
-## 16 2014-03-21 2014-09-07 -0,0146 6023,552820
-## 17 2014-03-21 2015-03-07 -0,0157 6024,058764
-## 18 2014-03-21 2015-09-07 -0,0169 6024,636986
-## 19 2014-03-21 2016-03-01 -0,0179 6025,233278
-## 20 2014-03-21 2016-09-07 -0,0183 6025,865709
-## 21 2014-03-21 2017-03-07 -0,0196 6026,630649
-## 22 2014-03-21 2017-09-07 -0,0205 6027,419681
-## 23 2014-03-21 2018-03-01 -0,0209 6028,088251
-## 24 2014-03-21 2018-09-01 -0,0209 6028,732728
-## 25 2014-03-21 2019-03-01 -0,0217 6029,588015
-## 26 2014-03-21 2020-03-01 -0,0228 6031,280520
+<div class="highlight"><pre><span></span>##       RefDate   Maturity  Spread   SpotPrice
+## 16 2014-03-21 2014-09-07 -0.0146 6023.552820
+## 17 2014-03-21 2015-03-07 -0.0157 6024.058764
+## 18 2014-03-21 2015-09-07 -0.0169 6024.636986
+## 19 2014-03-21 2016-03-01 -0.0179 6025.233278
+## 20 2014-03-21 2016-09-07 -0.0183 6025.865709
+## 21 2014-03-21 2017-03-07 -0.0196 6026.630649
+## 22 2014-03-21 2017-09-07 -0.0205 6027.419681
+## 23 2014-03-21 2018-03-01 -0.0209 6028.088251
+## 24 2014-03-21 2018-09-01 -0.0209 6028.732728
+## 25 2014-03-21 2019-03-01 -0.0217 6029.588015
+## 26 2014-03-21 2020-03-01 -0.0228 6031.280520
 </pre></div>
 
 
@@ -245,46 +256,62 @@ This calendar has all financial holidays practiced in Brazil.
 The function <code>adjust.next</code> move the given date to the following if it is not a business day and 
 the function <code>bizdays</code> returns the amount of business days between 2 dates.
 Look that both functions work vectorized.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>bizdays<span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>bizdays<span class="p">)</span>
 cal <span class="o">&lt;-</span> Calendar<span class="p">(</span>holidays<span class="o">=</span>holidaysANBIMA<span class="p">,</span> name<span class="o">=</span><span class="s">&#39;ANBIMA&#39;</span><span class="p">,</span> weekdays<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;saturday&#39;</span><span class="p">,</span> <span class="s">&#39;sunday&#39;</span><span class="p">))</span>
+</pre></div>
 
-lft_quot <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>lft_quot<span class="p">,</span> MaturityAdj<span class="o">=</span>adjust.next<span class="p">(</span>Maturity<span class="p">,</span> cal<span class="p">))</span>
+
+<div class="highlight"><pre><span></span>## Warning in Calendar(holidays = holidaysANBIMA, name = &quot;ANBIMA&quot;, weekdays
+## = c(&quot;saturday&quot;, : This function will be deprecated, use create.calendar
+## instead.
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>lft_quot <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>lft_quot<span class="p">,</span> MaturityAdj<span class="o">=</span>adjust.next<span class="p">(</span>Maturity<span class="p">,</span> cal<span class="p">))</span>
 lft_quot <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>lft_quot<span class="p">,</span> BusinessDays<span class="o">=</span>bizdays<span class="p">(</span>ref_date<span class="p">,</span> MaturityAdj<span class="p">,</span> cal<span class="p">))</span>
 
 lft_quot
 </pre></div>
 
 
-<div class="highlight"><pre>##       RefDate   Maturity  Spread   SpotPrice MaturityAdj BusinessDays
-## 16 2014-03-21 2014-09-07 -0,0146 6023,552820  2014-09-08          117
-## 17 2014-03-21 2015-03-07 -0,0157 6024,058764  2015-03-09          243
-## 18 2014-03-21 2015-09-07 -0,0169 6024,636986  2015-09-08          369
-## 19 2014-03-21 2016-03-01 -0,0179 6025,233278  2016-03-01          488
-## 20 2014-03-21 2016-09-07 -0,0183 6025,865709  2016-09-08          621
-## 21 2014-03-21 2017-03-07 -0,0196 6026,630649  2017-03-07          744
-## 22 2014-03-21 2017-09-07 -0,0205 6027,419681  2017-09-08          872
-## 23 2014-03-21 2018-03-01 -0,0209 6028,088251  2018-03-01          989
-## 24 2014-03-21 2018-09-01 -0,0209 6028,732728  2018-09-03         1118
-## 25 2014-03-21 2019-03-01 -0,0217 6029,588015  2019-03-01         1241
-## 26 2014-03-21 2020-03-01 -0,0228 6031,280520  2020-03-02         1492
+<div class="highlight"><pre><span></span>##       RefDate   Maturity  Spread   SpotPrice MaturityAdj BusinessDays
+## 16 2014-03-21 2014-09-07 -0.0146 6023.552820  2014-09-08          117
+## 17 2014-03-21 2015-03-07 -0.0157 6024.058764  2015-03-09          243
+## 18 2014-03-21 2015-09-07 -0.0169 6024.636986  2015-09-08          369
+## 19 2014-03-21 2016-03-01 -0.0179 6025.233278  2016-03-01          488
+## 20 2014-03-21 2016-09-07 -0.0183 6025.865709  2016-09-08          621
+## 21 2014-03-21 2017-03-07 -0.0196 6026.630649  2017-03-07          744
+## 22 2014-03-21 2017-09-07 -0.0205 6027.419681  2017-09-08          872
+## 23 2014-03-21 2018-03-01 -0.0209 6028.088251  2018-03-01          989
+## 24 2014-03-21 2018-09-01 -0.0209 6028.732728  2018-09-03         1118
+## 25 2014-03-21 2019-03-01 -0.0217 6029.588015  2019-03-01         1241
+## 26 2014-03-21 2020-03-01 -0.0228 6031.280520  2020-03-02         1492
 </pre></div>
 
 
 <p>We see that several dates have been correctly adjusted to their following dates and using these new dates the number of business days have been computed.</p>
 <p>The code below computes the theoretical price.
 Note that the <code>Quotation</code> is truncated in 4 digits and the theoretical price in 6.</p>
-<div class="highlight"><pre>lft_quot <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>lft_quot<span class="p">,</span> Quotation<span class="o">=</span><span class="kp">truncate</span><span class="p">(</span><span class="m">100</span><span class="o">/</span><span class="p">(</span><span class="m">1</span> <span class="o">+</span> Spread<span class="o">/</span><span class="m">100</span><span class="p">)</span><span class="o">^</span><span class="p">(</span>BusinessDays<span class="o">/</span><span class="m">252</span><span class="p">),</span> <span class="m">4</span><span class="p">))</span>
+<div class="highlight"><pre><span></span>lft_quot <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>lft_quot<span class="p">,</span> Quotation<span class="o">=</span><span class="kp">truncate</span><span class="p">(</span><span class="m">100</span><span class="o">/</span><span class="p">(</span><span class="m">1</span> <span class="o">+</span> Spread<span class="o">/</span><span class="m">100</span><span class="p">)</span><span class="o">^</span><span class="p">(</span>BusinessDays<span class="o">/</span><span class="m">252</span><span class="p">),</span> <span class="m">4</span><span class="p">))</span>
 VNA <span class="o">&lt;-</span> <span class="kp">with</span><span class="p">(</span>selic<span class="p">,</span> VNA<span class="p">[</span>Date <span class="o">==</span> ref_date<span class="p">])</span>
 lft_quot <span class="o">&lt;-</span> <span class="kp">transform</span><span class="p">(</span>lft_quot<span class="p">,</span> TheoPrice<span class="o">=</span><span class="kp">truncate</span><span class="p">(</span>VNA<span class="o">*</span>Quotation<span class="o">/</span><span class="m">100</span><span class="p">,</span> <span class="m">6</span><span class="p">))</span>
 </pre></div>
 
 
 <p>After all those steps we are able to compare theoretical and spot price.</p>
-<div class="highlight"><pre><span class="kp">all</span><span class="p">(</span><span class="kp">with</span><span class="p">(</span>lft_quot<span class="p">,</span> SpotPrice<span class="o">-</span>TheoPrice<span class="p">)</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kp">print</span><span class="p">(</span><span class="kp">with</span><span class="p">(</span>lft_quot<span class="p">,</span> SpotPrice<span class="o">-</span>TheoPrice<span class="p">))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] NA
+<div class="highlight"><pre><span></span>##  [1] 0 0 0 0 0 0 0 0 0 0 0
+</pre></div>
+
+
+<div class="highlight"><pre><span></span><span class="kp">all</span><span class="p">(</span><span class="kp">with</span><span class="p">(</span>lft_quot<span class="p">,</span> SpotPrice<span class="o">-</span>TheoPrice<span class="p">)</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## [1] TRUE
 </pre></div>
 
 
@@ -322,7 +349,7 @@ Because of the truncations we have to use that algorithm and implement a kind of
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -333,16 +360,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

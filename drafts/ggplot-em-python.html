@@ -27,6 +27,16 @@
 	<meta property="og:title" content="ggplot em Python"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/drafts/ggplot-em-python.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -90,9 +101,9 @@
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">g</span> <span class="o">=</span> <span class="n">ggplot</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">aes</span><span class="p">(</span><span class="s">&#39;mpg&#39;</span><span class="p">,</span> <span class="s">&#39;qsec&#39;</span><span class="p">))</span> <span class="o">+</span> \
-    <span class="n">geom_point</span><span class="p">(</span><span class="n">colour</span><span class="o">=</span><span class="s">&#39;steelblue&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">scale_x_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">],</span>  \
-    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;horrible&quot;</span><span class="p">,</span> <span class="s">&quot;ok&quot;</span><span class="p">,</span> <span class="s">&quot;awesome&quot;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">ggplot</span><span class="p">(</span><span class="n">mtcars</span><span class="p">,</span> <span class="n">aes</span><span class="p">(</span><span class="s1">&#39;mpg&#39;</span><span class="p">,</span> <span class="s1">&#39;qsec&#39;</span><span class="p">))</span> <span class="o">+</span> \
+    <span class="n">geom_point</span><span class="p">(</span><span class="n">colour</span><span class="o">=</span><span class="s1">&#39;steelblue&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">scale_x_continuous</span><span class="p">(</span><span class="n">breaks</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">],</span>  \
+    <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;horrible&quot;</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="s2">&quot;awesome&quot;</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -105,7 +116,7 @@
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">g</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -116,7 +127,11 @@
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[5]:</div>
+
+
 
 
 <div class="output_png output_subarea output_execute_result">
@@ -330,7 +345,7 @@ AAojXAIAUBjhEgCAwvz/HAxOerNqGvsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">load_ext</span> rmagic
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> rmagic
 </pre></div>
 
 </div>
@@ -343,7 +358,7 @@ AAojXAIAUBjhEgCAwvz/HAxOerNqGvsAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">])</span>
@@ -358,7 +373,11 @@ AAojXAIAUBjhEgCAwvz/HAxOerNqGvsAAAAASUVORK5CYII=
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -456,7 +475,7 @@ hvo/0HkD3HENIpgAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">Rpush</span> X Y
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">Rpush</span> X Y
 <span class="o">%</span><span class="k">R</span> lm(Y~X)$coef
 </pre></div>
 
@@ -468,7 +487,11 @@ hvo/0HkD3HENIpgAAAAASUVORK5CYII=
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -486,7 +509,7 @@ hvo/0HkD3HENIpgAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">R</span> resid(lm(Y~X)); coef(lm(X~Y))
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">R</span> resid(lm(Y~X)); coef(lm(X~Y))
 </pre></div>
 
 </div>
@@ -497,7 +520,11 @@ hvo/0HkD3HENIpgAAAAASUVORK5CYII=
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[8]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[8]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -515,7 +542,7 @@ hvo/0HkD3HENIpgAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%%</span>R <span class="o">-</span>i X<span class="p">,</span>Y <span class="o">-</span>o XYcoef
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span>R <span class="o">-</span>i X<span class="p">,</span>Y <span class="o">-</span>o XYcoef
 XYlm <span class="o">=</span> lm<span class="p">(</span>Y<span class="o">~</span>X<span class="p">)</span>
 XYcoef <span class="o">=</span> coef<span class="p">(</span>XYlm<span class="p">)</span>
 <span class="kp">print</span><span class="p">(</span><span class="kp">summary</span><span class="p">(</span>XYlm<span class="p">))</span>
@@ -531,7 +558,11 @@ plot<span class="p">(</span>XYlm<span class="p">)</span>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_text output_subarea ">
@@ -559,7 +590,11 @@ F-statistic: 12.79 on 1 and 3 DF,  p-value: 0.03739
 
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -1424,7 +1459,7 @@ HwT+H3+Bv8VJdwumAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">XYcoef</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">XYcoef</span>
 </pre></div>
 
 </div>
@@ -1435,7 +1470,11 @@ HwT+H3+Bv8VJdwumAAAAAElFTkSuQmCC
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -1453,7 +1492,7 @@ HwT+H3+Bv8VJdwumAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%%</span>R <span class="o">-</span>o movies
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span>R <span class="o">-</span>o movies
 <span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
 str<span class="p">(</span>movies<span class="p">)</span>
 </pre></div>
@@ -1466,9 +1505,13 @@ str<span class="p">(</span>movies<span class="p">)</span>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>ERROR: Cell magic &#96;%%R&#96; not found.
+<pre>ERROR: Cell magic `%%R` not found.
 </pre>
 </div>
 </div>
@@ -1482,7 +1525,7 @@ str<span class="p">(</span>movies<span class="p">)</span>
 <div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%%</span>R
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span>R
 mry <span class="o">&lt;-</span> <span class="kp">do.call</span><span class="p">(</span><span class="kp">rbind</span><span class="p">,</span> <span class="kp">by</span><span class="p">(</span>movies<span class="p">,</span> <span class="kp">round</span><span class="p">(</span>movies<span class="o">$</span>rating<span class="p">),</span> <span class="kr">function</span><span class="p">(</span>df<span class="p">)</span> <span class="p">{</span>
   nums <span class="o">&lt;-</span> <span class="kp">tapply</span><span class="p">(</span>df<span class="o">$</span><span class="kp">length</span><span class="p">,</span> df<span class="o">$</span>year<span class="p">,</span> <span class="kp">length</span><span class="p">)</span>
   <span class="kt">data.frame</span><span class="p">(</span>rating<span class="o">=</span><span class="kp">round</span><span class="p">(</span>df<span class="o">$</span>rating<span class="p">[</span><span class="m">1</span><span class="p">]),</span> year <span class="o">=</span> <span class="kp">as.numeric</span><span class="p">(</span><span class="kp">names</span><span class="p">(</span>nums<span class="p">)),</span> number<span class="o">=</span><span class="kp">as.vector</span><span class="p">(</span>nums<span class="p">))</span>
@@ -1500,7 +1543,11 @@ p <span class="o">+</span> geom_line<span class="p">()</span>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Erro: No layers in plot
 </pre>
@@ -1511,19 +1558,9 @@ p <span class="o">+</span> geom_line<span class="p">()</span>
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre> 
-</pre></div>
+ 
 
-</div>
-</div>
-</div>
-
-</div></p></div>
+</p></div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
@@ -1554,7 +1591,7 @@ p <span class="o">+</span> geom_line<span class="p">()</span>
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -1565,16 +1602,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

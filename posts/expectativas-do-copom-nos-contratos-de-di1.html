@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Expectativas do COPOM nos contratos de DI1 — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Expectativas do COPOM nos contratos de DI1; Date: 2017-02-20; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Expectativas do COPOM nos contratos de DI1"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/expectativas-do-copom-nos-contratos-de-di1.html"/>
+	<meta property="og:description" content="Cálculo das expectativas do COPOM implícitas na curva dos contratos futuros de DI1"/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Expectativas do COPOM nos contratos de DI1</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2017-02-20T00:00:00-03:00" itemprop="datePublished">20/02/2017</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/visualization.html" rel="tag">visualization</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/rbmfbovespa.html" rel="tag">rbmfbovespa</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/bizdays.html" rel="tag">bizdays</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Na próxima quinta-feira, 22 de fevereiro, será divulgada, pelo COPOM (Comitê de Política Monetária), o novo valor para a meta da taxa SELIC.
+Há uma expectativa de que o COPOM reduza em 0.75% a SELIC, mantendo a redução divulgada na última reunião, em 11 de janeiro.
+Obviamente esta expectativa de redução não é consenso no mercado, há os que acreditam em uma redução mais moderada, de 0.50%, assim como os que acreditam em uma redução de 1.00%.</p>
+<p>Há uma forma de obter esta expectativa a partir dos contratos futuros de taxas de juros negociados na BM&amp;FBovespa.
+A taxa de juros CDI, divulgada pela CETIP, acompanha os movimentos da SELIC, de forma que uma redução na SELIC implica em uma redução no CDI.
+Na BM&amp;FBovespa são negociados contratos futuros sobre o CDI (são os futuros de DI1—CDI de 1 dia) e nestes contratos está implícita a expectativa dos movimentos futuros da taxa CDI, logo, está implícito nestes contratos as expectativas de intervenções do COPOM.</p>
+<p>Vou mostrar neste post as relações entre CDI e SELIC e como observar as expectativas de interveções do COPOM na SELIC presentes nos contrtos futuros de DI1.</p>
+<p>Começemos carregando os pacotes utilizados.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>rbmfbovespa<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>tidyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>ggthemes<span class="p">)</span>
+theme_set<span class="p">(</span>theme_fivethirtyeight<span class="p">())</span>
+</pre></div>
+
+
+<p>Trago neste post uma novidade, o uso do pacote <a href="https://cran.r-project.org/package=ggthemes">ggthemes</a> para enriquecer a visualização.
+Neste pacote há diversos temas para <a href="https://cran.r-project.org/package=ggplot2">ggplot</a> que incluem: excel, wall street journal, five thirty eight e outros.
+Aqui vou usar o tema do <a href="https://fivethirtyeight.com/">FiveThirtyEight</a>.</p>
+<p>Para realizar esta análise foram necessários diversos arquivos da BM&amp;FBovespa, para diversas datas, por isso fiz as funções abaixo para baixar os arquivos do FTP público da BM&amp;FBovespa e carregar os datasets.</p>
+<div class="highlight"><pre><span></span>download_rbmfbovespa <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span><span class="kp">url</span><span class="p">)</span> <span class="p">{</span>
+  fdest_dir <span class="o">&lt;-</span> <span class="kp">tempdir</span><span class="p">()</span>
+  fdest <span class="o">&lt;-</span> <span class="kp">tempfile</span><span class="p">(</span>tmpdir <span class="o">=</span> fdest_dir<span class="p">)</span>
+  ix <span class="o">&lt;-</span> download.file<span class="p">(</span><span class="kp">url</span><span class="p">,</span> fdest<span class="p">,</span> quiet <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+  <span class="kr">if</span> <span class="p">(</span>ix <span class="o">!=</span> <span class="m">0</span><span class="p">)</span>
+    <span class="kp">stop</span><span class="p">(</span><span class="s">&#39;Download problems: code = &#39;</span><span class="p">,</span> ix<span class="p">,</span> <span class="s">&#39; url = &#39;</span><span class="p">,</span> <span class="kp">url</span><span class="p">)</span>
+  unz_fname <span class="o">&lt;-</span> unzip<span class="p">(</span>fdest<span class="p">,</span> exdir <span class="o">=</span> fdest_dir<span class="p">)</span>
+  <span class="c1"># return unzipped file name</span>
+  unz_fname
+<span class="p">}</span>
+
+download_and_read <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> <span class="kp">url</span><span class="p">,</span> file_template<span class="p">,</span> rbmfbovespa_template<span class="p">)</span> <span class="p">{</span>
+  url_template <span class="o">&lt;-</span> <span class="kp">file.path</span><span class="p">(</span><span class="kp">url</span><span class="p">,</span> file_template<span class="p">)</span>
+  url <span class="o">&lt;-</span> <span class="kp">sprintf</span><span class="p">(</span>url_template<span class="p">,</span> <span class="kp">format</span><span class="p">(</span>x<span class="p">,</span> <span class="s">&#39;%y%m%d&#39;</span><span class="p">))</span>
+  unz_fname <span class="o">&lt;-</span> <span class="kp">try</span><span class="p">(</span>download_rbmfbovespa<span class="p">(</span><span class="kp">url</span><span class="p">))</span>
+  <span class="kr">if</span> <span class="p">(</span>is<span class="p">(</span>unz_fname<span class="p">,</span> <span class="s">&#39;try-error&#39;</span><span class="p">))</span>
+    <span class="kr">return</span><span class="p">(</span><span class="kc">NULL</span><span class="p">)</span>
+  read_marketdata<span class="p">(</span>unz_fname<span class="p">,</span> template <span class="o">=</span> rbmfbovespa_template<span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Eu carrego os dados desde dezembro de 2016, para mostrar o efeito nos contratos futuros que com e sem expectativas de mudança na taxa básica de juros.
+Para definir as data de download eu utilizo a função <code>bizseq</code> do pacote <a href="https://github.com/wilsonfreitas/R-bizdays">bizdays</a> para pegar apenas os dias útes, que no mercado brasileiro estão no calendário divulgado pela ANBIMA, por isso uso o calendário <code>'Brazil/ANBIMA'</code> em bizdays.
+Infelizmente existem duas datas neste calendário em que não foram publicados arquivos, são os dias: 31 de dezembro e 25 de janeiro, pois são dias em que não há negociação na Bolsa, mas estão presentes no calendário Brazil/ANBIMA por serem dias em que há divulgação da taxa SELIC pelo Banco Central.</p>
+<p>Para executar o download nas datas definidas eu utilizo a função <code>map</code> do <a href="https://cran.r-project.org/package=purrr">purrr</a>, que funciona exatamente como <code>lapply</code>.
+Em seguida uso a função <code>compact</code> para remover os elementos com <code>NULL</code> que foram gerados pelas datas que não possuiam arquivos.</p>
+<div class="highlight"><pre><span></span>dates <span class="o">&lt;-</span> bizdays<span class="o">::</span>bizseq<span class="p">(</span><span class="s">&#39;2016-12-01&#39;</span><span class="p">,</span> <span class="s">&#39;2017-02-17&#39;</span><span class="p">,</span> <span class="s">&#39;Brazil/ANBIMA&#39;</span><span class="p">)</span>
+indics <span class="o">&lt;-</span> purrr<span class="o">::</span>map<span class="p">(</span>dates<span class="p">,</span> download_and_read<span class="p">,</span> <span class="s">&#39;ftp://ftp.bmf.com.br/IndicadoresEconomicos&#39;</span><span class="p">,</span> <span class="s">&#39;ID%s.ex_&#39;</span><span class="p">,</span> <span class="s">&#39;Indic&#39;</span><span class="p">)</span>
+bd_finals <span class="o">&lt;-</span> purrr<span class="o">::</span>map<span class="p">(</span>dates<span class="p">,</span> download_and_read<span class="p">,</span> <span class="s">&#39;ftp://ftp.bmf.com.br/ContratosPregaoFinal&#39;</span><span class="p">,</span> <span class="s">&#39;BF%s.ex_&#39;</span><span class="p">,</span> <span class="s">&#39;BD_Final&#39;</span><span class="p">)</span>
+indics <span class="o">&lt;-</span> purrr<span class="o">::</span>compact<span class="p">(</span>indics<span class="p">)</span>
+bd_finals <span class="o">&lt;-</span> purrr<span class="o">::</span>compact<span class="p">(</span>bd_finals<span class="p">)</span>
+</pre></div>
+
+
+<p>São criadas duas listas: <code>indics</code> e <code>bd_finals</code>, com os datasets carregados dos arquivos da Bolsa utilizando os templates do <a href="https://github.com/wilsonfreitas/rbmfbovespa">rbmfbovespa</a>.
+Estas listas serão processadas para que sejam extraídos valores das taxas CDI e SELIC diárias e as taxas dos contratos futuros com vencimento mais recente, o primeiro vencimento.
+Explico, hoje o contrato futuro com vencimento mais recente vence em 1 de fevereiro (ou no próximo dia útil), e este é o primeiro vencimento e este levantamento foi feito para cada data de referência.
+O primeiro vencimento é importante porque ele traz a expectativa de movimento da CDI para o curto prazo (vencimento em menos de 1 mês) onde já é possível observar os movimentos provocados pela reunião do COPOM.
+A função <code>process_files</code> seleciona os contratos futuros de DI1 e as taxas SELIC e CDI para cada uma das datas levantadas.</p>
+<div class="highlight"><pre><span></span>process_files <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>bdi<span class="p">,</span> indic<span class="p">)</span> <span class="p">{</span>
+  <span class="c1"># selecionar contratos futuros de DI1 dos arquivos BD_Final</span>
+  futuro <span class="o">&lt;-</span> bdi <span class="o">%&gt;%</span> filter<span class="p">(</span>cod_mercadoria <span class="o">==</span> <span class="s">&#39;DI1&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    arrange<span class="p">(</span>data_vencimento<span class="p">)</span> <span class="o">%&gt;%</span>
+    filter<span class="p">(</span>cot_ult_negocio <span class="o">!=</span> <span class="m">0</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    filter<span class="p">(</span>row_number<span class="p">()</span> <span class="o">==</span> <span class="m">1</span><span class="p">)</span> <span class="c1"># selecionar o primeiro vencimento</span>
+  <span class="c1"># obter data de referência</span>
+  ref_date <span class="o">&lt;-</span> bdi<span class="o">$</span>data_geracao_arquivo<span class="p">[</span><span class="m">1</span><span class="p">]</span>
+  <span class="c1"># obter SELIC e CDI (DI1) dos arquivos Indic</span>
+  cdi <span class="o">&lt;-</span> indic <span class="o">%&gt;%</span>
+    filter <span class="p">(</span>cod_indicador <span class="o">==</span> <span class="s">&#39;DI1&#39;</span><span class="p">,</span> data_geracao_arquivo <span class="o">==</span> ref_date<span class="p">)</span>
+  selic <span class="o">&lt;-</span> indic <span class="o">%&gt;%</span>
+    filter <span class="p">(</span>cod_indicador <span class="o">==</span> <span class="s">&#39;SEL&#39;</span><span class="p">,</span> data_geracao_arquivo <span class="o">==</span> ref_date<span class="p">)</span>
+  <span class="c1"># data.frame com as informações necessárias</span>
+  <span class="kt">data.frame</span><span class="p">(</span>data_referencia <span class="o">=</span> cdi<span class="o">$</span>data_geracao_arquivo<span class="p">,</span>
+             data_vencimento <span class="o">=</span> futuro<span class="o">$</span>data_vencimento<span class="p">,</span>
+             futuro <span class="o">=</span> futuro<span class="o">$</span>cot_ult_negocio<span class="p">,</span>
+             cdi <span class="o">=</span> cdi<span class="o">$</span>valor_indicador<span class="p">,</span>
+             selic <span class="o">=</span> selic<span class="o">$</span>valor_indicador<span class="p">)</span>
+<span class="p">}</span>
+
+ls_data <span class="o">&lt;-</span> purrr<span class="o">::</span>map2<span class="p">(</span>bd_finals<span class="p">,</span> indics<span class="p">,</span> process_files<span class="p">)</span>
+df <span class="o">&lt;-</span> <span class="kp">do.call</span><span class="p">(</span><span class="kp">rbind</span><span class="p">,</span> ls_data<span class="p">)</span>
+</pre></div>
+
+
+<p>Obtidos os dados no <code>data.frame</code> <code>df</code> podemos observar alguns fatos já mencionados, como a relação próxima entre SELIC e CDI.
+No gráfico abaixo temos o histórico de SELIC e CDI desde 1 de dezembro de 2016.
+Note que as taxas andam juntas e no dia seguinte a reunião do COPOM de 11 de janeiro de 2017 ambas as taxas mudaram de nível caindo 0.75%, exatamente resultado da reunião do COPOM do dia 11.</p>
+<div class="highlight"><pre><span></span>ggplot<span class="p">(</span>df <span class="o">%&gt;%</span> select<span class="p">(</span><span class="o">-</span>data_vencimento<span class="p">,</span> <span class="o">-</span>futuro<span class="p">)</span> <span class="o">%&gt;%</span> gather<span class="p">(</span>taxa<span class="p">,</span> valor<span class="p">,</span> <span class="o">-</span>data_referencia<span class="p">),</span>
+       aes<span class="p">(</span>x <span class="o">=</span> data_referencia<span class="p">,</span> y <span class="o">=</span> valor<span class="p">,</span> colour <span class="o">=</span> taxa<span class="p">,</span> shape <span class="o">=</span> taxa<span class="p">))</span> <span class="o">+</span>
+  geom_vline<span class="p">(</span>xintercept<span class="o">=</span><span class="s">&#39;2017-01-11&#39;</span> <span class="o">%&gt;%</span> <span class="kp">as.Date</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="kp">as.integer</span><span class="p">(),</span> linetype<span class="o">=</span><span class="s">&#39;dashed&#39;</span><span class="p">)</span> <span class="o">+</span>
+  scale_x_date<span class="p">()</span> <span class="o">+</span>
+  geom_point<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-4" src="http://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-4-1.png"></p>
+<p>Outro ponto interessante de observar é a dinâmica do primeiro vencimento de futuro de DI1.
+O gráfico abaixo apresenta a dinâmica da taxa CDI com a taxa negociada no primeiro futuro.</p>
+<div class="highlight"><pre><span></span>ggplot<span class="p">(</span>df <span class="o">%&gt;%</span> select<span class="p">(</span><span class="o">-</span>data_vencimento<span class="p">,</span> <span class="o">-</span>selic<span class="p">)</span> <span class="o">%&gt;%</span> gather<span class="p">(</span>taxa<span class="p">,</span> valor<span class="p">,</span> <span class="o">-</span>data_referencia<span class="p">),</span>
+       aes<span class="p">(</span>x <span class="o">=</span> data_referencia<span class="p">,</span> y <span class="o">=</span> valor<span class="p">,</span> colour <span class="o">=</span> taxa<span class="p">,</span> shape <span class="o">=</span> taxa<span class="p">))</span> <span class="o">+</span>
+  geom_vline<span class="p">(</span>xintercept<span class="o">=</span><span class="s">&#39;2017-01-11&#39;</span> <span class="o">%&gt;%</span> <span class="kp">as.Date</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="kp">as.integer</span><span class="p">(),</span> linetype<span class="o">=</span><span class="s">&#39;dashed&#39;</span><span class="p">)</span> <span class="o">+</span>
+  geom_vline<span class="p">(</span>xintercept<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;2017-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2017-02-01&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="kp">as.Date</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="kp">as.integer</span><span class="p">(),</span> linetype<span class="o">=</span><span class="s">&#39;dotted&#39;</span><span class="p">)</span> <span class="o">+</span>
+  scale_x_date<span class="p">()</span> <span class="o">+</span>
+  geom_point<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-5" src="http://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-5-1.png"></p>
+<p>Em dezembro de 2016 o primeiro vencimento vence no primeiro dia útil do ano, portanto a expectativa já está dada, não há fator que afete o nível da taxa CDI, por isso a CDI e a taxa do primeiro vencimento andam juntas.
+Após a virada do ano (primeira linha pontilhada), em janeiro de 2017, o primeiro futuro é o que vence em 1 de fevereiro.
+Note o descolamento entre a CDI e a taxa negociada no primeiro futuro, que indica uma redução na CDI para o vencimento de fevereiro.
+Entretanto, em 11 de janeiro ocorreu a primeira reunião do COPOM de 2017, que baixo a SELIC em 0.75% (linha tracejada).
+Após a reunião do COPOM o descolamento entre CDI e o primeiro vencimento desaparece novamente, pois para este período a taxa já está dada.
+O descolamento volta a aparecer em fevereiro quando o primeiro vencimento passa a expirar em março de 2017 e há uma reunião do COPOM em 22 de fevereiro de 2017.</p>
+<p>Este descolamente entre a CDI e a taxa do primeiro futuro traz a expectativa do resultado da reunião do COPOM.
+Vou mostrar como calcular essa expectativa.
+Como é possível observar nos gráficos, a CDI e o primeiro futuro andam juntos quando o cenário está dado, e neste caso o cenário de taxa CDI está dado até a reunião do COPOM, ou seja, assumindo a hipótese de que a CDI não muda até a reunião do COPOM conclui-se que há espaço apenas para prever o nível da taxa após a reunião do COPOM.
+A taxa do futuro é uma taxa média da data de referência até o seu vencimento.
+Portanto, assumindo dada a taxa até a reunião do COPOM como a CDI da data de referência, é necessário calcular a taxa a termo da reunião do COPOM até o vencimento do futuro.
+A função <code>calc_taxa_termo</code> faz esse cálculo</p>
+<div class="highlight"><pre><span></span>calc_taxa_termo <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>cdi<span class="p">,</span> fut<span class="p">,</span> duf<span class="p">,</span> duc<span class="p">)</span> <span class="p">{</span>
+  f1 <span class="o">&lt;-</span> <span class="p">(</span><span class="m">1</span> <span class="o">+</span> cdi<span class="o">/</span><span class="m">100</span><span class="p">)</span><span class="o">^</span><span class="p">(</span>duc<span class="o">/</span><span class="m">252</span><span class="p">)</span>
+  f2 <span class="o">&lt;-</span> <span class="p">(</span><span class="m">1</span> <span class="o">+</span> fut<span class="o">/</span><span class="m">100</span><span class="p">)</span><span class="o">^</span><span class="p">(</span>duf<span class="o">/</span><span class="m">252</span><span class="p">)</span>
+  <span class="m">100</span><span class="o">*</span><span class="p">((</span>f2<span class="o">/</span>f1<span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="m">252</span><span class="o">/</span><span class="p">(</span>duf <span class="o">-</span> duc<span class="p">))</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>A fórmula fica assim:</p>
+<p>$$
+100 \left[ \left( \frac{(1 + \frac{fut}{100})^{duf/252}}{(1 + \frac{cdi}{100})^{duc/252}} \right)^{\frac{252}{duf-duc}} - 1\right]
+$$</p>
+<p>Essa é a taxa a termo que está implícita na taxa negociada no primeiro futuro que vence após a reunião do COPOM.
+Pelo fato de a fórmula considerar os futuros com vencimento após a reunião do COPOM, é necessário remover todas as data onde o vencimento do futuro é anterior a próxima reunião do COPOM.
+O código abaixo calcula os dias úteis necessários no cálculo e define as datas de reunião do COPOM, em seguida remove as datas e calcula a taxa à termo usando a função <code>calc_taxa_termo</code>.</p>
+<div class="highlight"><pre><span></span>df_copom <span class="o">&lt;-</span> df <span class="o">%&gt;%</span> 
+  mutate<span class="p">(</span>
+    du<span class="o">=</span>bizdays<span class="o">::</span>bizdays<span class="p">(</span>data_referencia<span class="p">,</span> data_vencimento<span class="p">,</span> <span class="s">&#39;Brazil/ANBIMA&#39;</span><span class="p">),</span>
+    data_copom<span class="o">=</span><span class="kp">as.Date</span><span class="p">(</span><span class="kp">ifelse</span><span class="p">(</span>data_referencia <span class="o">&lt;=</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2017-01-11&#39;</span><span class="p">),</span> <span class="s">&#39;2017-01-11&#39;</span><span class="p">,</span> <span class="s">&#39;2017-02-22&#39;</span><span class="p">))</span>
+  <span class="p">)</span> <span class="o">%&gt;%</span>
+  filter<span class="p">(</span>data_vencimento <span class="o">&gt;=</span> data_copom<span class="p">)</span> <span class="o">%&gt;%</span>
+  mutate<span class="p">(</span>
+    du_copom<span class="o">=</span>bizdays<span class="o">::</span>bizdays<span class="p">(</span>data_referencia<span class="p">,</span> data_copom<span class="p">,</span> <span class="s">&#39;Brazil/ANBIMA&#39;</span><span class="p">),</span>
+    taxa_termo<span class="o">=</span>calc_taxa_termo<span class="p">(</span>cdi<span class="p">,</span> futuro<span class="p">,</span> du<span class="p">,</span> du_copom<span class="p">)</span>
+  <span class="p">)</span>
+</pre></div>
+
+
+<p>O gráfico abaixo apresenta uma comparação das taxas CDI, do primeiro vencimento de futuro e da taxa à termo calculada.
+Observe que a taxa à termo e do futuro quase colapssam na data de reunão do COPOM (linha tracejada), o que é esperado uma vez que o prazo para a reunião está diminuindo.
+Para o mês de fevereiro temos um padrão semelhante.</p>
+<div class="highlight"><pre><span></span>ggplot<span class="p">(</span>df_copom <span class="o">%&gt;%</span> select<span class="p">(</span>data_referencia<span class="p">,</span> cdi<span class="p">,</span> futuro<span class="p">,</span> taxa_termo<span class="p">)</span> <span class="o">%&gt;%</span> gather<span class="p">(</span>taxa<span class="p">,</span> valor<span class="p">,</span> <span class="o">-</span>data_referencia<span class="p">),</span>
+       aes<span class="p">(</span>x <span class="o">=</span> data_referencia<span class="p">,</span> y <span class="o">=</span> valor<span class="p">,</span> colour <span class="o">=</span> taxa<span class="p">,</span> shape <span class="o">=</span> taxa<span class="p">))</span> <span class="o">+</span>
+  geom_vline<span class="p">(</span>xintercept<span class="o">=</span><span class="s">&#39;2017-01-11&#39;</span> <span class="o">%&gt;%</span> <span class="kp">as.Date</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="kp">as.integer</span><span class="p">(),</span> linetype<span class="o">=</span><span class="s">&#39;dashed&#39;</span><span class="p">)</span> <span class="o">+</span>
+  geom_vline<span class="p">(</span>xintercept<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;2017-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2017-02-01&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="kp">as.Date</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="kp">as.integer</span><span class="p">(),</span> linetype<span class="o">=</span><span class="s">&#39;dotted&#39;</span><span class="p">)</span> <span class="o">+</span>
+  scale_x_date<span class="p">()</span> <span class="o">+</span>
+  geom_point<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-8" src="http://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-8-1.png"></p>
+<p>A mudança na taxa apresentada na reunião do COPOM é a diferença entre a taxa a termo e a taxa CDI.
+Calculando esta diferença observamos que as expectativas estavam pouco acima de 0.50% de redução, e para a reunião de fevereiro temos expectativas em torno de 0.50%, houve até um dia que fechou em 0.60%.
+O gráfico abaixo apresenta esta diferença.</p>
+<div class="highlight"><pre><span></span>ggplot<span class="p">(</span>data <span class="o">=</span> df_copom<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> data_referencia<span class="p">,</span> y <span class="o">=</span> taxa_termo <span class="o">-</span> cdi<span class="p">))</span> <span class="o">+</span>
+  geom_point<span class="p">(</span>colour <span class="o">=</span> <span class="s">&#39;red&#39;</span><span class="p">)</span> <span class="o">+</span>
+  geom_vline<span class="p">(</span>xintercept<span class="o">=</span><span class="s">&#39;2017-01-11&#39;</span> <span class="o">%&gt;%</span> <span class="kp">as.Date</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="kp">as.integer</span><span class="p">(),</span> linetype<span class="o">=</span><span class="s">&#39;dashed&#39;</span><span class="p">)</span> <span class="o">+</span>
+  geom_hline<span class="p">(</span>yintercept<span class="o">=</span><span class="m">-0.5</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-9" src="http://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-9-1.png"></p>
+<p>Uma pergunta que fica após a observação destes resultados é, mesmo após a redução de 0.75% em janeiro, porque a expectativa está em 0.50%?
+Bem, os dados observados são referentes ao fechamento dos contratos futuros, obviamente ao longo do dia são negociados valores maiores e menores, que podem refletir movimentos de 0.75%, assim como 0.25%. Por exemplo, poderíamos repetir essa análise para as máximas e mínimas do dia.</p>
+<p>Outro ponto interessante é a observação dos demais vencimentos, pois neles há a expectativa das demais reuniões.
+Por exemplo, após cada reunião do COPOM podemos migrar do primeiro para o segundo vencimento, pois a taxa do primeiro já está dada e toda a expectativa da próxima reunião está no segundo.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Expectativas do COPOM nos contratos de DI1';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+ 
+</body>
+</html>

@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Computing EWMA 2"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/computing-ewma-2.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -87,9 +98,9 @@
 	<div itemprop="articleBody" class="article-body"><p>Months ago I released a post entitled <a href="http://wilsonfreitas.github.io/posts/computing-ewma.html" title="Computing EWMA">Computing EWMA</a> exploring the functional approach to implement EWMA calculations in R and also compared that with what I called <em>loop-oriented</em> implementation.
 That was quite ammazing to see that the functional approach was almost 2 times faster.</p>
 <p>After a while I found the function <code>filter</code> of the package <code>stats</code>.</p>
-<div class="highlight"><pre><span class="err">##</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">filter</span><span class="p">,</span> <span class="nx">method</span> <span class="o">=</span> <span class="nx">c</span><span class="p">(</span><span class="s2">&quot;convolution&quot;</span><span class="p">,</span> <span class="s2">&quot;recursive&quot;</span><span class="p">),</span> 
-<span class="err">##</span>     <span class="nx">sides</span> <span class="o">=</span> <span class="mi">2</span><span class="nx">L</span><span class="p">,</span> <span class="nx">circular</span> <span class="o">=</span> <span class="nx">FALSE</span><span class="p">,</span> <span class="nx">init</span> <span class="o">=</span> <span class="nx">NULL</span><span class="p">)</span> 
-<span class="err">##</span> <span class="nx">NULL</span>
+<div class="highlight"><pre><span></span>## function (x, filter, method = c(&quot;convolution&quot;, &quot;recursive&quot;), 
+##     sides = 2L, circular = FALSE, init = NULL) 
+## NULL
 </pre></div>
 
 
@@ -100,24 +111,28 @@ The argument <code>x</code> receives the time series and <code>filter</code> a v
 The <code>"recursive"</code> method uses the <code>init</code> argument to specify the initial values of the time series.
 Providing a series <code>x</code> and a filter $\phi$ the response <code>y</code> is much like the sequence below:</p>
 <p>$$
-y_1 = 0 \hspace{0.5cm}
-y_2 = \phi y_1 + x_1 \hspace{0.5cm}
-y_2 = \phi y_2 + x_2 \hspace{0.5cm}
-\dots \hspace{0.5cm}
-y_{n+1} = \phi y_n + x_n
+\begin{align}
+y_1 &amp; = 0 \hspace{0.5cm} \\
+y_2 &amp; = \phi y_1 + x_1 \hspace{0.5cm} \\
+y_2 &amp; = \phi y_2 + x_2 \hspace{0.5cm} \\
+\vdots &amp; \hspace{0.5cm} \\
+y_{n+1} &amp; = \phi y_n + x_n
+\end{align}
 $$</p>
 <p>Taking a look at EWMA's dynamics</p>
 <p>$$
-\hat\sigma^2_0 = 0  \hspace{0.5cm}
-\hat\sigma^2_1 = \lambda\hat\sigma^2_0 + (1 - \lambda)r^2_0  \hspace{0.5cm}
-\hat\sigma^2_2 = \lambda\hat\sigma^2_1 + (1 - \lambda)r^2_1  \hspace{0.5cm}
-\dots  \hspace{0.5cm}
-\hat\sigma^2_{t+1} = \lambda\hat\sigma^2_t + (1 - \lambda)r^2_t
+\begin{align}
+\hat\sigma^2_0 &amp; = 0  \hspace{0.5cm} \\
+\hat\sigma^2_1 &amp; = \lambda\hat\sigma^2_0 + (1 - \lambda)r^2_0  \hspace{0.5cm} \\
+\hat\sigma^2_2 &amp; = \lambda\hat\sigma^2_1 + (1 - \lambda)r^2_1  \hspace{0.5cm} \\
+\vdots &amp; \hspace{0.5cm} \\
+\hat\sigma^2_{t+1} &amp; = \lambda\hat\sigma^2_t + (1 - \lambda)r^2_t
+\end{align}
 $$</p>
 <p>we observe that the input $x_i = (1 - \lambda)r^2_i$, the filter $\phi = \lambda$ and $y_i = \sigma^2_i$ is the response.
 The initial value can be set to $0$.
 The code implementation follows below:</p>
-<div class="highlight"><pre>ewma.filter <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span>ewma.filter <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)</span> <span class="p">{</span>
     r2 <span class="o">&lt;-</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> lambda<span class="p">)</span> <span class="o">*</span> rets<span class="o">^</span><span class="m">2</span>
     <span class="kp">sqrt</span><span class="p">(</span>filter<span class="p">(</span>r2<span class="p">,</span> lambda<span class="p">,</span> <span class="s">&quot;recursive&quot;</span><span class="p">,</span> init <span class="o">=</span> <span class="m">0</span><span class="p">))</span>
 <span class="p">}</span>
@@ -127,29 +142,29 @@ The code implementation follows below:</p>
 <p>See that this implementation is even simpler than the others, although it is not so easy to comprehend.
 Running the same test done before we see that this is not only simpler but also faster.
 It runs almost 2 times faster than the functional approach.</p>
-<div class="highlight"><pre><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.loop<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
+<div class="highlight"><pre><span></span><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.loop<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>##    user  system elapsed 
+<div class="highlight"><pre><span></span>##    user  system elapsed 
 ##   4.101   0.026   4.127
 </pre></div>
 
 
-<div class="highlight"><pre><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.func<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
+<div class="highlight"><pre><span></span><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.func<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>##    user  system elapsed 
+<div class="highlight"><pre><span></span>##    user  system elapsed 
 ##   2.293   0.009   2.302
 </pre></div>
 
 
-<div class="highlight"><pre><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.filter<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
+<div class="highlight"><pre><span></span><span class="kp">system.time</span><span class="p">(</span><span class="kp">replicate</span><span class="p">(</span><span class="m">10000</span><span class="p">,</span> ewma.filter<span class="p">(</span>rets<span class="p">,</span> lambda<span class="p">)))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>##    user  system elapsed 
+<div class="highlight"><pre><span></span>##    user  system elapsed 
 ##   1.062   0.009   1.072
 </pre></div>
 
@@ -186,7 +201,7 @@ It runs almost 2 times faster than the functional approach.</p>
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -197,16 +212,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

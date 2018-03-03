@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Spread Calendário com Python"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/drafts/spread-calendario-com-python.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -85,8 +96,7 @@
 		</span>
 	</div>
 	<div itemprop="articleBody" class="article-body"><p>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -94,8 +104,7 @@
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -105,32 +114,36 @@
 <li>Venda de uma opção de compra $C_1$ com preço de exercício $K$ e vencimento $T_1$</li>
 <li>Compra de uma opção de compra $C_2$ com preço de exercício $K$ e vencimento $T_2$</li>
 </ul>
-<p>onde $T_1 < T_2$.
+<p>onde $T_1 &lt; T_2$.
 O custo dessa operação é $C_1-C_2$, ou seja, se embolsa o prêmio da opção de compra $C_1$ e paga-se $C_2$ pela compra da segunda opção.
-Logo, se $C_1-C_2>0$ esta estratégia é viável para ser executada da forma que foi proposta, já no caso contrário onde $C_1-C_2 < 0$ a estratégia seria viável na posição contrária onde se compra $C_1$ e se vende $C_2$.
+Logo, se $C_1-C_2&gt;0$ esta estratégia é viável para ser executada da forma que foi proposta, já no caso contrário onde $C_1-C_2 &lt; 0$ a estratégia seria viável na posição contrária onde se compra $C_1$ e se vende $C_2$.
 Aqui eu avalio viabilidade pelo custo da operação sendo positivo, onde isso implica que quem realizar essa operação não teria custo, pois a própria estratégia se paga na largada, não sendo necessário que o investidor pagasse qualquer quantia para montá-la.</p>
 <p>Em $t = T_1$, no vencimento da primeira opção temos os seguintes cenários para o ativo objeto $S$:</p>
 <ul>
-<li>se $S_1 <  K$ então $C_1 = 0 \longrightarrow -C_2$</li>
-<li>se $S_1 >= K$ então $C_1 > 0 \longrightarrow S_{T_1} - K - C_2$</li>
+<li>se $S_1 &lt;  K$ então $C_1 = 0 \longrightarrow -C_2$</li>
+<li>se $S_1 &gt;= K$ então $C_1 &gt; 0 \longrightarrow S_{T_1} - K - C_2$</li>
 </ul>
-<p>No primeiro cenário com certeza temos uma carteira positiva, dado que $C_2 > 0$, no entanto, no segundo cenário, onde $C_1$ é exercída, não podemos afirmar se a carteira resultante $-S_{T_1} + K + C_2$ é positiva.</p>
+<p>No primeiro cenário com certeza temos uma carteira positiva, dado que $C_2 &gt; 0$, no entanto, no segundo cenário, onde $C_1$ é exercída, não podemos afirmar se a carteira resultante $-S_{T_1} + K + C_2$ é positiva.</p>
 <p>Pelo apreçamento neutro ao risco temos:</p>
-$$
+<p>$$
 C_2 = E^Q \left[\max(S_2 - K, 0)\,|\, F_{T_1} \right]
-$$<p>e aplicando o lema de Jensen a equação acima temos:</p>
-$$
+$$</p>
+<p>e aplicando o lema de Jensen a equação acima temos:</p>
+<p>$$
 \begin{split}
-E^Q \left[ \max(S_2 - K, 0)\,|\, F_{T_1} \right] &\ge \max(E^Q[S_2\,|\, F_{T_1}] - K, 0) \\
-& = \max(S_1 - K, 0)
+E^Q \left[ \max(S_2 - K, 0)\,|\, F_{T_1} \right] &amp;\ge \max(E^Q[S_2\,|\, F_{T_1}] - K, 0) \\
+&amp; = \max(S_1 - K, 0)
 \end{split}
-$$<p>Para o cenário em que $S_1 > K$ temos que:</p>
-$$
+$$</p>
+<p>Para o cenário em que $S_1 &gt; K$ temos que:</p>
+<p>$$
 C_2 = E^Q \left[ \max(S_2 - K, 0) \,|\, F_{T_1} \right] \ge S_1 - K
-$$<p>Portanto</p>
-$$
--S_1 + K + C_2>0
-$$
+$$</p>
+<p>Portanto</p>
+<p>$$
+-S_1 + K + C_2&gt;0
+$$</p>
+
 </div>
 </div>
 </div>
@@ -139,7 +152,7 @@ $$
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">sqrt</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">exp</span><span class="p">,</span> <span class="n">log</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">norm</span>
 
@@ -179,7 +192,7 @@ $$
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">%</span><span class="k">matplotlib</span> inline
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sb</span>
@@ -195,7 +208,7 @@ $$
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -208,10 +221,10 @@ $$
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">call</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="n">call</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;grey&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">call</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="n">call</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;Calendar Spread&quot;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Calendar Spread&quot;</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -222,7 +235,11 @@ $$
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -446,11 +463,11 @@ AAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">_delta</span><span class="p">,</span> <span class="n">call</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="n">call</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;grey&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;Calendar Spread&quot;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Calendar Spread&quot;</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -461,7 +478,11 @@ AAAAAElFTkSuQmCC
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -693,10 +714,10 @@ REREREREREREREREREREREREZPD5/1mEzfOswryrAAAAAElFTkSuQmCC
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">delta</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="n">delta</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="c"># plt.axvline(0.5, linestyle=&quot;dashed&quot;, color=&quot;grey&quot;)</span>
-<span class="c"># plt.ylim(0, 5)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;Calendar Spread Delta&quot;</span><span class="p">);</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">delta</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">-</span><span class="n">delta</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="c1"># plt.axvline(0.5, linestyle=&quot;dashed&quot;, color=&quot;grey&quot;)</span>
+<span class="c1"># plt.ylim(0, 5)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Calendar Spread Delta&quot;</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -707,7 +728,11 @@ REREREREREREREREREREREREZPD5/1mEzfOswryrAAAAAElFTkSuQmCC
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -1007,10 +1032,10 @@ rkJggg==
 <div class="prompt input_prompt">In&nbsp;[87]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">call</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">2</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">S</span><span class="o">-</span><span class="mi">110</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">))),</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;grey&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">call</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">2</span><span class="o">/</span><span class="mi">12</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">S</span><span class="o">-</span><span class="mi">110</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">shape</span><span class="p">))),</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;Calendar Spread&quot;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Calendar Spread&quot;</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -1021,7 +1046,11 @@ rkJggg==
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -1257,19 +1286,9 @@ RU5ErkJggg==
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre> 
-</pre></div>
+ 
 
-</div>
-</div>
-</div>
-
-</div></p></div>
+</p></div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
@@ -1300,7 +1319,7 @@ RU5ErkJggg==
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -1311,16 +1330,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

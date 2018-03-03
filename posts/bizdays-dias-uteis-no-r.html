@@ -27,6 +27,16 @@
 	<meta property="og:title" content="bizdays—dias úteis no R"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/bizdays-dias-uteis-no-r.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -100,18 +111,18 @@ Nas próximas seções vou explicar como utilizar as funções e as idéias por 
 <h2>Instalação</h2>
 <p>O <code>bizdays</code> pode ser instalado das 3 formas a seguir.</p>
 <h4>CRAN</h4>
-<div class="highlight"><pre>install.packages<span class="p">(</span><span class="s">&#39;bizdays&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>install.packages<span class="p">(</span><span class="s">&#39;bizdays&#39;</span><span class="p">)</span>
 </pre></div>
 
 
 <h4>Github + devtools</h4>
-<div class="highlight"><pre>devtools<span class="o">::</span>install_github<span class="p">(</span><span class="s">&#39;R-bizdays&#39;</span><span class="p">,</span> <span class="s">&#39;wilsonfreitas&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>devtools<span class="o">::</span>install_github<span class="p">(</span><span class="s">&#39;R-bizdays&#39;</span><span class="p">,</span> <span class="s">&#39;wilsonfreitas&#39;</span><span class="p">)</span>
 </pre></div>
 
 
 <h4>Task view finance</h4>
 <p>Instalando a <em>task view Finance</em> o <code>bizdays</code> vem junto no pacote.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span><span class="s">&quot;ctv&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span><span class="s">&quot;ctv&quot;</span><span class="p">)</span>
 install.views<span class="p">(</span><span class="s">&quot;Finance&quot;</span><span class="p">)</span>
 </pre></div>
 
@@ -120,33 +131,33 @@ install.views<span class="p">(</span><span class="s">&quot;Finance&quot;</span><
 <h3>Criação do calendário</h3>
 <p>Toda a idéia do <code>bizdays</code> está ao redor da criação do calendário e um calendário é basicamente uma lista de feriados.
 Eu disponibilizo junto com <code>bizdays</code> o <em>dataset</em> <code>holidaysANBIMA</code> que já vem com a lista de feriados disponibilizada pela <a href="http://www.anbima.com.br" title="ANBIMA">ANBIMA</a>.</p>
-<div class="highlight"><pre>data<span class="p">(</span>holidaysANBIMA<span class="p">)</span>
+<div class="highlight"><pre><span></span>data<span class="p">(</span>holidaysANBIMA<span class="p">,</span> package <span class="o">=</span> <span class="s">&#39;bizdays&#39;</span><span class="p">)</span>
 <span class="kp">range</span><span class="p">(</span>holidaysANBIMA<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] &quot;2001-01-01&quot; &quot;2079-01-01&quot;
+<div class="highlight"><pre><span></span>## [1] &quot;2001-01-01&quot; &quot;2079-01-01&quot;
 </pre></div>
 
 
-<div class="highlight"><pre><span class="kp">length</span><span class="p">(</span>holidaysANBIMA<span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kp">length</span><span class="p">(</span>holidaysANBIMA<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] 937
+<div class="highlight"><pre><span></span>## [1] 937
 </pre></div>
 
 
 <p>Dada a lista de feriados basta executar a função <code>Calendar</code> passando a lista como argumento, mas antes vamos dar uma olhada na função <code>Calendar</code>.
 A função <code>Calendar</code> tem os seguintes argumentos:</p>
-<div class="highlight"><pre><span class="kp">args</span><span class="p">(</span>Calendar<span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kp">args</span><span class="p">(</span>Calendar<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span class="err">##</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">holidays</span> <span class="o">=</span> <span class="nx">integer</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nx">start</span><span class="p">.</span><span class="nx">date</span> <span class="o">=</span> <span class="nx">NULL</span><span class="p">,</span> <span class="nx">end</span><span class="p">.</span><span class="nx">date</span> <span class="o">=</span> <span class="nx">NULL</span><span class="p">,</span> 
-<span class="err">##</span>     <span class="nx">name</span> <span class="o">=</span> <span class="nx">NULL</span><span class="p">,</span> <span class="nx">weekdays</span> <span class="o">=</span> <span class="nx">NULL</span><span class="p">,</span> <span class="nx">dib</span> <span class="o">=</span> <span class="nx">NULL</span><span class="p">,</span> <span class="nx">adjust</span><span class="p">.</span><span class="nx">from</span> <span class="o">=</span> <span class="nx">adjust</span><span class="p">.</span><span class="nx">next</span><span class="p">,</span> 
-<span class="err">##</span>     <span class="nx">adjust</span><span class="p">.</span><span class="nx">to</span> <span class="o">=</span> <span class="nx">adjust</span><span class="p">.</span><span class="nx">previous</span><span class="p">)</span> 
-<span class="err">##</span> <span class="nx">NULL</span>
+<div class="highlight"><pre><span></span>## function (holidays = integer(0), start.date = NULL, end.date = NULL, 
+##     name = NULL, weekdays = NULL, adjust.from = adjust.next, 
+##     adjust.to = adjust.previous) 
+## NULL
 </pre></div>
 
 
@@ -158,85 +169,84 @@ Os argumentos <code>adjust.from</code> e <code>adjust.to</code> recebem funçõe
 A configuração padrão visa reproduzir a função <code>NETWORKDAYS</code> do Excel.
 O argumento <code>name</code> é apenas descritivo, mas eu gosto de utilizar pois é útil quando temos diferentes calendários.</p>
 <p>Vamos agora criar um calendário referente aos feriados brasileiros.</p>
-<div class="highlight"><pre><span class="p">(</span>cal <span class="o">&lt;-</span> Calendar<span class="p">(</span>holidaysANBIMA<span class="p">,</span> weekdays<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;saturday&#39;</span><span class="p">,</span> <span class="s">&#39;sunday&#39;</span><span class="p">),</span> dib<span class="o">=</span><span class="m">252</span><span class="p">,</span> name<span class="o">=</span><span class="s">&#39;ANBIMA&#39;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><span class="p">(</span>cal <span class="o">&lt;-</span> Calendar<span class="p">(</span>holidaysANBIMA<span class="p">,</span> weekdays<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;saturday&#39;</span><span class="p">,</span> <span class="s">&#39;sunday&#39;</span><span class="p">),</span> name<span class="o">=</span><span class="s">&#39;ANBIMA&#39;</span><span class="p">))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## Calendar: ANBIMA 
+<div class="highlight"><pre><span></span>## Calendar: ANBIMA 
 ## Range: 2001-01-01 to 2079-01-01 
-## weekdays: saturday sunday 
-## dib: 252
+## weekdays: saturday sunday
 </pre></div>
 
 
 <p>Note que os limites do calendário foram criados com base nos limites existentes na lista de feriados.</p>
 <h3>Contando dias úteis entre datas</h3>
 <p>Para calcular a quantidade de dias entre duas datas utilizamos a função <code>bizdays</code> passando o calendário e as datas iniciais e finais.</p>
-<div class="highlight"><pre><span class="kp">args</span><span class="p">(</span>bizdays<span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kp">args</span><span class="p">(</span>bizdays<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre><span class="err">##</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">from</span><span class="p">,</span> <span class="nx">to</span><span class="p">,</span> <span class="nx">cal</span> <span class="o">=</span> <span class="nx">bizdays</span><span class="p">.</span><span class="nx">options$get</span><span class="p">(</span><span class="s2">&quot;default.calendar&quot;</span><span class="p">))</span> 
-<span class="err">##</span> <span class="nx">NULL</span>
+<div class="highlight"><pre><span></span>## function (from, to, cal) 
+## NULL
 </pre></div>
 
 
-<div class="highlight"><pre>bizdays<span class="p">(</span><span class="s">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2013-12-31&#39;</span><span class="p">,</span> cal<span class="p">)</span>
+<div class="highlight"><pre><span></span>bizdays<span class="p">(</span><span class="s">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2013-12-31&#39;</span><span class="p">,</span> cal<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] 252
+<div class="highlight"><pre><span></span>## [1] 252
 </pre></div>
 
 
 <p>Essa função aceita datas em strings no formato ISO (<code>yyyy-mm-dd</code>) ou objetos <code>Date</code>, <code>POSIXct</code> e <code>POSIXlt</code>.
 Os argumentos de datas finais e iniciais também aceitam vetores.
 Os vetores podem ter tamanhos diferentes, desde que respeitem a <em>recicle rule</em> do R.</p>
-<div class="highlight"><pre>bizdays<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;2010-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2011-01-01&#39;</span><span class="p">),</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;2011-12-31&#39;</span><span class="p">,</span> <span class="s">&#39;2012-12-31&#39;</span><span class="p">,</span> <span class="s">&#39;2013-12-31&#39;</span><span class="p">,</span> <span class="s">&#39;2014-12-31&#39;</span><span class="p">),</span> cal<span class="p">)</span>
+<div class="highlight"><pre><span></span>bizdays<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;2010-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2011-01-01&#39;</span><span class="p">),</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;2011-12-31&#39;</span><span class="p">,</span> <span class="s">&#39;2012-12-31&#39;</span><span class="p">,</span> <span class="s">&#39;2013-12-31&#39;</span><span class="p">,</span> <span class="s">&#39;2014-12-31&#39;</span><span class="p">),</span> cal<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1]  501  501 1005 1007
+<div class="highlight"><pre><span></span>## [1]  501  501 1005 1007
 </pre></div>
 
 
-<div class="highlight"><pre>bizdays<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;2008-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2009-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2010-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2011-01-01&#39;</span><span class="p">),</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;2011-12-31&#39;</span><span class="p">,</span> <span class="s">&#39;2012-12-31&#39;</span><span class="p">),</span> cal<span class="p">)</span>
+<div class="highlight"><pre><span></span>bizdays<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&#39;2008-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2009-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2010-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2011-01-01&#39;</span><span class="p">),</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;2011-12-31&#39;</span><span class="p">,</span> <span class="s">&#39;2012-12-31&#39;</span><span class="p">),</span> cal<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] 1005 1002  501  501
+<div class="highlight"><pre><span></span>## [1] 1005 1002  501  501
 </pre></div>
 
 
 <h3>Verificando se datas são dias úteis</h3>
 <p>A função <code>is.bizday</code> verifica se as datas passadas no argumento são úteis.</p>
-<div class="highlight"><pre>dates <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2014-04-14&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="m">0</span><span class="o">:</span><span class="m">6</span>
+<div class="highlight"><pre><span></span>dates <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2014-04-14&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="m">0</span><span class="o">:</span><span class="m">6</span>
 is.bizday<span class="p">(</span>dates<span class="p">,</span> cal<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1]  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE
+<div class="highlight"><pre><span></span>## [1]  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE
 </pre></div>
 
 
 <h3>Adicionando dias úteis as datas</h3>
 <p>Para somar dias úteis a uma data utilizamos a função <code>add.bizdays</code> que soma dias úteis, positivos ou negativos, as datas fornecidas.</p>
-<div class="highlight"><pre>date <span class="o">&lt;-</span> <span class="s">&#39;2014-04-14&#39;</span> <span class="c1"># segunda-feira</span>
+<div class="highlight"><pre><span></span>date <span class="o">&lt;-</span> <span class="s">&#39;2014-04-14&#39;</span> <span class="c1"># segunda-feira</span>
 add.bizdays<span class="p">(</span><span class="kp">date</span><span class="p">,</span> <span class="m">-1</span><span class="p">,</span> cal<span class="p">)</span>   <span class="c1"># sexta-feira</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] &quot;2014-04-11&quot;
+<div class="highlight"><pre><span></span>## [1] &quot;2014-04-11&quot;
 </pre></div>
 
 
 <h3>Gerando sequência de dias úteis</h3>
 <p>Muitas vezes é necessário iterar sobre sequências de dias úteis e para isso temos a função <code>bizseq</code>.</p>
-<div class="highlight"><pre>bizseq<span class="p">(</span><span class="s">&#39;2013-07-09&#39;</span><span class="p">,</span> <span class="s">&#39;2013-07-21&#39;</span><span class="p">,</span> cal<span class="p">)</span>
+<div class="highlight"><pre><span></span>bizseq<span class="p">(</span><span class="s">&#39;2013-07-09&#39;</span><span class="p">,</span> <span class="s">&#39;2013-07-21&#39;</span><span class="p">,</span> cal<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] &quot;2013-07-09&quot; &quot;2013-07-10&quot; &quot;2013-07-11&quot; &quot;2013-07-12&quot; &quot;2013-07-15&quot;
+<div class="highlight"><pre><span></span>## [1] &quot;2013-07-09&quot; &quot;2013-07-10&quot; &quot;2013-07-11&quot; &quot;2013-07-12&quot; &quot;2013-07-15&quot;
 ## [6] &quot;2013-07-16&quot; &quot;2013-07-17&quot; &quot;2013-07-18&quot; &quot;2013-07-19&quot;
 </pre></div>
 
@@ -247,11 +257,11 @@ add.bizdays<span class="p">(</span><span class="kp">date</span><span class="p">,
 Por exemplo, para apreçar títulos, quando vencimento do título cai em um dia não útil é necessário mover o fluxo para o próximo dia útil.
 Para lidar com isso de forma higiênica temos as funções <code>adjust.next</code> e <code>adjust.previous</code>.
 Estas funções recebem uma data, se for dia útil retorna a própria data, caso contrário retorna o dia útil seguinte ou anterior, dependendo da função que foi chamada.</p>
-<div class="highlight"><pre>adjust.next<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;2014-01-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-02-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-03-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-04-01&quot;</span><span class="p">),</span> cal<span class="p">)</span>
+<div class="highlight"><pre><span></span>adjust.next<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;2014-01-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-02-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-03-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-04-01&quot;</span><span class="p">),</span> cal<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] &quot;2014-01-02&quot; &quot;2014-02-03&quot; &quot;2014-03-05&quot; &quot;2014-04-01&quot;
+<div class="highlight"><pre><span></span>## [1] &quot;2014-01-02&quot; &quot;2014-02-03&quot; &quot;2014-03-05&quot; &quot;2014-04-01&quot;
 </pre></div>
 
 
@@ -260,40 +270,40 @@ Estas funções recebem uma data, se for dia útil retorna a própria data, caso
 <p>Como eu falei eu uso <code>bizdays</code> em base diária e todos os dias o mesmo calendário, o calendário divulgado pela ANBIMA.
 Uma coisa insuportável é criar o mesmo calendário toda vez que eu vou utilizar as funções.
 Como o objetivo é reduzir a quantidade de miséria na minha vida eu criei o calendário padrão.</p>
-<div class="highlight"><pre>bizdays.options<span class="o">$</span>set<span class="p">(</span>default.calendar<span class="o">=</span>cal<span class="p">)</span>
+<div class="highlight"><pre><span></span>bizdays.options<span class="o">$</span>set<span class="p">(</span>default.calendar<span class="o">=</span>cal<span class="p">)</span>
 </pre></div>
 
 
 <p>Uma vez definido um calendário padrão não é mais necessário passar o calendário como argumento das funções vistas anteriormente.
 Dessa maneira, as funções podem ser chamadas como:</p>
-<div class="highlight"><pre>bizdays<span class="p">(</span><span class="s">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2013-12-31&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span>bizdays<span class="p">(</span><span class="s">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="s">&#39;2013-12-31&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] 252
+<div class="highlight"><pre><span></span>## [1] 252
 </pre></div>
 
 
-<div class="highlight"><pre>dates <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2014-04-14&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="m">0</span><span class="o">:</span><span class="m">6</span>
+<div class="highlight"><pre><span></span>dates <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2014-04-14&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="m">0</span><span class="o">:</span><span class="m">6</span>
 is.bizday<span class="p">(</span>dates<span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1]  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE
+<div class="highlight"><pre><span></span>## [1]  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE
 </pre></div>
 
 
-<div class="highlight"><pre>adjust.next<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;2014-01-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-02-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-03-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-04-01&quot;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span>adjust.next<span class="p">(</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;2014-01-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-02-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-03-01&quot;</span><span class="p">,</span> <span class="s">&quot;2014-04-01&quot;</span><span class="p">))</span>
 </pre></div>
 
 
-<div class="highlight"><pre>## [1] &quot;2014-01-02&quot; &quot;2014-02-03&quot; &quot;2014-03-05&quot; &quot;2014-04-01&quot;
+<div class="highlight"><pre><span></span>## [1] &quot;2014-01-02&quot; &quot;2014-02-03&quot; &quot;2014-03-05&quot; &quot;2014-04-01&quot;
 </pre></div>
 
 
 <p>Sem a necessidade de passar o calendário como parâmetro.
 Para tornar as coisa realmente simples eu coloco essa definição no <code>.Rprofile</code>.</p>
-<div class="highlight"><pre><span class="m">.</span>First <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="m">.</span>First <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="kn">library</span><span class="p">(</span>bizdays<span class="p">)</span>
     cal <span class="o">&lt;-</span> Calendar<span class="p">(</span>holidays<span class="o">=</span>holidaysANBIMA<span class="p">,</span> name<span class="o">=</span><span class="s">&#39;ANBIMA&#39;</span><span class="p">)</span>
     bizdays.options<span class="o">$</span>set<span class="p">(</span>default.calendar<span class="o">=</span>cal<span class="p">)</span>
@@ -340,7 +350,7 @@ Para tornar as coisa realmente simples eu coloco essa definição no <code>.Rpro
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -351,16 +361,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

@@ -102,3 +102,7 @@ div.collapseheader {
 .rendered_html th{font-weight:bold;}
 .rendered_html p{text-align:justify;}
 .rendered_html p+p{margin-top:1em;}
+
+.output_stderr {
+	display: none;
+}

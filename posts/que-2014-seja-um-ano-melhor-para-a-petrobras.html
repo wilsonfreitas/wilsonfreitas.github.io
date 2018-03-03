@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Que 2014 seja um ano melhor para a Petrobrás"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/que-2014-seja-um-ano-melhor-para-a-petrobras.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -85,8 +96,7 @@
 		</span>
 	</div>
 	<div itemprop="articleBody" class="article-body"><p>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -105,13 +115,13 @@ Estes dados foram obtidos do site <a href="http://www.fundamentus.com.br/">Funda
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="o">%</span><span class="k">pylab</span> inline
-<span class="nb">print</span> <span class="s">&#39;python&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span>
-<span class="nb">print</span> <span class="s">&#39;pandas&#39;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span>
+<span class="nb">print</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span>
+<span class="nb">print</span> <span class="s1">&#39;pandas&#39;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span>
 </pre></div>
 
 </div>
@@ -122,7 +132,11 @@ Estes dados foram obtidos do site <a href="http://www.fundamentus.com.br/">Funda
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Populating the interactive namespace from numpy and matplotlib
 python 2.7.6 (default, Nov 28 2013, 23:33:48) 
@@ -136,8 +150,7 @@ pandas 0.13.0
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -151,7 +164,7 @@ pandas 0.13.0
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="o">!</span>head -3 <span class="s1">&#39;PETR balanco - T Dem. Result.csv&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>head -3 <span class="s1">&#39;PETR balanco - T Dem. Result.csv&#39;</span>
 </pre></div>
 
 </div>
@@ -162,7 +175,11 @@ pandas 0.13.0
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Data,Receita Bruta de Vendas e/ou Serviços,Deduções da Receita Bruta,Receita Líquida de Vendas e/ou Serviços,Custo de Bens e/ou Serviços Vendidos,Resultado Bruto,Despesas Com Vendas,Despesas Gerais e Administrativas,Perdas pela Não Recuperabilidade de Ativos ,Outras Receitas Operacionais,Outras Despesas Operacionais,Resultado da Equivalência Patrimonial,Financeiras,Receitas Financeiras,Despesas Financeiras,Resultado Não Operacional,Receitas,Despesas,Resultado Antes Tributação/Participações,Provisão para IR e Contribuição Social,IR Diferido,Participações/Contribuições Estatutárias,Reversão dos Juros sobre Capital Próprio,Part. de Acionistas Não Controladores,Lucro/Prejuízo do Período
 30/09/2013,0,0,77700317.18,-61114642.43,16585674.75,-2862032.896,-2802718.976,0,0,-5426829.824,493439.008,-1020598.976,1205330.944,-2225929.984,0,0,0,4966932.992,590804.992,-2015576.96,0,0,-147488.992,3394672.128
@@ -175,8 +192,7 @@ pandas 0.13.0
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -191,9 +207,9 @@ Para o <strong>pandas</strong> isso não é um problema como veremos, com alguma
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">dem_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">&#39;PETR balanco - T Dem. Result.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dayfirst</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
-<span class="nb">print</span> <span class="s">&#39;shape:&#39;</span><span class="p">,</span> <span class="n">dem_result</span><span class="o">.</span><span class="n">shape</span>
-<span class="nb">print</span> <span class="s">&#39;columns:&#39;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dem_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;PETR balanco - T Dem. Result.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dayfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span> <span class="s1">&#39;shape:&#39;</span><span class="p">,</span> <span class="n">dem_result</span><span class="o">.</span><span class="n">shape</span>
+<span class="nb">print</span> <span class="s1">&#39;columns:&#39;</span>
 <span class="nb">print</span> <span class="n">dem_result</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 
@@ -205,7 +221,11 @@ Para o <strong>pandas</strong> isso não é um problema como veremos, com alguma
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>shape: (32, 25)
 columns:
@@ -243,8 +263,7 @@ dtype: object
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -259,7 +278,7 @@ Os campos numéricos foram identificados na carga do <code>DataFrame</code>, já
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">dem_result</span><span class="o">.</span><span class="n">Data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dem_result</span><span class="o">.</span><span class="n">Data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -270,7 +289,11 @@ Os campos numéricos foram identificados na carga do <code>DataFrame</code>, já
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -288,8 +311,7 @@ Name: Data, dtype: datetime64[ns]</pre>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -298,8 +320,7 @@ Name: Data, dtype: datetime64[ns]</pre>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -313,8 +334,8 @@ Name: Data, dtype: datetime64[ns]</pre>
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">dem_result</span> <span class="o">=</span> <span class="n">dem_result</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;Receita Líquida de Vendas e/ou Serviços&#39;</span><span class="p">:</span><span class="s">&#39;ReceitaLiquida&#39;</span><span class="p">,</span>
-                           <span class="s">&#39;Lucro/Prejuízo do Período&#39;</span><span class="p">:</span><span class="s">&#39;LucroLiquido&#39;</span><span class="p">})</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dem_result</span> <span class="o">=</span> <span class="n">dem_result</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Receita Líquida de Vendas e/ou Serviços&#39;</span><span class="p">:</span><span class="s1">&#39;ReceitaLiquida&#39;</span><span class="p">,</span>
+                           <span class="s1">&#39;Lucro/Prejuízo do Período&#39;</span><span class="p">:</span><span class="s1">&#39;LucroLiquido&#39;</span><span class="p">})</span>
 </pre></div>
 
 </div>
@@ -322,8 +343,7 @@ Name: Data, dtype: datetime64[ns]</pre>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -338,7 +358,7 @@ Bem, para tentarmos observar isso vamos criar outro <em>dataset</em> com as colu
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">oper_result</span> <span class="o">=</span> <span class="n">dem_result</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s">&#39;Data&#39;</span><span class="p">,</span> <span class="s">&#39;ReceitaLiquida&#39;</span><span class="p">,</span> <span class="s">&#39;LucroLiquido&#39;</span><span class="p">]]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">oper_result</span> <span class="o">=</span> <span class="n">dem_result</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;Data&#39;</span><span class="p">,</span> <span class="s1">&#39;ReceitaLiquida&#39;</span><span class="p">,</span> <span class="s1">&#39;LucroLiquido&#39;</span><span class="p">]]</span>
 <span class="n">oper_result</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -350,7 +370,11 @@ Bem, para tentarmos observar isso vamos criar outro <em>dataset</em> com as colu
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
@@ -406,8 +430,7 @@ Bem, para tentarmos observar isso vamos criar outro <em>dataset</em> com as colu
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -421,19 +444,19 @@ Bem, para tentarmos observar isso vamos criar outro <em>dataset</em> com as colu
 <div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">datetime</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
 <span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="k">import</span> <span class="n">FuncFormatter</span>
 
-<span class="n">years</span>    <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">YearLocator</span><span class="p">()</span>   <span class="c"># every year</span>
-<span class="n">months</span>   <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">MonthLocator</span><span class="p">()</span>  <span class="c"># every month</span>
-<span class="n">yearsFmt</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s">&#39;%Y&#39;</span><span class="p">)</span>
+<span class="n">years</span>    <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">YearLocator</span><span class="p">()</span>   <span class="c1"># every year</span>
+<span class="n">months</span>   <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">MonthLocator</span><span class="p">()</span>  <span class="c1"># every month</span>
+<span class="n">yearsFmt</span> <span class="o">=</span> <span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s1">&#39;%Y&#39;</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 
 <span class="n">xx</span> <span class="o">=</span> <span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">day</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">Data</span><span class="p">]</span>
-<span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="p">,</span> <span class="s">&#39;go-&#39;</span><span class="p">)</span>
-<span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">ReceitaLiquida</span><span class="p">,</span> <span class="s">&#39;bo-&#39;</span><span class="p">)</span>
+<span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="p">,</span> <span class="s1">&#39;go-&#39;</span><span class="p">)</span>
+<span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">ReceitaLiquida</span><span class="p">,</span> <span class="s1">&#39;bo-&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">years</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">yearsFmt</span><span class="p">)</span>
@@ -443,12 +466,12 @@ Bem, para tentarmos observar isso vamos criar outro <em>dataset</em> com as colu
 <span class="n">datemax</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="n">oper_result</span><span class="o">.</span><span class="n">Data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">year</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">datemin</span><span class="p">,</span> <span class="n">datemax</span><span class="p">)</span>
 
-<span class="n">formatter</span> <span class="o">=</span> <span class="n">FuncFormatter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="s">&#39;$%1.1fB&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">formatter</span> <span class="o">=</span> <span class="n">FuncFormatter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">pos</span><span class="p">:</span> <span class="s1">&#39;$</span><span class="si">%1.1f</span><span class="s1">B&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="mf">1e-6</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Receita e Lucro trimestrais&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">rects1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rects2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;LucroLiquido&#39;</span><span class="p">,</span> <span class="s">&#39;ReceitaLiquida&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s">&#39;center right&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Receita e Lucro trimestrais&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">rects1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rects2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s1">&#39;LucroLiquido&#39;</span><span class="p">,</span> <span class="s1">&#39;ReceitaLiquida&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center right&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -459,7 +482,11 @@ Bem, para tentarmos observar isso vamos criar outro <em>dataset</em> com as colu
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -1049,8 +1076,7 @@ ERHpKRZyRERERHqKhRwRERGRnmIhR0RERKSnWMgRERER6an/B03o3Yalwa4JAAAAAElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1069,27 +1095,27 @@ Para isso vamos criar uma coluna <code>Ano</code> no <code>DataFrame</code> e fa
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">oper_result</span><span class="p">[</span><span class="s">&#39;Ano&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">year</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">Data</span><span class="p">]</span>
-<span class="n">anual_result</span> <span class="o">=</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">&#39;Ano&#39;</span><span class="p">])[[</span><span class="s">&#39;ReceitaLiquida&#39;</span><span class="p">,</span> <span class="s">&#39;LucroLiquido&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">oper_result</span><span class="p">[</span><span class="s1">&#39;Ano&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">year</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">Data</span><span class="p">]</span>
+<span class="n">anual_result</span> <span class="o">=</span> <span class="n">oper_result</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Ano&#39;</span><span class="p">])[[</span><span class="s1">&#39;ReceitaLiquida&#39;</span><span class="p">,</span> <span class="s1">&#39;LucroLiquido&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 
-<span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="p">,</span> <span class="s">&#39;go-&#39;</span><span class="p">)</span>
-<span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">ReceitaLiquida</span><span class="p">,</span> <span class="s">&#39;bo-&#39;</span><span class="p">)</span>
+<span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="p">,</span> <span class="s1">&#39;go-&#39;</span><span class="p">)</span>
+<span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">ReceitaLiquida</span><span class="p">,</span> <span class="s1">&#39;bo-&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mf">0.35</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">index</span> <span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Receita e Lucro anuais&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">rects1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rects2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;LucroLiquido&#39;</span><span class="p">,</span> <span class="s">&#39;ReceitaLiquida&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Receita e Lucro anuais&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">rects1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rects2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s1">&#39;LucroLiquido&#39;</span><span class="p">,</span> <span class="s1">&#39;ReceitaLiquida&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
 
-<span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;g&#39;</span><span class="p">)</span>
-<span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="o">+</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">ReceitaLiquida</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Receita e Lucro anuais&#39;</span><span class="p">)</span>
+<span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="o">+</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">ReceitaLiquida</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Receita e Lucro anuais&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mf">0.35</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">index</span> <span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">rects1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rects2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;LucroLiquido&#39;</span><span class="p">,</span> <span class="s">&#39;ReceitaLiquida&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s">&#39;upper left&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">rects1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rects2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s1">&#39;LucroLiquido&#39;</span><span class="p">,</span> <span class="s1">&#39;ReceitaLiquida&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
 </pre></div>
 
@@ -1101,7 +1127,11 @@ Para isso vamos criar uma coluna <code>Ano</code> no <code>DataFrame</code> e fa
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -1851,8 +1881,7 @@ B1l1AAAAAElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1885,15 +1914,15 @@ Essa informação pode ser obtida no site da <a href="http://www.bmfbovespa.com.
 <div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">anual_result</span><span class="o">.</span><span class="n">Qtd</span> <span class="o">=</span> <span class="mi">6743719951</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">anual_result</span><span class="o">.</span><span class="n">Qtd</span> <span class="o">=</span> <span class="mi">6743719951</span>
 <span class="n">anual_result</span><span class="o">.</span><span class="n">LPA</span> <span class="o">=</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="o">*</span><span class="mi">1000</span><span class="o">/</span><span class="n">anual_result</span><span class="o">.</span><span class="n">Qtd</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">LPA</span><span class="p">,</span> <span class="s">&#39;go-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">LPA</span><span class="p">,</span> <span class="s1">&#39;go-&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">anual_result</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;LPA&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;LPA&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1904,7 +1933,11 @@ Essa informação pode ser obtida no site da <a href="http://www.bmfbovespa.com.
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -1913,7 +1946,11 @@ Essa informação pode ser obtida no site da <a href="http://www.bmfbovespa.com.
 
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -2315,8 +2352,7 @@ IiIy0P8Bk5/RKaV//JAAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2334,8 +2370,7 @@ Devemos então considerar esta série de LPA como uma <em>proxy</em>.</p>
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2350,9 +2385,9 @@ Para capturar a série temporal da ação da Petrobrás vamos utilizar o <a href
 <div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">Quandl</span>
-<span class="n">petr4</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;GOOG/BVMF_PETR4&quot;</span><span class="p">,</span> <span class="n">authtoken</span><span class="o">=</span><span class="s">&#39;nJ1NhTYdEs2p3MsS4CVd&#39;</span><span class="p">)</span>
-<span class="n">petr4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;Fechamento&#39;</span> <span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">petr4</span><span class="p">[</span><span class="s">&#39;Close&#39;</span><span class="p">]),</span> <span class="s">&#39;Data&#39;</span> <span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">petr4</span><span class="o">.</span><span class="n">index</span><span class="p">)},</span> <span class="n">index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">petr4</span><span class="p">)))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">Quandl</span>
+<span class="n">petr4</span> <span class="o">=</span> <span class="n">Quandl</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GOOG/BVMF_PETR4&quot;</span><span class="p">,</span> <span class="n">authtoken</span><span class="o">=</span><span class="s1">&#39;nJ1NhTYdEs2p3MsS4CVd&#39;</span><span class="p">)</span>
+<span class="n">petr4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Fechamento&#39;</span> <span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">petr4</span><span class="p">[</span><span class="s1">&#39;Close&#39;</span><span class="p">]),</span> <span class="s1">&#39;Data&#39;</span> <span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">petr4</span><span class="o">.</span><span class="n">index</span><span class="p">)},</span> <span class="n">index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">petr4</span><span class="p">)))</span>
 <span class="n">petr4</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
@@ -2364,7 +2399,11 @@ Para capturar a série temporal da ação da Petrobrás vamos utilizar o <a href
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Token nJ1NhTYdEs2p3MsS4CVd activated and saved for later use.
 Returning Dataframe for  GOOG/BVMF_PETR4
@@ -2372,7 +2411,11 @@ Returning Dataframe for  GOOG/BVMF_PETR4
 </div>
 </div>
 
-<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
@@ -2422,8 +2465,7 @@ Returning Dataframe for  GOOG/BVMF_PETR4
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2437,11 +2479,11 @@ Returning Dataframe for  GOOG/BVMF_PETR4
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">petr4</span><span class="p">[</span><span class="s">&#39;Ano&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">year</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">petr4</span><span class="o">.</span><span class="n">Data</span><span class="p">]</span>
-<span class="n">g</span> <span class="o">=</span> <span class="n">petr4</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s">&#39;Ano&#39;</span><span class="p">])</span>
-<span class="n">anual_petr4</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s">&#39;Data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s">&#39;Ano&#39;</span><span class="p">,</span> <span class="s">&#39;Fechamento&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">petr4</span><span class="p">[</span><span class="s1">&#39;Ano&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">year</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">petr4</span><span class="o">.</span><span class="n">Data</span><span class="p">]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">petr4</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Ano&#39;</span><span class="p">])</span>
+<span class="n">anual_petr4</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s1">&#39;Data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;Ano&#39;</span><span class="p">,</span> <span class="s1">&#39;Fechamento&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">anual_petr4</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">anual_petr4</span><span class="o">.</span><span class="n">Ano</span>
-<span class="n">anual_petr4</span> <span class="o">=</span> <span class="n">anual_petr4</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s">&#39;Fechamento&#39;</span><span class="p">]</span>
+<span class="n">anual_petr4</span> <span class="o">=</span> <span class="n">anual_petr4</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="s1">&#39;Fechamento&#39;</span><span class="p">]</span>
 <span class="n">anual_petr4</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
 </pre></div>
 
@@ -2453,7 +2495,11 @@ Returning Dataframe for  GOOG/BVMF_PETR4
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[11]:</div>
+
+
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -2472,8 +2518,7 @@ Name: Fechamento, dtype: float64</pre>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2487,7 +2532,7 @@ Name: Fechamento, dtype: float64</pre>
 <div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">anual_result_2</span> <span class="o">=</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">anual_petr4</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s">&#39;outer&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">anual_result_2</span> <span class="o">=</span> <span class="n">anual_result</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">anual_petr4</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
 <span class="n">anual_result_2</span>
 </pre></div>
 
@@ -2499,7 +2544,11 @@ Name: Fechamento, dtype: float64</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 <div style="max-height:1000px;max-width:1500px;overflow:auto;">
@@ -2603,8 +2652,7 @@ Name: Fechamento, dtype: float64</pre>
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -2619,21 +2667,21 @@ Name: Fechamento, dtype: float64</pre>
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 
-<span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result_2</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;g&#39;</span><span class="p">)</span>
-<span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span><span class="o">+</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">anual_result_2</span><span class="o">.</span><span class="n">ReceitaLiquida</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Receita e Lucro anuais&#39;</span><span class="p">)</span>
+<span class="n">rects1</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result_2</span><span class="o">.</span><span class="n">LucroLiquido</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
+<span class="n">rects2</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span><span class="o">+</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">anual_result_2</span><span class="o">.</span><span class="n">ReceitaLiquida</span><span class="p">,</span> <span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Receita e Lucro anuais&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span> <span class="o">+</span> <span class="mf">0.35</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">rects1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rects2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s">&#39;LucroLiquido&#39;</span><span class="p">,</span> <span class="s">&#39;ReceitaLiquida&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s">&#39;upper left&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span> <span class="p">(</span><span class="n">rects1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rects2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="s1">&#39;LucroLiquido&#39;</span><span class="p">,</span> <span class="s1">&#39;ReceitaLiquida&#39;</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result_2</span><span class="o">.</span><span class="n">Fechamento</span><span class="p">,</span> <span class="s">&#39;o-&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">anual_result_2</span><span class="o">.</span><span class="n">Fechamento</span><span class="p">,</span> <span class="s1">&#39;o-&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">anual_result_2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="mi">2003</span><span class="p">,</span><span class="mi">2014</span><span class="p">))</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;PETR4&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;PETR4&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2644,7 +2692,11 @@ Name: Fechamento, dtype: float64</pre>
 <div class="output">
 
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
 
 
 <div class="output_png output_subarea ">
@@ -3217,8 +3269,7 @@ REREAkjNloiIiEgAqdkSERERCSA1WyIiIiIBpGZLREREJID+H9Ho7Thj7Te4AAAAAElFTkSuQmCC
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3227,8 +3278,7 @@ REREAkjNloiIiEgAqdkSERERCSA1WyIiIiIBpGZLREREJID+H9Ho7Thj7Te4AAAAAElFTkSuQmCC
 </div>
 </div>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -3247,7 +3297,10 @@ Nos próximos textos vamos direto ao ponto já trabalhando nas variáveis e esmi
 
 </div>
 </div>
-</div></p></div>
+</div>
+ 
+
+</p></div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
@@ -3278,7 +3331,7 @@ Nos próximos textos vamos direto ao ponto já trabalhando nas variáveis e esmi
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -3289,16 +3342,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

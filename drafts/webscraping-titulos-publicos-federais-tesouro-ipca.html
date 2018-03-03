@@ -2,9 +2,9 @@
 <html lang="pt">
 <head>
 	<meta charset="utf-8">
-	<title>Webscraping Títulos Públicos Federais: Tesouro IPCA — Wilson Freitas</title>
+	<title>Webscraping Títulos Públicos Federais: Tesouro IPCA+ — Wilson Freitas</title>
 	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
-	<meta name="description" content="Title: Webscraping Títulos Públicos Federais: Tesouro IPCA; Date: 2015-11-05; Author: Wilson Freitas">
+	<meta name="description" content="Title: Webscraping Títulos Públicos Federais: Tesouro IPCA+; Date: 2015-11-05; Author: Wilson Freitas">
 	<meta name="author" content="Wilson Freitas">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -24,9 +24,19 @@
 	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 	<meta property="og:site_name" content="Wilson Freitas" />
 	<meta property="og:type" content="article"/>
-	<meta property="og:title" content="Webscraping Títulos Públicos Federais: Tesouro IPCA"/>
+	<meta property="og:title" content="Webscraping Títulos Públicos Federais: Tesouro IPCA+"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/drafts/webscraping-titulos-publicos-federais-tesouro-ipca.html"/>
 	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -59,7 +70,7 @@
 		<div class="col-md-12">
 <div class="article" itemscope itemtype="http://schema.org/BlogPosting">
 	<div class="text-center article-header">
-		<h1 itemprop="name headline" class="article-title">Webscraping Títulos Públicos Federais: Tesouro IPCA</h1>
+		<h1 itemprop="name headline" class="article-title">Webscraping Títulos Públicos Federais: Tesouro IPCA+</h1>
 		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
 			<h4 itemprop="name">Wilson Freitas</h4>
 		</span>
@@ -81,153 +92,71 @@
 			<a href="http://wilsonfreitas.github.io/tag/rvest.html" rel="tag">rvest</a>
 		</span>
 	</div>
-	<div itemprop="articleBody" class="article-body"><p>Dando continuidade a série <a href="/category/webscraping.html">webscraping</a> vou mostrar como capturar dados de titulos públicos federais.
-Como mencionei no post sobre <a href="http://wilsonfreitas.github.io/posts/webscraping-ipca.html">captura de IPCA</a>, recentemente tenho trabalha do bastante com títulos indexados a inflação, particularmente IPCA, e por este motivo vou mostrar aqui como capturar informações dos títulos públicos federais indexados ao IPCA: os recentemente renomeados Tesouro IPCA (antiga NTN-B).</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>rvest<span class="p">)</span>
-url <span class="o">&lt;-</span> <span class="s">&#39;http://www.portalbrasil.net/ipca.htm&#39;</span>
-ipca_data <span class="o">&lt;-</span> read_html<span class="p">(</span><span class="kp">url</span><span class="p">)</span> <span class="o">%&gt;%</span>
-  html_nodes<span class="p">(</span>xpath<span class="o">=</span><span class="s">&quot;//table&quot;</span><span class="p">)</span> <span class="o">%&gt;%</span>
-  <span class="m">.</span><span class="p">[[</span><span class="m">6</span><span class="p">]]</span> <span class="o">%&gt;%</span>
-  html_table<span class="p">(</span>header<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-<span class="kp">head</span><span class="p">(</span>ipca_data<span class="p">)</span>
+	<div itemprop="articleBody" class="article-body"><p>No post <a href="http://wilsonfreitas.github.io/posts/webscraping-ipca.html">Webscraping IPCA</a> mostrei como capturar a série histórica do IPCA.
+O IPCA é o indicador que o governo acompanha para avaliar a meta de inflação e também é o índice que corrige o valor nominal dos títulos Tesouro IPCA+ (antigas Notas do Tesouro Nacional Série B - NTN-B).
+Neste post vou mostrar como capturar dados destes títulos públicos federais.</p>
+<p>A ANBIMA diariamente disponibiliza os preços e taxas para estes títulos públicos no seu site, na página <a href="http://www.anbima.com.br/merc_sec/merc-sec.asp">Mercado Secundário de Títulos Públicos - Taxas Médias</a>.
+Nesta página é possível inserir uma data e acessar as informações referentes aos contratos.
+O problema é que a ANBIMA disponibiliza apenas os cinco últimos dias úteis, logo, é necessário baixar os dados diariamente e construir o histórico de forma independente.
+Felizmente as URLs para os contratos são padronizadas, de forma que podem ser acessadas diretamente.
+As URLs tem o seguinte formato:</p>
+<div class="highlight"><pre><span></span>http://www.anbima.com.br/merc_sec/resultados/msec_[dia][mês][ano]_[contrato].asp
 </pre></div>
 
 
-<div class="highlight"><pre>##          JAN   FEV   MAR  ABR  MAI   JUN   JUL   AGO   SET   OUT   NOV   DEZ ACUMULADO\n          NO ANO 
-## 1 1980  6,62  4,62  6,04 5,29 5,70  5,31  5,55  4,95  4,23  9,48  6,67  6,61                       99,27%
-## 2 1981  6,84  6,40  4,97 6,46 5,56  5,52  6,26  5,50  5,26  5,08  5,27  5,93                       95,65%
-## 3 1982  6,97  6,64  5,71 5,89 6,66  7,10  6,36  5,97  5,08  4,44  5,29  7,81                      104,80%
-## 4 1983  8,64  7,86  7,34 6,58 6,48  9,88 10,08  9,11 10,30  8,87  7,38  8,68                      163,99%
-## 5 1984  9,67  9,50  8,94 9,54 9,05 10,08  9,72  9,35 11,75 10,44 10,53 11,98                      215,27%
-## 6 1985 11,76 10,87 10,16 8,20 7,20  8,49 10,31 12,05 11,12 10,62 13,97 15,07                      242,24%
-</pre></div>
-
-
-<p>Alguns pontos escondidos nas linhas de código acima:</p>
+<p>onde:</p>
 <ul>
-<li>da página carregada a informação que eu queria estava na sexta tabela da página, como eu sabia disso? Não sou adivinho, imprimi tabala a tabela até chegar a que eu desejava.</li>
-<li>eu prefiro usar <code>xpath</code> para especificar os elementos de interesse. Nem sempre isso é possível, eventualmente o HTML não está bem formatado e os parsers não funcionam direito. Nestes casos bibliotecas como BeautifulSoup do python são mais eficazes.</li>
-<li>eu utilizo a operação <code>.[[1]]</code> após selecionar a tabela, porque? O <code>html_nodes</code> retorno uma lista com 1 elemento e tenho que extrair esse elemento da lista para trabalhar com ele.</li>
-<li><code>html_table</code> converte a tabela em HTML em um <code>data.frame</code> que eu chamo de <code>ipca_data</code>.</li>
+<li><code>dia</code> é o dia da data de referência com 2 digitos</li>
+<li><code>mês</code> é o mês da data de referência em portugês, abreviado (com 3 caractéres) e em letras minúsculas</li>
+<li><code>ano</code> é o ano da data de referência com 4 digitos</li>
+<li><code>contrato</code> é uma string com o nome do contrato:</li>
+<li><code>ntn-b</code> para Tesouro IPCA+</li>
+<li><code>ntn-f</code> para Tesouro Prefixado com Juros Semestrais</li>
+<li><code>ltn</code> para Tesouro Prefixado</li>
+<li><code>lft</code> para Tesouro Selic</li>
+<li><code>ntn-c</code> para as NTN-Cs (que já não são emitidas a um bom tempo)</li>
 </ul>
-<p>A <code>data.frame</code> <code>ipca_data</code> tem alguns problemas de formato:</p>
-<ul>
-<li>os nomes das colunas devem ser formatados, em particular a primeira que está sem nome.</li>
-<li>as colunas estão como texto e devem ser convertidas para decimal</li>
-<li>a última coluna vai exigir um esforço adicional na conversão</li>
-</ul>
-<p>Vamos limpar os dados extraindo apenas os números que interessam.
-Eu uso uma expressão regular onde especifico um decimal separado (ou não) por vírgula e capturo em um grupo.
-Em seguida eu troco <code>,</code> por <code>.</code> e depois converto para <code>numeric</code>.
-Note que eu uso <code>suppressWarnings</code> porque alguns valores não são convertidos e geram <code>NA</code> e eu não quero as mensagens de aviso na saída.</p>
-<div class="highlight"><pre><span class="m">.</span>d <span class="o">&lt;-</span> <span class="kp">dim</span><span class="p">(</span>ipca_data<span class="p">)</span>
-<span class="m">.</span>data <span class="o">&lt;-</span> <span class="kp">lapply</span><span class="p">(</span>ipca_data<span class="p">[,</span><span class="m">1</span><span class="o">:</span><span class="m">.</span>d<span class="p">[</span><span class="m">2</span><span class="p">]],</span> <span class="kr">function</span> <span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
-  x <span class="o">&lt;-</span> stringr<span class="o">::</span>str_replace<span class="p">(</span>x<span class="p">,</span> <span class="s">&#39;^[^0-9]*(\\d+(\\.\\d+)?(,\\d+)?)[^0-9]*$&#39;</span><span class="p">,</span> <span class="s">&#39;\\1&#39;</span><span class="p">)</span>
-  x <span class="o">&lt;-</span> stringr<span class="o">::</span>str_replace<span class="p">(</span>x<span class="p">,</span> <span class="s">&#39;\\.&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
-  x <span class="o">&lt;-</span> stringr<span class="o">::</span>str_replace<span class="p">(</span>x<span class="p">,</span> <span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">)</span>
-  x <span class="o">&lt;-</span> <span class="kp">suppressWarnings</span><span class="p">(</span><span class="kp">as.numeric</span><span class="p">(</span>x<span class="p">))</span>
-  x
-<span class="p">})</span>
+<p>Então, para obter os preços dos títulos Tesouro IPCA+ para o dia 22/07/2016 usaremos a URL:</p>
+<div class="highlight"><pre><span></span>http://www.anbima.com.br/merc_sec/resultados/msec_22jul2016_ntn-b.asp
 </pre></div>
 
 
-<p><code>.data</code> é uma lista com as colunas do <code>data.frame</code> contendo todos os números formatados.
-Agora vou converte-lo novamente em um <code>data.frame</code>.</p>
-<div class="highlight"><pre><span class="m">.</span>data <span class="o">&lt;-</span> <span class="kp">do.call</span><span class="p">(</span><span class="kt">data.frame</span><span class="p">,</span> <span class="m">.</span>data<span class="p">)</span>
+<p><img alt="Tesouro IPCA+" src="http://wilsonfreitas.github.io/figure/tabela-ntn-b-22072016.png"></p>
+<p>Vamos começar carregando o pacote <a href="https://github.com/hadley/rvest">rvest</a> que possui diversas funções para acessar documentos na web e processar hiper-texto.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>rvest<span class="p">)</span>
 </pre></div>
 
 
-<p>Ainda é necessário corrigir os nomes.
-Vou renomear todas as colunas, pois prefiro trabalhar com os meses em formato numérico e separar a primeira coluna do ano e a última da inflação acumulada no ano.</p>
-<div class="highlight"><pre><span class="kp">colnames</span><span class="p">(</span><span class="m">.</span>data<span class="p">)</span> <span class="o">&lt;-</span> <span class="kt">c</span><span class="p">(</span><span class="s">&#39;ano&#39;</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">12</span><span class="p">,</span> <span class="s">&#39;acumulado&#39;</span><span class="p">)</span>
-<span class="m">.</span>data
+<p>Agora carregaremos o documento da URL e armazeraremos o conteúdo na variável <code>html_data</code>.</p>
+<div class="highlight"><pre><span></span>html_data <span class="o">&lt;-</span> read_html<span class="p">(</span><span class="s">&#39;http://www.anbima.com.br/merc_sec/resultados/msec_22jul2016_ntn-b.asp&#39;</span><span class="p">,</span> encoding<span class="o">=</span><span class="s">&#39;iso-8859-1&#39;</span><span class="p">)</span>
 </pre></div>
 
 
-<div class="highlight"><pre>##     ano     1     2     3     4     5     6     7     8     9    10    11    12 acumulado
-## 1  1980  6,62  4,62  6,04  5,29  5,70  5,31  5,55  4,95  4,23  9,48  6,67  6,61     99,27
-## 2  1981  6,84  6,40  4,97  6,46  5,56  5,52  6,26  5,50  5,26  5,08  5,27  5,93     95,65
-## 3  1982  6,97  6,64  5,71  5,89  6,66  7,10  6,36  5,97  5,08  4,44  5,29  7,81    104,80
-## 4  1983  8,64  7,86  7,34  6,58  6,48  9,88 10,08  9,11 10,30  8,87  7,38  8,68    163,99
-## 5  1984  9,67  9,50  8,94  9,54  9,05 10,08  9,72  9,35 11,75 10,44 10,53 11,98    215,27
-## 6  1985 11,76 10,87 10,16  8,20  7,20  8,49 10,31 12,05 11,12 10,62 13,97 15,07    242,24
-## 7  1986 14,37 12,72  4,77  0,78  1,40  1,27  1,71  3,55  1,72  1,90  5,45 11,65     79,65
-## 8  1987 13,21 12,64 16,37 19,10 21,45 19,71  9,21  4,87  7,78 11,22 15,08 14,15    363,41
-## 9  1988 18,89 15,70 17,60 19,29 17,42 22,00 21,91 21,59 27,45 25,62 27,94 28,70    980,22
-## 10 1989 37,49 16,78  6,82  8,33 17,92 28,65 27,74 33,71 37,56 39,77 47,82 51,50   1972,91
-## 11 1990 67,55 75,73 82,39 15,52  7,59 11,75 12,92 12,88 14,41 14,36 16,81 18,44   1620,96
-## 12 1991 20,75 20,72 11,92  4,99  7,43 11,19 12,41 15,63 15,63 20,23 25,21 23,71    472,69
-## 13 1992 25,94 24,32 21,40 19,93 24,86 20,21 21,83 22,14 24,63 25,24 22,49 25,24   1119,09
-## 14 1993 30,35 24,98 27,26 27,75 27,69 30,07 30,72 32,96 35,69 33,92 35,56 36,84   2477,15
-## 15 1994 41,31 40,27 42,75 42,68 44,03 47,43  6,84  1,86  1,53  2,62  2,81  1,71    916,43
-## 16 1995  1,70  1,02  1,55  2,43  2,67  2,26  2,36  0,99  0,99  1,41  1,47  1,56     22,41
-## 17 1996  1,34  1,03  0,35  1,26  1,22  1,19  1,11  0,44  0,15  0,30  0,32  0,47      9,56
-## 18 1997  1,18  0,50  0,51  0,88  0,41  0,54  0,22  0,02  0,06  0,23  0,17  0,43      5,22
-## 19 1998  0,71  0,46  0,34  0,24  0,50  0,02  0,12  0,51  0,22  0,02  0,12  0,33      1,66
-## 20 1999  0,70  1,05  1,10  0,56  0,30  0,19  1,09  0,56  0,31  1,19  0,95  0,60      8,94
-## 21 2000  0,62  0,13  0,22  0,42  0,01  0,23  1,61  1,31  0,23  0,14  0,32  0,59      5,97
-## 22 2001  0,57  0,46  0,38  0,58  0,41  0,52  1,33  0,70  0,28  0,83  0,71  0,65      7,67
-## 23 2002  0,52  0,36  0,60  0,80  0,21  0,42  1,19  0,65  0,72  1,31  3,02  2,10     12,53
-## 24 2003  2,25  1,57  1,23  0,97  0,61  0,15  0,20  0,34  0,78  0,29  0,34  0,52      9,30
-## 25 2004  0,76  0,61  0,47  0,37  0,51  0,71  0,91  0,69  0,33  0,44  0,69  0,86      7,60
-## 26 2005  0,58  0,59  0,61  0,87  0,49  0,02  0,25  0,17  0,35  0,75  0,55  0,36      5,69
-## 27 2006  0,59  0,41  0,43  0,21  0,10  0,21  0,19  0,05  0,21  0,33  0,31  0,48      3,14
-## 28 2007  0,44  0,44  0,37  0,25  0,28  0,28  0,24  0,47  0,18  0,30  0,38  0,74      4,45
-## 29 2008  0,54  0,49  0,48  0,55  0,79  0,74  0,53  0,28  0,26  0,45  0,36  0,28      5,90
-## 30 2009  0,48  0,55  0,20  0,48  0,47  0,36  0,24  0,15  0,24  0,28  0,41  0,37      4,31
-## 31 2010  0,75  0,78  0,52  0,57  0,43  0,00  0,01  0,04  0,45  0,75  0,83  0,63      5,90
-## 32 2011  0,83  0,80  0,79  0,77  0,47  0,15  0,16  0,37  0,53  0,43  0,52  0,50      6,50
-## 33 2012  0,56  0,45  0,21  0,64  0,36  0,08  0,43  0,41  0,57  0,59  0,60  0,79      5,83
-## 34 2013  0,86  0,60  0,47  0,55  0,37  0,26  0,03  0,24  0,35  0,57  0,54  0,92      5,91
-## 35 2014  0,55  0,69  0,92  0,67  0,46  0,40  0,01  0,25  0,57  0,42  0,51  0,78      6,40
-## 36 2015  1,24  1,22  1,32  0,71  0,74  0,79  0,62  0,22  0,54  0,82  1,01  0,96     10,67
+<div class="highlight"><pre><span></span>## Error in open.connection(x, &quot;rb&quot;): HTTP error 404.
 </pre></div>
 
 
-<p>Eu diria que aqui termina o trabalho de webscraping, no entanto, os dados não estão em um formato adequado para trabalhar.
-Um formato que eu considero interessante é o de uma série temporal onde cada inflação é representada por um par data (mês e ano) e valor.
-Neste contexto a coluna <code>acumulado</code> é ignorada e por isso vamos começar removendo-a</p>
-<div class="highlight"><pre><span class="m">.</span>data <span class="o">&lt;-</span> <span class="kp">subset</span><span class="p">(</span><span class="m">.</span>data<span class="p">,</span> select<span class="o">=-</span>acumulado<span class="p">)</span>
+<div class="highlight"><pre><span></span>xml_children<span class="p">(</span>html_data<span class="p">)</span>
 </pre></div>
 
 
-<p>Agora vou transformar os dados.</p>
-<div class="highlight"><pre><span class="m">.</span>data <span class="o">&lt;-</span> <span class="kp">within</span><span class="p">(</span>reshape2<span class="o">::</span>melt<span class="p">(</span><span class="m">.</span>data<span class="p">,</span> id<span class="o">=</span><span class="s">&quot;ano&quot;</span><span class="p">),</span> <span class="p">{</span>
-  variable <span class="o">&lt;-</span> <span class="kp">as.numeric</span><span class="p">(</span>variable<span class="p">)</span>
-  mes <span class="o">&lt;-</span> <span class="kp">as.Date</span><span class="p">(</span><span class="kp">paste</span><span class="p">(</span>ano<span class="p">,</span> variable<span class="p">,</span> <span class="s">&#39;01&#39;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&#39;-&#39;</span><span class="p">))</span>
-  <span class="kp">rm</span><span class="p">(</span>ano<span class="p">,</span> variable<span class="p">)</span>
-<span class="p">})</span>
+<div class="highlight"><pre><span></span>## Error in nodeset_apply(x, node_children): object &#39;html_data&#39; not found
 </pre></div>
 
 
-<p>Esse comando faz diversas coisas e retorna um <code>data.frame</code> com a <em>pattern</em> data-valor, no entando as datas estão fora de ordem.
-Para colocar os dados em ordem cronológica eu vou criar um objeto de série temporal.
-Gosto do pacote <code>xts</code> que cria objetos de séries de tempo com avançadas funcionalidades de indexação.</p>
-<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>xts<span class="p">)</span>
-ipca <span class="o">&lt;-</span> <span class="kp">with</span><span class="p">(</span><span class="m">.</span>data<span class="p">,</span> xts<span class="p">(</span>value<span class="p">,</span> mes<span class="p">))</span>
-<span class="kp">names</span><span class="p">(</span>ipca<span class="p">)</span> <span class="o">&lt;-</span> <span class="s">&#39;IPCA&#39;</span>
-plot<span class="p">(</span>ipca<span class="p">,</span> main<span class="o">=</span><span class="s">&#39;IPCA&#39;</span><span class="p">)</span>
+<p>Uma coisa legal no rvest é que podemos processar o documento HTML usando pipelining (a lá <a href="https://github.com/smbache/magrittr">magrittr</a>).</p>
+<div class="highlight"><pre><span></span>html_data <span class="o">%&gt;%</span> html_nodes<span class="p">(</span>xpath<span class="o">=</span><span class="s">&quot;//table&quot;</span><span class="p">)</span>
 </pre></div>
 
 
-<p><img alt="plot of chunk webscraping-ipca" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-1.png" /> </p>
-<p>A inflação no governo Dilma Rousseff (2011-).</p>
-<div class="highlight"><pre>plot<span class="p">(</span>ipca<span class="p">[</span><span class="s">&#39;2011/&#39;</span><span class="p">],</span> type<span class="o">=</span><span class="s">&#39;b&#39;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span> main<span class="o">=</span><span class="s">&#39;IPCA - Governo Dilma Rousseff&#39;</span><span class="p">)</span>
-</pre></div>
-
-
-<p><img alt="plot of chunk webscraping-ipca-dilma" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-dilma-1.png" /> </p>
-<h2>Conclusão</h2>
-<p>Vimos como capturar a série temporal do IPCA do site PortalBrasil.
-Há outras formas de obter a série do IPCA, para citar 2 temos o webservice do Banco Central e o Quandl.
-No entanto a extração apresentada aqui trabalha dados brutos, o que pra mim é melhor porque eu tomo as decisões sobre a manipulação e interpretação dos dados.
-Além disso utilizo apenas HTTP, preciso apenas que o site esteja no ar disponibilizando páginas estáticas, as outras alternativas são serviços onde é necessário uma API para obter os dados.</p></div>
+<div class="highlight"><pre><span></span>## Error in eval(lhs, parent, parent): object &#39;html_data&#39; not found
+</pre></div></div>
 	<hr>
 	<h2>Comments</h2>
 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'aboutwilson'; 
-    var disqus_title = 'Webscraping Títulos Públicos Federais: Tesouro IPCA';
+    var disqus_title = 'Webscraping Títulos Públicos Federais: Tesouro IPCA+';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -252,7 +181,7 @@ Além disso utilizo apenas HTTP, preciso apenas que o site esteja no ar disponib
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -263,16 +192,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>

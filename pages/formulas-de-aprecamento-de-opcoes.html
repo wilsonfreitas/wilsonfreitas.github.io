@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Fórmulas de Apreçamento de Opções — Wilson Freitas </title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Difersas fórmulas para apreçamento de opções utilizadas no mercado brasileiro para as opções negociadas na BM&FBovespa e no mercado de Balcão.">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+        
+<section id="content" class="body">    
+    <h3>Fórmula de Black&amp;Scholes</h3>
+<p>$$
+\begin{align}
+P_c(S,K,r,T,\sigma) &amp; = S N(d_1) - K \mathrm{e}^{-rT} N(d_2) \\
+P_p(S,K,r,T,\sigma) &amp; = K \mathrm{e}^{-rT} N(-d_2) - S N(-d_1)
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+d_1 &amp; = \frac{\log\left(\frac{S}{K}\right) + \left(r + \frac{\sigma^2}{2}\right)T}{\sigma \sqrt{T}} \\
+d_2 &amp; = d_1 - \sigma \sqrt{T}
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+\Delta_c &amp; = N(d_1) \\
+\Delta_p &amp; = N(d_1) - 1 \equiv \Delta_c - 1
+\end{align}
+$$</p>
+<h3>Fórmula de Black (1976)</h3>
+<p>$$
+\begin{align}
+P_c(F,K,r,T,\sigma) &amp; = \mathrm{e}^{-rT} \left( F N(d_1) - K N(d_2) \right) \\
+P_p(F,K,r,T,\sigma) &amp; = \mathrm{e}^{-rT} \left( K N(-d_2) - F N(-d_1) \right)
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+d_1 &amp; = \frac{\log\left(\frac{F}{K}\right) + \frac{\sigma^2 T}{2}}{\sigma \sqrt{T}} \\
+d_2 &amp; = d_1 - \sigma \sqrt{T}
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+\Delta_c &amp; = \mathrm{e}^{-rT} N(d_1) \\
+\Delta_p &amp; = \mathrm{e}^{-rT} ( N(d_1) - 1 )
+\end{align}
+$$</p>
+<h3>Fórmula do Swaption</h3>
+<p>Esta fórmula é utilizada no apreçamento de contratos de opções sobre Futuros de DI1.</p>
+<p>$$
+\begin{align}
+P_c(F,K,r,T,\sigma) &amp; = \delta \left( S^\prime N(d_1) - K^\prime N(d_2) \right) \\
+P_p(F,K,r,T,\sigma) &amp; = \delta \left( K^\prime N(-d_2) - S^\prime N(-d_1) \right)
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+d_1 &amp; = \frac{\log\left(\frac{S^\prime}{K^\prime}\right) + \frac{\sigma^2 T_1^\prime}{2}}{\sigma \sqrt{T_1^\prime}} \\
+d_2 &amp; = d_1 - \sigma \sqrt{T_1^\prime}
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+\Delta_c &amp; = N(d_1) \frac{PU_k}{PU_f} \\
+\Delta_p &amp; = ( N(d_1) - 1 ) \frac{PU_k}{PU_f} \\
+PU_f &amp; = 100000 \frac{PU_2}{PU_1}
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+K^\prime &amp; = \frac{ (1 + k)^{T_2 - T_1} }{T_2^\prime - T_1^\prime} \\
+S^\prime &amp; = \left( \frac{PU_1}{PU_2} - 1 \right) \frac{1}{T_2^\prime - T_1^\prime} \\
+\delta &amp; = \frac{ PU_2 ( T_2^\prime - T_1^\prime ) } { 1 + K^\prime ( T_2^\prime - T_1^\prime ) }
+\end{align}
+$$</p>
+<h3>Fórmula de Garman-Kohlhagen</h3>
+<p>$$
+\begin{align}
+P_c(S,K,r,T,\sigma) &amp; = S \mathrm{e}^{-r_cT} N(d_1) - K \mathrm{e}^{-rT} N(d_2) \\
+P_p(S,K,r,T,\sigma) &amp; = K \mathrm{e}^{-rT} N(-d_2) - S \mathrm{e}^{-r_cT} N(-d_1)
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+d_1 &amp; = \frac{\log\left(\frac{S}{K}\right) + \left(r -r_c + \frac{\sigma^2}{2}\right)T}{\sigma \sqrt{T}} \\
+d_2 &amp; = d_1 - \sigma \sqrt{T}
+\end{align}
+$$</p>
+<p>$$
+\begin{align}
+\Delta_c &amp; = \mathrm{e}^{-rT} N(d_1) \\
+\Delta_p &amp; = \mathrm{e}^{-rT} ( N(d_1) - 1 )
+\end{align}
+$$</p>
+</section>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+ 
+</body>
+</html>

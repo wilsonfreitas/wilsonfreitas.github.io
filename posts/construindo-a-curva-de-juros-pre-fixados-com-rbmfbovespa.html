@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+	<meta charset="utf-8">
+	<title>Construindo a curva de juros pré-fixados com rbmfbovespa — Wilson Freitas</title>
+	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<meta name="description" content="Title: Construindo a curva de juros pré-fixados com rbmfbovespa; Date: 2017-02-03; Author: Wilson Freitas">
+	<meta name="author" content="Wilson Freitas">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<![endif]-->
+	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+	});
+	</script>
+	<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+	<meta property="og:site_name" content="Wilson Freitas" />
+	<meta property="og:type" content="article"/>
+	<meta property="og:title" content="Construindo a curva de juros pré-fixados com rbmfbovespa"/>
+	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/construindo-a-curva-de-juros-pre-fixados-com-rbmfbovespa.html"/>
+	<meta property="og:description" content=""/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+<div class="container">
+	<nav class="navbar navbar-default" style="margin-top:2em;">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://wilsonfreitas.github.io/index.html">Wilson Freitas</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="row">
+		<div class="col-md-12">
+<div class="article" itemscope itemtype="http://schema.org/BlogPosting">
+	<div class="text-center article-header">
+		<h1 itemprop="name headline" class="article-title">Construindo a curva de juros pré-fixados com rbmfbovespa</h1>
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<h4 itemprop="name">Wilson Freitas</h4>
+		</span>
+		<time datetime="2017-02-03T00:00:00-02:00" itemprop="datePublished">03/02/2017</time>
+	</div>
+	<div>
+		Categoria:
+		<span itemprop="articleSection">
+			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+		</span>
+	</div>
+ 
+	<div>
+		Tags:
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/rbmfbovespa.html" rel="tag">rbmfbovespa</a>
+		</span>
+		<span itemprop="keywords">
+			<a href="http://wilsonfreitas.github.io/tag/bizdays.html" rel="tag">bizdays</a>
+		</span>
+	</div>
+	<div itemprop="articleBody" class="article-body"><p>Os arquivos disponibilizados pela BM&amp;FBovespa trazem variáveis fundamentais para a compreenssão das expectativas dos agentes econômicos acerca do futuro da economia e do desenrolar das políticas macroeconômicas.
+Uma das variáveis mais importantes é a curva de taxas de juros pré-fixados, a <strong>curva pré</strong>, também definida como estrutura a termo de taxas de juros pré-fixados.
+Esta curva traz expectativas de taxas de juros para diversos prazos e que são utilizadas no mercado para o apreçamento de diversos instrumentos financeiros, desde CDBs a opções e por isso também é considerada como uma <em>proxy</em> para taxas de juros livres de risco.
+Por exemplo, você tem uma grana para recever em uma data futura, digamos 1 ano a frente.
+Qual taxa de juros utilizar para calcular o valor presente dessa grana hoje.
+Bem, um bom candidato para essa taxa de juros é a taxa na curva pré referente ao prazo em que a grana será recebida no futuro.</p>
+<p>Neste post vou mostrar como utilizar 2 dos arquivos disponibilizados pela BM&amp;FBovespa para construir esta curva a partir das cotações dos negócios de contratos futuros de taxa de juros sobre DI de 1 dia, ou como são conhecido contratos sobre DI1.
+Os arquivos são:</p>
+<ul>
+<li><code>BD_Final.txt</code>: Negócios Realizados em Pregão - Final</li>
+<li><code>Indic.txt</code>: Indicadores Econômicos e Agropecuários - Final</li>
+</ul>
+<p>O arquivo <code>BD_Final.txt</code> traz as cotações dos contratos futuros e o <code>Indic.txt</code> traz indicadores econômicos, em particular a taxa CDI divulgada pela CETIP, que é necessária na construção da curva.</p>
+<p>Vamos começar importando os pacotes necessários.</p>
+<div class="highlight"><pre><span></span><span class="kn">library</span><span class="p">(</span>rbmfbovespa<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>dplyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>tidyr<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>ggplot2<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>forcats<span class="p">)</span>
+</pre></div>
+
+
+<p>O arquivo <code>BD_Final.txt</code> é baixado da página de <a href="http://www.bmfbovespa.com.br/pt_br/servicos/market-data/historico/mercado-de-derivativos/pesquisa-por-pregao/" title="Pesquisa por Pregão">Pesquisa por Pregão</a> do site da BM&amp;FBovespa selecionando o arquivo: <strong>Mercado de Derivativos - Negócios Realizados em Pregão - Final</strong>.
+Este arquivo é carregado diretamente com a função <code>read_marketdata</code> do pacote <a href="https://github.com/wilsonfreitas/rbmfbovespa">rbmfbovespa</a>.</p>
+<div class="highlight"><pre><span></span>bdi <span class="o">&lt;-</span> read_marketdata<span class="p">(</span><span class="s">&#39;datasets/BD_Final.txt&#39;</span><span class="p">,</span> template <span class="o">=</span> <span class="s">&#39;BD_Final&#39;</span><span class="p">)</span>
+<span class="kp">dim</span><span class="p">(</span>bdi<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>## [1] 1124   80
+</pre></div>
+
+
+<p>Este arquivo traz 80 variáveis e pouco mais de 1000 registros.
+Vamos filtrar os registros dos contratos futuros de DI1 utilizando <code>cod_mercadoria == 'DI1'</code> e selecionar as variáveis <code>data_vencimento</code>, que é o vencimento do contrato futuro e a variável <code>cot_ult_negocio</code>, que é o valor em taxa da cotação do último negócio de futuros de DI1.</p>
+<div class="highlight"><pre><span></span>curva_pre <span class="o">&lt;-</span> bdi <span class="o">%&gt;%</span> filter<span class="p">(</span>cod_mercadoria <span class="o">==</span> <span class="s">&#39;DI1&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  select<span class="p">(</span>data_vencimento<span class="p">,</span> taxa <span class="o">=</span> cot_ult_negocio<span class="p">)</span> <span class="o">%&gt;%</span>
+  arrange<span class="p">(</span>data_vencimento<span class="p">)</span>
+curva_pre
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##    data_vencimento   taxa
+## 1       2017-03-01 12.797
+## 2       2017-04-03 12.420
+## 3       2017-05-02 12.229
+## 4       2017-06-01 11.980
+## 5       2017-07-03 11.765
+## 6       2017-08-01 11.625
+## 7       2017-09-01 11.400
+## 8       2017-10-02 11.260
+## 9       2017-11-01  0.000
+## 10      2017-12-01  0.000
+## 11      2018-01-02 10.870
+## 12      2018-02-01 10.760
+## 13      2018-04-02 10.640
+## 14      2018-07-02 10.460
+## 15      2018-10-01 10.370
+## 16      2019-01-02 10.300
+## 17      2019-04-01 10.330
+## 18      2019-07-01 10.350
+## 19      2019-10-01 10.400
+## 20      2020-01-02 10.440
+## 21      2020-04-01 10.500
+## 22      2020-07-01 10.550
+## 23      2020-10-01 10.590
+## 24      2021-01-04 10.590
+## 25      2021-04-01 10.630
+## 26      2021-07-01 10.660
+## 27      2021-10-01  0.000
+## 28      2022-01-03 10.750
+## 29      2022-07-01  0.000
+## 30      2023-01-02 10.850
+## 31      2023-07-03  0.000
+## 32      2024-01-02 10.890
+## 33      2024-07-01  0.000
+## 34      2025-01-02 10.910
+## 35      2026-01-02 10.910
+## 36      2027-01-04 10.940
+## 37      2028-01-03  0.000
+## 38      2029-01-02  0.000
+## 39      2030-01-02  0.000
+</pre></div>
+
+
+<p>A variáveis <code>cot_ult_negocio</code> foi renomeada como <code>taxa</code> para simplicar o tratamento e evitar ficar carregando um nome extenso e estranho.
+Na sequência os dados são ordenado pela data de vencimento, pois cada ponto da curva é refente a uma data e portanto é necessário que estes estejam em sequência.</p>
+<p>Observando os dados, identificamos que algumas taxas são zero, indicando que para a data de referência do arquivo (ou do pregão) não houveram negociações de contratos futuros de DI1 para estes vencimentos.
+Portanto, é necessário excluir todos os registros com taxas zeradas.</p>
+<div class="highlight"><pre><span></span>curva_pre <span class="o">&lt;-</span> curva_pre <span class="o">%&gt;%</span> filter<span class="p">(</span>taxa <span class="o">!=</span> <span class="m">0</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Agora podemos visualizar a curva pré.</p>
+<div class="highlight"><pre><span></span>ggplot<span class="p">(</span>data <span class="o">=</span> curva_pre<span class="p">,</span>
+       aes<span class="p">(</span>x <span class="o">=</span> data_vencimento<span class="p">,</span> y <span class="o">=</span> taxa<span class="p">))</span> <span class="o">+</span>
+  geom_point<span class="p">()</span> <span class="o">+</span>
+  geom_line<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk curva_de_juros_pre_com_rbmfbovespa-5" src="http://wilsonfreitas.github.io/figure/curva_de_juros_pre_com_rbmfbovespa-5-1.png"></p>
+<p>Entretanto essa curva começa no primeiro vencimento de futuro de DI1.
+É necessário definir o vértice de 1 dia, referente a taxa de juros de <em>overnight</em>.
+Essa taxa de juro é obtida no arquivo <code>Indic.txt</code> com o código do indicador igual a <code>'DI1'</code>.</p>
+<div class="highlight"><pre><span></span>indic <span class="o">&lt;-</span> read_marketdata<span class="p">(</span><span class="s">&#39;datasets/Indic.txt&#39;</span><span class="p">,</span> template <span class="o">=</span> <span class="s">&#39;Indic&#39;</span><span class="p">)</span>
+indic <span class="o">%&gt;%</span>
+  filter <span class="p">(</span>cod_indicador <span class="o">==</span> <span class="s">&#39;DI1&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  select<span class="p">(</span>data_geracao_arquivo<span class="p">,</span> valor_indicador<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##   data_geracao_arquivo valor_indicador
+## 1           2017-02-01           12.88
+## 2           2017-02-02           12.88
+</pre></div>
+
+
+<p>Como se observa há duas datas de geração do arquivo, isso acontece por que neste arquivo são divulgadas informações para a data de referência e para o dia anterior.
+A nossa data de referência será a data de geração do arquivo <code>BD_Final.txt</code> obtida da variável <code>data_geracao_arquivo</code>.</p>
+<div class="highlight"><pre><span></span>ref_date <span class="o">&lt;-</span> bdi<span class="o">$</span>data_geracao_arquivo<span class="p">[</span><span class="m">1</span><span class="p">]</span>
+cdi <span class="o">&lt;-</span> indic <span class="o">%&gt;%</span>
+  filter <span class="p">(</span>cod_indicador <span class="o">==</span> <span class="s">&#39;DI1&#39;</span><span class="p">,</span> data_geracao_arquivo <span class="o">==</span> ref_date<span class="p">)</span> <span class="o">%&gt;%</span>
+  select<span class="p">(</span>data_vencimento <span class="o">=</span> data_geracao_arquivo<span class="p">,</span> taxa <span class="o">=</span> valor_indicador<span class="p">)</span>
+cdi
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##   data_vencimento  taxa
+## 1      2017-02-02 12.88
+</pre></div>
+
+
+<p>Note que eu já gerei uma tabela com as colunas <code>data_vencimento</code> e <code>taxa</code> que são as mesmas da <code>curva_pre</code>.
+Entretanto é necessário fazer uma ajuste na data de vencimento de <code>cdi</code>, porque essa é a data de referência da taxa e não a sua data de vencimento.
+Como a taxa CDI é a taxa de <em>overnight</em> é preciso mover essa data de 1 dia útil.
+Para fazer isso utilizamos a função <code>offset</code> do pacote <a href="https://github.com/wilsonfreitas/R-bizdays" title="bizdays">bizdays</a> utilizando o calendário <code>Brazil/ANBIMA</code>, que já vem com o pacote.</p>
+<div class="highlight"><pre><span></span>cdi <span class="o">&lt;-</span> cdi <span class="o">%&gt;%</span> mutate<span class="p">(</span>data_vencimento <span class="o">=</span> bizdays<span class="o">::</span>offset<span class="p">(</span>data_vencimento<span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="s">&#39;Brazil/ANBIMA&#39;</span><span class="p">))</span>
+cdi
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>##   data_vencimento  taxa
+## 1      2017-02-03 12.88
+</pre></div>
+
+
+<p>Para incluir este vértice a curva vamos utilizar o <code>rbind</code>, atualizando <code>curva_pre</code> e na sequência já colocamos a visualização dos dados.</p>
+<div class="highlight"><pre><span></span>curva_pre <span class="o">&lt;-</span> curva_pre <span class="o">%&gt;%</span> <span class="kp">rbind</span><span class="p">(</span>cdi<span class="p">)</span> <span class="o">%&gt;%</span> arrange<span class="p">(</span>data_vencimento<span class="p">)</span>
+
+ggplot<span class="p">(</span>data <span class="o">=</span> curva_pre<span class="p">,</span>
+       aes<span class="p">(</span>x <span class="o">=</span> data_vencimento<span class="p">,</span> y <span class="o">=</span> taxa<span class="p">))</span> <span class="o">+</span>
+  geom_point<span class="p">()</span> <span class="o">+</span>
+  geom_line<span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="plot of chunk curva_de_juros_pre_com_rbmfbovespa-9" src="http://wilsonfreitas.github.io/figure/curva_de_juros_pre_com_rbmfbovespa-9-1.png"></p>
+<p>Na visualização não muda muito, mas esse primeiro vértice é muito importante para ancorar o começo da curva permitindo utilizar algumas técnicas de interpolação de dados para obter estimativas de taxas de juros que não estão presentes na curva.</p>
+<p>Há outras formas de selecionar as cotações para a construção da curva, aqui adotamos a cotação do último negócio, poderiamos ter adotado as taxas implícitas no preço de ajuste dos futuros (variável <code>valor_ajuste</code>), que são os preços utilizados no cálculo dos ajustes diários pagos aos investidores que possuem posições em aberto nos contrados de DI1.
+Poderiamos também fazer uma avaliação de liquidez, observando a quantidade de negócios e o número de contratos negociados (variáveis <code>qtd_negocios</code> e <code>qtd_contr</code>), afim de construir uma curva com os vencimentos mais líquidos.</p>
+<p>Outra observação interessante é o formato da curva, ela está indicando queda de juros para os próximos 2 anos.
+Ao observamos as curvas de períodos anteriores, em particular do ano de 2015, não havia expectativa de redução da taxa de juros.
+Veja o post <a href="http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html">Empenada na Curva de Juros de DI1</a> para ter uma ideia de como eram os níveis de taxas de juros em 2015.
+Esse é um resultado direto da forma como a política econômica vem sendo tocada pela atual equipe do Ministério da Fazenda e do Banco Central.</p></div>
+	<hr>
+	<h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'aboutwilson'; 
+    var disqus_title = 'Construindo a curva de juros pré-fixados com rbmfbovespa';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 text-center center-block aw-bottom">
+			<p>&copy; Wilson Freitas 2015</p>
+			<p>Powered by Pelican</p>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function($) {
+	$("div.collapseheader").click(function () {
+		$header = $(this).children("span").first();
+		$codearea = $(this).children(".input_area");
+		$codearea.slideToggle(500, function () {
+			$header.text(function () {
+				return $codearea.is(":visible") ? "Collapse Code" : "Expand Code";
+			});
+		});
+	});
+});
+</script>
+ 
+</body>
+</html>

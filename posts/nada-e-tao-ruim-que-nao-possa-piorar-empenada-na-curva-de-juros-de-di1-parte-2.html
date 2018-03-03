@@ -27,6 +27,16 @@
 	<meta property="og:title" content="Nada é tão ruim que não possa piorar: Empenada na Curva de Juros de DI1 — Parte 2"/>
 	<meta property="og:url" content="http://wilsonfreitas.github.io/posts/nada-e-tao-ruim-que-nao-possa-piorar-empenada-na-curva-de-juros-de-di1-parte-2.html"/>
 	<meta property="og:description" content="Uma nova empenada na Curva de Juros de DI1 após o nome do deputado Eduardo Cunha aparecer na lista de acusados da Operação Lava Jato."/>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-4510606-3', 'auto');
+  ga('send', 'pageview');
+
+</script>
 </head>
 <body>
 <div class="container">
@@ -45,7 +55,8 @@
 				<ul class="nav navbar-nav">
 					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
 					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Autor</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
@@ -92,7 +103,7 @@ Alta de dólar (rompeu a barreira de R$ 4,00 e segue sem rumo), disparada de jur
 Mas no dia 23 de setembro de 2015 aconteceu algo interessante, após o nome do deputado Eduardo Cunha aparecer na lista de acusados da Operação Lava Jato, a curva de juros apresentou forte elevação.
 Essa empenada é reflexo da incerteza que ronda a aprovação de medidas importantes para a economia e para o país, incluindo o corte de gastos e o ajuste fiscal.
 Olhe no gráfico abaixo a curva de juros de DI1 para a semana do dia 21 de setembro.</p>
-<div class="highlight"><pre><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">1260</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">)</span> <span class="o">-&gt;</span> terms
+<div class="highlight"><pre><span></span><span class="kp">seq</span><span class="p">(</span><span class="m">21</span><span class="p">,</span> <span class="m">1260</span><span class="p">,</span> by<span class="o">=</span><span class="m">21</span><span class="p">)</span> <span class="o">-&gt;</span> terms
 
 dates <span class="o">&lt;-</span> <span class="kp">seq</span><span class="p">(</span><span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2015-09-21&#39;</span><span class="p">),</span> <span class="kp">as.Date</span><span class="p">(</span><span class="s">&#39;2015-09-25&#39;</span><span class="p">),</span> by<span class="o">=</span><span class="s">&#39;days&#39;</span><span class="p">)</span>
 curves <span class="o">&lt;-</span> <span class="kp">lapply</span><span class="p">(</span>dates<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>d<span class="p">)</span> <span class="p">{</span>
@@ -109,7 +120,7 @@ ggplot<span class="p">(</span>data<span class="o">=</span>ir_df<span class="p">,
 </pre></div>
 
 
-<p><img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-2-1.png" /> </p>
+<p><img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-2-1.png"></p>
 <p>Isso mesmo, em 3 dias a curva deu uma empenada de 1 ponto percentual (100 basis points (bps)) e depois retornou ao nível inicial no último dia da semana.
 Esses movimentos do mercado, na minha opinião são muito difíceis de se explicar.
 Em geral os analistas se prendem a algum fato, como as notícias do governo, ou criam um factóide, mas a verdade é que pode ser um grande <em>player</em> manipulando o mercado de forma indireta.</p>
@@ -146,7 +157,7 @@ Em geral os analistas se prendem a algum fato, como as notícias do governo, ou 
 <script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
 <script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-jQuery(document).ready(function($) {
+$(document).ready(function($) {
 	$("div.collapseheader").click(function () {
 		$header = $(this).children("span").first();
 		$codearea = $(this).children(".input_area");
@@ -157,16 +168,6 @@ jQuery(document).ready(function($) {
 		});
 	});
 });
-</script>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-4510606-3', 'auto');
-  ga('send', 'pageview');
-
 </script>
  
 </body>
