@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Importando e Manipulando Dados Financeiros no R</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Wilson de Freitas" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="welco.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Importando e Manipulando Dados Financeiros no R
+## <a href="http://bit.ly/import-fin-data" class="uri">http://bit.ly/import-fin-data</a>
+### Wilson de Freitas
+### SER 2018 — 22 de maio de 2018
+
+---
+
+
+
+
+
+
+# Agenda
+
+- Fontes de dados financeiros disponíveis na Internet
+    - Pacotes para importar dados no R
+
+- Manipulação de dados
+    - Estrutura de dados no R para trabalhar com dados financeiros
+
+- Visualização de dados
+    - Formas simples de visualização de séries temporais
+
+---
+
+# Pacotes no R para acesso a dados
+
+**Fontes de dados nacionais**
+
+- [rbcb](https://cran.r-project.org/package=rbcb): Portal de dados abertos do BCB ([link](https://dadosabertos.bcb.gov.br/))
+- [GetTDData](https://cran.r-project.org/package=GetTDData): Dados do Tesouro Direto ([link](http://www.tesouro.gov.br/tesouro-direto-balanco-e-estatisticas))
+- [GetDFPData](https://cran.r-project.org/package=GetDFPData): Demostrativos financeiros de empresas listadas na B3 ([link](http://www.bmfbovespa.com.br/pt_br/produtos/listados-a-vista-e-derivativos/renda-variavel/empresas-listadas.htm))
+- [GetHFTData](https://cran.r-project.org/package=GetHFTData): Dados de negociações em alta frequência da B3
+&lt;!-- - [GetITRData](https://cran.r-project.org/package=GetITRData): Informações Trimestrais das empresas listadas na B3 ([link](http://www.bmfbovespa.com.br/pt_br/produtos/listados-a-vista-e-derivativos/renda-variavel/empresas-listadas.htm)) --&gt;
+- [BETS](https://github.com/nmecsys/BETS): Brazilian economic time series
+
+**Fontes de dados internacionais**
+
+- [Quandl](https://cran.r-project.org/package=Quandl): The world’s most powerful data lives on Quandl ([link](http://www.quandl.com)).
+- [quantmod](https://cran.r-project.org/package=quantmod): Framework para modelagem em finanças quantitativas.
+- [tidyquant](https://business-science.github.io/tidyquant/): Bringing financial analysis to the tidyverse.
+
+---
+
+layout: true
+
+# Exemplos
+
+---
+
+
+```r
+IBOVESPA &lt;- rbcb::get_series(c(IBOVESPA = 7),
+                             last = 756,
+                             as = "xts")
+autoplot(IBOVESPA)
+```
+
+![](figures/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+IPCA &lt;- rbcb::get_series(c(IPCA = 433),
+                         start_date = "2003-01-01",
+                         end_date = "2017-12-31",
+                         as = "xts")
+autoplot(IPCA)
+```
+
+![](figures/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+SER &lt;- rbcb::get_series(c(INADIMPLÊNCIA = 21082, SPREAD = 20783),
+                         as = "xts")
+autoplot(do.call(merge.xts, SER)) + facet_free()
+```
+
+![](figures/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+.footnote[Referência: &lt;https://analisemacro.com.br/economia/politica-monetaria/inadimplencia-vs-spread-bancario-refutando-ideias-heterodoxas/&gt;]
+
+---
+
+
+```r
+SELIC &lt;- rbcb::get_series(c(SELIC = 1178),
+                          start_date = "2003-01-01",
+                          as = "xts")
+autoplot(SELIC)
+```
+
+![](figures/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+library(GetTDData)
+ntnb &lt;- read.TD.files(asset.codes = "NTN-B",
+                      maturity = c("150820", "150850"))
+ggplot(ntnb, aes(x = as.Date(ref.date), y = price.bid,
+                 color = asset.code)) +
+  geom_line() + labs(x = "Datas", y = "Preços", colour = NULL)
+```
+![](figures/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+library(BETS)
+DESEMPREGO_SP &lt;- BETS.get(10782)
+autoplot(DESEMPREGO_SP)
+```
+
+![](figures/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+PIB &lt;- BETS.get(c(1221,1216)) # PIB SERVIÇOS, INDÚSTRIA -- IBGE
+SER &lt;- do.call(merge.xts, purrr::map(PIB, as.xts))
+names(SER) &lt;- c("SERVIÇOS", "INDÚSTRIA")
+autoplot(SER, facets = NULL) + labs(title = "PIB", colour = NULL)
+```
+
+![](figures/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+US_YIELD_10Y &lt;- Quandl::Quandl("USTREASURY/YIELD.9",
+                           type = "xts",
+                           start_date = "2015-01-01")
+autoplot(US_YIELD_10Y)
+```
+
+![](figures/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+library(quantmod)
+getSymbols("^DJI", src = "yahoo", from = "2005-01-01")
+```
+
+```
+## [1] "DJI"
+```
+
+```r
+Cl(DJI) %&gt;% autoplot()
+```
+
+![](figures/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+library(quantmod)
+getSymbols(c("GOOG", "AAPL"), src = "yahoo", from = "2004-08-01")
+```
+
+```
+## [1] "GOOG" "AAPL"
+```
+
+```r
+autoplot(merge(GOOG = Cl(GOOG), AAPL = Cl(AAPL))) + facet_free()
+```
+
+![](figures/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+
+layout: false
+class: inverse
+background-image: url(figures/meme-desconfiado.jpg)
+background-size: 100%
+&lt;!-- background-position: 50% 50% --&gt;
+
+.footnote[Imagem: http://www.championdog.com.br/seu-cao-te-ignora/cachorro-desconfiado-destaque/]
+---
+
+# O que vamos fazer?
+
+#### Importar dados com os pacotes:
+
+- [rbcb](https://cran.r-project.org/package=rbcb): Dados de índices, moedas, e inflação
+
+- [GetTDData](https://cran.r-project.org/package=GetTDData): Dados de preços e taxas dos contratos
+
+&lt;!-- - [GetDFPData](https://cran.r-project.org/package=GetDFPData): Dados de resultados das empresas --&gt;
+
+- [quantmod](https://cran.r-project.org/package=quantmod): Séries temporais de índices e ações
+
+- [Quandl](https://cran.r-project.org/package=Quandl): Indicadores econômicos de vários paises
+
+--
+
+#### Manipular dados com os pacotes:
+
+- tibble
+
+- dplyr
+
+- xts
+
+---
+layout: false
+class: inverse, middle, center
+
+# rbcb
+
+Dados do Banco Central do Brasil
+
+&lt;https://www3.bcb.gov.br/sgspub&gt;
+
+---
+
+# rbcb
+
+[SGS]:https://www3.bcb.gov.br/sgspub
+[dadosabertos-bcb]:https://dadosabertos.bcb.gov.br/
+
+- Captura dados utilizando a API RESTful do Banco Central do Brasil (BCB) disponível no [Portal de Dados Abertos do BCB][dadosabertos-bcb]
+--
+
+- As séries estão disponíveis em diversos formatos e *endpoits*: JSON, CSV, XML
+--
+
+- Muitas séries são encontradas no [Sistema Gerenciador de Séries Temporais do BCB][SGS] (SGS)
+    - Atividade Econômica: contas nacionais, indústria, mercado de trabalho
+    - Economia Regional: Finanças públicas, coméricio exterior, entre outras séries para as regiões do Brasil, por estados.
+    - Expectativas de Mercado: taxas de juros, índices, moedas
+    - Economia Internacional: taxas de juros de moedas estrangeiras, balança comercial, indicadores de atividade econômica
+    - Finanças Públicas: dívida líquida do setor público, dívida mobiliária federal, receitas dos estados e municípios
+
+---
+
+# rbcb
+
+## `rbcb::get_series`
+
+- Baixa as séries do [SGS]
+
+
+```r
+args(rbcb::get_series)
+```
+
+```
+## function (code, start_date = NULL, end_date = NULL, last = 0, 
+##     as = c("tibble", "xts", "ts", "data.frame", "text")) 
+## NULL
+```
+
+--
+&lt;br/&gt;
+&lt;br/&gt;
+.alert[
+O `code` das séries é obtido no [SGS]
+]
+
+---
+
+class: center, bottom, inverse
+background-image: url(figures/SGS.png)
+background-size: 100%
+background-position: 50% 50%
+
+---
+
+&lt;!-- class: center, bottom, inverse --&gt;
+background-image: url(figures/meme-mãonamassa.png)
+background-size: 100%
+&lt;!-- background-position: 50% 50% --&gt;
+
+---
+
+layout: true
+
+# rbcb
+
+---
+
+## Atividade: Buscando uma série e obtendo os seus dados
+
+- visite o site do SGS https://www3.bcb.gov.br/sgspub
+- realize uma busca pelo termo `CDI`\* no campo **Pesquisa textual**
+- encontre a série:
+    - Nome: Taxa de juros - CDI
+    - Unidade: %a.d.
+    - Periodicidade: diária
+- complete o código abaixo para obter a série e inspecioná-la
+
+```r
+cdi_daily &lt;- rbcb::get_series(___, last = 21)
+tibble::glimpse(cdi_daily)
+```
+
+.footnote[Referência: CDI—Certificado de Depósito Interbancários &lt;http://bit.ly/taxacdi&gt;]
+
+---
+
+## Nomeando as variáveis
+
+O nome da colula com a variável é o código da série, `12`.
+
+``` r
+tibble::glimpse(cdi_daily)
+#&gt; Observations: 21
+#&gt; Variables: 2
+#&gt; $ date &lt;date&gt; 2018-04-12, 2018-04-13, 2018-04-16, 2018-04-17, 2018-04-...
+#&gt; $ `12` &lt;dbl&gt; 0.024583, 0.024583, 0.024583, 0.024583, 0.024583, 0.02458...
+```
+
+- É melhor ter nomes de variáveis válidos: facilita a manipulação.
+- Use vetores nomeados em `rbcb::get_series` para nomear as séries.
+
+```r
+rbcb::get_series(c(NOME = 999))
+```
+
+---
+
+## Atividade: Nomeando as variáveis
+
+- complete o código abaixo para que retorne uma série com a variável nomeada como `CDI`
+- use o argumento `last` para retornar os últimos 252 dias (1 ano em dias úteis)
+
+```r
+cdi_daily &lt;- rbcb::get_series(___, ___)
+tibble::glimpse(cdi_daily)
+```
+
+outra forma de inspecionar
+
+```r
+str(cdi_daily)
+```
+---
+
+## Objetos tibble
+
+[tidyverse]:https://www.tidyverse.org/
+[dplyr]: https://dplyr.tidyverse.org/
+
+- `rbcb::get_series` retorna um objeto do tipo `tibble` com os dados.
+- `tibble` são `data.frame` com esteróides e são ideais pra se trabalhar com funções do [dplyr].
+
+
+```r
+rbcb::get_series(c(CDI = 12), last = 5)
+```
+
+```
+## # A tibble: 5 x 2
+##   date          CDI
+## * &lt;date&gt;      &lt;dbl&gt;
+## 1 2018-05-08 0.0246
+## 2 2018-05-09 0.0246
+## 3 2018-05-10 0.0246
+## 4 2018-05-11 0.0246
+## 5 2018-05-14 0.0246
+```
+
+---
+
+## Objetos tibble
+
+- manipulando variáveis em um objeto tibble: função `mutate`
+
+
+```r
+library(dplyr)
+
+cdi_daily &lt;- rbcb::get_series(c(CDI = 12), last = 3)
+
+cdi_daily %&gt;% mutate(fator_cap = 1 + CDI)
+```
+
+```
+## # A tibble: 3 x 3
+##   date          CDI fator_cap
+##   &lt;date&gt;      &lt;dbl&gt;     &lt;dbl&gt;
+## 1 2018-05-15 0.0246      1.02
+## 2 2018-05-16 0.0246      1.02
+## 3 2018-05-17 0.0246      1.02
+```
+
+---
+
+## Atividade: Trabalhando com os dados
+
+- As taxas de juros em `cdi_daily` (`code = 12`) são diárias.
+- É comum trabalhar com taxas de juros anuais.
+- A fórmula `\(r_a = (1 + r_d)^{252} - 1\)` converte taxas de juros diárias `\(r_d\)` para anuais `\(r_a\)`.
+
+&lt;hr/&gt;
+
+- complete o código para fazer a conversão da taxa de juros diária para juros anuais e visualize os dados.
+
+```r
+library(dplyr)
+library(ggplot2)
+
+cdi_annual &lt;- cdi_daily %&gt;% mutate(CDI = ___)
+
+ggplot(cdi_annual, aes(x = date, y = CDI)) + geom_line()
+```
+
+---
+
+## Outras estruturas de dados
+
+- `tibble` são bons para o `dplyr`, mas há outros objetos no R para manipular dados.
+
+- O argumento `as` de `rbcb::get_series` define o tipo retornado.
+
+    - `as` suporta: `tibble`, `data.frame`, `xts`, `ts`, `text`
+
+- `ts` e `xts` são muito utilizados em análise de séries temporais.
+
+--
+
+
+```r
+rbcb::get_series(c(IPCA = 433), last = 12, as = "ts")
+```
+
+```
+##        Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov
+## 2017                          0.31 -0.23  0.24  0.19  0.16  0.42  0.28
+## 2018  0.29  0.32  0.09  0.22                                          
+##        Dec
+## 2017  0.44
+## 2018
+```
+
+---
+
+## Atividade: Outras estruturas de dados
+
+- complete o código para baixar a série do dólar
+    - use `code = 1` com nome `USDBRL`
+    - data inicial `2003-01-01` até o fim do ano passado (argumentos `start_date` e `end_date`)
+    - retorne um objeto do tipo xts
+
+```r
+usdbrl_daily &lt;- rbcb::get_series(___, start_date = ___,
+                                 end_date = ___, as = ___)
+autoplot(usdbrl_daily)
+```
+
+---
+
+## Objetos xts
+
+- objetos xts são séries temporais, logo, são indexados por data
+
+
+```r
+rbcb::get_series(c(USDBRL = 1), last = 5, as = "xts")
+```
+
+```
+##            USDBRL
+## 2018-05-14 3.6097
+## 2018-05-15 3.6753
+## 2018-05-16 3.6803
+## 2018-05-17 3.6874
+## 2018-05-18 3.7503
+```
+
+---
+
+## Objetos xts
+
+- objetos xts são idexados por datas no formato ISO `YYYY-MM-DD HH:MM:SS`
+
+
+```r
+usdbrl &lt;- rbcb::get_series(c(USDBRL = 1), last = 756, as = "xts")
+
+usdbrl_2016 &lt;- usdbrl["2016"]                 # todo 2016
+
+usdbrl_2016_and_beyond &lt;- usdbrl["2016/"]     # todo 2016 e além
+
+usdbrl_jan_mar_2017 &lt;- usdbrl["201701/03"]    # jan a mar 2017
+
+usdbrl_2017_01_23 &lt;- usdbrl["2017-01-23"]     # 2017-01-23
+```
+
+---
+
+## Objetos xts
+
+- objetos xts possuem algumas funções interessantes
+
+
+```r
+library(xts)
+
+usdbrl_last_month &lt;- xts::last(usdbrl, "1 months")
+
+usdbrl_first_week &lt;- xts::first(usdbrl, "1 weeks")
+
+usdbrl_monthly &lt;- to.period(usdbrl, on = "months", OHLC = FALSE)
+
+usdbrl_diff &lt;- diff(usdbrl, lag = 1)
+```
+
+--
+
+.alert[
+use o _namespace_ `xts::` com `last` e `first`
+&lt;br/&gt;
+elas também são declaradas em `dplyr`
+]
+---
+
+## Atividade: Obtendo a série mensal do dólar
+
+- O pacote `xts` traz diversas funções que facilitam a manipulação de séries temporais.
+- A função `to.period` é indicada para realizar sub amostras das variáveis.
+
+&lt;hr/&gt;
+
+- use a função `to.period` para obter a série mensal do dólar pegando a última cotação de cada mês.
+- use `OHLC = FALSE`.
+
+```r
+library(xts)
+usdbrl_monthly &lt;- to.period(usdbrl_daily, ___, ___)
+autoplot(usdbrl_monthly)
+```
+
+---
+
+## Atividade: Calculando a variação da série mensal do dólar
+
+- A fórmula da variação é `\(\Delta x = x_t - x_{t-1}\)`
+
+&lt;hr/&gt;
+
+- calcule a variação mensal do dólar usando a função `diff` e a variável `usdbrl_monthly`
+
+```r
+var_usdbrl_monthly &lt;- ___
+autoplot(var_usdbrl_monthly)
+```
+
+- execute `head` e `tail` em `var_usdbrl_monthly`
+- O que se observa?
+
+---
+
+## Atividade: Correlação dólar x IBOVESPA
+
+Em geral, quando há queda do índice IBOVESPA, há alta do dólar, principalmente em anos eleitorais.
+De posse das séries de variações do dólar e do IBOVESPA é possivel calcular a correlação entre estas duas séries e avaliar esta hipótese.
+
+- baixe a série do IBOVESPA (código 7) com a série nomeada IBOVESPA e em um objeto xts
+- obtenha a série mensal do IBOVESPA
+- calcule a variação mensal do IBOVESPA
+
+```r
+ibovespa_daily &lt;- rbcb::get_series(___, start_date = ___,
+                                   end_date = ___, as = ___)
+ibovespa_monthly &lt;- ___(ibovespa_daily, ___, ___)
+var_ibovespa_monthly &lt;- ___
+```
+
+---
+
+## Atividade: Correlação dólar x IBOVESPA
+
+- junte as séries de variação com `merge` e visualize com `View()` e `autoplot`
+
+```r
+var_monthly &lt;- merge(___, ___, fill = 0)
+var_monthly %&gt;% View()
+var_monthly %&gt;% autoplot() + facet_free()
+```
+
+- veja que o primeiro ponto é `NA`
+
+---
+
+## Atividade: Correlação dólar x IBOVESPA
+
+- remova os `NA`s usando `na.omit`
+- visualize os dados limpos com `View` e `autoplot`
+
+```r
+var_monthly_clean &lt;- na.omit(var_monthly)
+var_monthly_clean %&gt;% View()
+var_monthly_clean %&gt;% autoplot() + facet_free()
+```
+
+---
+
+## Atividade: Correlação dólar x IBOVESPA
+
+- calcule a correlação entre dólar e IBOVESPA com a função `cor`.
+- a seleção das variáveis pode ser feita pela posição das colunas.
+
+```r
+cor(var_monthly_clean[,___], var_monthly_clean[,___])
+```
+
+- ou pelos nomes das variáveis
+
+```r
+cor(var_monthly_clean$___, var_monthly_clean$___)
+```
+
+---
+
+## Atividade: Baixando multiplas séries
+
+- Para baixar multiplas séries, forneça multiplos códigos em um vetor.
+- Os códigos também podem ser nomeados para nomear as séries.
+- A função `rbcb::get_series` retorna uma lista com as séries nos tipos definidos
+
+&lt;hr/&gt;
+
+- baixe as séries de inflação: IGP-M e IPCA, para os últimos 12 meses, utilizando o formato `ts`
+- busque os códigos das curvas no site do SGS &lt;https://www3.bcb.gov.br/sgspub&gt;
+- visualize as séries
+
+```r
+infl &lt;- rbcb::get_series(c(IGPM = ___, IPCA = ___),
+                         last = ___, as = ___)
+do.call(cbind, infl) %&gt;% as.xts() %&gt;% autoplot()
+```
+
+---
+
+exclude: true
+## `rbcb::get_currency`
+
+- Baixa as taxas de câmbio divulgadas pelo BCB
+    - O BCB coleta e divulga as taxas médias praticadas no mercado interbancário.
+    - São 218 taxas de câmbio (em 21/May/2018)
+
+
+```r
+args(rbcb::get_currency)
+```
+
+```
+## function (symbol, start_date, end_date, as = c("tibble", "xts", 
+##     "data.frame", "text")) 
+## NULL
+```
+
+- Retorna séries de bid (compra) e ask (venda) das taxas de câmbio cotadas em REAL.
+
+---
+
+exclude: true
+## Exemplo: séries das taxas de câmbio do Mercosul em dólar
+
+Argentina ARS, Brasil USD, Paraguai PYG e Uruguai UYU e Venezuela VEF
+Chile CLP, Bolívia BOB, Peru PEN, Colômbia COP e Equador
+
+
+```r
+symbols &lt;- c("ARS", "USD", "PYG", "UYU", "VEF")
+# series &lt;- lapply(symbols, rbcb::get_currency, start_date = "2003-01-01", end_date = "2017-12-31")
+```
+
+---
+
+layout: false
+class: inverse, middle, center
+
+# GetTDData
+
+Dados do Tesouro Direto
+
+&lt;http://bit.ly/tesouro-direto-estatisticas&gt;
+
+---
+layout: true
+
+# GetTDData
+
+---
+
+## Dados do Tesouro Direto
+
+- __Tesouro Direto__: plataforma de negociação de títulos públicos federais.
+    - &lt;http://www.tesouro.gov.br/tesouro-direto&gt;
+- Diariamente títulos públicos federais são negociados no Tesouro Direto (mercado secundário)
+- `GetTDData` captura os dados dos títulos públicos federais: preços e taxas, negociados no Tesouro Direto e organiza para manipulação.
+    - As planilhas com os dados são baixadas e as funções de `GetTDData` são utilizadas para extrair as informações das planilhas de forma útil e simples.
+
+---
+
+
+```r
+library(dplyr)
+library(GetTDData)
+asset.codes &lt;- c("LTN", "NTN-B")
+download.TD.data(asset.codes = asset.codes)
+bonds &lt;- read.TD.files(asset.codes = c("NTN-B", "LTN"),
+                       maturity = c("150824", "010121"))
+bonds %&gt;% filter(ref.date &gt; "2017-01-01") %&gt;% 
+  ggplot(aes(x = as.Date(ref.date), y = yield.bid, color = asset.code)) +
+  geom_line() + labs(x = "Datas", y = "Preços", colour = NULL)
+```
+![](figures/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+
+---
+
+.center[__Títulos disponíveis para investimento no Tesouro Direto__]
+
+.center[![](figures/TD-investir-small.png)]
+
+---
+
+.center[__Códigos dos títulos públicos utilizados no pacote GetTDData__]
+
+Título | Código
+-------|-------
+Tesouro IPCA+ | NTN-B
+Tesouro Prefixado | LTN
+Tesouro Prefixado com Juros Semestrais | NTN-F
+Tesouro Selic | LFT
+
+---
+
+## Atividade: Importando dados do _Tesouro Prefixado com Jutos Semestrais_
+
+- importe os dados de contratos _Tesouro Prefixado com Jutos Semestrais_ para os vencimentos: 01/01/2021", 01/01/2023, 01/01/2025
+- faça um gráfico com os dados de taxas de juros a partir de 2016
+
+```r
+library(dplyr)
+library(GetTDData)
+
+asset.codes &lt;- c(___)
+download.TD.data(asset.codes = asset.codes)
+bonds &lt;- read.TD.files(asset.codes = c(___),
+                       maturity = c(___))
+bonds %&gt;% filter(___) %&gt;% 
+  ggplot(aes(x = as.Date(ref.date), y = yield.bid, color = asset.code)) +
+  geom_line() + labs(x = "Datas", y = "Taxas", colour = NULL)
+```
+
+---
+
+exclude: true
+layout: false
+
+class: inverse, middle, center
+
+# GetITRData
+
+Informações Trimestrais de Empresas Listadas na Bolsa
+
+---
+
+exclude: true
+layout: true
+
+# GetITRData
+
+---
+
+exclude: true
+- Os dados financeiros das empresas estão disponíveis no site da Bolsa—B3.
+
+- `GetITRData` captura os dados disponíveis e os coloca em estruturas de dados de fácil manipulação.
+
+- Informações trimestrais disponíveis:
+
+    - Quantidade de ações emitidas
+    
+    - Dividendos pagos
+    
+    - Receita
+    
+    - Dívidas
+    
+    - ...
+    
+---
+
+exclude: true
+## Buscando as companhias na Bolsa
+
+
+```r
+library(GetITRData)
+gitrd.search.company('petrobras')
+```
+
+```
+## 
+## Reading info file from github
+## Found 45068 lines for 692 companies  [Actives =  518  Inactives =  175 ]
+## Last file update:  2017-10-19
+## Caching RDATA into tempdir()
+## 
+## Found 2 companies:
+## PETROBRAS DISTRIBUIDORA SA             | situation = ATIVO | first date = 2016-12-31 | last date - 2017-12-31
+## PETRÓLEO BRASILEIRO  S.A.  - PETROBRAS | situation = ATIVO | first date = 1998-09-30 | last date - 2017-12-31
+```
+
+---
+
+exclude: true
+## Buscando as companhias na Bolsa
+
+
+```r
+gitrd.search.company('itaú')
+```
+
+```
+## 
+## Reading info file from github
+## Found 45068 lines for 692 companies  [Actives =  518  Inactives =  175 ]
+## Last file update:  2017-10-19
+## Caching RDATA into tempdir()
+## 
+## Found 2 companies:
+## ITAÚ UNIBANCO HOLDING S.A.       | situation = ATIVO | first date = 1998-09-30 | last date - 2017-12-31
+## ITAÚSA - INVESTIMENTOS ITAÚ S.A. | situation = ATIVO | first date = 1997-12-31 | last date - 2017-12-31
+```
+
+---
+
+exclude: true
+## Obtendo todas as companhias da Bolsa
+
+
+```r
+companies &lt;- gitrd.get.info.companies(type.data = 'companies')
+```
+
+```
+## 
+## Reading info file from github
+## Found 45068 lines for 692 companies  [Actives =  518  Inactives =  175 ]
+## Last file update:  2017-10-19
+## Caching RDATA into tempdir()
+```
+
+---
+
+exclude: true
+
+```r
+glimpse(companies)
+```
+
+```
+## Observations: 694
+## Variables: 10
+## $ name.company    &lt;chr&gt; "521 PARTICIPAÇOES S.A. - EM LIQUIDAÇÃO EXTRAJ...
+## $ id.company      &lt;int&gt; 16330, 16284, 108, 20940, 21725, 19313, 18970,...
+## $ situation       &lt;chr&gt; "ATIVO", "ATIVO", "CANCELADA", "CANCELADA", "A...
+## $ listing.segment &lt;chr&gt; NA, "Tradicional", "Tradicional", "Tradicional...
+## $ main.sector     &lt;chr&gt; NA, "Financeiro e Outros", "Materiais Básicos"...
+## $ sub.sector      &lt;chr&gt; NA, "Outros", "Siderurgia e Metalurgia", "Alim...
+## $ segment         &lt;chr&gt; NA, "Outros", "Siderurgia", "Açucar e Alcool",...
+## $ tickers         &lt;chr&gt; NA, "QVQP3B", NA, NA, "ADHM3", "AELP3", "TIET1...
+## $ first.date      &lt;date&gt; 1998-12-31, 2001-09-30, 2009-12-31, 2009-12-3...
+## $ last.date       &lt;date&gt; 2017-12-31, 2017-12-31, 2009-12-31, 2009-12-3...
+```
+
+- execute o comando `View(companies)` para visualizar a tabela com as companhias
+
+---
+
+exclude: true
+## Obtendo as informações de 1 companhia
+
+
+```r
+companies %&gt;% filter(id.company == 19348) %&gt;% glimpse()
+```
+
+```
+## Observations: 1
+## Variables: 10
+## $ name.company    &lt;chr&gt; "ITAÚ UNIBANCO HOLDING S.A."
+## $ id.company      &lt;int&gt; 19348
+## $ situation       &lt;chr&gt; "ATIVO"
+## $ listing.segment &lt;chr&gt; "Corporate Governance - Level 1"
+## $ main.sector     &lt;chr&gt; "Financeiro e Outros"
+## $ sub.sector      &lt;chr&gt; "Intermediários Financeiros"
+## $ segment         &lt;chr&gt; "Bancos"
+## $ tickers         &lt;chr&gt; "ITUB3;ITUB4"
+## $ first.date      &lt;date&gt; 1998-09-30
+## $ last.date       &lt;date&gt; 2017-12-31
+```
+
+---
+
+exclude: true
+.reduce-code[
+
+```r
+reports &lt;- gitrd.GetITRData(name.companies = "ITAÚ UNIBANCO HOLDING S.A.", 
+                            first.date = "2004-01-01",
+                            last.date = "2006-01-01")
+```
+
+```
+## Found cache file. Loading data..
+## 
+## Downloading data for 1 companies
+## Type of financial reports: individual
+## Periodicy of financial reports: annual (dfp system)
+## First Date: 2004-01-01
+## Laste Date: 2006-01-01
+## Inflation index: dollar
+## 
+## Downloading inflation data
+## 	Caching inflation RDATA into tempdir()	Done
+## 
+## 
+## WARNING: For data before 2009, the cash flow statements are not available
+## 
+## Inputs looking good! Starting download of files:
+## 
+## ITAÚ UNIBANCO HOLDING S.A.
+## 	Available periods: 2005-12-31	2004-12-31
+## 
+## 
+## Processing ITAÚ UNIBANCO HOLDING S.A., Date = 2005-12-31
+## 	Acessing dfp data | downloading file | reading file
+## 	Acessing fre data
+## 		No FRE file available..
+## Processing ITAÚ UNIBANCO HOLDING S.A., Date = 2004-12-31
+## 	Acessing dfp data | downloading file | reading file
+## 	Acessing fre data
+## 		No FRE file available..
+```
+]
+
+---
+
+exclude: true
+
+```r
+glimpse(reports)
+```
+
+```
+## Observations: 1
+## Variables: 14
+## $ company.name              &lt;chr&gt; "ITAÚ UNIBANCO HOLDING S.A."
+## $ company.code              &lt;int&gt; 19348
+## $ type.info                 &lt;chr&gt; "individual"
+## $ min.date                  &lt;date&gt; 2004-12-31
+## $ max.date                  &lt;date&gt; 2005-12-31
+## $ n.periods                 &lt;int&gt; 2
+## $ current.stock.composition &lt;list&gt; [&lt;c("Ordinárias", "Preferenciais", ...
+## $ dividends.history         &lt;list&gt; [&lt;c("ON", "ON", "ON", "ON", "ON", "...
+## $ fr.assets                 &lt;list&gt; [&lt;character(0), character(0), chara...
+## $ fr.liabilities            &lt;list&gt; [&lt;character(0), character(0), chara...
+## $ fr.income                 &lt;list&gt; [&lt;character(0), character(0), chara...
+## $ fr.cashflow               &lt;list&gt; [&lt;character(0), character(0), chara...
+## $ history.stock.holders     &lt;list&gt; [&lt;&gt;]
+## $ history.capital           &lt;list&gt; [&lt;&gt;]
+```
+
+---
+
+exclude: true
+## Listando os dividendos pagos
+
+
+```r
+glimpse(reports$dividends.history)
+```
+
+```
+## List of 1
+##  $ :'data.frame':	680 obs. of  10 variables:
+##   ..$ type.stock                  : chr [1:680] "ON" "ON" "ON" "ON" ...
+##   ..$ date.aproval                : Date[1:680], format: "1996-02-12" ...
+##   ..$ value                       : num [1:680] 3.36 3.28 3.85 4.81 6 ...
+##   ..$ unit.dividend               : num [1:680] 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 ...
+##   ..$ type.dividend               : chr [1:680] "DIVIDENDO" "DIVIDENDO" "DIVIDENDO" "JRS CAP PROPRIO" ...
+##   ..$ last.day.with.dividend      : Date[1:680], format: "1996-02-13" ...
+##   ..$ last.day.price.with.dividend: Date[1:680], format: "1996-02-13" ...
+##   ..$ last.price                  : num [1:680] 353 380 465 515 435 ...
+##   ..$ last.price.unit             : num [1:680] 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 ...
+##   ..$ dividend.by.price           : num [1:680] 0.952 0.863 0.828 0.934 1.379 ...
+```
+
+---
+
+exclude: true
+## Visualizando os dividendos pagos
+
+
+```r
+reports$dividends.history[[1]] %&gt;%
+  filter(type.dividend == "DIVIDENDO") %&gt;%
+  select(last.day.with.dividend, dividend.by.price) %&gt;%
+  rename(date = last.day.with.dividend, dividend = dividend.by.price) %&gt;%
+  ggplot(aes(x = date, y = dividend)) + geom_line() + geom_point() + scale_y_log10()
+```
+
+![](figures/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+
+---
+
+exclude: true
+## Atividade: Qual o preço das ações no pagamento dos dividendos?
+
+- fazer o gráfico selecionando as variáveis: `last.price`, `last.day.price.with.dividend`
+
+```r
+reports$dividends.history[[1]] %&gt;%
+  filter(type.dividend == "DIVIDENDO") %&gt;%
+  select(___, ___) %&gt;%
+  rename(date = ___, price = ___) %&gt;%
+  ggplot(aes(x = date, y = price)) +
+  geom_line() + geom_point()
+```
+
+---
+
+layout: false
+class: inverse, middle, center
+
+# quantmod
+
+Modelagem de Finanças Quantitativas
+
+---
+
+layout: true
+
+# quantmod
+
+---
+
+- `quantmod` facilita o acesso a dados financeiros de diversas fontes
+
+    - [Yahoo Finance](https://finance.yahoo.com/): ações, fundos, commodities, e outros ativos de diversos países.
+
+    - [FRED](https://fred.stlouisfed.org): indicadores econômicos
+
+    - [OANDA](https://www.oanda.com): moedas
+
+    - [Tiigo](https://www.tiingo.com/): ações do mercado americano
+
+    - [Alpha Vantage](https://www.alphavantage.co/): ações, moedas, cripto-moedas e moedas digitais.
+
+    - Fontes privadas: MySQL, SQLite, RData, CSV
+
+- O framework tem funções específicas para manipulação e visualização de séries temporais, particularmente úteis para séries de ações.
+
+---
+
+
+```r
+getSymbols("AAPL")
+```
+
+```
+## [1] "AAPL"
+```
+
+```r
+head(AAPL, 3)
+```
+
+```
+##            AAPL.Open AAPL.High AAPL.Low AAPL.Close AAPL.Volume
+## 2007-01-03  12.32714  12.36857 11.70000   11.97143   309579900
+## 2007-01-04  12.00714  12.27857 11.97429   12.23714   211815100
+## 2007-01-05  12.25286  12.31428 12.05714   12.15000   208685400
+##            AAPL.Adjusted
+## 2007-01-03      8.073009
+## 2007-01-04      8.252192
+## 2007-01-05      8.193427
+```
+
+- `getSymbols` importa os dados como um objeto xts.
+- O objeto xts é importado para o ambiente, não é necessário atribuir a uma variável.
+- `src = "yahoo"` é a fonte de dados padrão.
+
+---
+
+## Importando dados de ações brasileiras
+
+
+```r
+getSymbols("ITUB4.SA")
+```
+
+```
+## [1] "ITUB4.SA"
+```
+
+```r
+head(ITUB4.SA, 3)
+```
+
+```
+##            ITUB4.SA.Open ITUB4.SA.High ITUB4.SA.Low ITUB4.SA.Close
+## 2007-01-02       19.1740       19.5863      19.1269        19.4423
+## 2007-01-03       19.3454       19.6708      19.2063        19.5590
+## 2007-01-04       19.4473       19.5988      19.2858        19.3727
+##            ITUB4.SA.Volume ITUB4.SA.Adjusted
+## 2007-01-02         5921845          16.18815
+## 2007-01-03         7301247          16.28531
+## 2007-01-04         6424324          16.13020
+```
+
+- Os símbolos das companhias brasileiras tem sufixo '.SA'
+
+---
+
+## Importando índices de preços
+
+
+```r
+getSymbols("^BVSP") # IBOVESPA
+```
+
+```
+## [1] "BVSP"
+```
+
+```r
+head(BVSP, 3)
+```
+
+```
+##            BVSP.Open BVSP.High BVSP.Low BVSP.Close BVSP.Volume
+## 2007-01-02     44476     45388    44476      45383    75560200
+## 2007-01-03     45379     45379    44284      44445   122372800
+## 2007-01-04     44442     44442    43623      44020    86577000
+##            BVSP.Adjusted
+## 2007-01-02         45383
+## 2007-01-03         44445
+## 2007-01-04         44020
+```
+
+- Os símbolos dos índices tem prefixo '^': ^BVSP, ^DJI, ...
+
+---
+
+## Visualizando os dados
+
+
+```r
+chartSeries(BVSP, type = "candlesticks", theme = "white",
+            subset = "201801/", name = "IBOVESPA")
+```
+
+![](figures/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+
+---
+
+## Visualizando os dados
+
+
+```r
+chartSeries(BVSP, type = "bars", theme = "black", subset = "201801/",
+            major.ticks = "months", name = "IBOVESPA", TA = NULL)
+```
+
+![](figures/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+
+---
+
+## Atividade: Importar os dados de companhias brasileiras
+
+- O site da B3 tem informações sobre todas as companhias com ações listadas.
+    - &lt;http://www.bmfbovespa.com.br&gt;
+    - Link [Empresas Listadas](http://www.bmfbovespa.com.br/pt_br/produtos/listados-a-vista-e-derivativos/renda-variavel/empresas-listadas.htm)
+
+&lt;hr/&gt;
+
+- encontre os símbolos das companhias:
+    - Magazine Luiza
+    - Localiza
+    - Arezzo
+- importe os dados destas companhias com `getSymbols`
+- faça os gráficos de `candlesticks` com dados desde o começo de 2018 e sem apresentar os dados de volume.
+
+---
+
+layout: false
+class: inverse, middle, center
+
+# Quandl
+
+Um marketplace de dados
+
+&lt;https://www.quandl.com/&gt;
+
+---
+
+layout: true
+
+# Quandl
+
+---
+
+- O `Quandl` entrega uma API RESTful para acesso a diversas fontes de dados gratúitas e privadas.
+
+    - Difícil explicar o quanto é bom! Melhor visitar pra ver
+    
+    - &lt;https://www.quandl.com/&gt;
+    
+- Tem dados do mundo todo!
+
+- Além de R tem bibliotecas para diversas linguagens: Python, Excel, Ruby, ...
+
+---
+
+## Obtendo dados do PIB dos EUA
+
+
+```r
+library(Quandl)
+gdp &lt;- Quandl("FRED/GDP")
+glimpse(gdp)
+```
+
+```
+## Observations: 285
+## Variables: 2
+## $ Date  &lt;date&gt; 2018-01-01, 2017-10-01, 2017-07-01, 2017-04-01, 2017-01...
+## $ Value &lt;dbl&gt; 19965.33, 19754.10, 19500.60, 19250.01, 19057.71, 18905....
+```
+
+- Os dados são importados do _FRED - Federal Reserve Economic Data_
+- Há uma página com documentação dos datasets no site do Quandl.
+    - [link para página de docs do FRED](https://www.quandl.com/data/FRED-Federal-Reserve-Economic-Data/documentation/data-organization)
+
+---
+
+- A função `Quandl` traz diversas facilidades
+
+
+```r
+args(Quandl)
+```
+
+```
+## function (code, type = c("raw", "ts", "zoo", "xts", "timeSeries"), 
+##     transform = c("", "diff", "rdiff", "normalize", "cumul", 
+##         "rdiff_from"), collapse = c("", "daily", "weekly", "monthly", 
+##         "quarterly", "annual"), order = c("desc", "asc"), meta = FALSE, 
+##     force_irregular = FALSE, ...) 
+## NULL
+```
+
+- `type` permite especificar o tipo de dado retornado. O padrão `raw` retorna um `data.frame`.
+- `transform` realiza transformações nos dados - poupa trabalho!
+- `collapse` redefine a frequência da amostra
+- `order`: é do primeiro para o último ou vice-versa?
+- Também há os argumentos: `start_date`, `end_date`
+
+---
+
+## Transformações
+
+- O argumento `transform` realiza algumas transformações simples nos dados.
+
+| Name | Effect	| Formula |
+|------|--------|---------|
+| none | no effect | z[t] = y[t] |
+| diff | 	row-on-row change | z[t] = y[t] – y[t-1] |
+| rdiff | 	row-on-row % change | z[t] = (y[t] – y[t-1]) / y[t-1] |
+| rdiff_from | latest value as % increment | z[t] = (y[latest] – y[t]) / y[t] |
+| cumul | cumulative sum | z[t] = y[0] + y[1] + … + y[t] |
+| normalize | scale series to start at 100 | z[t] = y[t] ÷ y[0] * 100 |
+
+.footnote[Fonte: https://docs.quandl.com/docs/parameters-2#section-transformations]
+
+---
+
+.pull-left[
+
+```r
+gdp &lt;- Quandl("FRED/GDP")
+
+head(gdp, 3)
+```
+
+```
+##         Date    Value
+## 1 2018-01-01 19965.33
+## 2 2017-10-01 19754.10
+## 3 2017-07-01 19500.60
+```
+
+```r
+tail(gdp, 3)
+```
+
+```
+##           Date   Value
+## 283 1947-07-01 250.115
+## 284 1947-04-01 246.267
+## 285 1947-01-01 243.080
+```
+]
+
+.pull-right[
+
+```r
+gdp_d &lt;- Quandl("FRED/GDP",
+            transform="diff")
+head(gdp_d, 3)
+```
+
+```
+##         Date   Value
+## 1 2018-01-01 211.224
+## 2 2017-10-01 253.500
+## 3 2017-07-01 250.593
+```
+
+```r
+tail(gdp_d, 3)
+```
+
+```
+##           Date  Value
+## 282 1947-10-01 10.194
+## 283 1947-07-01  3.848
+## 284 1947-04-01  3.187
+```
+]
+
+---
+
+layout: false
+class: inverse
+background-image: url(figures/meme-desafio.jpg)
+background-size: 100%
+
+.footnote[Fonte: https://www.asi.org.ru/news/2017/04/13/blagotvoritelnye-fondy-protiv-lzheblagotvoritelej-kak-zashhitit-reputatsiyu-i-ne-poteryat-doverie/]
+
+---
+
+layout: false
+class: inverse, middle, center
+
+# Projetos
+
+Porque a vida é cheia de desafios
+
+---
+
+layout: true
+
+# Projetos
+
+---
+
+## Calcular o IBOVESPA em dólar
+
+- O IBOVESPA é uma carteira de ações negociadas na BOVESPA.
+
+- A cotação do IBOVESPA representa pontos de índice.
+
+- A cotação do dólar é em reais por dólar americano.
+
+- Usando rbcb:
+
+    - importe os dados do dólar e do IBOVESPA desde jan/2010
+    
+    - calcule o IBOVESPA em dólar
+    
+    - compare a variação do IBOVESPA em dólar com a sua variação em reais
+
+---
+
+## Calcular série do dólar em candles mensais
+
+- Os preços de ações e índices negociados em bolsa são divulgados em OHCL.
+
+- Os preços do dólar são cotações diárias.
+
+- Usando rbcb:
+
+    - importe os dados do dólar americano desde jan/2010
+    
+    - gere uma série de preços de dólar com frequência mensal no formato OHCL
+
+---
+
+## Calcular o IBOVESPA deflacionado nos períodos presidenciais
+
+- O IBOVESPA é divulgado diariamente.
+
+- A inflação do IPCA é mensal, do primeiro ao último dia útil do mês.
+
+- Usando rbcb:
+
+    - importe os dados do IBOVESPA e do IPCA
+    
+    - gere uma série do IBOVESPA mensal
+    
+    - calcule o IBOVESPA deflacionado
+    
+    - agregue por períodos dos mandatos presidenciais [link](https://pt.wikipedia.org/wiki/Lista_de_presidentes_do_Brasil)
+
+- Referência: [Variação do IBOVESPA por Governo Federal](http://wilsonfreitas.github.io/posts/variacao-do-ibovespa-por-governo-federal.html)
+
+---
+
+layout: false
+background-image: url(figures/meme-acabou.jpg)
+background-size: 100%
+
+.footnote[Fonte: https://pixabay.com/pt/levantar-desafio-paisagem-montanha-3338589/]
+
+---
+
+layout: false
+class: inverse, middle, center
+
+# Importando e Manipulando Dados Financeiros no R
+
+## &lt;http://bit.ly/import-fin-data&gt;
+
+### Wilson de Freitas
+
+### SER 2018 — 22 de maio de 2018
+
+&lt;!-- &lt;https://github.com/wilsonfreitas&gt; --&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightLines": true,
+"ratio": "4:3",
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
