@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Wilson Freitas - finance</title><link href="http://wilsonfreitas.github.io/" rel="alternate"></link><link href="http://wilsonfreitas.github.io/feeds/finance.atom.xml" rel="self"></link><id>http://wilsonfreitas.github.io/</id><updated>2017-03-24T00:00:00-03:00</updated><entry><title>Avaliar retornos de investimentos em ETFs com calendarmap no ggplot2</title><link href="http://wilsonfreitas.github.io/posts/avaliar-retornos-de-investimentos-em-etfs-com-calendarmap-no-ggplot2.html" rel="alternate"></link><published>2017-03-24T00:00:00-03:00</published><updated>2017-03-24T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-03-24:/posts/avaliar-retornos-de-investimentos-em-etfs-com-calendarmap-no-ggplot2.html</id><summary type="html">&lt;p&gt;Avaliar o retorno de investimentos em diversos ativos pode levar a questões que vão além dos resultados individuais de cada ativo em um período de tempo.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Wilson Freitas - finance</title><link href="https://wilsonfreitas.github.io/" rel="alternate"></link><link href="https://wilsonfreitas.github.io/feeds/finance.atom.xml" rel="self"></link><id>https://wilsonfreitas.github.io/</id><updated>2017-03-24T00:00:00-03:00</updated><entry><title>Avaliar retornos de investimentos em ETFs com calendarmap no ggplot2</title><link href="https://wilsonfreitas.github.io/posts/avaliar-retornos-de-investimentos-em-etfs-com-calendarmap-no-ggplot2.html" rel="alternate"></link><published>2017-03-24T00:00:00-03:00</published><updated>2017-03-24T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-03-24:/posts/avaliar-retornos-de-investimentos-em-etfs-com-calendarmap-no-ggplot2.html</id><summary type="html">&lt;p&gt;Avaliar o retorno de investimentos em diversos ativos pode levar a questões que vão além dos resultados individuais de cada ativo em um período de tempo.
 Até porque retornos passados não são justificativas para desempenho futuro.
 Existem muitas formas de visualização de ativos financeiros e já vimos algumas no post …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Avaliar o retorno de investimentos em diversos ativos pode levar a questões que vão além dos resultados individuais de cada ativo em um período de tempo.
 Até porque retornos passados não são justificativas para desempenho futuro.
 Existem muitas formas de visualização de ativos financeiros e já vimos algumas no post
-&lt;a href="http://wilsonfreitas.github.io/posts/indicadores-de-desempenho-de-etfs.html"&gt;Indicadores de desempenho de ETFs&lt;/a&gt;.
+&lt;a href="https://wilsonfreitas.github.io/posts/indicadores-de-desempenho-de-etfs.html"&gt;Indicadores de desempenho de ETFs&lt;/a&gt;.
 Hoje eu vou explorar o calendarmap que permite visualizar a dinâmica retornos de ativos financeiros ao longo do tempo, mas introduzindo que chamo de efeito calendário, pois os dados são agrupados em semanas e meses e isso permite a identificação de eventuais padrões sazonais.&lt;/p&gt;
 &lt;p&gt;O calendarmap é na prática um heatmap, só que eu divido as células em meses e dias de semana e a cor da célula é definida pela amplitude e direção do retorno do ativo, que varia em torno de zero e assim permite a criação de uma escala com cores distintas para retornos positivos e negativos.
 Dessa maneira, visualizo em um único gráfico o efeito de calendário nos retornos dos ativos e posso fazer isso com diversos ativos ao mesmo tempo.&lt;/p&gt;
@@ -185,12 +185,12 @@ etfs_returns &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; etfs_series &lt;span c
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk lamina_com_desempenho_de_etfs-6" src="http://wilsonfreitas.github.io/figure/lamina_com_desempenho_de_etfs-6-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk lamina_com_desempenho_de_etfs-6" src="https://wilsonfreitas.github.io/figure/lamina_com_desempenho_de_etfs-6-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Bem, pessoalmente fiquei emocionado após concluir o gráfico acima, realmente, achei bom mesmo.
 É possível observar a dinâmica dos ativos ao longo do ano e é bem diferente de um gráfico de
-retornos (como no post &lt;a href="http://wilsonfreitas.github.io/posts/indicadores-de-desempenho-de-etfs.html"&gt;Indicadores de desempenho de ETFs&lt;/a&gt;) 
+retornos (como no post &lt;a href="https://wilsonfreitas.github.io/posts/indicadores-de-desempenho-de-etfs.html"&gt;Indicadores de desempenho de ETFs&lt;/a&gt;) 
 onde a dinâmica dentro do calendário não fica evidente.
-Esse é um gráfico legal para se apresentar resultados de fundos de investimento, por exemplo.&lt;/p&gt;</content><category term="R"></category><category term="rbmfbovespa"></category><category term="BM&amp;FBovespa"></category><category term="ETF"></category><category term="ggplot2"></category></entry><entry><title>Encontrando séries temporais do Banco Central com rbcb</title><link href="http://wilsonfreitas.github.io/posts/encontrando-series-temporais-do-banco-central-com-rbcb.html" rel="alternate"></link><published>2017-03-19T00:00:00-03:00</published><updated>2017-03-19T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-03-19:/posts/encontrando-series-temporais-do-banco-central-com-rbcb.html</id><summary type="html">&lt;p&gt;Já há algum tempo desenvolví o pacote &lt;a href="https://github.com/wilsonfreitas/rbcb"&gt;rbcb&lt;/a&gt; que é uma interface em R para o &lt;a href="https://www3.bcb.gov.br/sgspub/"&gt;SGSPUB&lt;/a&gt; Sistema de Séries Temporais do &lt;a href="http://www.bcb.gov.br/"&gt;Banco Central do Brasil&lt;/a&gt; (BACEN).
+Esse é um gráfico legal para se apresentar resultados de fundos de investimento, por exemplo.&lt;/p&gt;</content><category term="R"></category><category term="rbmfbovespa"></category><category term="BM&amp;FBovespa"></category><category term="ETF"></category><category term="ggplot2"></category></entry><entry><title>Encontrando séries temporais do Banco Central com rbcb</title><link href="https://wilsonfreitas.github.io/posts/encontrando-series-temporais-do-banco-central-com-rbcb.html" rel="alternate"></link><published>2017-03-19T00:00:00-03:00</published><updated>2017-03-19T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-03-19:/posts/encontrando-series-temporais-do-banco-central-com-rbcb.html</id><summary type="html">&lt;p&gt;Já há algum tempo desenvolví o pacote &lt;a href="https://github.com/wilsonfreitas/rbcb"&gt;rbcb&lt;/a&gt; que é uma interface em R para o &lt;a href="https://www3.bcb.gov.br/sgspub/"&gt;SGSPUB&lt;/a&gt; Sistema de Séries Temporais do &lt;a href="http://www.bcb.gov.br/"&gt;Banco Central do Brasil&lt;/a&gt; (BACEN).
 Algumas séries do SGSPUB estão disponíveis no &lt;a href="http://dadosabertos.bcb.gov.br/"&gt;portal de dados abertos do Banco Central&lt;/a&gt;, onde há documentação informando que as séries podem ser …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Já há algum tempo desenvolví o pacote &lt;a href="https://github.com/wilsonfreitas/rbcb"&gt;rbcb&lt;/a&gt; que é uma interface em R para o &lt;a href="https://www3.bcb.gov.br/sgspub/"&gt;SGSPUB&lt;/a&gt; Sistema de Séries Temporais do &lt;a href="http://www.bcb.gov.br/"&gt;Banco Central do Brasil&lt;/a&gt; (BACEN).
 Algumas séries do SGSPUB estão disponíveis no &lt;a href="http://dadosabertos.bcb.gov.br/"&gt;portal de dados abertos do Banco Central&lt;/a&gt;, onde há documentação informando que as séries podem ser obtidas em diferentes formatos e documentação específica para os formatos e das suas APIs, quando houver.
 Hoje, neste portal são disponibilizadas 454 conjuntos de dados, que são os dados de responsabilidade do BACEN, entretanto, ainda não há dados de outras organizações.&lt;/p&gt;
@@ -396,8 +396,8 @@ plot&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; ma
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk graf" src="http://wilsonfreitas.github.io/figure/graf-1.png"&gt;&lt;/p&gt;
-&lt;p&gt;Vixe, parece que a dívida deu um pinote para cima, tem muita coisa interessante aí, dados do Banco Central do Brasil.&lt;/p&gt;</content><category term="R"></category><category term="rbcb"></category><category term="BACEN"></category><category term="OpenData"></category></entry><entry><title>Shinyapp para calcular a volatilidade de séries temporais</title><link href="http://wilsonfreitas.github.io/posts/shinyapp-para-calcular-volatilidade-de-series-temporais.html" rel="alternate"></link><published>2017-02-25T00:00:00-03:00</published><updated>2017-02-25T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-02-25:/posts/shinyapp-para-calcular-volatilidade-de-series-temporais.html</id><summary type="html">&lt;p&gt;Fiz um &lt;a href="https://shiny.rstudio.com/"&gt;shinyapp&lt;/a&gt; para calcular a volatilidade de séries temporais.
+&lt;p&gt;&lt;img alt="plot of chunk graf" src="https://wilsonfreitas.github.io/figure/graf-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;Vixe, parece que a dívida deu um pinote para cima, tem muita coisa interessante aí, dados do Banco Central do Brasil.&lt;/p&gt;</content><category term="R"></category><category term="rbcb"></category><category term="BACEN"></category><category term="OpenData"></category></entry><entry><title>Shinyapp para calcular a volatilidade de séries temporais</title><link href="https://wilsonfreitas.github.io/posts/shinyapp-para-calcular-volatilidade-de-series-temporais.html" rel="alternate"></link><published>2017-02-25T00:00:00-03:00</published><updated>2017-02-25T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-02-25:/posts/shinyapp-para-calcular-volatilidade-de-series-temporais.html</id><summary type="html">&lt;p&gt;Fiz um &lt;a href="https://shiny.rstudio.com/"&gt;shinyapp&lt;/a&gt; para calcular a volatilidade de séries temporais.
 A ideia é simples, capturo as séries do Quandl através do ticker da série temporal do ativo, 
 somente séries diárias, e apresento alguns gráficos da série de preços, dos retornos, da volatilidade estimada
 via um &lt;a href="https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity"&gt;GARCH(1,1)&lt;/a&gt; e um …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Fiz um &lt;a href="https://shiny.rstudio.com/"&gt;shinyapp&lt;/a&gt; para calcular a volatilidade de séries temporais.
@@ -411,8 +411,8 @@ obtidos destes parâmetros como volatildiade de longo prazo, meia-vida da volati
 &lt;p&gt;&lt;a href="https://datalab42.shinyapps.io/riskfactors/"&gt;https://datalab42.shinyapps.io/riskfactors/&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;Seguem algumas imagens abaixo.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Visualização de séries temporais" src="http://wilsonfreitas.github.io/figure/shinyapps_riskmonitor_datalab42_timeseries_50.png" title="Visualização de séries temporais"&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Visualização da volatilidade" src="http://wilsonfreitas.github.io/figure/shinyapps_riskmonitor_datalab42_volatility_50.png" title="Visualização da volatilidade"&gt;&lt;/p&gt;</content><category term="time series"></category><category term="Quandl"></category><category term="GARCH"></category><category term="volatility"></category></entry><entry><title>Expectativas do COPOM nos contratos de DI1</title><link href="http://wilsonfreitas.github.io/posts/expectativas-do-copom-nos-contratos-de-di1.html" rel="alternate"></link><published>2017-02-20T00:00:00-03:00</published><updated>2017-02-20T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-02-20:/posts/expectativas-do-copom-nos-contratos-de-di1.html</id><summary type="html">&lt;p&gt;Na próxima quinta-feira, 22 de fevereiro, será divulgada, pelo COPOM (Comitê de Política Monetária), o novo valor para a meta da taxa SELIC.
+&lt;p&gt;&lt;img alt="Visualização de séries temporais" src="https://wilsonfreitas.github.io/figure/shinyapps_riskmonitor_datalab42_timeseries_50.png" title="Visualização de séries temporais"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Visualização da volatilidade" src="https://wilsonfreitas.github.io/figure/shinyapps_riskmonitor_datalab42_volatility_50.png" title="Visualização da volatilidade"&gt;&lt;/p&gt;</content><category term="time series"></category><category term="Quandl"></category><category term="GARCH"></category><category term="volatility"></category></entry><entry><title>Expectativas do COPOM nos contratos de DI1</title><link href="https://wilsonfreitas.github.io/posts/expectativas-do-copom-nos-contratos-de-di1.html" rel="alternate"></link><published>2017-02-20T00:00:00-03:00</published><updated>2017-02-20T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-02-20:/posts/expectativas-do-copom-nos-contratos-de-di1.html</id><summary type="html">&lt;p&gt;Na próxima quinta-feira, 22 de fevereiro, será divulgada, pelo COPOM (Comitê de Política Monetária), o novo valor para a meta da taxa SELIC.
 Há uma expectativa de que o COPOM reduza em 0.75% a SELIC, mantendo a redução divulgada na última reunião, em 11 de janeiro.
 Obviamente esta expectativa …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Na próxima quinta-feira, 22 de fevereiro, será divulgada, pelo COPOM (Comitê de Política Monetária), o novo valor para a meta da taxa SELIC.
 Há uma expectativa de que o COPOM reduza em 0.75% a SELIC, mantendo a redução divulgada na última reunião, em 11 de janeiro.
@@ -512,7 +512,7 @@ Note que as taxas andam juntas e no dia seguinte a reunião do COPOM de 11 de ja
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-4" src="http://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-4-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-4" src="https://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-4-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Outro ponto interessante de observar é a dinâmica do primeiro vencimento de futuro de DI1.
 O gráfico abaixo apresenta a dinâmica da taxa CDI com a taxa negociada no primeiro futuro.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ggplot&lt;span class="p"&gt;(&lt;/span&gt;df &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt; select&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;data_vencimento&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;selic&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt; gather&lt;span class="p"&gt;(&lt;/span&gt;taxa&lt;span class="p"&gt;,&lt;/span&gt; valor&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;data_referencia&lt;span class="p"&gt;),&lt;/span&gt;
@@ -524,7 +524,7 @@ O gráfico abaixo apresenta a dinâmica da taxa CDI com a taxa negociada no prim
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-5" src="http://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-5-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-5" src="https://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-5-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Em dezembro de 2016 o primeiro vencimento vence no primeiro dia útil do ano, portanto a expectativa já está dada, não há fator que afete o nível da taxa CDI, por isso a CDI e a taxa do primeiro vencimento andam juntas.
 Após a virada do ano (primeira linha pontilhada), em janeiro de 2017, o primeiro futuro é o que vence em 1 de fevereiro.
 Note o descolamento entre a CDI e a taxa negociada no primeiro futuro, que indica uma redução na CDI para o vencimento de fevereiro.
@@ -577,7 +577,7 @@ Para o mês de fevereiro temos um padrão semelhante.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-8" src="http://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-8-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-8" src="https://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-8-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;A mudança na taxa apresentada na reunião do COPOM é a diferença entre a taxa a termo e a taxa CDI.
 Calculando esta diferença observamos que as expectativas estavam pouco acima de 0.50% de redução, e para a reunião de fevereiro temos expectativas em torno de 0.50%, houve até um dia que fechou em 0.60%.
 O gráfico abaixo apresenta esta diferença.&lt;/p&gt;
@@ -588,12 +588,12 @@ O gráfico abaixo apresenta esta diferença.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-9" src="http://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-9-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk expectativa_do_copom_na_curva_de_di1-9" src="https://wilsonfreitas.github.io/figure/expectativa_do_copom_na_curva_de_di1-9-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Uma pergunta que fica após a observação destes resultados é, mesmo após a redução de 0.75% em janeiro, porque a expectativa está em 0.50%?
 Bem, os dados observados são referentes ao fechamento dos contratos futuros, obviamente ao longo do dia são negociados valores maiores e menores, que podem refletir movimentos de 0.75%, assim como 0.25%. Por exemplo, poderíamos repetir essa análise para as máximas e mínimas do dia.&lt;/p&gt;
 &lt;p&gt;Outro ponto interessante é a observação dos demais vencimentos, pois neles há a expectativa das demais reuniões.
-Por exemplo, após cada reunião do COPOM podemos migrar do primeiro para o segundo vencimento, pois a taxa do primeiro já está dada e toda a expectativa da próxima reunião está no segundo.&lt;/p&gt;</content><category term="R"></category><category term="visualization"></category><category term="rbmfbovespa"></category><category term="bizdays"></category></entry><entry><title>Indicadores de desempenho de ETFs</title><link href="http://wilsonfreitas.github.io/posts/indicadores-de-desempenho-de-etfs.html" rel="alternate"></link><published>2017-02-11T00:00:00-02:00</published><updated>2017-02-11T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-02-11:/posts/indicadores-de-desempenho-de-etfs.html</id><summary type="html">&lt;p&gt;Vimos no post &lt;a href="http://wilsonfreitas.github.io/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html"&gt;Usando dados do rbmfbovespa para construir gráficos candlestick no R&lt;/a&gt; que a partir do arquivo de cotações históricas de 2016 é possível criar séries de preços para ativos negociados na BM&amp;amp;FBovespa.
-Particularmente, utilizamos as ETFs e fizemos alguns gráficos de &lt;em&gt;candlestick&lt;/em&gt; e volume com as bibliotecas …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Vimos no post &lt;a href="http://wilsonfreitas.github.io/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html"&gt;Usando dados do rbmfbovespa para construir gráficos candlestick no R&lt;/a&gt; que a partir do arquivo de cotações históricas de 2016 é possível criar séries de preços para ativos negociados na BM&amp;amp;FBovespa.
+Por exemplo, após cada reunião do COPOM podemos migrar do primeiro para o segundo vencimento, pois a taxa do primeiro já está dada e toda a expectativa da próxima reunião está no segundo.&lt;/p&gt;</content><category term="R"></category><category term="visualization"></category><category term="rbmfbovespa"></category><category term="bizdays"></category></entry><entry><title>Indicadores de desempenho de ETFs</title><link href="https://wilsonfreitas.github.io/posts/indicadores-de-desempenho-de-etfs.html" rel="alternate"></link><published>2017-02-11T00:00:00-02:00</published><updated>2017-02-11T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-02-11:/posts/indicadores-de-desempenho-de-etfs.html</id><summary type="html">&lt;p&gt;Vimos no post &lt;a href="https://wilsonfreitas.github.io/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html"&gt;Usando dados do rbmfbovespa para construir gráficos candlestick no R&lt;/a&gt; que a partir do arquivo de cotações históricas de 2016 é possível criar séries de preços para ativos negociados na BM&amp;amp;FBovespa.
+Particularmente, utilizamos as ETFs e fizemos alguns gráficos de &lt;em&gt;candlestick&lt;/em&gt; e volume com as bibliotecas …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Vimos no post &lt;a href="https://wilsonfreitas.github.io/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html"&gt;Usando dados do rbmfbovespa para construir gráficos candlestick no R&lt;/a&gt; que a partir do arquivo de cotações históricas de 2016 é possível criar séries de preços para ativos negociados na BM&amp;amp;FBovespa.
 Particularmente, utilizamos as ETFs e fizemos alguns gráficos de &lt;em&gt;candlestick&lt;/em&gt; e volume com as bibliotecas &lt;a href="http://www.quantmod.com/"&gt;quantmod&lt;/a&gt; e &lt;a href="https://cran.r-project.org/package=tidyquant"&gt;tidyquant&lt;/a&gt;.
 Neste post vamos utilizar novamente as ETFs para fazer uma avaliação do desempenho de algumas delas, as mais líquidas, no ano de 2016.
 A biblioteca &lt;a href="https://cran.r-project.org/package=PerformanceAnalytics"&gt;PerformanceAnalytics&lt;/a&gt; possui diversas funções para avaliação de desempenho de ativos, muito útil na comparação de fundos de investimentos e avaliação de &lt;em&gt;benchmarks&lt;/em&gt;.
@@ -721,7 +721,7 @@ etfs_series &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;O objeto &lt;code&gt;etfs_series&lt;/code&gt; possui séries de preços, e as análises de desempenho devem ser feitas com as séries de retornos dos ativos (se quiser saber mais sobre retornos veja o post &lt;a href="http://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html"&gt;Calculando Retornos Financeiros com Pandas&lt;/a&gt;).
+&lt;p&gt;O objeto &lt;code&gt;etfs_series&lt;/code&gt; possui séries de preços, e as análises de desempenho devem ser feitas com as séries de retornos dos ativos (se quiser saber mais sobre retornos veja o post &lt;a href="https://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html"&gt;Calculando Retornos Financeiros com Pandas&lt;/a&gt;).
 Aqui vamos utilizar a função &lt;code&gt;CalculateReturns&lt;/code&gt; do pacote &lt;a href="https://cran.r-project.org/package=PerformanceAnalytics"&gt;PerformanceAnalytics&lt;/a&gt; para calcular os retornos logarítimicos.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;etfs_series &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; CalculateReturns&lt;span class="p"&gt;(&lt;/span&gt;etfs_series&lt;span class="p"&gt;,&lt;/span&gt; method &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;log&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -732,7 +732,7 @@ Aqui vamos utilizar a função &lt;code&gt;CalculateReturns&lt;/code&gt; do paco
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-7" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-7-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-7" src="https://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-7-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;A primeira análise é o cálculo dos retornos acumulados, dado que os retornos são a variação percentual diária do ativo, os retornos acumulados apresentam o &lt;em&gt;ganho&lt;/em&gt; (ou perda) do ativo no período.
 Para simplificar vamos considerar o investimento de R\$ 1,00 no começo de 2016 e vamos avaliar a evolução deste investimento em 2016, se no fim tivermos mais de R\$ 1,00 o investimento teve um retorno positivo no período, caso contrário teve perda pois chegou-se ao fim com menos do que tinha no começo do ano.
 A função &lt;code&gt;chart.CumReturns&lt;/code&gt; apresenta as séries de retornos acumulados para todos os ativos.&lt;/p&gt;
@@ -740,7 +740,7 @@ A função &lt;code&gt;chart.CumReturns&lt;/code&gt; apresenta as séries de ret
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-8" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-8-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-8" src="https://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-8-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Aqui é possível observar diversas coisas interessantes.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;SPXI11 e IVVB11 apresentaram perda, e estas ETFs, ambas, seguem o S&amp;amp;P500.&lt;/li&gt;
@@ -756,7 +756,7 @@ Eu vou redefinir a paleta de cores de forma que SMAL11 seja destacado.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-9" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-9-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-9" src="https://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-9-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Assim é possível destacar qualquer ativo comparando o seu resultado com os demais.&lt;/p&gt;
 &lt;p&gt;Outra forma de verificar o desempenho no ano mais diretamente é montar a tabela de retornos anuais com a função &lt;code&gt;table.AnnualizedReturns&lt;/code&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;table.AnnualizedReturns&lt;span class="p"&gt;(&lt;/span&gt;etfs_series&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt; formattable&lt;span class="o"&gt;::&lt;/span&gt;formattable&lt;span class="p"&gt;()&lt;/span&gt;
@@ -827,7 +827,7 @@ O PerformanceAnalytics tem a função &lt;code&gt;chart.Correlation&lt;/code&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-12" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-12-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-12" src="https://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-12-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Bem, como já imaginava, uma correlação forte entre as ETFs baseadas em ativos nacionais e outro grupo formado por ETFs baseadas em ativos internacionais (basicamente o S&amp;amp;P500).
 Na diagonal principal temos o histograma de retornos com uma densidade em vermelho, no triangulo inferior esquerdo temos os gráficos de pontos com retornos contra retornos dos pares de séries, que trazem uma forma visual de observar a correlação entre ativos.
 Note que, nos gráficos de pontos do SPXI11 com o BOVA11 (ou DIVO11, por exemplo) há quase uma figura circular, não indicando tendência, já entre SPXI11 e IVVB11 temos uma figura mais oval com inclinação bem definida.
@@ -841,11 +841,11 @@ A função &lt;code&gt;chart.RiskReturnScatter&lt;/code&gt; apresenta um gráfic
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-13" src="http://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-13-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk indicadores_de_desempenho_etfs-13" src="https://wilsonfreitas.github.io/figure/indicadores_de_desempenho_etfs-13-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;O DIVO11 que apresentou o maior retorno, provavelmente deu dor de cabeça a alguns gestores, pois foi quem também apresentou o maior risco.
 O GOVE11 aparece como boa alternativa apresentando 5% a menos de volatilidade.
 O grupinho PIBB11, BOVA11 e SMAL11 são irmãos em risco e retorno e os ETFs baseaos em S&amp;amp;P500 são só desgraça.&lt;/p&gt;
-&lt;p&gt;Bem, ainda há mais análises disponíveis no &lt;a href="https://cran.r-project.org/package=PerformanceAnalytics"&gt;PerformanceAnalytics&lt;/a&gt;, mas essas ficam para outro post.&lt;/p&gt;</content><category term="R"></category><category term="visualization"></category><category term="rbmfbovespa"></category></entry><entry><title>Construindo a curva de juros pré-fixados com rbmfbovespa</title><link href="http://wilsonfreitas.github.io/posts/construindo-a-curva-de-juros-pre-fixados-com-rbmfbovespa.html" rel="alternate"></link><published>2017-02-03T00:00:00-02:00</published><updated>2017-02-03T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-02-03:/posts/construindo-a-curva-de-juros-pre-fixados-com-rbmfbovespa.html</id><summary type="html">&lt;p&gt;Os arquivos disponibilizados pela BM&amp;amp;FBovespa trazem variáveis fundamentais para a compreenssão das expectativas dos agentes econômicos acerca do futuro da economia e do desenrolar das políticas macroeconômicas.
+&lt;p&gt;Bem, ainda há mais análises disponíveis no &lt;a href="https://cran.r-project.org/package=PerformanceAnalytics"&gt;PerformanceAnalytics&lt;/a&gt;, mas essas ficam para outro post.&lt;/p&gt;</content><category term="R"></category><category term="visualization"></category><category term="rbmfbovespa"></category></entry><entry><title>Construindo a curva de juros pré-fixados com rbmfbovespa</title><link href="https://wilsonfreitas.github.io/posts/construindo-a-curva-de-juros-pre-fixados-com-rbmfbovespa.html" rel="alternate"></link><published>2017-02-03T00:00:00-02:00</published><updated>2017-02-03T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-02-03:/posts/construindo-a-curva-de-juros-pre-fixados-com-rbmfbovespa.html</id><summary type="html">&lt;p&gt;Os arquivos disponibilizados pela BM&amp;amp;FBovespa trazem variáveis fundamentais para a compreenssão das expectativas dos agentes econômicos acerca do futuro da economia e do desenrolar das políticas macroeconômicas.
 Uma das variáveis mais importantes é a curva de taxas de juros pré-fixados, a &lt;strong&gt;curva pré&lt;/strong&gt;, também definida como estrutura a termo …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Os arquivos disponibilizados pela BM&amp;amp;FBovespa trazem variáveis fundamentais para a compreenssão das expectativas dos agentes econômicos acerca do futuro da economia e do desenrolar das políticas macroeconômicas.
 Uma das variáveis mais importantes é a curva de taxas de juros pré-fixados, a &lt;strong&gt;curva pré&lt;/strong&gt;, também definida como estrutura a termo de taxas de juros pré-fixados.
 Esta curva traz expectativas de taxas de juros para diversos prazos e que são utilizadas no mercado para o apreçamento de diversos instrumentos financeiros, desde CDBs a opções e por isso também é considerada como uma &lt;em&gt;proxy&lt;/em&gt; para taxas de juros livres de risco.
@@ -947,7 +947,7 @@ Portanto, é necessário excluir todos os registros com taxas zeradas.&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk curva_de_juros_pre_com_rbmfbovespa-5" src="http://wilsonfreitas.github.io/figure/curva_de_juros_pre_com_rbmfbovespa-5-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk curva_de_juros_pre_com_rbmfbovespa-5" src="https://wilsonfreitas.github.io/figure/curva_de_juros_pre_com_rbmfbovespa-5-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Entretanto essa curva começa no primeiro vencimento de futuro de DI1.
 É necessário definir o vértice de 1 dia, referente a taxa de juros de &lt;em&gt;overnight&lt;/em&gt;.
 Essa taxa de juro é obtida no arquivo &lt;code&gt;Indic.txt&lt;/code&gt; com o código do indicador igual a &lt;code&gt;'DI1'&lt;/code&gt;.&lt;/p&gt;
@@ -1003,14 +1003,14 @@ ggplot&lt;span class="p"&gt;(&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk curva_de_juros_pre_com_rbmfbovespa-9" src="http://wilsonfreitas.github.io/figure/curva_de_juros_pre_com_rbmfbovespa-9-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk curva_de_juros_pre_com_rbmfbovespa-9" src="https://wilsonfreitas.github.io/figure/curva_de_juros_pre_com_rbmfbovespa-9-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Na visualização não muda muito, mas esse primeiro vértice é muito importante para ancorar o começo da curva permitindo utilizar algumas técnicas de interpolação de dados para obter estimativas de taxas de juros que não estão presentes na curva.&lt;/p&gt;
 &lt;p&gt;Há outras formas de selecionar as cotações para a construção da curva, aqui adotamos a cotação do último negócio, poderiamos ter adotado as taxas implícitas no preço de ajuste dos futuros (variável &lt;code&gt;valor_ajuste&lt;/code&gt;), que são os preços utilizados no cálculo dos ajustes diários pagos aos investidores que possuem posições em aberto nos contrados de DI1.
 Poderiamos também fazer uma avaliação de liquidez, observando a quantidade de negócios e o número de contratos negociados (variáveis &lt;code&gt;qtd_negocios&lt;/code&gt; e &lt;code&gt;qtd_contr&lt;/code&gt;), afim de construir uma curva com os vencimentos mais líquidos.&lt;/p&gt;
 &lt;p&gt;Outra observação interessante é o formato da curva, ela está indicando queda de juros para os próximos 2 anos.
 Ao observamos as curvas de períodos anteriores, em particular do ano de 2015, não havia expectativa de redução da taxa de juros.
-Veja o post &lt;a href="http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html"&gt;Empenada na Curva de Juros de DI1&lt;/a&gt; para ter uma ideia de como eram os níveis de taxas de juros em 2015.
-Esse é um resultado direto da forma como a política econômica vem sendo tocada pela atual equipe do Ministério da Fazenda e do Banco Central.&lt;/p&gt;</content><category term="R"></category><category term="rbmfbovespa"></category><category term="bizdays"></category></entry><entry><title>Usando dados do rbmfbovespa para construir gráficos candlestick no R</title><link href="http://wilsonfreitas.github.io/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html" rel="alternate"></link><published>2017-01-27T00:00:00-02:00</published><updated>2017-01-27T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-01-27:/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html</id><summary type="html">&lt;p&gt;A BM&amp;amp;FBovespa disponibiliza arquivos de cotações históricas do mercado de ações, que incluem informações diárias de todos os contratos negociados, que são:&lt;/p&gt;
+Veja o post &lt;a href="https://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html"&gt;Empenada na Curva de Juros de DI1&lt;/a&gt; para ter uma ideia de como eram os níveis de taxas de juros em 2015.
+Esse é um resultado direto da forma como a política econômica vem sendo tocada pela atual equipe do Ministério da Fazenda e do Banco Central.&lt;/p&gt;</content><category term="R"></category><category term="rbmfbovespa"></category><category term="bizdays"></category></entry><entry><title>Usando dados do rbmfbovespa para construir gráficos candlestick no R</title><link href="https://wilsonfreitas.github.io/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html" rel="alternate"></link><published>2017-01-27T00:00:00-02:00</published><updated>2017-01-27T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-01-27:/posts/usando-dados-do-rbmfbovespa-para-construir-graficos-candlestick-no-r.html</id><summary type="html">&lt;p&gt;A BM&amp;amp;FBovespa disponibiliza arquivos de cotações históricas do mercado de ações, que incluem informações diárias de todos os contratos negociados, que são:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;ações: mercado à vista e fracionário&lt;/li&gt;
 &lt;li&gt;UNITS: que são carteiras de ações de uma mesma empresa, por exemplo, a UNIT SANB11 é composta por 1 ação PN …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;A BM&amp;amp;FBovespa disponibiliza arquivos de cotações históricas do mercado de ações, que incluem informações diárias de todos os contratos negociados, que são:&lt;/p&gt;
@@ -1083,7 +1083,7 @@ BOVA11 &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; as.xts&lt;span class="p"&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-4" src="http://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-4-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-4" src="https://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-4-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Construindo as séries temporais para a VALE5 e aplicando o tema &lt;code&gt;white&lt;/code&gt; ao gráfico.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;VALE5.df &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; ch_2016&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt; filter&lt;span class="p"&gt;(&lt;/span&gt;cod_negociacao &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;VALE5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&amp;gt;%&lt;/span&gt;
   select&lt;span class="p"&gt;(&lt;/span&gt;
@@ -1099,14 +1099,14 @@ candleChart&lt;span class="p"&gt;(&lt;/span&gt;VALE5&lt;span class="p"&gt;,&lt;/
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-5" src="http://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-5-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-5" src="https://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-5-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;O &lt;code&gt;data.frame&lt;/code&gt; utilizado na construção do objeto de séries temporais da VALE5 pode ser utilizado com funções do pacote &lt;a href="https://cran.r-project.org/package=tidyquant"&gt;tidyquant&lt;/a&gt; para a criação de um gráfico de candlesticks utilizando o &lt;a href="http://ggplot2.org/"&gt;ggplot&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ggplot&lt;span class="p"&gt;(&lt;/span&gt;BOVA11.df&lt;span class="p"&gt;,&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x &lt;span class="o"&gt;=&lt;/span&gt; Date&lt;span class="p"&gt;,&lt;/span&gt; y &lt;span class="o"&gt;=&lt;/span&gt; Close&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
   geom_candlestick&lt;span class="p"&gt;(&lt;/span&gt;aes&lt;span class="p"&gt;(&lt;/span&gt;open &lt;span class="o"&gt;=&lt;/span&gt; Open&lt;span class="p"&gt;,&lt;/span&gt; close &lt;span class="o"&gt;=&lt;/span&gt; Close&lt;span class="p"&gt;,&lt;/span&gt; high &lt;span class="o"&gt;=&lt;/span&gt; High&lt;span class="p"&gt;,&lt;/span&gt; low &lt;span class="o"&gt;=&lt;/span&gt; Low&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-6" src="http://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-6-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-6" src="https://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-6-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;O pacote &lt;a href="https://cran.r-project.org/package=tidyquant"&gt;tidyquant&lt;/a&gt; estende diversas funções do pacote &lt;a href="http://www.quantmod.com/"&gt;quantmod&lt;/a&gt;, de forma que é possível incluir nos gráficos do &lt;a href="http://ggplot2.org/"&gt;ggplot&lt;/a&gt; medidas de análise técnica com média móvel, por exemplo.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ggplot&lt;span class="p"&gt;(&lt;/span&gt;BOVA11.df&lt;span class="p"&gt;,&lt;/span&gt; aes&lt;span class="p"&gt;(&lt;/span&gt;x &lt;span class="o"&gt;=&lt;/span&gt; Date&lt;span class="p"&gt;,&lt;/span&gt; y &lt;span class="o"&gt;=&lt;/span&gt; Close&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
   geom_candlestick&lt;span class="p"&gt;(&lt;/span&gt;aes&lt;span class="p"&gt;(&lt;/span&gt;open &lt;span class="o"&gt;=&lt;/span&gt; Open&lt;span class="p"&gt;,&lt;/span&gt; close &lt;span class="o"&gt;=&lt;/span&gt; Close&lt;span class="p"&gt;,&lt;/span&gt; high &lt;span class="o"&gt;=&lt;/span&gt; High&lt;span class="p"&gt;,&lt;/span&gt; low &lt;span class="o"&gt;=&lt;/span&gt; Low&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
@@ -1114,12 +1114,12 @@ candleChart&lt;span class="p"&gt;(&lt;/span&gt;VALE5&lt;span class="p"&gt;,&lt;/
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-7" src="http://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-7-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-7" src="https://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-7-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Estes gráficos com o ggplot são particularmente interessantes porque o ggplot vem se tornando um padrão na criação de gráficos no mundo R.
 Por esse motivo iniciativas como o &lt;a href="https://cran.r-project.org/package=tidyquant"&gt;tidyquant&lt;/a&gt; tem relevância, além de reforçar a construção de dados em formato &lt;em&gt;tidy&lt;/em&gt;, reforçando boas práticas em análise de dados.
 Entretanto, estes gráficos no ggplot ainda precisam de uma melhora significativa no visual, mas isso é &lt;em&gt;work in progress&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;Bem, temos aí os gráficos de candlesticks facilmente criados com o R, gráficos estáticos e dinâmicos.
-O pacote &lt;a href="https://github.com/wilsonfreitas/rbmfbovespa"&gt;rbmfbovespa&lt;/a&gt; ajudando no carregamento dos dados e o restante é apenas manipulação de dados.&lt;/p&gt;</content><category term="R"></category><category term="visualization"></category><category term="rbmfbovespa"></category></entry><entry><title>Negociação de ETFs na BM&amp;FBovespa</title><link href="http://wilsonfreitas.github.io/posts/negociacao-de-etfs-na-bmfbovespa.html" rel="alternate"></link><published>2017-01-20T00:00:00-02:00</published><updated>2017-01-20T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-01-20:/posts/negociacao-de-etfs-na-bmfbovespa.html</id><summary type="html">&lt;p&gt;No começo deste ano a BM&amp;amp;FBovespa publicou o tweet abaixo:&lt;/p&gt;
+O pacote &lt;a href="https://github.com/wilsonfreitas/rbmfbovespa"&gt;rbmfbovespa&lt;/a&gt; ajudando no carregamento dos dados e o restante é apenas manipulação de dados.&lt;/p&gt;</content><category term="R"></category><category term="visualization"></category><category term="rbmfbovespa"></category></entry><entry><title>Negociação de ETFs na BM&amp;FBovespa</title><link href="https://wilsonfreitas.github.io/posts/negociacao-de-etfs-na-bmfbovespa.html" rel="alternate"></link><published>2017-01-20T00:00:00-02:00</published><updated>2017-01-20T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-01-20:/posts/negociacao-de-etfs-na-bmfbovespa.html</id><summary type="html">&lt;p&gt;No começo deste ano a BM&amp;amp;FBovespa publicou o tweet abaixo:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="https://twitter.com/BMFBOVESPA/status/818518068439711744" src="/figure/tweet.png"&gt;&lt;/p&gt;
 &lt;p&gt;Bem, eu achei R$ 46 bi muita grana e decidi utilizar o pacote &lt;a href="https://github.com/wilsonfreitas/rbmfbovespa"&gt;rbmfbovespa&lt;/a&gt; para realizar um exercício de validação desta informação.
 Para quem não conhece, ETF significa &lt;em&gt;Exchanged Traded Funds&lt;/em&gt; e são fundos de ações que são negociados …&lt;/p&gt;</summary><content type="html">&lt;p&gt;No começo deste ano a BM&amp;amp;FBovespa publicou o tweet abaixo:&lt;/p&gt;
@@ -1418,7 +1418,7 @@ Podemos ainda fazer o mesmo cálculo agregando novamente pelas variáveis &lt;co
 &lt;p&gt;O BOVA11 disparado na frente com o maior volume e quantidade de negócios.
 Até o sexto ETF, todos representam índices de ações conhecidos.
 Os ETFs BOVA11, BOVV11, XBOV11 tem o IBOVESPA como índice de referência, já os IVVB11 e SPXI11 tem o SP500 e o PIBB11 o IBrX-50.
-Os demais não estão diretamente relacionados a nenhum índice e apresentam motivações distintas formando carteiras com ações que pagam dividendos, ações de empresas sustentáveis, empresas do governo e por aí vai.&lt;/p&gt;</content><category term="R"></category><category term="rbmfbovespa"></category></entry><entry><title>Variação do IBOVESPA por Governo Federal</title><link href="http://wilsonfreitas.github.io/posts/variacao-do-ibovespa-por-governo-federal.html" rel="alternate"></link><published>2017-01-01T00:00:00-02:00</published><updated>2017-01-01T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-01-01:/posts/variacao-do-ibovespa-por-governo-federal.html</id><summary type="html">&lt;p&gt;
+Os demais não estão diretamente relacionados a nenhum índice e apresentam motivações distintas formando carteiras com ações que pagam dividendos, ações de empresas sustentáveis, empresas do governo e por aí vai.&lt;/p&gt;</content><category term="R"></category><category term="rbmfbovespa"></category></entry><entry><title>Variação do IBOVESPA por Governo Federal</title><link href="https://wilsonfreitas.github.io/posts/variacao-do-ibovespa-por-governo-federal.html" rel="alternate"></link><published>2017-01-01T00:00:00-02:00</published><updated>2017-01-01T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2017-01-01:/posts/variacao-do-ibovespa-por-governo-federal.html</id><summary type="html">&lt;p&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[1]:&lt;/div&gt;
@@ -1502,7 +1502,7 @@ Os demais não estão diretamente relacionados a nenhum índice e apresentam mot
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;O objetivo aqui é analisar a variação do IBOVESPA nos períodos dos governos federais desde a estabilização da moeda, o primeiro governo do FHC.
 Adicionalmente vou considerar a variação do índice deflacionado para entender o impacto da inflação na economia nestes períodos.
-Já calculei o IBOVESPA deflacionado no &lt;a href="http://wilsonfreitas.github.io/posts/no-brasil-ate-o-passado-e-duvidoso.html"&gt;post&lt;/a&gt;.
+Já calculei o IBOVESPA deflacionado no &lt;a href="https://wilsonfreitas.github.io/posts/no-brasil-ate-o-passado-e-duvidoso.html"&gt;post&lt;/a&gt;.
 As contas são simples:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;calcular os retornos do IBOVESPA mensais nos governos federais&lt;/li&gt;
@@ -1510,7 +1510,7 @@ As contas são simples:&lt;/p&gt;
 &lt;li&gt;agrupar os retornos por períodos (governos federais) e calcular os retornos acumulados&lt;/li&gt;
 &lt;li&gt;calcular os retornos anualizado nos períodos para facilitar a comparação entre governos com períodos diferentes&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Vou começar baixando as séries de IPCA e IBOVESPA (mensal) via Quandl (veja como fazer isso no &lt;a href="http://wilsonfreitas.github.io/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html"&gt;post&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Vou começar baixando as séries de IPCA e IBOVESPA (mensal) via Quandl (veja como fazer isso no &lt;a href="https://wilsonfreitas.github.io/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html"&gt;post&lt;/a&gt;).&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1597,7 +1597,7 @@ As contas são simples:&lt;/p&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;O primeiro ponto da série é 1994-12-31, que representa o fim do Governo Itamar Franco, pois dessa forma é possível calcular os retornos desde o primeiro mês do governo FHC.&lt;/p&gt;
 &lt;p&gt;A seguir os retornos do índice são calculados (&lt;code&gt;IBOVESPA_D&lt;/code&gt;) e deflacionados (&lt;code&gt;IBOVESPA_D_DEFL&lt;/code&gt;) (
-já vimos como calcular os retornos com pandas no &lt;a href="http://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html"&gt;post&lt;/a&gt;).&lt;/p&gt;
+já vimos como calcular os retornos com pandas no &lt;a href="https://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html"&gt;post&lt;/a&gt;).&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
@@ -3301,7 +3301,7 @@ O Quandl é muito bom, mas precisamos de mais ferramentas de dados estrutuados c
 &lt;/div&gt;
  
 
-&lt;/p&gt;</content><category term="python"></category><category term="visualization"></category><category term="pandas"></category></entry><entry><title>Nada é tão ruim que não possa piorar: Empenada na Curva de Juros de DI1 — Parte 2</title><link href="http://wilsonfreitas.github.io/posts/nada-e-tao-ruim-que-nao-possa-piorar-empenada-na-curva-de-juros-de-di1-parte-2.html" rel="alternate"></link><published>2015-09-23T00:00:00-03:00</published><updated>2015-09-23T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2015-09-23:/posts/nada-e-tao-ruim-que-nao-possa-piorar-empenada-na-curva-de-juros-de-di1-parte-2.html</id><summary type="html">&lt;p&gt;O mês de setembro de 2015 não está sendo fácil para o mercado financeiro.
+&lt;/p&gt;</content><category term="python"></category><category term="visualization"></category><category term="pandas"></category></entry><entry><title>Nada é tão ruim que não possa piorar: Empenada na Curva de Juros de DI1 — Parte 2</title><link href="https://wilsonfreitas.github.io/posts/nada-e-tao-ruim-que-nao-possa-piorar-empenada-na-curva-de-juros-de-di1-parte-2.html" rel="alternate"></link><published>2015-09-23T00:00:00-03:00</published><updated>2015-09-23T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2015-09-23:/posts/nada-e-tao-ruim-que-nao-possa-piorar-empenada-na-curva-de-juros-de-di1-parte-2.html</id><summary type="html">&lt;p&gt;O mês de setembro de 2015 não está sendo fácil para o mercado financeiro.
 Alta de dólar (rompeu a barreira de R$ 4,00 e segue sem rumo), disparada de juros, pacote bomba do governo, pacote fiscal nebuloso, volta da CPMF e por aí vai.
 Mas no dia 23 de …&lt;/p&gt;</summary><content type="html">&lt;p&gt;O mês de setembro de 2015 não está sendo fácil para o mercado financeiro.
 Alta de dólar (rompeu a barreira de R$ 4,00 e segue sem rumo), disparada de juros, pacote bomba do governo, pacote fiscal nebuloso, volta da CPMF e por aí vai.
@@ -3325,13 +3325,13 @@ ggplot&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-2-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Brazilian Term Structure" src="https://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-2-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;Isso mesmo, em 3 dias a curva deu uma empenada de 1 ponto percentual (100 basis points (bps)) e depois retornou ao nível inicial no último dia da semana.
 Esses movimentos do mercado, na minha opinião são muito difíceis de se explicar.
 Em geral os analistas se prendem a algum fato, como as notícias do governo, ou criam um factóide, mas a verdade é que pode ser um grande &lt;em&gt;player&lt;/em&gt; manipulando o mercado de forma indireta.&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;os códigos da função &lt;code&gt;get_curve&lt;/code&gt; estão no post &lt;a href="http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html"&gt;Empenada na Curva de Juros de DI1&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;</content><category term="R"></category><category term="bizdays"></category><category term="term structure"></category><category term="interpolation"></category></entry><entry><title>Calculando Retornos Financeiros com Pandas</title><link href="http://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html" rel="alternate"></link><published>2015-09-21T00:00:00-03:00</published><updated>2015-09-21T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2015-09-21:/posts/calculando-retornos-financeiros-com-pandas.html</id><summary type="html">&lt;p&gt;
+&lt;p&gt;os códigos da função &lt;code&gt;get_curve&lt;/code&gt; estão no post &lt;a href="https://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html"&gt;Empenada na Curva de Juros de DI1&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="R"></category><category term="bizdays"></category><category term="term structure"></category><category term="interpolation"></category></entry><entry><title>Calculando Retornos Financeiros com Pandas</title><link href="https://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html" rel="alternate"></link><published>2015-09-21T00:00:00-03:00</published><updated>2015-09-21T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2015-09-21:/posts/calculando-retornos-financeiros-com-pandas.html</id><summary type="html">&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
@@ -6032,7 +6032,7 @@ Em finanças é mais comum a utilização dos log-retornos por que é mais fáci
 &lt;/div&gt;
  
 
-&lt;/p&gt;</content><category term="python"></category><category term="visualization"></category><category term="numpy"></category><category term="pandas"></category></entry><entry><title>Empenada na Curva de Juros de DI1</title><link href="http://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html" rel="alternate"></link><published>2015-09-18T00:00:00-03:00</published><updated>2015-09-18T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2015-09-18:/posts/empenada-na-curva-de-juros-de-di1.html</id><summary type="html">&lt;p&gt;A curva de juros DI1, de depósitos interbancários de 1 dia, a curva mais negociada em nosso mercado, sofreu uma metamorfose nos últimos meses.
+&lt;/p&gt;</content><category term="python"></category><category term="visualization"></category><category term="numpy"></category><category term="pandas"></category></entry><entry><title>Empenada na Curva de Juros de DI1</title><link href="https://wilsonfreitas.github.io/posts/empenada-na-curva-de-juros-de-di1.html" rel="alternate"></link><published>2015-09-18T00:00:00-03:00</published><updated>2015-09-18T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2015-09-18:/posts/empenada-na-curva-de-juros-de-di1.html</id><summary type="html">&lt;p&gt;A curva de juros DI1, de depósitos interbancários de 1 dia, a curva mais negociada em nosso mercado, sofreu uma metamorfose nos últimos meses.
 Saímos de uma expectativa de juros de longo prazo de 12% para quase 16%.
 Quando falo juros de longo prazo me refiro aos contratos com vencimento …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A curva de juros DI1, de depósitos interbancários de 1 dia, a curva mais negociada em nosso mercado, sofreu uma metamorfose nos últimos meses.
 Saímos de uma expectativa de juros de longo prazo de 12% para quase 16%.
@@ -6128,8 +6128,8 @@ ggplot&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-1.png"&gt;&lt;/p&gt;
-&lt;p&gt;Observe que de julho para setembro as taxas de longo prazo se elevaram em 2 pontos percentuais (200bps), o que para um prazo de 10 anos é uma variação significativa.&lt;/p&gt;</content><category term="R"></category><category term="bizdays"></category><category term="term structure"></category><category term="interpolation"></category></entry><entry><title>No Brasil até o passado é duvidoso</title><link href="http://wilsonfreitas.github.io/posts/no-brasil-ate-o-passado-e-duvidoso.html" rel="alternate"></link><published>2014-12-23T00:00:00-02:00</published><updated>2014-12-23T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-12-23:/posts/no-brasil-ate-o-passado-e-duvidoso.html</id><summary type="html">&lt;p&gt;
+&lt;p&gt;&lt;img alt="Brazilian Term Structure" src="https://wilsonfreitas.github.io/figure/many-di1-term-structure-plot-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;Observe que de julho para setembro as taxas de longo prazo se elevaram em 2 pontos percentuais (200bps), o que para um prazo de 10 anos é uma variação significativa.&lt;/p&gt;</content><category term="R"></category><category term="bizdays"></category><category term="term structure"></category><category term="interpolation"></category></entry><entry><title>No Brasil até o passado é duvidoso</title><link href="https://wilsonfreitas.github.io/posts/no-brasil-ate-o-passado-e-duvidoso.html" rel="alternate"></link><published>2014-12-23T00:00:00-02:00</published><updated>2014-12-23T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-12-23:/posts/no-brasil-ate-o-passado-e-duvidoso.html</id><summary type="html">&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
@@ -10284,7 +10284,7 @@ De posse das variações deflacionadas podemos avaliar os retornos de investimen
 &lt;/div&gt;
  
 
-&lt;/p&gt;</content><category term="python"></category><category term="pandas"></category></entry><entry><title>The quick and dirty term structure interpolator in R</title><link href="http://wilsonfreitas.github.io/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html" rel="alternate"></link><published>2014-06-15T00:00:00-03:00</published><updated>2014-06-15T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-06-15:/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html</id><summary type="html">&lt;p&gt;Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
+&lt;/p&gt;</content><category term="python"></category><category term="pandas"></category></entry><entry><title>The quick and dirty term structure interpolator in R</title><link href="https://wilsonfreitas.github.io/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html" rel="alternate"></link><published>2014-06-15T00:00:00-03:00</published><updated>2014-06-15T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-06-15:/posts/the-quick-and-dirty-term-structure-interpolator-in-r.html</id><summary type="html">&lt;p&gt;Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
 I use the many of the curves released by &lt;a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;amp;F Bovespa"&gt;BM&amp;amp;F Bovespa&lt;/a&gt; in that &lt;a href="http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp" title="BVMF Curves"&gt;page&lt;/a&gt;.
 In order to have the curves always at hand I've written that few lines of …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Use interest rate term structures for calculations is one of the daily activies that any quant has to accomplish with.
 I use the many of the curves released by &lt;a href="http://www.bmfbovespa.com.br/home.aspx?idioma=pt-br" title="BM&amp;amp;F Bovespa"&gt;BM&amp;amp;F Bovespa&lt;/a&gt; in that &lt;a href="http://www2.bmf.com.br/pages/portal/bmfbovespa/boletim1/TxRef1.asp" title="BVMF Curves"&gt;page&lt;/a&gt;.
@@ -10374,8 +10374,8 @@ grid&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="Brazilian Term Structure" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-plot-1.png"&gt;&lt;/p&gt;
-&lt;p&gt;The function &lt;code&gt;str_supplant&lt;/code&gt; was explained in another &lt;a href="http://wilsonfreitas.github.io/posts/string-interpolation-in-r.html"&gt;post&lt;/a&gt;.
+&lt;p&gt;&lt;img alt="Brazilian Term Structure" src="https://wilsonfreitas.github.io/figure/irbrl-term-structure-plot-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;The function &lt;code&gt;str_supplant&lt;/code&gt; was explained in another &lt;a href="https://wilsonfreitas.github.io/posts/string-interpolation-in-r.html"&gt;post&lt;/a&gt;.
 I mostly use the tickers &lt;code&gt;PRE&lt;/code&gt; for deposits in Brazilian Real and &lt;code&gt;DOL&lt;/code&gt; for deposits in US Dollar.
 That code works pretty well for &lt;code&gt;EUR&lt;/code&gt; (Euro deposits) interest rates, but it has to be adjusted to handle &lt;code&gt;DIC&lt;/code&gt; and &lt;code&gt;DIM&lt;/code&gt; tickers (IPCA and IGP-M inflation rates).&lt;/p&gt;
 &lt;p&gt;As I told before that is a quick and dirt implementation but it is also quite useful.
@@ -10388,7 +10388,7 @@ ggplot&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="o"&gt;=&lt;/span&g
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="Brazilian Term Structure with ggplot2" src="http://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png"&gt;&lt;/p&gt;</content><category term="R"></category><category term="bizdays"></category><category term="term structure"></category><category term="interpolation"></category><category term="quick tips"></category></entry><entry><title>bizdays—dias úteis no R</title><link href="http://wilsonfreitas.github.io/posts/bizdays-dias-uteis-no-r.html" rel="alternate"></link><published>2014-05-15T00:00:00-03:00</published><updated>2014-05-15T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-05-15:/posts/bizdays-dias-uteis-no-r.html</id><summary type="html">&lt;p&gt;Quem trabalha no mercado financeiro brasileiro lida constantemente com uma praga que é a contagem de dias úteis.
+&lt;p&gt;&lt;img alt="Brazilian Term Structure with ggplot2" src="https://wilsonfreitas.github.io/figure/irbrl-term-structure-ggplot-1.png"&gt;&lt;/p&gt;</content><category term="R"></category><category term="bizdays"></category><category term="term structure"></category><category term="interpolation"></category><category term="quick tips"></category></entry><entry><title>bizdays—dias úteis no R</title><link href="https://wilsonfreitas.github.io/posts/bizdays-dias-uteis-no-r.html" rel="alternate"></link><published>2014-05-15T00:00:00-03:00</published><updated>2014-05-15T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-05-15:/posts/bizdays-dias-uteis-no-r.html</id><summary type="html">&lt;p&gt;Quem trabalha no mercado financeiro brasileiro lida constantemente com uma praga que é a contagem de dias úteis.
 Não que seja difícil utilizar a contagem de dias úteis para fazer o apreçamento de instrumentos financeiros.
 A dificuldade é ter a contagem de dias úteis a mão e de maneira flexível …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Quem trabalha no mercado financeiro brasileiro lida constantemente com uma praga que é a contagem de dias úteis.
 Não que seja difícil utilizar a contagem de dias úteis para fazer o apreçamento de instrumentos financeiros.
@@ -10611,7 +10611,7 @@ Para tornar as coisa realmente simples eu coloco essa definição no &lt;code&gt
 &lt;/ul&gt;
 &lt;h2&gt;Conclusão&lt;/h2&gt;
 &lt;p&gt;O pacote &lt;code&gt;bizdays&lt;/code&gt; visa a contagem de dias para o apreçamento de instrumentos financeiros de forma simples e intuitíva de utilizar, trazendo para o R a mesma simplicidade encontrada no Excel.
-É útil tanto para calendários de dias úteis quanto dias corridos, permitindo a realização destes cálculos através de uma mesma interface.&lt;/p&gt;</content><category term="R"></category><category term="bizdays"></category><category term="dias úteis"></category><category term="calendário"></category></entry><entry><title>Estimando EWMA na prática</title><link href="http://wilsonfreitas.github.io/posts/estimando-ewma-na-pratica.html" rel="alternate"></link><published>2014-04-13T00:00:00-03:00</published><updated>2014-04-13T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-13:/posts/estimando-ewma-na-pratica.html</id><summary type="html">&lt;p&gt;Este post é para quem, assim como eu, sempre quis saber de onde vem o coeficiente $\lambda=0.94$ proposto pelo JP Morgan para estimar a volatilidade via EWMA (Exponential Weighted Moving Average).&lt;/p&gt;
+É útil tanto para calendários de dias úteis quanto dias corridos, permitindo a realização destes cálculos através de uma mesma interface.&lt;/p&gt;</content><category term="R"></category><category term="bizdays"></category><category term="dias úteis"></category><category term="calendário"></category></entry><entry><title>Estimando EWMA na prática</title><link href="https://wilsonfreitas.github.io/posts/estimando-ewma-na-pratica.html" rel="alternate"></link><published>2014-04-13T00:00:00-03:00</published><updated>2014-04-13T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-13:/posts/estimando-ewma-na-pratica.html</id><summary type="html">&lt;p&gt;Este post é para quem, assim como eu, sempre quis saber de onde vem o coeficiente $\lambda=0.94$ proposto pelo JP Morgan para estimar a volatilidade via EWMA (Exponential Weighted Moving Average).&lt;/p&gt;
 &lt;p&gt;Vou mostrar aqui como estimar o $\lambda$ utilizando:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;minimização da soma do erro quadrático $S$&lt;/li&gt;
@@ -10635,7 +10635,7 @@ bvsp.r &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;diff&
 plot(bvsp.ts, main='', major.ticks='year', minor.ticks=FALSE, major.format='%Y', cex.axis = .7, log="y")
 ``` --&gt;
 
-&lt;p&gt;&lt;img alt="BVSP Returns 1997-2014" src="http://wilsonfreitas.github.io/figure/bvsp-returns-1997-2014.png"&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="BVSP Returns 1997-2014" src="https://wilsonfreitas.github.io/figure/bvsp-returns-1997-2014.png"&gt; &lt;/p&gt;
 &lt;p&gt;É interessante observar os &lt;em&gt;clusters&lt;/em&gt; de volatilidade, os de 1998 e 2008 são os mais relevantes (e curiosamente ocorreram em 10 anos).
 &lt;em&gt;Clusters&lt;/em&gt; menores podem ser observados em 1997 e 2011.&lt;/p&gt;
 &lt;h2&gt;Introduzindo o EWMA&lt;/h2&gt;
@@ -10697,7 +10697,7 @@ x.ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;sqrt&
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="BVSP EWMA 0.94" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-094-volatility.png"&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="BVSP EWMA 0.94" src="https://wilsonfreitas.github.io/figure/bvsp-returns-ewma-094-volatility.png"&gt; &lt;/p&gt;
 &lt;p&gt;Note que considero $\sigma^2_1=r^2_1$.&lt;/p&gt;
 &lt;h2&gt;Estimando via minimização de $S$&lt;/h2&gt;
 &lt;p&gt;$S$ é a soma do erro quadrático, ou seja:&lt;/p&gt;
@@ -10764,14 +10764,14 @@ abline&lt;span class="p"&gt;(&lt;/span&gt;h&lt;span class="o"&gt;=&lt;/span&gt;o
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="Objective Function Squared Returns" src="http://wilsonfreitas.github.io/figure/objective-function-squared-returns.png"&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="Objective Function Squared Returns" src="https://wilsonfreitas.github.io/figure/objective-function-squared-returns.png"&gt; &lt;/p&gt;
 &lt;p&gt;Olhando o gráfico observamos que há apenas 1 ponto de mínimo na função e que este está bem próximo a $\lambda = 0.91$.&lt;/p&gt;
 &lt;p&gt;Podemos agora calcular a variância da série e visualizar o resultado.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;x.ewma &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; compute_ewma&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0.91&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="BVSP EWMA Squared Returns" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-squared-returns.png"&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="BVSP EWMA Squared Returns" src="https://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-squared-returns.png"&gt; &lt;/p&gt;
 &lt;h3&gt;Utilizando o desvio padrão futuro&lt;/h3&gt;
 &lt;p&gt;Agora para encontrar $\lambda$ minimizando $S$ e considerando que o desvio padrão dos próximos $T$ pontos, $v_n$, é a variância observada.&lt;/p&gt;
 &lt;p&gt;$$
@@ -10814,10 +10814,10 @@ abline&lt;span class="p"&gt;(&lt;/span&gt;h&lt;span class="o"&gt;=&lt;/span&gt;o
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="Objective Function Squared Returns" src="http://wilsonfreitas.github.io/figure/objective-function-volatility-forecast.png"&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="Objective Function Squared Returns" src="https://wilsonfreitas.github.io/figure/objective-function-volatility-forecast.png"&gt; &lt;/p&gt;
 &lt;p&gt;A função objetivo para esta abordagem também apresenta apenas 1 ponto de mínimo, garantindo a coerência do resultado encontrado.&lt;/p&gt;
 &lt;p&gt;Vamos novamente ver o gráfico dos retornos envolvidos pela volatilidade para ter uma idéia de como se comporta a volatilidade com relação aos retornos observados utilizando-se um $\lambda$ tão alto.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="BVSP EWMA Squared Returns" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-forecast.png"&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="BVSP EWMA Squared Returns" src="https://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-forecast.png"&gt; &lt;/p&gt;
 &lt;h2&gt;Conclusão&lt;/h2&gt;
 &lt;p&gt;Dada a diferença entre os valores de $\lambda$ é necessária uma reflexão mais profunda sobre o tema.
 Obviamente a diferença reflete a escolha de $s^2$ e essa deve refletir o objetivo do modelo.
@@ -10830,9 +10830,9 @@ Também pode ser utilizado para calcular o VAR diário, por exemplo, no entanto,
 Acredito que com essa abordagem, a necessidade de reestimar o parâmetro seja menor, dado o efeito da utilização da média na estimação.&lt;/p&gt;
 &lt;p&gt;Contudo, seria prudente buscar formas quantitativas de comparar as abordagens.
 Acredito que testes de frequência e testes fora da amostra são boas alternativas.&lt;/p&gt;
-&lt;p&gt;A estimação via máxima verosimilhança fica para outro post, onde teremos uma técnica que considera premissas relacionadas aos retornos ao invés da variância e assim poderemos ver de qual abordadem ela se aproxima, em termos do $\lambda$ estimado.&lt;/p&gt;</content><category term="R"></category><category term="volatility"></category><category term="risk management"></category></entry><entry><title>Computing EWMA 2</title><link href="http://wilsonfreitas.github.io/posts/computing-ewma-2.html" rel="alternate"></link><published>2014-04-04T00:00:00-03:00</published><updated>2014-04-04T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-04:/posts/computing-ewma-2.html</id><summary type="html">&lt;p&gt;Months ago I released a post entitled &lt;a href="http://wilsonfreitas.github.io/posts/computing-ewma.html" title="Computing EWMA"&gt;Computing EWMA&lt;/a&gt; exploring the functional approach to implement EWMA calculations in R and also compared that with what I called &lt;em&gt;loop-oriented&lt;/em&gt; implementation.
+&lt;p&gt;A estimação via máxima verosimilhança fica para outro post, onde teremos uma técnica que considera premissas relacionadas aos retornos ao invés da variância e assim poderemos ver de qual abordadem ela se aproxima, em termos do $\lambda$ estimado.&lt;/p&gt;</content><category term="R"></category><category term="volatility"></category><category term="risk management"></category></entry><entry><title>Computing EWMA 2</title><link href="https://wilsonfreitas.github.io/posts/computing-ewma-2.html" rel="alternate"></link><published>2014-04-04T00:00:00-03:00</published><updated>2014-04-04T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-04:/posts/computing-ewma-2.html</id><summary type="html">&lt;p&gt;Months ago I released a post entitled &lt;a href="https://wilsonfreitas.github.io/posts/computing-ewma.html" title="Computing EWMA"&gt;Computing EWMA&lt;/a&gt; exploring the functional approach to implement EWMA calculations in R and also compared that with what I called &lt;em&gt;loop-oriented&lt;/em&gt; implementation.
 That was quite ammazing to see that the functional approach was almost 2 times faster.&lt;/p&gt;
-&lt;p&gt;After a while I found the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Months ago I released a post entitled &lt;a href="http://wilsonfreitas.github.io/posts/computing-ewma.html" title="Computing EWMA"&gt;Computing EWMA&lt;/a&gt; exploring the functional approach to implement EWMA calculations in R and also compared that with what I called &lt;em&gt;loop-oriented&lt;/em&gt; implementation.
+&lt;p&gt;After a while I found the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Months ago I released a post entitled &lt;a href="https://wilsonfreitas.github.io/posts/computing-ewma.html" title="Computing EWMA"&gt;Computing EWMA&lt;/a&gt; exploring the functional approach to implement EWMA calculations in R and also compared that with what I called &lt;em&gt;loop-oriented&lt;/em&gt; implementation.
 That was quite ammazing to see that the functional approach was almost 2 times faster.&lt;/p&gt;
 &lt;p&gt;After a while I found the function &lt;code&gt;filter&lt;/code&gt; of the package &lt;code&gt;stats&lt;/code&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;## function (x, filter, method = c(&amp;quot;convolution&amp;quot;, &amp;quot;recursive&amp;quot;), 
@@ -10907,7 +10907,7 @@ It runs almost 2 times faster than the functional approach.&lt;/p&gt;
 
 
 &lt;p&gt;Here it has the &lt;a href="https://gist.github.com/wilsonfreitas/9972408"&gt;full code&lt;/a&gt;.&lt;/p&gt;
-&lt;script src="https://gist.github.com/wilsonfreitas/9972408.js"&gt;&lt;/script&gt;</content><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry><entry><title>Pricing Brazilian Government Bonds: LFT</title><link href="http://wilsonfreitas.github.io/posts/pricing-brazilian-government-bonds-lft.html" rel="alternate"></link><published>2014-04-03T00:00:00-03:00</published><updated>2014-04-03T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-03:/posts/pricing-brazilian-government-bonds-lft.html</id><summary type="html">&lt;p&gt;For many years I've been working for and with software vendors in the brazilian financial industry.
+&lt;script src="https://gist.github.com/wilsonfreitas/9972408.js"&gt;&lt;/script&gt;</content><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry><entry><title>Pricing Brazilian Government Bonds: LFT</title><link href="https://wilsonfreitas.github.io/posts/pricing-brazilian-government-bonds-lft.html" rel="alternate"></link><published>2014-04-03T00:00:00-03:00</published><updated>2014-04-03T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-04-03:/posts/pricing-brazilian-government-bonds-lft.html</id><summary type="html">&lt;p&gt;For many years I've been working for and with software vendors in the brazilian financial industry.
 The great majority of pricing and risk management aplications running on here were not developed here in Brazil.
 I think that is the main reason I saw many projects struggling to deliver a glimpse …&lt;/p&gt;</summary><content type="html">&lt;p&gt;For many years I've been working for and with software vendors in the brazilian financial industry.
 The great majority of pricing and risk management aplications running on here were not developed here in Brazil.
@@ -11129,7 +11129,7 @@ lft_quot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;tra
 &lt;p&gt;Since the output is &lt;code&gt;TRUE&lt;/code&gt; we all have to agree that these values match.
 As I said this is pretty much easy once you know all truncations and roundings that appears along the way.
 Another tricky point is that we can't invert that formula analytically, to find out the spread having the spot price of the bond.
-Because of the truncations we have to use that algorithm and implement a kind of goal seek mechanism to obtain the spread.&lt;/p&gt;</content><category term="R"></category><category term="brazilian bonds"></category><category term="LFT"></category><category term="bizdays"></category></entry><entry><title>Que 2014 seja um ano melhor para a Petrobrás</title><link href="http://wilsonfreitas.github.io/posts/que-2014-seja-um-ano-melhor-para-a-petrobras.html" rel="alternate"></link><published>2014-01-25T00:00:00-02:00</published><updated>2014-01-25T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-01-25:/posts/que-2014-seja-um-ano-melhor-para-a-petrobras.html</id><summary type="html">&lt;p&gt;
+Because of the truncations we have to use that algorithm and implement a kind of goal seek mechanism to obtain the spread.&lt;/p&gt;</content><category term="R"></category><category term="brazilian bonds"></category><category term="LFT"></category><category term="bizdays"></category></entry><entry><title>Que 2014 seja um ano melhor para a Petrobrás</title><link href="https://wilsonfreitas.github.io/posts/que-2014-seja-um-ano-melhor-para-a-petrobras.html" rel="alternate"></link><published>2014-01-25T00:00:00-02:00</published><updated>2014-01-25T00:00:00-02:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2014-01-25:/posts/que-2014-seja-um-ano-melhor-para-a-petrobras.html</id><summary type="html">&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
@@ -14341,7 +14341,7 @@ Nos próximos textos vamos direto ao ponto já trabalhando nas variáveis e esmi
 &lt;/div&gt;
  
 
-&lt;/p&gt;</content><category term="finance"></category><category term="python"></category><category term="visualization"></category></entry><entry><title>Computing EWMA</title><link href="http://wilsonfreitas.github.io/posts/computing-ewma.html" rel="alternate"></link><published>2013-08-18T00:00:00-03:00</published><updated>2013-08-18T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2013-08-18:/posts/computing-ewma.html</id><summary type="html">&lt;p&gt;As a loop oriented developer—and long time user of old static typed languages—my first attempt to compute EWMA in R was&lt;/p&gt;
+&lt;/p&gt;</content><category term="finance"></category><category term="python"></category><category term="visualization"></category></entry><entry><title>Computing EWMA</title><link href="https://wilsonfreitas.github.io/posts/computing-ewma.html" rel="alternate"></link><published>2013-08-18T00:00:00-03:00</published><updated>2013-08-18T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2013-08-18:/posts/computing-ewma.html</id><summary type="html">&lt;p&gt;As a loop oriented developer—and long time user of old static typed languages—my first attempt to compute EWMA in R was&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;ewma.loop &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;,&lt;/span&gt; lambda&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     n &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;rets&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="m"&gt;+1&lt;/span&gt;
     sig.s &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; n&lt;span class="p"&gt;)&lt;/span&gt;
@@ -14385,7 +14385,7 @@ rets &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0.02&lt;
 &lt;p&gt;The results are amazing.
 Using functional approach is, without doubt, much better.
 It is almost 2 times better and this is significant.&lt;/p&gt;
-&lt;script src="https://gist.github.com/wilsonfreitas/6279978.js"&gt;&lt;/script&gt;</content><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry><entry><title>EWMA convergence and divergence</title><link href="http://wilsonfreitas.github.io/posts/ewma-convergence-and-divergence.html" rel="alternate"></link><published>2013-08-16T00:00:00-03:00</published><updated>2013-08-16T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2013-08-16:/posts/ewma-convergence-and-divergence.html</id><summary type="html">&lt;p&gt;The so famous EWMA (Exponentially Weighted Moving Average) model&lt;/p&gt;
+&lt;script src="https://gist.github.com/wilsonfreitas/6279978.js"&gt;&lt;/script&gt;</content><category term="risk management"></category><category term="volatility"></category><category term="R"></category></entry><entry><title>EWMA convergence and divergence</title><link href="https://wilsonfreitas.github.io/posts/ewma-convergence-and-divergence.html" rel="alternate"></link><published>2013-08-16T00:00:00-03:00</published><updated>2013-08-16T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2013-08-16:/posts/ewma-convergence-and-divergence.html</id><summary type="html">&lt;p&gt;The so famous EWMA (Exponentially Weighted Moving Average) model&lt;/p&gt;
 &lt;p&gt;$$
 \hat\sigma^2_t = \lambda\hat\sigma^2_{t-1} + (1 - \lambda)r^2_t
 $$&lt;/p&gt;
@@ -14428,9 +14428,9 @@ boxplot&lt;span class="p"&gt;(&lt;/span&gt;coredata&lt;span class="p"&gt;(&lt;/s
 
 
 &lt;p&gt;The graph below shows time series of prices of PETR4 for the year of 2009—that seemed to be a good year for PETR4.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="PETR4 prices" src="http://wilsonfreitas.github.io/figure/prices.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PETR4 prices" src="https://wilsonfreitas.github.io/figure/prices.png"&gt;&lt;/p&gt;
 &lt;p&gt;To have an idea of how volatile its was in that year I looked at the box plot of returns.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="PETR4 returns boxplot" src="http://wilsonfreitas.github.io/figure/boxplot.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="PETR4 returns boxplot" src="https://wilsonfreitas.github.io/figure/boxplot.png"&gt;&lt;/p&gt;
 &lt;p&gt;I put the returns into a matrix because it is easier to work with this structure instead of working with a time series.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;rets &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; coredata&lt;span class="p"&gt;(&lt;/span&gt;first&lt;span class="p"&gt;(&lt;/span&gt;ret.x&lt;span class="p"&gt;,&lt;/span&gt; n&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -14452,17 +14452,17 @@ r.ewma.boot &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; boot&lt;span class="p"&
 &lt;code&gt;r.ewma.boot&lt;/code&gt; is an instance of the &lt;em&gt;class&lt;/em&gt; &lt;code&gt;boot&lt;/code&gt;, which is returned by the function with the same name.
 It has an attribute &lt;code&gt;t&lt;/code&gt; which stores all samples generated by the execution of &lt;code&gt;boot&lt;/code&gt; and other attribute &lt;code&gt;t0&lt;/code&gt; which stores the result for the original time series.
 I ran that experiment with $\lambda=0.94$, but it can be run with any other value.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Bootstraping EWMA calculations with lambda=0.94" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda94.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Bootstraping EWMA calculations with lambda=0.94" src="https://wilsonfreitas.github.io/figure/bootstrap-lambda94.png"&gt;&lt;/p&gt;
 &lt;p&gt;The red line is the mean volatility and as we can observe, it converges to the long run standard deviation—shown by the black horizontal line.
 And, as some practioneers usually say, 60 time steps isn't a bad choice for EWMA's convergence, when $\lambda=0.94$.
 For $\lambda=0.98$ we need more time steps to reach the convergence—as can be seen in the image below the time series used has 200 time steps instead of 100.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Bootstraping EWMA calculations with lambda=0.98" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda98.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Bootstraping EWMA calculations with lambda=0.98" src="https://wilsonfreitas.github.io/figure/bootstrap-lambda98.png"&gt;&lt;/p&gt;
 &lt;p&gt;We clearly observe the convergence, I tend to believe it is in distribution.
 Assintoticaly the mean value of EWMA estimator converges to the sample &lt;code&gt;sd&lt;/code&gt;, but EWMA gives a local estimative of volatility as we observe in the blue line.&lt;/p&gt;
 &lt;h2&gt;Simulated time series&lt;/h2&gt;
 &lt;p&gt;I extended that experiment for an environment where I could control all variables.
 So, following the assumption of IID returns I created one sample of returns and bootstraped it.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="Bootstraping simulated time series with lambda=0.94" src="http://wilsonfreitas.github.io/figure/bootstrap-lambda94-sim.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Bootstraping simulated time series with lambda=0.94" src="https://wilsonfreitas.github.io/figure/bootstrap-lambda94-sim.png"&gt;&lt;/p&gt;
 &lt;p&gt;We observe the convergence to the sample &lt;code&gt;sd&lt;/code&gt; which differs a little from the theoretical standard deviation (0.02).
 As expected the convergence with $\lambda=0.94$ occurs within the same numbers of time steps we've observed in the real time series.
 This result might help confirming the assumption that assets' returns are IID.&lt;/p&gt;

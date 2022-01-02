@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Wilson Freitas - webscraping</title><link href="http://wilsonfreitas.github.io/" rel="alternate"></link><link href="http://wilsonfreitas.github.io/feeds/webscraping.atom.xml" rel="self"></link><id>http://wilsonfreitas.github.io/</id><updated>2015-10-02T00:00:00-03:00</updated><entry><title>Webscraping IPCA</title><link href="http://wilsonfreitas.github.io/posts/webscraping-ipca.html" rel="alternate"></link><published>2015-10-02T00:00:00-03:00</published><updated>2015-10-02T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2015-10-02:/posts/webscraping-ipca.html</id><summary type="html">&lt;p&gt;Frequentemente eu consumo dados disponíveis na Internet para construir &lt;em&gt;datasets&lt;/em&gt; em minhas análises.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Wilson Freitas - webscraping</title><link href="https://wilsonfreitas.github.io/" rel="alternate"></link><link href="https://wilsonfreitas.github.io/feeds/webscraping.atom.xml" rel="self"></link><id>https://wilsonfreitas.github.io/</id><updated>2015-10-02T00:00:00-03:00</updated><entry><title>Webscraping IPCA</title><link href="https://wilsonfreitas.github.io/posts/webscraping-ipca.html" rel="alternate"></link><published>2015-10-02T00:00:00-03:00</published><updated>2015-10-02T00:00:00-03:00</updated><author><name>Wilson Freitas</name></author><id>tag:wilsonfreitas.github.io,2015-10-02:/posts/webscraping-ipca.html</id><summary type="html">&lt;p&gt;Frequentemente eu consumo dados disponíveis na Internet para construir &lt;em&gt;datasets&lt;/em&gt; em minhas análises.
 Em sua maioria são dados de mercado financeiro, que incluem:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;indicadores econômicos&lt;/li&gt;
@@ -155,13 +155,13 @@ plot&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk webscraping-ipca" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk webscraping-ipca" src="https://wilsonfreitas.github.io/figure/webscraping-ipca-1.png"&gt;&lt;/p&gt;
 &lt;p&gt;A inflação no governo Dilma Rousseff (2011-).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;ipca&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;2011/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;b&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; pch&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;19&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;IPCA - Governo Dilma Rousseff&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="plot of chunk webscraping-ipca-dilma" src="http://wilsonfreitas.github.io/figure/webscraping-ipca-dilma-1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="plot of chunk webscraping-ipca-dilma" src="https://wilsonfreitas.github.io/figure/webscraping-ipca-dilma-1.png"&gt;&lt;/p&gt;
 &lt;h2&gt;Conclusão&lt;/h2&gt;
 &lt;p&gt;Vimos como capturar a série temporal do IPCA do site PortalBrasil.
 Há outras formas de obter a série do IPCA, para citar 2 temos o webservice do Banco Central e o Quandl.

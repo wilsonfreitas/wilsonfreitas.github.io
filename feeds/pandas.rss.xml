@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Wilson Freitas - pandas</title><link>http://wilsonfreitas.github.io/</link><description></description><lastBuildDate>Sun, 01 Jan 2017 00:00:00 -0200</lastBuildDate><item><title>Variação do IBOVESPA por Governo Federal</title><link>http://wilsonfreitas.github.io/posts/variacao-do-ibovespa-por-governo-federal.html</link><description>&lt;p&gt;
+<rss version="2.0"><channel><title>Wilson Freitas - pandas</title><link>https://wilsonfreitas.github.io/</link><description></description><lastBuildDate>Sun, 01 Jan 2017 00:00:00 -0200</lastBuildDate><item><title>Variação do IBOVESPA por Governo Federal</title><link>https://wilsonfreitas.github.io/posts/variacao-do-ibovespa-por-governo-federal.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing code_cell rendered"&gt;
 &lt;div class="input"&gt;
 &lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[1]:&lt;/div&gt;
@@ -40,7 +40,7 @@
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;p&gt;O objetivo aqui é analisar a variação do IBOVESPA nos períodos dos governos federais desde a estabilização da …&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Sun, 01 Jan 2017 00:00:00 -0200</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2017-01-01:/posts/variacao-do-ibovespa-por-governo-federal.html</guid><category>python</category><category>visualization</category><category>pandas</category></item><item><title>Calculando Retornos Financeiros com Pandas</title><link>http://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html</link><description>&lt;p&gt;
+&lt;p&gt;O objetivo aqui é analisar a variação do IBOVESPA nos períodos dos governos federais desde a estabilização da …&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Sun, 01 Jan 2017 00:00:00 -0200</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2017-01-01:/posts/variacao-do-ibovespa-por-governo-federal.html</guid><category>python</category><category>visualization</category><category>pandas</category></item><item><title>Calculando Retornos Financeiros com Pandas</title><link>https://wilsonfreitas.github.io/posts/calculando-retornos-financeiros-com-pandas.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
@@ -51,7 +51,7 @@ Os retornos são calculado de duas formas:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Retornos Aritméticos
 $$
-R_t = \frac{S_t - S_ …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Mon, 21 Sep 2015 00:00:00 -0300</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2015-09-21:/posts/calculando-retornos-financeiros-com-pandas.html</guid><category>python</category><category>visualization</category><category>numpy</category><category>pandas</category></item><item><title>No Brasil até o passado é duvidoso</title><link>http://wilsonfreitas.github.io/posts/no-brasil-ate-o-passado-e-duvidoso.html</link><description>&lt;p&gt;
+R_t = \frac{S_t - S_ …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Mon, 21 Sep 2015 00:00:00 -0300</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2015-09-21:/posts/calculando-retornos-financeiros-com-pandas.html</guid><category>python</category><category>visualization</category><category>numpy</category><category>pandas</category></item><item><title>No Brasil até o passado é duvidoso</title><link>https://wilsonfreitas.github.io/posts/no-brasil-ate-o-passado-e-duvidoso.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
@@ -59,13 +59,13 @@ R_t = \frac{S_t - S_ …&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;A qualidade dos dados divulgados no mercado financeiro de uma forma geral é ruim.
 Os dados Brasileiros são muito ruins.
 As empresas que geram informação em nosso mercado não possuem processos adequados e robustos para a divulgação dos dados, sem falar nas ferramentas utilizadas nos processos.
-O mercado financeiro, de …&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Tue, 23 Dec 2014 00:00:00 -0200</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2014-12-23:/posts/no-brasil-ate-o-passado-e-duvidoso.html</guid><category>python</category><category>pandas</category></item><item><title>Quandl uma ótima forma de obter dados estruturados em Python</title><link>http://wilsonfreitas.github.io/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html</link><description>&lt;p&gt;
+O mercado financeiro, de …&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Tue, 23 Dec 2014 00:00:00 -0200</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2014-12-23:/posts/no-brasil-ate-o-passado-e-duvidoso.html</guid><category>python</category><category>pandas</category></item><item><title>Quandl uma ótima forma de obter dados estruturados em Python</title><link>https://wilsonfreitas.github.io/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;Quem trabalha com análise de dados sabe que o trabalho de análise começa apenas após o tratamento adequado dos dados.
-Quando se assume o compromisso de montar e manter a sua própria base de dados, o trabalho de preparar os dados para análise é grande, e quando se conta com …&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Sun, 30 Mar 2014 00:00:00 -0300</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2014-03-30:/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html</guid><category>python</category><category>pandas</category></item><item><title>Lista da Forbes de 2013 com Python e Pandas</title><link>http://wilsonfreitas.github.io/posts/lista-da-forbes-de-2013-com-python-e-pandas.html</link><description>&lt;p&gt;
+Quando se assume o compromisso de montar e manter a sua própria base de dados, o trabalho de preparar os dados para análise é grande, e quando se conta com …&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Wilson Freitas</dc:creator><pubDate>Sun, 30 Mar 2014 00:00:00 -0300</pubDate><guid isPermaLink="false">tag:wilsonfreitas.github.io,2014-03-30:/posts/quandl-uma-otima-forma-de-obter-dados-estruturados-em-python.html</guid><category>python</category><category>pandas</category></item><item><title>Lista da Forbes de 2013 com Python e Pandas</title><link>https://wilsonfreitas.github.io/posts/lista-da-forbes-de-2013-com-python-e-pandas.html</link><description>&lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;

@@ -3,19 +3,19 @@
 <head>
 	<meta charset="utf-8">
 	<title>Usando dados do rbmfbovespa para construir gráficos candlestick no R — Wilson Freitas</title>
-	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<link rel="shortcut icon" href="https://wilsonfreitas.github.io/images/favicon.ico">
 	<meta name="description" content="Title: Usando dados do rbmfbovespa para construir gráficos candlestick no R; Date: 2017-01-27; Author: Wilson Freitas">
 	<meta name="author" content="Wilson Freitas">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
 	<!--[if lt IE 9]>
-		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<script src="https://wilsonfreitas.github.io/theme/html5.js"></script>
 		<![endif]-->
-	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
-	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
-	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
-	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
-	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<!-- <link href="https://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="https://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="https://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
 	<script type="text/x-mathjax-config">
 	MathJax.Hub.Config({
 		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -49,19 +49,19 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="http://wilsonfreitas.github.io">Wilson Freitas</a>
+				<a class="navbar-brand" href="https://wilsonfreitas.github.io">Wilson Freitas</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
-					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+					<li><a href="https://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="https://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="https://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="https://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
-					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
-					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+					<li><a href="https://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="https://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="https://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
 				</ul>
 			</div>
 		</div>
@@ -80,20 +80,20 @@
 	<div>
 		Categoria:
 		<span itemprop="articleSection">
-			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+			<a href="https://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
 		</span>
 	</div>
  
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+			<a href="https://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
 		</span>
 		<span itemprop="keywords">
-			<a href="http://wilsonfreitas.github.io/tag/visualization.html" rel="tag">visualization</a>
+			<a href="https://wilsonfreitas.github.io/tag/visualization.html" rel="tag">visualization</a>
 		</span>
 		<span itemprop="keywords">
-			<a href="http://wilsonfreitas.github.io/tag/rbmfbovespa.html" rel="tag">rbmfbovespa</a>
+			<a href="https://wilsonfreitas.github.io/tag/rbmfbovespa.html" rel="tag">rbmfbovespa</a>
 		</span>
 	</div>
 	<div itemprop="articleBody" class="article-body"><p>A BM&amp;FBovespa disponibiliza arquivos de cotações históricas do mercado de ações, que incluem informações diárias de todos os contratos negociados, que são:</p>
@@ -166,7 +166,7 @@ BOVA11 <span class="o">&lt;-</span> as.xts<span class="p">(</span>select<span cl
 </pre></div>
 
 
-<p><img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-4" src="http://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-4-1.png"></p>
+<p><img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-4" src="https://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-4-1.png"></p>
 <p>Construindo as séries temporais para a VALE5 e aplicando o tema <code>white</code> ao gráfico.</p>
 <div class="highlight"><pre><span></span>VALE5.df <span class="o">&lt;-</span> ch_2016<span class="p">[[</span><span class="m">2</span><span class="p">]]</span> <span class="o">%&gt;%</span> filter<span class="p">(</span>cod_negociacao <span class="o">==</span> <span class="s">&#39;VALE5&#39;</span><span class="p">)</span> <span class="o">%&gt;%</span>
   select<span class="p">(</span>
@@ -182,14 +182,14 @@ candleChart<span class="p">(</span>VALE5<span class="p">,</span> theme<span clas
 </pre></div>
 
 
-<p><img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-5" src="http://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-5-1.png"></p>
+<p><img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-5" src="https://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-5-1.png"></p>
 <p>O <code>data.frame</code> utilizado na construção do objeto de séries temporais da VALE5 pode ser utilizado com funções do pacote <a href="https://cran.r-project.org/package=tidyquant">tidyquant</a> para a criação de um gráfico de candlesticks utilizando o <a href="http://ggplot2.org/">ggplot</a>.</p>
 <div class="highlight"><pre><span></span>ggplot<span class="p">(</span>BOVA11.df<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> Date<span class="p">,</span> y <span class="o">=</span> Close<span class="p">))</span> <span class="o">+</span>
   geom_candlestick<span class="p">(</span>aes<span class="p">(</span>open <span class="o">=</span> Open<span class="p">,</span> close <span class="o">=</span> Close<span class="p">,</span> high <span class="o">=</span> High<span class="p">,</span> low <span class="o">=</span> Low<span class="p">))</span>
 </pre></div>
 
 
-<p><img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-6" src="http://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-6-1.png"></p>
+<p><img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-6" src="https://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-6-1.png"></p>
 <p>O pacote <a href="https://cran.r-project.org/package=tidyquant">tidyquant</a> estende diversas funções do pacote <a href="http://www.quantmod.com/">quantmod</a>, de forma que é possível incluir nos gráficos do <a href="http://ggplot2.org/">ggplot</a> medidas de análise técnica com média móvel, por exemplo.</p>
 <div class="highlight"><pre><span></span>ggplot<span class="p">(</span>BOVA11.df<span class="p">,</span> aes<span class="p">(</span>x <span class="o">=</span> Date<span class="p">,</span> y <span class="o">=</span> Close<span class="p">))</span> <span class="o">+</span>
   geom_candlestick<span class="p">(</span>aes<span class="p">(</span>open <span class="o">=</span> Open<span class="p">,</span> close <span class="o">=</span> Close<span class="p">,</span> high <span class="o">=</span> High<span class="p">,</span> low <span class="o">=</span> Low<span class="p">))</span> <span class="o">+</span>
@@ -197,7 +197,7 @@ candleChart<span class="p">(</span>VALE5<span class="p">,</span> theme<span clas
 </pre></div>
 
 
-<p><img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-7" src="http://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-7-1.png"></p>
+<p><img alt="plot of chunk graficos_OHLC_com_rbmfbovespa_2-7" src="https://wilsonfreitas.github.io/figure/graficos_OHLC_com_rbmfbovespa_2-7-1.png"></p>
 <p>Estes gráficos com o ggplot são particularmente interessantes porque o ggplot vem se tornando um padrão na criação de gráficos no mundo R.
 Por esse motivo iniciativas como o <a href="https://cran.r-project.org/package=tidyquant">tidyquant</a> tem relevância, além de reforçar a construção de dados em formato <em>tidy</em>, reforçando boas práticas em análise de dados.
 Entretanto, estes gráficos no ggplot ainda precisam de uma melhora significativa no visual, mas isso é <em>work in progress</em>.</p>
@@ -230,8 +230,8 @@ O pacote <a href="https://github.com/wilsonfreitas/rbmfbovespa">rbmfbovespa</a> 
 	</div>
 </div>
 <!-- JavaScript -->
-<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
-<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="https://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function($) {
 	$("div.collapseheader").click(function () {

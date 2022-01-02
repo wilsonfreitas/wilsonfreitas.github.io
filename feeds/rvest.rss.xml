@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>Wilson Freitas - rvest</title><link>http://wilsonfreitas.github.io/</link><description></description><lastBuildDate>Fri, 02 Oct 2015 00:00:00 -0300</lastBuildDate><item><title>Webscraping IPCA</title><link>http://wilsonfreitas.github.io/posts/webscraping-ipca.html</link><description>&lt;p&gt;Frequentemente eu consumo dados disponíveis na Internet para construir &lt;em&gt;datasets&lt;/em&gt; em minhas análises.
+<rss version="2.0"><channel><title>Wilson Freitas - rvest</title><link>https://wilsonfreitas.github.io/</link><description></description><lastBuildDate>Fri, 02 Oct 2015 00:00:00 -0300</lastBuildDate><item><title>Webscraping IPCA</title><link>https://wilsonfreitas.github.io/posts/webscraping-ipca.html</link><description>&lt;p&gt;Frequentemente eu consumo dados disponíveis na Internet para construir &lt;em&gt;datasets&lt;/em&gt; em minhas análises.
 Em sua maioria são dados de mercado financeiro, que incluem:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;indicadores econômicos&lt;/li&gt;

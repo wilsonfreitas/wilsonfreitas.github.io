@@ -3,19 +3,19 @@
 <head>
 	<meta charset="utf-8">
 	<title>Estimando EWMA na prática — Wilson Freitas</title>
-	<link rel="shortcut icon" href="http://wilsonfreitas.github.io/images/favicon.ico">
+	<link rel="shortcut icon" href="https://wilsonfreitas.github.io/images/favicon.ico">
 	<meta name="description" content="Title: Estimando EWMA na prática; Date: 2014-04-13; Author: Wilson Freitas">
 	<meta name="author" content="Wilson Freitas">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
 	<!--[if lt IE 9]>
-		<script src="http://wilsonfreitas.github.io/theme/html5.js"></script>
+		<script src="https://wilsonfreitas.github.io/theme/html5.js"></script>
 		<![endif]-->
-	<!-- <link href="http://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
-	<link href="http://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
-	<link href="http://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
-	<link href="http://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
-	<link href="http://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
+	<!-- <link href="https://wilsonfreitas.github.io/theme/css/ipython.css" rel="stylesheet"> -->
+	<link href="https://wilsonfreitas.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://wilsonfreitas.github.io/theme/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://wilsonfreitas.github.io/theme/css/local.css" rel="stylesheet">
+	<link href="https://wilsonfreitas.github.io/theme/css/pygments.css" rel="stylesheet">
 	<script type="text/x-mathjax-config">
 	MathJax.Hub.Config({
 		tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -49,19 +49,19 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="http://wilsonfreitas.github.io">Wilson Freitas</a>
+				<a class="navbar-brand" href="https://wilsonfreitas.github.io">Wilson Freitas</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="http://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
-					<li><a href="http://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
-					<li><a href="http://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
+					<li><a href="https://wilsonfreitas.github.io/index.html"><i class="fa fa-home"></i> Home</a></li>
+					<li><a href="https://wilsonfreitas.github.io/archives.html"><i class="fa fa-archive "></i> Arquivo</a></li>
+					<li><a href="https://wilsonfreitas.github.io/pages/about.html"><i class="fa fa-user "></i> Sobre</a></li>
+					<li><a href="https://wilsonfreitas.github.io/pages/projects.html"><i class="fa fa-code "></i> Projetos</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="http://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
-					<li><a href="http://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
-					<li><a href="http://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
+					<li><a href="https://wilsonfreitas.github.io/categories.html"><i class="fa fa-archive"></i> Categorias</a></li>
+					<li><a href="https://wilsonfreitas.github.io/tags.html"><i class="fa fa-tags"></i> Tags</a></li>
+					<li><a href="https://wilsonfreitas.github.io/feeds/rss.xml"><i class="fa fa-rss"></i> RSS</a></li>
 				</ul>
 			</div>
 		</div>
@@ -80,20 +80,20 @@
 	<div>
 		Categoria:
 		<span itemprop="articleSection">
-			<a href="http://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
+			<a href="https://wilsonfreitas.github.io/category/finance.html" rel="category">finance</a>
 		</span>
 	</div>
  
 	<div>
 		Tags:
 		<span itemprop="keywords">
-			<a href="http://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
+			<a href="https://wilsonfreitas.github.io/tag/r.html" rel="tag">R</a>
 		</span>
 		<span itemprop="keywords">
-			<a href="http://wilsonfreitas.github.io/tag/volatility.html" rel="tag">volatility</a>
+			<a href="https://wilsonfreitas.github.io/tag/volatility.html" rel="tag">volatility</a>
 		</span>
 		<span itemprop="keywords">
-			<a href="http://wilsonfreitas.github.io/tag/risk-management.html" rel="tag">risk management</a>
+			<a href="https://wilsonfreitas.github.io/tag/risk-management.html" rel="tag">risk management</a>
 		</span>
 	</div>
 	<div itemprop="articleBody" class="article-body"><p>Este post é para quem, assim como eu, sempre quis saber de onde vem o coeficiente $\lambda=0.94$ proposto pelo JP Morgan para estimar a volatilidade via EWMA (Exponential Weighted Moving Average).</p>
@@ -116,7 +116,7 @@ bvsp.r <span class="o">&lt;-</span> <span class="kp">diff</span><span class="p">
 plot(bvsp.ts, main='', major.ticks='year', minor.ticks=FALSE, major.format='%Y', cex.axis = .7, log="y")
 ``` -->
 
-<p><img alt="BVSP Returns 1997-2014" src="http://wilsonfreitas.github.io/figure/bvsp-returns-1997-2014.png"> </p>
+<p><img alt="BVSP Returns 1997-2014" src="https://wilsonfreitas.github.io/figure/bvsp-returns-1997-2014.png"> </p>
 <p>É interessante observar os <em>clusters</em> de volatilidade, os de 1998 e 2008 são os mais relevantes (e curiosamente ocorreram em 10 anos).
 <em>Clusters</em> menores podem ser observados em 1997 e 2011.</p>
 <h2>Introduzindo o EWMA</h2>
@@ -178,7 +178,7 @@ x.ewma <span class="o">&lt;-</span> <span class="kp">sqrt</span><span class="p">
 </pre></div>
 
 
-<p><img alt="BVSP EWMA 0.94" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-094-volatility.png"> </p>
+<p><img alt="BVSP EWMA 0.94" src="https://wilsonfreitas.github.io/figure/bvsp-returns-ewma-094-volatility.png"> </p>
 <p>Note que considero $\sigma^2_1=r^2_1$.</p>
 <h2>Estimando via minimização de $S$</h2>
 <p>$S$ é a soma do erro quadrático, ou seja:</p>
@@ -245,14 +245,14 @@ abline<span class="p">(</span>h<span class="o">=</span>o<span class="o">$</span>
 </pre></div>
 
 
-<p><img alt="Objective Function Squared Returns" src="http://wilsonfreitas.github.io/figure/objective-function-squared-returns.png"> </p>
+<p><img alt="Objective Function Squared Returns" src="https://wilsonfreitas.github.io/figure/objective-function-squared-returns.png"> </p>
 <p>Olhando o gráfico observamos que há apenas 1 ponto de mínimo na função e que este está bem próximo a $\lambda = 0.91$.</p>
 <p>Podemos agora calcular a variância da série e visualizar o resultado.</p>
 <div class="highlight"><pre><span></span>x.ewma <span class="o">&lt;-</span> compute_ewma<span class="p">(</span><span class="m">0.91</span><span class="p">)</span>
 </pre></div>
 
 
-<p><img alt="BVSP EWMA Squared Returns" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-squared-returns.png"> </p>
+<p><img alt="BVSP EWMA Squared Returns" src="https://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-squared-returns.png"> </p>
 <h3>Utilizando o desvio padrão futuro</h3>
 <p>Agora para encontrar $\lambda$ minimizando $S$ e considerando que o desvio padrão dos próximos $T$ pontos, $v_n$, é a variância observada.</p>
 <p>$$
@@ -295,10 +295,10 @@ abline<span class="p">(</span>h<span class="o">=</span>o<span class="o">$</span>
 </pre></div>
 
 
-<p><img alt="Objective Function Squared Returns" src="http://wilsonfreitas.github.io/figure/objective-function-volatility-forecast.png"> </p>
+<p><img alt="Objective Function Squared Returns" src="https://wilsonfreitas.github.io/figure/objective-function-volatility-forecast.png"> </p>
 <p>A função objetivo para esta abordagem também apresenta apenas 1 ponto de mínimo, garantindo a coerência do resultado encontrado.</p>
 <p>Vamos novamente ver o gráfico dos retornos envolvidos pela volatilidade para ter uma idéia de como se comporta a volatilidade com relação aos retornos observados utilizando-se um $\lambda$ tão alto.</p>
-<p><img alt="BVSP EWMA Squared Returns" src="http://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-forecast.png"> </p>
+<p><img alt="BVSP EWMA Squared Returns" src="https://wilsonfreitas.github.io/figure/bvsp-returns-ewma-volatility-forecast.png"> </p>
 <h2>Conclusão</h2>
 <p>Dada a diferença entre os valores de $\lambda$ é necessária uma reflexão mais profunda sobre o tema.
 Obviamente a diferença reflete a escolha de $s^2$ e essa deve refletir o objetivo do modelo.
@@ -339,8 +339,8 @@ Acredito que testes de frequência e testes fora da amostra são boas alternativ
 	</div>
 </div>
 <!-- JavaScript -->
-<script src="http://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
-<script src="http://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
+<script src="https://wilsonfreitas.github.io/theme/js/jquery-2.1.1.min.js"></script>
+<script src="https://wilsonfreitas.github.io/theme/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function($) {
 	$("div.collapseheader").click(function () {
